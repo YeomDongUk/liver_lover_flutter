@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "406387123118",
+    "project_id": "yack-67030",
+    "storage_bucket": "yack-67030.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406387123118:android:9a0c7a2ad224e091d15e3f",
+        "android_client_info": {
+          "package_name": "com.example.yak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406387123118-imo4bdruq7pjf003jpbgpgb619vj5o8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKelKozaQ3hPv2P0GW_ITIQwsvjoZZquI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406387123118-imo4bdruq7pjf003jpbgpgb619vj5o8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

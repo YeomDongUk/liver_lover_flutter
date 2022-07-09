@@ -1,0 +1,45 @@
+import 'package:drift/drift.dart';
+import 'package:yak/core/database/table/common_table.dart';
+
+enum HospitalVisitScheduleStatus {
+  none,
+  done,
+}
+
+/// 병원 방문일 테이블
+@DataClassName('HospitalVisitScheduleModel')
+class HospitalVisitSchedules extends UserReferenceTable {
+  /// 병원 이름
+  TextColumn get hospitalName => text()();
+
+  /// 진료 과목
+  TextColumn get medicalSubject => text()();
+
+  /// 의사 이름
+  TextColumn get doctorName => text()();
+
+  /// 방문 예약일
+  DateTimeColumn get reservedAt =>
+      dateTime().check(reservedAt.isBiggerThan(currentDate))();
+
+  /// 방문일
+  DateTimeColumn get visitedAt =>
+      dateTime().check(visitedAt.isBiggerThan(currentDate)).nullable()();
+
+  /// 알림
+  BoolColumn get push => boolean().withDefault(const Constant(false))();
+
+  /// 30분 전 알림
+  BoolColumn get beforePush => boolean().withDefault(const Constant(false))();
+
+  /// 30분 후 알림
+  BoolColumn get afterPush => boolean().withDefault(const Constant(false))();
+
+  @override
+  List<Set<Column>>? get uniqueKeys => [
+        {
+          userId,
+          visitedAt,
+        }
+      ];
+}
