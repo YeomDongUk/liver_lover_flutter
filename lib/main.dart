@@ -8,6 +8,7 @@ import 'package:yak/core/router/auth_location.dart';
 import 'package:yak/core/router/home_location.dart';
 import 'package:yak/core/router/hospital_visit_schedule_location.dart';
 import 'package:yak/core/router/medication_schedule_location.dart';
+import 'package:yak/core/router/my_location.dart';
 import 'package:yak/core/router/prescription_location.dart';
 import 'package:yak/core/router/sf_12_survey_location.dart';
 import 'package:yak/core/static/color.dart';
@@ -60,6 +61,7 @@ class YackApp extends StatelessWidget {
         MedicationScheduleLocation(),
         HospitalVisitScheduleLocation(),
         SF12SurveyLocation(),
+        MyLocation()
       ],
     ),
   );
