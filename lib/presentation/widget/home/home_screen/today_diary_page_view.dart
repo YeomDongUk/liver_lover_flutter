@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_container.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_label.dart';
+import 'package:yak/presentation/widget/home/home_screen/value_column.dart';
 
 class TodayDiaryPageView extends StatelessWidget {
   const TodayDiaryPageView({super.key});
@@ -23,9 +24,21 @@ class TodayDiaryPageView extends StatelessWidget {
                 height: 123,
                 child: Row(
                   children: [
-                    Expanded(child: Container()),
+                    const Expanded(
+                      child: ValueColumn(
+                        label: '흡연량',
+                        value: 0,
+                        unitText: '개비',
+                      ),
+                    ),
                     const VerticalDivider(),
-                    Expanded(child: Container()),
+                    const Expanded(
+                      child: ValueColumn(
+                        label: '알코올량',
+                        value: 0,
+                        unitText: 'g',
+                      ),
+                    ),
                   ],
                 ),
               ),

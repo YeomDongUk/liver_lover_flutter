@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yak/core/static/color.dart';
 
 class HomeContainer extends StatelessWidget {
   const HomeContainer({
@@ -32,7 +33,7 @@ class HomeContainer extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(6)),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x7ecdced2),
+            color: AppColors.blueGrayLight,
             blurRadius: 10,
           )
         ],

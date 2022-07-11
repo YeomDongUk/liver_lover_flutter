@@ -3,8 +3,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
-import 'package:yak/domain/repositories/hospital_visit_schedule/hospital_visit_schedule_repository.dart';
+
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/update/update_hospital_visit_schedules_cubit.dart';
 
@@ -29,6 +30,7 @@ void main() {
         reservedAt: DateTime.now(),
         push: true,
         beforePush: true,
+        type: HospitalVisitScheduleType.regular,
         afterPush: true,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -153,6 +155,7 @@ void main() {
             hospitalName: '삼성서울병원',
             doctorName: '박혜민',
             visitedAt: null,
+            type: HospitalVisitScheduleType.regular,
             reservedAt: DateTime.now().add(const Duration(days: 1)),
             push: true,
             beforePush: true,

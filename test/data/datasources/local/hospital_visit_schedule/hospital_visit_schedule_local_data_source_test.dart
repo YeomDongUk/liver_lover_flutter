@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visit_schedule_local_data_source.dart';
 
 void main() {
@@ -53,6 +54,7 @@ void main() {
               medicalSubject: '테스트 진료과목',
               doctorName: '테스트 의사',
               reservedAt: DateTime.now().add(const Duration(days: -1)),
+              type: HospitalVisitScheduleType.regular,
             ),
           );
         } catch (e) {
@@ -71,6 +73,7 @@ void main() {
           hospitalName: '테스트 병원',
           medicalSubject: '테스트 진료과목',
           doctorName: '테스트 의사',
+          type: HospitalVisitScheduleType.regular,
           reservedAt: DateTime.now().add(const Duration(days: 1)),
         ),
       );

@@ -13,12 +13,13 @@ class Routes {
       Path.hospitalVisitSchedules + Path.update;
   static const String hospitalVisitScheduleHistories =
       Path.hospitalVisitSchedules + Path.histories;
-
+  static const String myPinCodeUpdate = Path.my + Path.pinCode + Path.update;
   // '${Path.hospitalVisitSchedules}/create';
   static const String sf12Surveys = Path.sf12Surveys;
   static const String answers = Path.answers;
   static const String answerCreate = Path.answers + Path.create;
   static const String create = Path.create;
+  static const String my = Path.my;
 }
 
 class Path {
@@ -33,4 +34,6 @@ class Path {
   static const String histories = '/histories';
   static const String sf12Surveys = '/sf-12-surveys';
   static const String answers = '/answers';
+  static const String my = '/my';
+  static const String pinCode = '/pin-code';
 }

@@ -11,6 +11,7 @@ import 'table/medication_adherence_survey_history/medication_adherence_survey_hi
 import 'table/medication_information/medication_information_table.dart';
 import 'table/medication_notification/medication_notification_table.dart';
 import 'table/medication_schedule/medication_schedule_table.dart';
+import 'table/metabolic_disease/metabolic_disease_table.dart';
 import 'table/pill/pill_table.dart';
 import 'table/point_history/point_history_table.dart';
 import 'table/prescription/prescription_table.dart';
@@ -36,6 +37,7 @@ part 'database.g.dart';
     SF12SurveyHistories,
     MedicationAdherenceSurveyHistories,
     SF12SurveyAnswers,
+    MetabolicDiseases,
   ],
   daos: [
     // UserDao,
@@ -55,18 +57,18 @@ class AppDatabase extends _$AppDatabase {
         onCreate: (m) async {
           await m.createAll();
 
-          // await into(users).insertReturning(
-          //   UsersCompanion.insert(
-          //     id: const Value('test'),
-          //     name: '염동욱',
-          //     phone: '01023937318',
-          //     birthYear: 1995,
-          //     sex: 0,
-          //     height: 172,
-          //     weight: 64,
-          //     pinCode: '000000',
-          //   ),
-          // );
+          await into(users).insertReturning(
+            UsersCompanion.insert(
+              id: const Value('test'),
+              name: '염동욱',
+              phone: '01023937318',
+              birthYear: 1995,
+              sex: 0,
+              height: 172,
+              weight: 64,
+              pinCode: '000000',
+            ),
+          );
 
           // await batch((batch) {
           //   // final pillsCompanions = List.generate(

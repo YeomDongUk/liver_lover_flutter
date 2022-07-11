@@ -6,6 +6,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:yak/core/class/d_day_parser.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
+import 'package:yak/core/static/icon.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
@@ -51,39 +52,67 @@ class _UpcomingHospitalVisitSchedulePageViewState
             primaryText: '예약일정',
           ),
         ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 154,
-          child: BlocBuilder<HospitalVisitSchedulesCubit,
-              HospitalVisitSchedulesState>(
-            builder: (context, state) {
-              if (state.hospitalVisitSchedules.isEmpty) {
-                return HomeContainer(
-                  boxColor: Colors.transparent,
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 120,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(6),
-                    color: Colors.white,
-                    child: InkWell(
+        BlocBuilder<HospitalVisitSchedulesCubit, HospitalVisitSchedulesState>(
+          builder: (context, state) {
+            if (state.hospitalVisitSchedules.isEmpty) {
+              return SizedBox(
+                height: 108,
+                child: Center(
+                  child: HomeContainer(
+                    boxColor: Colors.transparent,
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    height: 88,
+                    child: Material(
                       borderRadius: BorderRadius.circular(6),
-                      onTap: () => context
-                          .beamToNamed(Routes.hospitalVisitScheduleCreate),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text('등록된 검진/외래 일정이 없습니다.'),
-                            Text('지금 일정을 등록하세요'),
-                          ],
+                      color: Colors.white,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(6),
+                        onTap: () => context
+                            .beamToNamed(Routes.hospitalVisitScheduleCreate),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                IconDatas.hospitalVisit,
+                                size: 40,
+                                color: AppColors.blueGrayLight,
+                              ),
+                              const SizedBox(width: 24),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '등록된 복약일정이 없습니다.',
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      color: AppColors.magenta,
+                                    ).rixMGoB,
+                                  ),
+                                  const SizedBox(height: 7),
+                                  Text(
+                                    '지금 일정을 등록하세요',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: AppColors.gray,
+                                    ).rixMGoB,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                );
-              }
+                ),
+              );
+            }
 
-              return PageView.builder(
+            return SizedBox(
+              height: 140,
+              child: PageView.builder(
                 controller: pageController,
                 itemCount: state.hospitalVisitSchedules.length,
                 itemBuilder: (context, index) {
@@ -95,11 +124,10 @@ class _UpcomingHospitalVisitSchedulePageViewState
                     ),
                   );
                 },
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
-        const SizedBox(height: 16),
         BlocBuilder<HospitalVisitSchedulesCubit, HospitalVisitSchedulesState>(
           buildWhen: (prev, curr) =>
               prev.hospitalVisitSchedules.length !=

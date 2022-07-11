@@ -2,10 +2,12 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:yak/core/class/d_day_parser.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
+import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_container.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_label.dart';
@@ -23,7 +25,76 @@ class SurveyCheckView extends StatelessWidget {
       builder: (context, state) {
         final groups =
             state.groups.where((element) => element.visitedAt == null);
-        if (groups.isEmpty) return const SizedBox.shrink();
+        if (groups.isEmpty)
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: HomeLabel(
+                  primaryText: '설문',
+                ),
+              ),
+              const SizedBox(height: 10),
+              HomeContainer(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 24,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '검진/외래 등록 후 설문이 가능합니다.',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
+                          const SizedBox(height: 6),
+                          BlocBuilder<CurrentTimeCubit, DateTime>(
+                            builder: (context, _) => Text(
+                              '검진/외래 일정을 등록하세요.',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.magenta,
+                              ).rixMGoB,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: _SurveyStateButton(
+                            done: false,
+                            isBetweenSurveyDateTime: false,
+                            surveyName: '삶의 질(SF-12)',
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 67,
+                          child: VerticalDivider(),
+                        ),
+                        const Expanded(
+                          child: _SurveyStateButton(
+                            done: false,
+                            isBetweenSurveyDateTime: false,
+                            surveyName: '복약순응도',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
 
         final group = groups.first;
 
@@ -49,23 +120,29 @@ class SurveyCheckView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          group.sf12surveyHistory.done
-                              ? '검진/외래 일정 전에 설문을 완료해주세요.'
-                              : '모든 설문이 완료되었습니다.',
+                          !group.isBetweenSurveyDateTime
+                              ? '설문은 검진/외래 예약일 3일전 부터 가능합니다.'
+                              : !group.sf12surveyHistory.done
+                                  ? '검진/외래 일정 전에 설문을 완료해주세요.'
+                                  : '모든 설문이 완료되었습니다.',
                           style: const TextStyle(
                             fontSize: 13,
                             color: AppColors.gray,
                           ).rixMGoB,
                         ),
                         const SizedBox(height: 6),
-                        Text(
-                          group.sf12surveyHistory.done
-                              ? '검진/외래 일정까지 ${DdayParser.parseDday(group.reseverdAt).replaceAll('D-', '')}일 남았습니다.'
-                              : '검진/외래 시 담당의에게 결과를 제시해 주세요.',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.magenta,
-                          ).rixMGoB,
+                        BlocBuilder<CurrentTimeCubit, DateTime>(
+                          builder: (context, _) => Text(
+                            !group.isBetweenSurveyDateTime
+                                ? '다음 검진/외래 예약일은 [${DateFormat('yyyy.MM.dd').format(group.reseverdAt)}] 입니다.'
+                                : !group.sf12surveyHistory.done
+                                    ? '검진/외래 일정까지 ${DdayParser.parseDday(group.reseverdAt).replaceAll('D-', '')}일 남았습니다.'
+                                    : '검진/외래 시 담당의에게 결과를 제시해 주세요.',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.magenta,
+                            ).rixMGoB,
+                          ),
                         ),
                       ],
                     ),
@@ -76,37 +153,40 @@ class SurveyCheckView extends StatelessWidget {
                     borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(6),
                     ),
-                    child: Container(
-                      alignment: Alignment.topCenter,
-                      child: Row(
+                    child: BlocBuilder<CurrentTimeCubit, DateTime>(
+                      builder: (context, _) => Row(
                         children: [
                           Expanded(
                             child: _SurveyStateButton(
-                              onTap: group.sf12surveyHistory.done
-                                  ? null
-                                  : () {
-                                      // print(Routes.sf12SurveyAnswerCreate);
-                                      context.beamToNamed(
-                                        '${Routes.sf12Surveys}/${group.sf12surveyHistory.id}${Routes.answerCreate}',
-                                      );
-                                    },
+                              onTap: () {
+                                context.beamToNamed(
+                                  '${Routes.sf12Surveys}/${group.sf12surveyHistory.id}${Routes.answerCreate}',
+                                );
+                              },
                               isBetweenSurveyDateTime:
                                   group.isBetweenSurveyDateTime,
                               surveyName: '삶의 질(SF-12)',
                               done: group.sf12surveyHistory.done,
                             ),
                           ),
-                          const VerticalDivider(),
+                          SizedBox(
+                            height: group.visitedAt == null &&
+                                    !group.isBetweenSurveyDateTime
+                                ? 67
+                                : 98,
+                            child: const VerticalDivider(
+                              thickness: 1,
+                              width: 1,
+                            ),
+                          ),
                           Expanded(
                             child: _SurveyStateButton(
-                              onTap: group.medicationAdherenceSurveyHistory.done
-                                  ? null
-                                  : () {
-                                      // print(Routes.sf12SurveyAnswerCreate);
-                                      context.beamToNamed(
-                                        '${Routes.sf12Surveys}/${group.sf12surveyHistory.id}${Routes.answerCreate}',
-                                      );
-                                    },
+                              onTap: () {
+                                // print(Routes.sf12SurveyAnswerCreate);
+                                // context.beamToNamed(
+                                //   '${Routes.sf12Surveys}/${group.sf12surveyHistory.id}${Routes.answerCreate}',
+                                // );
+                              },
                               isBetweenSurveyDateTime:
                                   group.isBetweenSurveyDateTime,
                               surveyName: '복약 순응도',
@@ -146,7 +226,7 @@ class _SurveyStateButton extends StatelessWidget {
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(6),
       ),
-      onTap: onTap,
+      onTap: isBetweenSurveyDateTime && !done ? onTap : null,
       child: Padding(
         padding: EdgeInsets.only(
           top: 24,
@@ -158,7 +238,9 @@ class _SurveyStateButton extends StatelessWidget {
               surveyName,
               style: TextStyle(
                 fontSize: 17,
-                color: Theme.of(context).primaryColor,
+                color: !done && !isBetweenSurveyDateTime
+                    ? AppColors.gray
+                    : Theme.of(context).primaryColor,
               ).rixMGoEB,
             ),
             if (isBetweenSurveyDateTime) ...[

@@ -35,6 +35,28 @@ class User extends Equatable {
   final String pinCode;
   final bool metabolicDisease;
 
+  User copyWith({
+    String? name,
+    String? phone,
+    int? birthYear,
+    int? sex,
+    int? height,
+    int? weight,
+    String? pinCode,
+    bool? metabolicDisease,
+  }) =>
+      User(
+        id: id,
+        name: name ?? this.name,
+        phone: phone ?? this.phone,
+        birthYear: birthYear ?? this.birthYear,
+        sex: sex ?? this.sex,
+        height: height ?? this.height,
+        weight: weight ?? this.weight,
+        pinCode: pinCode ?? this.pinCode,
+        metabolicDisease: metabolicDisease ?? this.metabolicDisease,
+      );
+
   static const empty = User(
     id: '-',
     name: '인증되지 않은 유저',

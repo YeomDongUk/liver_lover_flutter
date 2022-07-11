@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:yak/core/input_formtters/input_formatter.dart';
-import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/auth/join/join_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
@@ -21,6 +20,12 @@ class JoinInputFormWidget extends StatefulWidget {
 
 class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
   late final joinCubit = context.read<JoinCubit>();
+  late final MaskTextInputFormatter phoneInputFormatter =
+      getPhoneInputFormatter();
+  late final MaskTextInputFormatter birthYearInputFormatter =
+      getBirthYearInputFormatter();
+  late final MaskTextInputFormatter heightInputFormatter =
+      getHeightInputFormatter();
   final List<FocusNode> focusNodes = List.generate(
     5,
     (index) => FocusNode(),

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 
 enum HospitalVisitScheduleStatus {
   none,
@@ -17,6 +18,7 @@ class HospitalVisitSchedule extends Equatable {
     required this.push,
     required this.beforePush,
     required this.afterPush,
+    required this.type,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -35,6 +37,7 @@ class HospitalVisitSchedule extends Equatable {
         push: json['push'] as bool,
         beforePush: json['beforePush'] as bool,
         afterPush: json['afterPush'] as bool,
+        type: json['type'] as HospitalVisitScheduleType,
         createdAt:
             DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
         updatedAt:
@@ -68,6 +71,9 @@ class HospitalVisitSchedule extends Equatable {
   /// 2시간 전 알림
   final bool afterPush;
 
+  /// 타입
+  final HospitalVisitScheduleType type;
+
   /// 생성일
   final DateTime createdAt;
 
@@ -89,6 +95,7 @@ class HospitalVisitSchedule extends Equatable {
     bool? push,
     bool? beforePush,
     bool? afterPush,
+    HospitalVisitScheduleType? type,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
@@ -102,6 +109,7 @@ class HospitalVisitSchedule extends Equatable {
         push: push ?? this.push,
         beforePush: beforePush ?? this.beforePush,
         afterPush: afterPush ?? this.afterPush,
+        type: type ?? this.type,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -117,6 +125,7 @@ class HospitalVisitSchedule extends Equatable {
         push,
         beforePush,
         afterPush,
+        type,
         createdAt,
         updatedAt,
       ];

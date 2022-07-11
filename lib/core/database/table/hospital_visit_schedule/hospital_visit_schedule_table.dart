@@ -1,9 +1,12 @@
 import 'package:drift/drift.dart';
 import 'package:yak/core/database/table/common_table.dart';
 
-enum HospitalVisitScheduleStatus {
-  none,
-  done,
+enum HospitalVisitScheduleType {
+  /// 정기 검진
+  regular,
+
+  /// 외래 진료
+  outpatient,
 }
 
 /// 병원 방문일 테이블
@@ -35,11 +38,13 @@ class HospitalVisitSchedules extends UserReferenceTable {
   /// 30분 후 알림
   BoolColumn get afterPush => boolean().withDefault(const Constant(false))();
 
+  IntColumn get type => intEnum<HospitalVisitScheduleType>()();
+
   @override
   List<Set<Column>>? get uniqueKeys => [
         {
           userId,
-          visitedAt,
+          reservedAt,
         }
       ];
 }

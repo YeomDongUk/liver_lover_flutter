@@ -11,6 +11,7 @@ import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
+import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/page/home/hoem_screen.dart';
 import 'package:yak/presentation/page/home/hospital_visit_schedules_screen.dart';
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   late final MedicationSchedulesCubit _medicationSchedulesCubit;
   late final TodayMedicationSchedulesCubit _todayMedicationSchedulesCubit;
   late final SurveyGroupsCubit _surveyGroupsCubit;
+  late final MetabolicDiseaseCubit _metabolicDiseaseCubit;
   late final ItemScrollController _itemcrollController;
 
   @override
@@ -44,6 +46,8 @@ class _HomePageState extends State<HomePage> {
     _todayMedicationSchedulesCubit =
         context.read<TodayMedicationSchedulesCubit>()..loadSchedules();
     _surveyGroupsCubit = context.read<SurveyGroupsCubit>()..loadSurveyGroups();
+    _metabolicDiseaseCubit = context.read<MetabolicDiseaseCubit>()
+      ..loadMetabolicDisease();
     _itemcrollController = ItemScrollController();
     super.initState();
   }
@@ -54,6 +58,7 @@ class _HomePageState extends State<HomePage> {
     _medicationSchedulesCubit.onLogout();
     _todayMedicationSchedulesCubit.onLogout();
     _surveyGroupsCubit.onLogout();
+    _metabolicDiseaseCubit.onLogout();
     _pageController.dispose();
 
     super.dispose();

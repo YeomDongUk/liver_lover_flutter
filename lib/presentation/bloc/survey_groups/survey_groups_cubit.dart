@@ -8,7 +8,7 @@ import 'package:yak/presentation/bloc/on_user_state.dart';
 part 'survey_groups_state.dart';
 
 class SurveyGroupsCubit extends Cubit<SurveyGroupsState>
-    implements IOnUserState {
+    implements IonUserState {
   SurveyGroupsCubit({
     required this.getSurveyGroupHistory,
     required this.getSurveyGroupHistories,

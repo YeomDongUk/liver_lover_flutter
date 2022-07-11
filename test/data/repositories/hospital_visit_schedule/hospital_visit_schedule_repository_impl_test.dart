@@ -2,6 +2,7 @@ import 'package:cuid/cuid.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visit_schedule_local_data_source.dart';
 import 'package:yak/data/repositories/hospital_visit_schedule/hospital_visit_schedule_repository_impl.dart';
@@ -43,6 +44,7 @@ void main() {
         hospitalName: '삼성 서울 병원',
         medicalSubject: '소화기 내과',
         doctorName: '염동욱',
+        type: HospitalVisitScheduleType.regular,
         reservedAt: DateTime.now(),
         push: true,
         beforePush: true,
@@ -73,6 +75,7 @@ void main() {
       (invocation) async => HospitalVisitScheduleModel(
         id: newCuid(),
         userId: 'test',
+        type: HospitalVisitScheduleType.regular,
         hospitalName: '삼성 서울 병원',
         medicalSubject: '소화기 내과',
         doctorName: '염동욱',
@@ -110,6 +113,7 @@ void main() {
           id: newCuid(),
           userId: 'test',
           hospitalName: '삼성 서울 병원',
+          type: HospitalVisitScheduleType.regular,
           medicalSubject: '소화기 내과',
           doctorName: '염동욱',
           reservedAt: DateTime.now()..add(Duration(days: -5 + index)),

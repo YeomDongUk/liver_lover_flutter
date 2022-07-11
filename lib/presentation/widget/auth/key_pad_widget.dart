@@ -30,17 +30,16 @@ class KeyPadWidget extends StatelessWidget {
     return Column(
       children: List.generate(
         4,
-        (y) => Row(
-          children: List.generate(
-            3,
-            (x) {
-              final numberString = numberStrings[y * 3 + x];
-              return Expanded(
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () => onTapNumber(numberString),
-                  child: AspectRatio(
-                    aspectRatio: 1,
+        (y) => Expanded(
+          child: Row(
+            children: List.generate(
+              3,
+              (x) {
+                final numberString = numberStrings[y * 3 + x];
+                return Expanded(
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: () => onTapNumber(numberString),
                     child: Center(
                       child: numberString == 'delete'
                           ? SvgPicture.asset('assets/svg/clear.svg')
@@ -58,9 +57,9 @@ class KeyPadWidget extends StatelessWidget {
                             ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

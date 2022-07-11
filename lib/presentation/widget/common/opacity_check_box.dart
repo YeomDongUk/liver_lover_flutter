@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yak/core/static/color.dart';
-import 'package:yak/core/static/text_style.dart';
 
 class OpacityCheckBox extends StatefulWidget {
   const OpacityCheckBox({
@@ -18,6 +17,19 @@ class OpacityCheckBox extends StatefulWidget {
 
 class _OpacityCheckBoxState extends State<OpacityCheckBox> {
   late bool value = widget.value ?? false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant OpacityCheckBox oldWidget) {
+    if (value != oldWidget.value) {
+      print(value);
+      setState(() => value = widget.value ?? oldWidget.value ?? false);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {

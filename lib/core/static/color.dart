@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
 extension AppColors on Color {
-  static const Color primary = Color(0xFF3824b4);
-
-  /// 밝은 회색 0xFFCFCFCF
-  static const Color lightGray = Color(0xFFCFCFCF);
-  static const Color gray = Color(0xFF919295);
-  static const Color blueGrayLight = Color(0xFFCDCED2);
-  static const Color blueGrayDark = Color(0xFF2D2D30);
-  static const Color paleGray = Color(0xFFF2F4F8);
-
-  /// 마젠타 0xFFEA2669
-  static const Color magenta = Color(0xFFEA2669);
-
-  static const Color green = Color(0xFF2ab63a);
+  static const black = Color(0xff000000);
+  static const white = Color(0xffffffff);
+  static const lightGray = Color(0xffcfcfcf);
+  static const gray = Color(0xff919295);
+  static const primary = Color(0xff3824b4);
+  static const blueGrayLight = Color(0xffcdced2);
+  static const magenta = Color(0xffea2669);
+  static const paleGray = Color(0xfff2f4f8);
+  static const blueGrayDark = Color(0xff2d2d30);
+  static const skyBlue = Color(0xff00afff);
+  static const orange = Color(0xffff8d00);
+  static const green = Color(0xff2ab63a);
 }

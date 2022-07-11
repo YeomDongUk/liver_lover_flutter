@@ -7,7 +7,7 @@ import 'package:yak/presentation/bloc/on_user_state.dart';
 part 'medication_schedules_state.dart';
 
 class MedicationSchedulesCubit extends Cubit<MedicationSchedulesState>
-    implements IOnUserState {
+    implements IonUserState {
   MedicationSchedulesCubit() : super(const MedicationSchedulesInitial());
   // final GetMedicationSchedules getMedicationSchedules;
 

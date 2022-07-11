@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/icon.dart';
-import 'package:yak/core/static/text_style.dart';
 
 class GlobalNavigationBar extends StatefulWidget {
   const GlobalNavigationBar({
@@ -27,8 +26,8 @@ class _GlobalNavigationBarState extends State<GlobalNavigationBar> {
     '복약관리',
     '검진/외래',
     '혈액검사',
-    '설문조사',
-    '활동일기',
+    '건강일기',
+    '건강정보',
   ];
   @override
   void initState() {
@@ -55,7 +54,7 @@ class _GlobalNavigationBarState extends State<GlobalNavigationBar> {
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Color(0x7ecdced2),
+              color: AppColors.blueGrayLight,
               blurRadius: 20,
             )
           ],

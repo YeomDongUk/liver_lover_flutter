@@ -19,6 +19,7 @@ import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_s
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules.dart';
 import 'package:yak/domain/usecases/medication_schedule/get_today_medication_schedules.dart';
+import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_history.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
@@ -26,6 +27,7 @@ import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
+import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 
 Future<void> main() async {
@@ -108,6 +110,11 @@ class YackApp extends StatelessWidget {
                 KiwiContainer().resolve<GetSurveyGroupHistories>(),
           ),
         ),
+        BlocProvider<MetabolicDiseaseCubit>(
+          create: (context) => MetabolicDiseaseCubit(
+            getMetabolicDisease: KiwiContainer().resolve<GetMetabolicDisease>(),
+          ),
+        )
       ],
       child: MaterialApp.router(
         themeMode: ThemeMode.light,
@@ -128,11 +135,15 @@ class YackApp extends StatelessWidget {
             ).rixMGoB,
           ),
           textTheme: const TextTheme(),
-          appBarTheme: const AppBarTheme(
-            iconTheme: IconThemeData(
+          appBarTheme: AppBarTheme(
+            titleTextStyle: const TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ).rixMGoB,
+            iconTheme: const IconThemeData(
               color: Colors.black,
             ),
-            backgroundColor: AppColors.paleGray,
+            backgroundColor: Colors.white,
             elevation: 0,
           ),
           dividerTheme: DividerThemeData(
@@ -151,6 +162,24 @@ class YackApp extends StatelessWidget {
               textStyle: const TextStyle(
                 color: Colors.white,
               ).rixMGoEB,
+            ),
+          ),
+          tabBarTheme: TabBarTheme(
+            labelColor: AppColors.primary,
+            labelStyle: const TextStyle(
+              fontSize: 16,
+            ).rixMGoB,
+            unselectedLabelColor: AppColors.gray,
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 16,
+            ).rixMGoB,
+            indicator: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.primary,
+                  width: 4,
+                ),
+              ),
             ),
           ),
         ),

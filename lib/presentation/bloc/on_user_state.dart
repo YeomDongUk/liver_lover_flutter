@@ -1,3 +1,3 @@
-abstract class IOnUserState {
+abstract class IonUserState {
   void onLogout();
 }

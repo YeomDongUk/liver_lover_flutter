@@ -10,6 +10,8 @@ import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/create/create_hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
+import 'package:yak/presentation/widget/common/common_app_bar.dart';
+import 'package:yak/presentation/widget/common/icon_back_button.dart';
 import 'package:yak/presentation/widget/common/opacity_check_box.dart';
 import 'package:yak/presentation/widget/hospital_visit_schedule/create/hospital_visit_schedule_input_date_field.dart';
 import 'package:yak/presentation/widget/hospital_visit_schedule/create/hospital_visit_schedule_text_field.dart';
@@ -72,9 +74,13 @@ class _CreateHospitalVisitSchedulePageState
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: CommonAppBar(
+          leading: const IconBackButton(),
+          title: const Text('검진/외래 등록'),
+        ),
         body: SafeArea(
           child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
             children: [
               BlocBuilder<CreateHospitalVisitSchedulesCubit,
                   CreateHospitalVisitSchedulesState>(

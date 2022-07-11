@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Theme.of(context).primaryColor,
                   ).rixMGoL,
                 ),
-                const Spacer(),
+                const SizedBox(height: 72),
                 BlocBuilder<LoginCubit, LoginState>(
                   bloc: loginCubit,
                   builder: (context, state) => PinCodeInputWidget(
@@ -103,19 +103,21 @@ class _LoginPageState extends State<LoginPage> {
                     pinCode: state.pinCode.value,
                   ),
                 ),
-                const Spacer(),
-                KeyPadWidget(
-                  onTapNumber: onTapNumber,
-                ),
+                const SizedBox(height: 72),
               ].map(
                 (e) => e is Spacer
                     ? e
                     : Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: e is KeyPadWidget ? 22.5 : 50,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 50,
                         ),
                         child: e,
                       ),
+              ),
+              Expanded(
+                child: KeyPadWidget(
+                  onTapNumber: onTapNumber,
+                ),
               ),
               BlocBuilder<LoginCubit, LoginState>(
                 bloc: loginCubit,

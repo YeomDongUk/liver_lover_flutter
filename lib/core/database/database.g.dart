@@ -2866,6 +2866,7 @@ class HospitalVisitScheduleModel extends DataClass
 
   /// 30분 후 알림
   final bool afterPush;
+  final HospitalVisitScheduleType type;
   HospitalVisitScheduleModel(
       {required this.userId,
       required this.id,
@@ -2878,7 +2879,8 @@ class HospitalVisitScheduleModel extends DataClass
       this.visitedAt,
       required this.push,
       required this.beforePush,
-      required this.afterPush});
+      required this.afterPush,
+      required this.type});
   factory HospitalVisitScheduleModel.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -2907,6 +2909,8 @@ class HospitalVisitScheduleModel extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}before_push'])!,
       afterPush: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}after_push'])!,
+      type: $HospitalVisitSchedulesTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
     );
   }
   @override
@@ -2926,6 +2930,10 @@ class HospitalVisitScheduleModel extends DataClass
     map['push'] = Variable<bool>(push);
     map['before_push'] = Variable<bool>(beforePush);
     map['after_push'] = Variable<bool>(afterPush);
+    {
+      final converter = $HospitalVisitSchedulesTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type)!);
+    }
     return map;
   }
 
@@ -2945,6 +2953,7 @@ class HospitalVisitScheduleModel extends DataClass
       push: Value(push),
       beforePush: Value(beforePush),
       afterPush: Value(afterPush),
+      type: Value(type),
     );
   }
 
@@ -2964,6 +2973,7 @@ class HospitalVisitScheduleModel extends DataClass
       push: serializer.fromJson<bool>(json['push']),
       beforePush: serializer.fromJson<bool>(json['beforePush']),
       afterPush: serializer.fromJson<bool>(json['afterPush']),
+      type: serializer.fromJson<HospitalVisitScheduleType>(json['type']),
     );
   }
   @override
@@ -2982,6 +2992,7 @@ class HospitalVisitScheduleModel extends DataClass
       'push': serializer.toJson<bool>(push),
       'beforePush': serializer.toJson<bool>(beforePush),
       'afterPush': serializer.toJson<bool>(afterPush),
+      'type': serializer.toJson<HospitalVisitScheduleType>(type),
     };
   }
 
@@ -2997,7 +3008,8 @@ class HospitalVisitScheduleModel extends DataClass
           DateTime? visitedAt,
           bool? push,
           bool? beforePush,
-          bool? afterPush}) =>
+          bool? afterPush,
+          HospitalVisitScheduleType? type}) =>
       HospitalVisitScheduleModel(
         userId: userId ?? this.userId,
         id: id ?? this.id,
@@ -3011,6 +3023,7 @@ class HospitalVisitScheduleModel extends DataClass
         push: push ?? this.push,
         beforePush: beforePush ?? this.beforePush,
         afterPush: afterPush ?? this.afterPush,
+        type: type ?? this.type,
       );
   @override
   String toString() {
@@ -3026,7 +3039,8 @@ class HospitalVisitScheduleModel extends DataClass
           ..write('visitedAt: $visitedAt, ')
           ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
-          ..write('afterPush: $afterPush')
+          ..write('afterPush: $afterPush, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
@@ -3044,7 +3058,8 @@ class HospitalVisitScheduleModel extends DataClass
       visitedAt,
       push,
       beforePush,
-      afterPush);
+      afterPush,
+      type);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3060,7 +3075,8 @@ class HospitalVisitScheduleModel extends DataClass
           other.visitedAt == this.visitedAt &&
           other.push == this.push &&
           other.beforePush == this.beforePush &&
-          other.afterPush == this.afterPush);
+          other.afterPush == this.afterPush &&
+          other.type == this.type);
 }
 
 class HospitalVisitSchedulesCompanion
@@ -3077,6 +3093,7 @@ class HospitalVisitSchedulesCompanion
   final Value<bool> push;
   final Value<bool> beforePush;
   final Value<bool> afterPush;
+  final Value<HospitalVisitScheduleType> type;
   const HospitalVisitSchedulesCompanion({
     this.userId = const Value.absent(),
     this.id = const Value.absent(),
@@ -3090,6 +3107,7 @@ class HospitalVisitSchedulesCompanion
     this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
+    this.type = const Value.absent(),
   });
   HospitalVisitSchedulesCompanion.insert({
     required String userId,
@@ -3104,11 +3122,13 @@ class HospitalVisitSchedulesCompanion
     this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
+    required HospitalVisitScheduleType type,
   })  : userId = Value(userId),
         hospitalName = Value(hospitalName),
         medicalSubject = Value(medicalSubject),
         doctorName = Value(doctorName),
-        reservedAt = Value(reservedAt);
+        reservedAt = Value(reservedAt),
+        type = Value(type);
   static Insertable<HospitalVisitScheduleModel> custom({
     Expression<String>? userId,
     Expression<String>? id,
@@ -3122,6 +3142,7 @@ class HospitalVisitSchedulesCompanion
     Expression<bool>? push,
     Expression<bool>? beforePush,
     Expression<bool>? afterPush,
+    Expression<HospitalVisitScheduleType>? type,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
@@ -3136,6 +3157,7 @@ class HospitalVisitSchedulesCompanion
       if (push != null) 'push': push,
       if (beforePush != null) 'before_push': beforePush,
       if (afterPush != null) 'after_push': afterPush,
+      if (type != null) 'type': type,
     });
   }
 
@@ -3151,7 +3173,8 @@ class HospitalVisitSchedulesCompanion
       Value<DateTime?>? visitedAt,
       Value<bool>? push,
       Value<bool>? beforePush,
-      Value<bool>? afterPush}) {
+      Value<bool>? afterPush,
+      Value<HospitalVisitScheduleType>? type}) {
     return HospitalVisitSchedulesCompanion(
       userId: userId ?? this.userId,
       id: id ?? this.id,
@@ -3165,6 +3188,7 @@ class HospitalVisitSchedulesCompanion
       push: push ?? this.push,
       beforePush: beforePush ?? this.beforePush,
       afterPush: afterPush ?? this.afterPush,
+      type: type ?? this.type,
     );
   }
 
@@ -3207,6 +3231,10 @@ class HospitalVisitSchedulesCompanion
     if (afterPush.present) {
       map['after_push'] = Variable<bool>(afterPush.value);
     }
+    if (type.present) {
+      final converter = $HospitalVisitSchedulesTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
+    }
     return map;
   }
 
@@ -3224,7 +3252,8 @@ class HospitalVisitSchedulesCompanion
           ..write('visitedAt: $visitedAt, ')
           ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
-          ..write('afterPush: $afterPush')
+          ..write('afterPush: $afterPush, ')
+          ..write('type: $type')
           ..write(')'))
         .toString();
   }
@@ -3319,6 +3348,13 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (after_push IN (0, 1))',
       defaultValue: const Constant(false));
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumnWithTypeConverter<HospitalVisitScheduleType, int?>
+      type = GeneratedColumn<int?>('type', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<HospitalVisitScheduleType>(
+              $HospitalVisitSchedulesTable.$converter0);
   @override
   List<GeneratedColumn> get $columns => [
         userId,
@@ -3332,7 +3368,8 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
         visitedAt,
         push,
         beforePush,
-        afterPush
+        afterPush,
+        type
       ];
   @override
   String get aliasedName => _alias ?? 'hospital_visit_schedules';
@@ -3411,6 +3448,7 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
       context.handle(_afterPushMeta,
           afterPush.isAcceptableOrUnknown(data['after_push']!, _afterPushMeta));
     }
+    context.handle(_typeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3418,7 +3456,7 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
-        {userId, visitedAt},
+        {userId, reservedAt},
       ];
   @override
   HospitalVisitScheduleModel map(Map<String, dynamic> data,
@@ -3431,6 +3469,10 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
   $HospitalVisitSchedulesTable createAlias(String alias) {
     return $HospitalVisitSchedulesTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<HospitalVisitScheduleType, int> $converter0 =
+      const EnumIndexConverter<HospitalVisitScheduleType>(
+          HospitalVisitScheduleType.values);
 }
 
 class BloodGlucoseHistoryModel extends DataClass
@@ -5532,6 +5574,726 @@ class $SF12SurveyAnswersTable extends SF12SurveyAnswers
   }
 }
 
+class MetabolicDiseaseModel extends DataClass
+    implements Insertable<MetabolicDiseaseModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+
+  /// A형 간염 여부
+  final bool? hav;
+
+  /// A형 간염 항체 보유 확인일
+  final DateTime? antiHavConfirmedAt;
+
+  /// A형 간염 예방 접종 완료 확인일
+  final DateTime? vaccinConfirmedAt;
+
+  /// B형 간염 여부
+  final bool? hbv;
+
+  /// B형 간염확인일
+  final DateTime? hbvConfirmedAt;
+
+  /// B형 간염 바이러스 비활동성 보유상태 확인일
+  final DateTime? hbvInactivityConfirmedAt;
+
+  /// 만성 B형 간염 확인일
+  final DateTime? chronicHbvConfirmedAt;
+
+  /// 간경병증 확인일
+  final DateTime? cirrhosisConfirmedAt;
+
+  /// C형 간염 여부
+  final bool? hcv;
+
+  ///  지방간 여부
+  final bool? fattyRiver;
+  MetabolicDiseaseModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      this.hav,
+      this.antiHavConfirmedAt,
+      this.vaccinConfirmedAt,
+      this.hbv,
+      this.hbvConfirmedAt,
+      this.hbvInactivityConfirmedAt,
+      this.chronicHbvConfirmedAt,
+      this.cirrhosisConfirmedAt,
+      this.hcv,
+      this.fattyRiver});
+  factory MetabolicDiseaseModel.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return MetabolicDiseaseModel(
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      hav: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hav']),
+      antiHavConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
+          data['${effectivePrefix}anti_hav_confirmed_at']),
+      vaccinConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
+          data['${effectivePrefix}vaccin_confirmed_at']),
+      hbv: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hbv']),
+      hbvConfirmedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hbv_confirmed_at']),
+      hbvInactivityConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
+          data['${effectivePrefix}hbv_inactivity_confirmed_at']),
+      chronicHbvConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
+          data['${effectivePrefix}chronic_hbv_confirmed_at']),
+      cirrhosisConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
+          data['${effectivePrefix}cirrhosis_confirmed_at']),
+      hcv: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hcv']),
+      fattyRiver: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fatty_river']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || hav != null) {
+      map['hav'] = Variable<bool?>(hav);
+    }
+    if (!nullToAbsent || antiHavConfirmedAt != null) {
+      map['anti_hav_confirmed_at'] = Variable<DateTime?>(antiHavConfirmedAt);
+    }
+    if (!nullToAbsent || vaccinConfirmedAt != null) {
+      map['vaccin_confirmed_at'] = Variable<DateTime?>(vaccinConfirmedAt);
+    }
+    if (!nullToAbsent || hbv != null) {
+      map['hbv'] = Variable<bool?>(hbv);
+    }
+    if (!nullToAbsent || hbvConfirmedAt != null) {
+      map['hbv_confirmed_at'] = Variable<DateTime?>(hbvConfirmedAt);
+    }
+    if (!nullToAbsent || hbvInactivityConfirmedAt != null) {
+      map['hbv_inactivity_confirmed_at'] =
+          Variable<DateTime?>(hbvInactivityConfirmedAt);
+    }
+    if (!nullToAbsent || chronicHbvConfirmedAt != null) {
+      map['chronic_hbv_confirmed_at'] =
+          Variable<DateTime?>(chronicHbvConfirmedAt);
+    }
+    if (!nullToAbsent || cirrhosisConfirmedAt != null) {
+      map['cirrhosis_confirmed_at'] = Variable<DateTime?>(cirrhosisConfirmedAt);
+    }
+    if (!nullToAbsent || hcv != null) {
+      map['hcv'] = Variable<bool?>(hcv);
+    }
+    if (!nullToAbsent || fattyRiver != null) {
+      map['fatty_river'] = Variable<bool?>(fattyRiver);
+    }
+    return map;
+  }
+
+  MetabolicDiseasesCompanion toCompanion(bool nullToAbsent) {
+    return MetabolicDiseasesCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      hav: hav == null && nullToAbsent ? const Value.absent() : Value(hav),
+      antiHavConfirmedAt: antiHavConfirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(antiHavConfirmedAt),
+      vaccinConfirmedAt: vaccinConfirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(vaccinConfirmedAt),
+      hbv: hbv == null && nullToAbsent ? const Value.absent() : Value(hbv),
+      hbvConfirmedAt: hbvConfirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hbvConfirmedAt),
+      hbvInactivityConfirmedAt: hbvInactivityConfirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hbvInactivityConfirmedAt),
+      chronicHbvConfirmedAt: chronicHbvConfirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chronicHbvConfirmedAt),
+      cirrhosisConfirmedAt: cirrhosisConfirmedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cirrhosisConfirmedAt),
+      hcv: hcv == null && nullToAbsent ? const Value.absent() : Value(hcv),
+      fattyRiver: fattyRiver == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fattyRiver),
+    );
+  }
+
+  factory MetabolicDiseaseModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MetabolicDiseaseModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      hav: serializer.fromJson<bool?>(json['hav']),
+      antiHavConfirmedAt:
+          serializer.fromJson<DateTime?>(json['antiHavConfirmedAt']),
+      vaccinConfirmedAt:
+          serializer.fromJson<DateTime?>(json['vaccinConfirmedAt']),
+      hbv: serializer.fromJson<bool?>(json['hbv']),
+      hbvConfirmedAt: serializer.fromJson<DateTime?>(json['hbvConfirmedAt']),
+      hbvInactivityConfirmedAt:
+          serializer.fromJson<DateTime?>(json['hbvInactivityConfirmedAt']),
+      chronicHbvConfirmedAt:
+          serializer.fromJson<DateTime?>(json['chronicHbvConfirmedAt']),
+      cirrhosisConfirmedAt:
+          serializer.fromJson<DateTime?>(json['cirrhosisConfirmedAt']),
+      hcv: serializer.fromJson<bool?>(json['hcv']),
+      fattyRiver: serializer.fromJson<bool?>(json['fattyRiver']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'hav': serializer.toJson<bool?>(hav),
+      'antiHavConfirmedAt': serializer.toJson<DateTime?>(antiHavConfirmedAt),
+      'vaccinConfirmedAt': serializer.toJson<DateTime?>(vaccinConfirmedAt),
+      'hbv': serializer.toJson<bool?>(hbv),
+      'hbvConfirmedAt': serializer.toJson<DateTime?>(hbvConfirmedAt),
+      'hbvInactivityConfirmedAt':
+          serializer.toJson<DateTime?>(hbvInactivityConfirmedAt),
+      'chronicHbvConfirmedAt':
+          serializer.toJson<DateTime?>(chronicHbvConfirmedAt),
+      'cirrhosisConfirmedAt':
+          serializer.toJson<DateTime?>(cirrhosisConfirmedAt),
+      'hcv': serializer.toJson<bool?>(hcv),
+      'fattyRiver': serializer.toJson<bool?>(fattyRiver),
+    };
+  }
+
+  MetabolicDiseaseModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          bool? hav,
+          DateTime? antiHavConfirmedAt,
+          DateTime? vaccinConfirmedAt,
+          bool? hbv,
+          DateTime? hbvConfirmedAt,
+          DateTime? hbvInactivityConfirmedAt,
+          DateTime? chronicHbvConfirmedAt,
+          DateTime? cirrhosisConfirmedAt,
+          bool? hcv,
+          bool? fattyRiver}) =>
+      MetabolicDiseaseModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        hav: hav ?? this.hav,
+        antiHavConfirmedAt: antiHavConfirmedAt ?? this.antiHavConfirmedAt,
+        vaccinConfirmedAt: vaccinConfirmedAt ?? this.vaccinConfirmedAt,
+        hbv: hbv ?? this.hbv,
+        hbvConfirmedAt: hbvConfirmedAt ?? this.hbvConfirmedAt,
+        hbvInactivityConfirmedAt:
+            hbvInactivityConfirmedAt ?? this.hbvInactivityConfirmedAt,
+        chronicHbvConfirmedAt:
+            chronicHbvConfirmedAt ?? this.chronicHbvConfirmedAt,
+        cirrhosisConfirmedAt: cirrhosisConfirmedAt ?? this.cirrhosisConfirmedAt,
+        hcv: hcv ?? this.hcv,
+        fattyRiver: fattyRiver ?? this.fattyRiver,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('MetabolicDiseaseModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('hav: $hav, ')
+          ..write('antiHavConfirmedAt: $antiHavConfirmedAt, ')
+          ..write('vaccinConfirmedAt: $vaccinConfirmedAt, ')
+          ..write('hbv: $hbv, ')
+          ..write('hbvConfirmedAt: $hbvConfirmedAt, ')
+          ..write('hbvInactivityConfirmedAt: $hbvInactivityConfirmedAt, ')
+          ..write('chronicHbvConfirmedAt: $chronicHbvConfirmedAt, ')
+          ..write('cirrhosisConfirmedAt: $cirrhosisConfirmedAt, ')
+          ..write('hcv: $hcv, ')
+          ..write('fattyRiver: $fattyRiver')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      userId,
+      id,
+      createdAt,
+      updatedAt,
+      hav,
+      antiHavConfirmedAt,
+      vaccinConfirmedAt,
+      hbv,
+      hbvConfirmedAt,
+      hbvInactivityConfirmedAt,
+      chronicHbvConfirmedAt,
+      cirrhosisConfirmedAt,
+      hcv,
+      fattyRiver);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MetabolicDiseaseModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.hav == this.hav &&
+          other.antiHavConfirmedAt == this.antiHavConfirmedAt &&
+          other.vaccinConfirmedAt == this.vaccinConfirmedAt &&
+          other.hbv == this.hbv &&
+          other.hbvConfirmedAt == this.hbvConfirmedAt &&
+          other.hbvInactivityConfirmedAt == this.hbvInactivityConfirmedAt &&
+          other.chronicHbvConfirmedAt == this.chronicHbvConfirmedAt &&
+          other.cirrhosisConfirmedAt == this.cirrhosisConfirmedAt &&
+          other.hcv == this.hcv &&
+          other.fattyRiver == this.fattyRiver);
+}
+
+class MetabolicDiseasesCompanion
+    extends UpdateCompanion<MetabolicDiseaseModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<bool?> hav;
+  final Value<DateTime?> antiHavConfirmedAt;
+  final Value<DateTime?> vaccinConfirmedAt;
+  final Value<bool?> hbv;
+  final Value<DateTime?> hbvConfirmedAt;
+  final Value<DateTime?> hbvInactivityConfirmedAt;
+  final Value<DateTime?> chronicHbvConfirmedAt;
+  final Value<DateTime?> cirrhosisConfirmedAt;
+  final Value<bool?> hcv;
+  final Value<bool?> fattyRiver;
+  const MetabolicDiseasesCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.hav = const Value.absent(),
+    this.antiHavConfirmedAt = const Value.absent(),
+    this.vaccinConfirmedAt = const Value.absent(),
+    this.hbv = const Value.absent(),
+    this.hbvConfirmedAt = const Value.absent(),
+    this.hbvInactivityConfirmedAt = const Value.absent(),
+    this.chronicHbvConfirmedAt = const Value.absent(),
+    this.cirrhosisConfirmedAt = const Value.absent(),
+    this.hcv = const Value.absent(),
+    this.fattyRiver = const Value.absent(),
+  });
+  MetabolicDiseasesCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.hav = const Value.absent(),
+    this.antiHavConfirmedAt = const Value.absent(),
+    this.vaccinConfirmedAt = const Value.absent(),
+    this.hbv = const Value.absent(),
+    this.hbvConfirmedAt = const Value.absent(),
+    this.hbvInactivityConfirmedAt = const Value.absent(),
+    this.chronicHbvConfirmedAt = const Value.absent(),
+    this.cirrhosisConfirmedAt = const Value.absent(),
+    this.hcv = const Value.absent(),
+    this.fattyRiver = const Value.absent(),
+  }) : userId = Value(userId);
+  static Insertable<MetabolicDiseaseModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<bool?>? hav,
+    Expression<DateTime?>? antiHavConfirmedAt,
+    Expression<DateTime?>? vaccinConfirmedAt,
+    Expression<bool?>? hbv,
+    Expression<DateTime?>? hbvConfirmedAt,
+    Expression<DateTime?>? hbvInactivityConfirmedAt,
+    Expression<DateTime?>? chronicHbvConfirmedAt,
+    Expression<DateTime?>? cirrhosisConfirmedAt,
+    Expression<bool?>? hcv,
+    Expression<bool?>? fattyRiver,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (hav != null) 'hav': hav,
+      if (antiHavConfirmedAt != null)
+        'anti_hav_confirmed_at': antiHavConfirmedAt,
+      if (vaccinConfirmedAt != null) 'vaccin_confirmed_at': vaccinConfirmedAt,
+      if (hbv != null) 'hbv': hbv,
+      if (hbvConfirmedAt != null) 'hbv_confirmed_at': hbvConfirmedAt,
+      if (hbvInactivityConfirmedAt != null)
+        'hbv_inactivity_confirmed_at': hbvInactivityConfirmedAt,
+      if (chronicHbvConfirmedAt != null)
+        'chronic_hbv_confirmed_at': chronicHbvConfirmedAt,
+      if (cirrhosisConfirmedAt != null)
+        'cirrhosis_confirmed_at': cirrhosisConfirmedAt,
+      if (hcv != null) 'hcv': hcv,
+      if (fattyRiver != null) 'fatty_river': fattyRiver,
+    });
+  }
+
+  MetabolicDiseasesCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<bool?>? hav,
+      Value<DateTime?>? antiHavConfirmedAt,
+      Value<DateTime?>? vaccinConfirmedAt,
+      Value<bool?>? hbv,
+      Value<DateTime?>? hbvConfirmedAt,
+      Value<DateTime?>? hbvInactivityConfirmedAt,
+      Value<DateTime?>? chronicHbvConfirmedAt,
+      Value<DateTime?>? cirrhosisConfirmedAt,
+      Value<bool?>? hcv,
+      Value<bool?>? fattyRiver}) {
+    return MetabolicDiseasesCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      hav: hav ?? this.hav,
+      antiHavConfirmedAt: antiHavConfirmedAt ?? this.antiHavConfirmedAt,
+      vaccinConfirmedAt: vaccinConfirmedAt ?? this.vaccinConfirmedAt,
+      hbv: hbv ?? this.hbv,
+      hbvConfirmedAt: hbvConfirmedAt ?? this.hbvConfirmedAt,
+      hbvInactivityConfirmedAt:
+          hbvInactivityConfirmedAt ?? this.hbvInactivityConfirmedAt,
+      chronicHbvConfirmedAt:
+          chronicHbvConfirmedAt ?? this.chronicHbvConfirmedAt,
+      cirrhosisConfirmedAt: cirrhosisConfirmedAt ?? this.cirrhosisConfirmedAt,
+      hcv: hcv ?? this.hcv,
+      fattyRiver: fattyRiver ?? this.fattyRiver,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (hav.present) {
+      map['hav'] = Variable<bool?>(hav.value);
+    }
+    if (antiHavConfirmedAt.present) {
+      map['anti_hav_confirmed_at'] =
+          Variable<DateTime?>(antiHavConfirmedAt.value);
+    }
+    if (vaccinConfirmedAt.present) {
+      map['vaccin_confirmed_at'] = Variable<DateTime?>(vaccinConfirmedAt.value);
+    }
+    if (hbv.present) {
+      map['hbv'] = Variable<bool?>(hbv.value);
+    }
+    if (hbvConfirmedAt.present) {
+      map['hbv_confirmed_at'] = Variable<DateTime?>(hbvConfirmedAt.value);
+    }
+    if (hbvInactivityConfirmedAt.present) {
+      map['hbv_inactivity_confirmed_at'] =
+          Variable<DateTime?>(hbvInactivityConfirmedAt.value);
+    }
+    if (chronicHbvConfirmedAt.present) {
+      map['chronic_hbv_confirmed_at'] =
+          Variable<DateTime?>(chronicHbvConfirmedAt.value);
+    }
+    if (cirrhosisConfirmedAt.present) {
+      map['cirrhosis_confirmed_at'] =
+          Variable<DateTime?>(cirrhosisConfirmedAt.value);
+    }
+    if (hcv.present) {
+      map['hcv'] = Variable<bool?>(hcv.value);
+    }
+    if (fattyRiver.present) {
+      map['fatty_river'] = Variable<bool?>(fattyRiver.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MetabolicDiseasesCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('hav: $hav, ')
+          ..write('antiHavConfirmedAt: $antiHavConfirmedAt, ')
+          ..write('vaccinConfirmedAt: $vaccinConfirmedAt, ')
+          ..write('hbv: $hbv, ')
+          ..write('hbvConfirmedAt: $hbvConfirmedAt, ')
+          ..write('hbvInactivityConfirmedAt: $hbvInactivityConfirmedAt, ')
+          ..write('chronicHbvConfirmedAt: $chronicHbvConfirmedAt, ')
+          ..write('cirrhosisConfirmedAt: $cirrhosisConfirmedAt, ')
+          ..write('hcv: $hcv, ')
+          ..write('fattyRiver: $fattyRiver')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MetabolicDiseasesTable extends MetabolicDiseases
+    with TableInfo<$MetabolicDiseasesTable, MetabolicDiseaseModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MetabolicDiseasesTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _havMeta = const VerificationMeta('hav');
+  @override
+  late final GeneratedColumn<bool?> hav = GeneratedColumn<bool?>(
+      'hav', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (hav IN (0, 1))');
+  final VerificationMeta _antiHavConfirmedAtMeta =
+      const VerificationMeta('antiHavConfirmedAt');
+  @override
+  late final GeneratedColumn<DateTime?> antiHavConfirmedAt =
+      GeneratedColumn<DateTime?>('anti_hav_confirmed_at', aliasedName, true,
+          type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _vaccinConfirmedAtMeta =
+      const VerificationMeta('vaccinConfirmedAt');
+  @override
+  late final GeneratedColumn<DateTime?> vaccinConfirmedAt =
+      GeneratedColumn<DateTime?>('vaccin_confirmed_at', aliasedName, true,
+          type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _hbvMeta = const VerificationMeta('hbv');
+  @override
+  late final GeneratedColumn<bool?> hbv = GeneratedColumn<bool?>(
+      'hbv', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (hbv IN (0, 1))');
+  final VerificationMeta _hbvConfirmedAtMeta =
+      const VerificationMeta('hbvConfirmedAt');
+  @override
+  late final GeneratedColumn<DateTime?> hbvConfirmedAt =
+      GeneratedColumn<DateTime?>('hbv_confirmed_at', aliasedName, true,
+          type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _hbvInactivityConfirmedAtMeta =
+      const VerificationMeta('hbvInactivityConfirmedAt');
+  @override
+  late final GeneratedColumn<DateTime?> hbvInactivityConfirmedAt =
+      GeneratedColumn<DateTime?>(
+          'hbv_inactivity_confirmed_at', aliasedName, true,
+          type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _chronicHbvConfirmedAtMeta =
+      const VerificationMeta('chronicHbvConfirmedAt');
+  @override
+  late final GeneratedColumn<DateTime?> chronicHbvConfirmedAt =
+      GeneratedColumn<DateTime?>('chronic_hbv_confirmed_at', aliasedName, true,
+          type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _cirrhosisConfirmedAtMeta =
+      const VerificationMeta('cirrhosisConfirmedAt');
+  @override
+  late final GeneratedColumn<DateTime?> cirrhosisConfirmedAt =
+      GeneratedColumn<DateTime?>('cirrhosis_confirmed_at', aliasedName, true,
+          type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _hcvMeta = const VerificationMeta('hcv');
+  @override
+  late final GeneratedColumn<bool?> hcv = GeneratedColumn<bool?>(
+      'hcv', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (hcv IN (0, 1))');
+  final VerificationMeta _fattyRiverMeta = const VerificationMeta('fattyRiver');
+  @override
+  late final GeneratedColumn<bool?> fattyRiver = GeneratedColumn<bool?>(
+      'fatty_river', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (fatty_river IN (0, 1))');
+  @override
+  List<GeneratedColumn> get $columns => [
+        userId,
+        id,
+        createdAt,
+        updatedAt,
+        hav,
+        antiHavConfirmedAt,
+        vaccinConfirmedAt,
+        hbv,
+        hbvConfirmedAt,
+        hbvInactivityConfirmedAt,
+        chronicHbvConfirmedAt,
+        cirrhosisConfirmedAt,
+        hcv,
+        fattyRiver
+      ];
+  @override
+  String get aliasedName => _alias ?? 'metabolic_diseases';
+  @override
+  String get actualTableName => 'metabolic_diseases';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<MetabolicDiseaseModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('hav')) {
+      context.handle(
+          _havMeta, hav.isAcceptableOrUnknown(data['hav']!, _havMeta));
+    }
+    if (data.containsKey('anti_hav_confirmed_at')) {
+      context.handle(
+          _antiHavConfirmedAtMeta,
+          antiHavConfirmedAt.isAcceptableOrUnknown(
+              data['anti_hav_confirmed_at']!, _antiHavConfirmedAtMeta));
+    }
+    if (data.containsKey('vaccin_confirmed_at')) {
+      context.handle(
+          _vaccinConfirmedAtMeta,
+          vaccinConfirmedAt.isAcceptableOrUnknown(
+              data['vaccin_confirmed_at']!, _vaccinConfirmedAtMeta));
+    }
+    if (data.containsKey('hbv')) {
+      context.handle(
+          _hbvMeta, hbv.isAcceptableOrUnknown(data['hbv']!, _hbvMeta));
+    }
+    if (data.containsKey('hbv_confirmed_at')) {
+      context.handle(
+          _hbvConfirmedAtMeta,
+          hbvConfirmedAt.isAcceptableOrUnknown(
+              data['hbv_confirmed_at']!, _hbvConfirmedAtMeta));
+    }
+    if (data.containsKey('hbv_inactivity_confirmed_at')) {
+      context.handle(
+          _hbvInactivityConfirmedAtMeta,
+          hbvInactivityConfirmedAt.isAcceptableOrUnknown(
+              data['hbv_inactivity_confirmed_at']!,
+              _hbvInactivityConfirmedAtMeta));
+    }
+    if (data.containsKey('chronic_hbv_confirmed_at')) {
+      context.handle(
+          _chronicHbvConfirmedAtMeta,
+          chronicHbvConfirmedAt.isAcceptableOrUnknown(
+              data['chronic_hbv_confirmed_at']!, _chronicHbvConfirmedAtMeta));
+    }
+    if (data.containsKey('cirrhosis_confirmed_at')) {
+      context.handle(
+          _cirrhosisConfirmedAtMeta,
+          cirrhosisConfirmedAt.isAcceptableOrUnknown(
+              data['cirrhosis_confirmed_at']!, _cirrhosisConfirmedAtMeta));
+    }
+    if (data.containsKey('hcv')) {
+      context.handle(
+          _hcvMeta, hcv.isAcceptableOrUnknown(data['hcv']!, _hcvMeta));
+    }
+    if (data.containsKey('fatty_river')) {
+      context.handle(
+          _fattyRiverMeta,
+          fattyRiver.isAcceptableOrUnknown(
+              data['fatty_river']!, _fattyRiverMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId},
+      ];
+  @override
+  MetabolicDiseaseModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return MetabolicDiseaseModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $MetabolicDiseasesTable createAlias(String alias) {
+    return $MetabolicDiseasesTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $UsersTable users = $UsersTable(this);
@@ -5557,6 +6319,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MedicationAdherenceSurveyHistoriesTable(this);
   late final $SF12SurveyAnswersTable sF12SurveyAnswers =
       $SF12SurveyAnswersTable(this);
+  late final $MetabolicDiseasesTable metabolicDiseases =
+      $MetabolicDiseasesTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -5573,6 +6337,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         pointHistories,
         sF12SurveyHistories,
         medicationAdherenceSurveyHistories,
-        sF12SurveyAnswers
+        sF12SurveyAnswers,
+        metabolicDiseases
       ];
 }

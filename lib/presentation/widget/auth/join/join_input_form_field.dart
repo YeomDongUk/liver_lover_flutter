@@ -36,7 +36,7 @@ class JoinInputFormField extends StatelessWidget {
           color: Colors.black,
         ).rixMGoB,
         decoration: const InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           border: InputBorder.none,
         ),
       );

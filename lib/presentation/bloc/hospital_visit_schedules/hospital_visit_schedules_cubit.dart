@@ -12,7 +12,7 @@ import 'package:yak/presentation/bloc/on_user_state.dart';
 part 'hospital_visit_schedules_state.dart';
 
 class HospitalVisitSchedulesCubit extends Cubit<HospitalVisitSchedulesState>
-    implements IOnUserState {
+    implements IonUserState {
   HospitalVisitSchedulesCubit({
     required this.updateHospitalVisitSchedule,
     required this.getHospitalVisitSchedule,

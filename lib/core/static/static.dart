@@ -92,6 +92,7 @@ final sf12Questions = [
 ];
 
 final reservedAtDateFormat = DateFormat('yyyy.MM.dd HH:mm');
+final yyyyMMddFormat = DateFormat('yyyy.MM.dd');
 
 const medicationAdherenceSurveyQuestions = [
   MedicationAdherenceSurveyQuestion(

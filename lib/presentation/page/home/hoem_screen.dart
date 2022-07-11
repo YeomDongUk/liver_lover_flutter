@@ -1,13 +1,15 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_container.dart';
-import 'package:yak/presentation/widget/home/home_screen/recent_blood_check_view.dart';
+import 'package:yak/presentation/widget/home/home_screen/recent_test_result_view.dart';
 import 'package:yak/presentation/widget/home/home_screen/survey_check_view.dart';
 import 'package:yak/presentation/widget/home/home_screen/today_diary_page_view.dart';
 import 'package:yak/presentation/widget/home/home_screen/today_medication_schedule_page_view.dart';
@@ -28,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.paleGray,
+        elevation: 0,
         leadingWidth: 100,
         leading: Container(
           padding: const EdgeInsets.only(left: 16),
@@ -77,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         actions: [
           IconButton(
-            onPressed: () => print("?"),
+            onPressed: () => context.beamToNamed(Routes.my),
             icon: SvgPicture.asset('assets/svg/my_info.svg'),
           ),
         ],
@@ -151,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen>
           const SizedBox(height: 24),
           const SurveyCheckView(),
           const SizedBox(height: 24),
-          const RecentBloodCheckView(),
+          const RecentTestResultView(),
           const SizedBox(height: 24),
           const TodayDiaryPageView(),
         ],

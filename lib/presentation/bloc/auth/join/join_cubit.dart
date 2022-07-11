@@ -31,7 +31,7 @@ class JoinCubit extends Cubit<JoinState> {
         state.pinCode.value == state.verifingPinCode.value) {
       final companion = UsersCompanion.insert(
         name: state.name.value,
-        phone: state.phone.value.replaceAll('-', ''),
+        phone: state.phone.value,
         birthYear: state.birthYear.value!,
         sex: state.sex.value,
         height: state.height.value!,

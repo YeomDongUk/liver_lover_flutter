@@ -13,6 +13,7 @@ import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visi
 import 'package:yak/data/datasources/local/medication_information/medication_information_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_notification/medication_notification_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
+import 'package:yak/data/datasources/local/metabolic_disease/metabolic_disease_local_data_source.dart';
 import 'package:yak/data/datasources/local/pill/pill_local_data_source.dart';
 import 'package:yak/data/datasources/local/prescription/prescription_local_data_source.dart';
 import 'package:yak/data/datasources/local/sf12_survey/sf_12_survey_answer_local_data_source.dart';
@@ -21,12 +22,14 @@ import 'package:yak/data/datasources/local/user/user_local_data_source.dart';
 import 'package:yak/data/datasources/remote/pill/pill_remote_data_source.dart';
 import 'package:yak/data/repositories/hospital_visit_schedule/hospital_visit_schedule_repository_impl.dart';
 import 'package:yak/data/repositories/medication_schedule/medication_schedule_repository_impl.dart';
+import 'package:yak/data/repositories/metabolic_disease/metabolic_disease_repository_impl.dart';
 import 'package:yak/data/repositories/pill/pill_repository_impl.dart';
 import 'package:yak/data/repositories/survey/sf_12_survey_answer/sf_12_survey_answer_repository.dart';
 import 'package:yak/data/repositories/survey/survey_group_repository_impl.dart';
 import 'package:yak/data/repositories/user/user_repository_impl.dart';
 import 'package:yak/domain/repositories/hospital_visit_schedule/hospital_visit_schedule_repository.dart';
 import 'package:yak/domain/repositories/medication_schedule/medication_schedule_repository.dart';
+import 'package:yak/domain/repositories/metabolic_disease/metabolic_disease_repository.dart';
 import 'package:yak/domain/repositories/pill/pill_repository.dart';
 import 'package:yak/domain/repositories/survey/sf_12_survey_answer/sf_12_survey_answer_repository.dart';
 import 'package:yak/domain/repositories/survey/survey_group_repository.dart';
@@ -36,6 +39,8 @@ import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_s
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedules.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/medication_schedule/get_today_medication_schedules.dart';
+import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
+import 'package:yak/domain/usecases/metabolic_disease/upsert_metabolic_disease.dart';
 import 'package:yak/domain/usecases/pill/create_pills.dart';
 import 'package:yak/domain/usecases/pill/search_pills.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
@@ -45,6 +50,8 @@ import 'package:yak/domain/usecases/survey/sf_12_survey_answer/get_sf_12_survey_
 
 import 'package:yak/domain/usecases/user/create_user.dart';
 import 'package:yak/domain/usecases/user/get_user.dart';
+import 'package:yak/domain/usecases/user/update_pin_code.dart';
+import 'package:yak/domain/usecases/user/update_user.dart';
 
 // ignore: unused_element
 LazyDatabase _openConnection() => LazyDatabase(() async {
@@ -61,8 +68,8 @@ class Di {
   static Future<void> setup(bool isProduction) async {
     KiwiContainer()
       ..registerInstance<LazyDatabase>(
-        _openConnection(),
-        // LazyDatabase(() => NativeDatabase.memory(logStatements: true)),
+        // _openConnection(),
+        LazyDatabase(() => NativeDatabase.memory(logStatements: true)),
       )
       ..registerSingleton<AppDatabase>(
         (c) => AppDatabase(
@@ -82,7 +89,8 @@ class Di {
       )
       ..registerSingleton<UserRepository>(
         (c) => UserRepositoryImpl(
-          c<UserLocalDataSource>(),
+          userId: c<UserId>(),
+          userLocalDataSource: c<UserLocalDataSource>(),
         ),
       )
       ..registerSingleton<GetUser>(
@@ -93,6 +101,14 @@ class Di {
       ..registerSingleton<CreateUser>(
         (c) => CreateUser(
           c<UserRepository>(),
+        ),
+      )
+      ..registerSingleton<UpdateUser>(
+        (c) => UpdateUser(c<UserRepository>()),
+      )
+      ..registerSingleton<UpdatePinCode>(
+        (c) => UpdatePinCode(
+          userRepository: c<UserRepository>(),
         ),
       )
       ..registerSingleton<MedicationNotificationLocalDataSource>(
@@ -221,6 +237,25 @@ class Di {
       ..registerSingleton<GetSF12SurveyAnswers>(
         (c) => GetSF12SurveyAnswers(
           sf12SurveyAnswerRepository: c<SF12SurveyAnswerRepository>(),
+        ),
+      )
+      ..registerSingleton<MetabolicDiseaseLocalDataSource>(
+        (c) => MetabolicDiseaseLocalDataSourceImpl(c<AppDatabase>()),
+      )
+      ..registerSingleton<MetabolicDiseaseRepository>(
+        (c) => MetabolicDiseaseRepositoryImpl(
+          userId: c<UserId>(),
+          metabolicDiseaseLocalDataSource: c<MetabolicDiseaseLocalDataSource>(),
+        ),
+      )
+      ..registerSingleton<GetMetabolicDisease>(
+        (c) => GetMetabolicDisease(
+          metabolicDiseaseRepository: c<MetabolicDiseaseRepository>(),
+        ),
+      )
+      ..registerSingleton<UpsertMetabolicDisease>(
+        (c) => UpsertMetabolicDisease(
+          metabolicDiseaseRepository: c<MetabolicDiseaseRepository>(),
         ),
       );
   }

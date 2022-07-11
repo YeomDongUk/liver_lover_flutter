@@ -49,22 +49,58 @@ class _TodayMedicationSchedulePageViewState
             primaryText: '복약일정',
           ),
         ),
-        const SizedBox(height: 10),
         SizedBox(
           height: 108,
           child: BlocBuilder<TodayMedicationSchedulesCubit,
               TodayMedicationSchedulesState>(
             builder: (context, state) {
               if (state.medicationSchedules.isEmpty) {
-                return HomeContainer(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text('등록된 복약 일정이 없습니다.'),
-                      Text('지금 일정을 등록하세요.'),
-                    ],
+                return Center(
+                  child: HomeContainer(
+                    height: 88,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Material(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
+                      child: InkWell(
+                        onTap: () => print(''),
+                        borderRadius: BorderRadius.circular(6),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/svg/pill.svg',
+                                color: AppColors.lightGray,
+                              ),
+                              const SizedBox(width: 24),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '등록된 복약일정이 없습니다.',
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      color: AppColors.magenta,
+                                    ).rixMGoB,
+                                  ),
+                                  const SizedBox(height: 7),
+                                  Text(
+                                    '지금 일정을 등록하세요',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: AppColors.gray,
+                                    ).rixMGoB,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 );
               }

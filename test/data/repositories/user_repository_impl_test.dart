@@ -1,7 +1,7 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/user/user_local_data_source.dart';
 import 'package:yak/data/repositories/user/user_repository_impl.dart';
 import 'package:yak/domain/entities/user/user.dart';
@@ -13,7 +13,10 @@ void main() {
   late MockUserLocalDataSource mockUserLocalDataSource;
   setUp(() {
     mockUserLocalDataSource = MockUserLocalDataSource();
-    userRepositoryImpl = UserRepositoryImpl(mockUserLocalDataSource);
+    userRepositoryImpl = UserRepositoryImpl(
+      userId: UserIdImpl()..value = '12345678asdaf9',
+      userLocalDataSource: mockUserLocalDataSource,
+    );
   });
 
   final userJson = {
