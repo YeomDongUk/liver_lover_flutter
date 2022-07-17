@@ -48,7 +48,7 @@ class SurveyCheckView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '검진/외래 등록 후 설문이 가능합니다.',
+                            '외래/검진 등록 후 설문이 가능합니다.',
                             style: const TextStyle(
                               fontSize: 13,
                               color: AppColors.gray,
@@ -57,7 +57,7 @@ class SurveyCheckView extends StatelessWidget {
                           const SizedBox(height: 6),
                           BlocBuilder<CurrentTimeCubit, DateTime>(
                             builder: (context, _) => Text(
-                              '검진/외래 일정을 등록하세요.',
+                              '외래/검진 일정을 등록하세요.',
                               style: const TextStyle(
                                 fontSize: 13,
                                 color: AppColors.magenta,
@@ -121,9 +121,9 @@ class SurveyCheckView extends StatelessWidget {
                       children: [
                         Text(
                           !group.isBetweenSurveyDateTime
-                              ? '설문은 검진/외래 예약일 3일전 부터 가능합니다.'
+                              ? '설문은 외래/검진 예약일 3일전 부터 가능합니다.'
                               : !group.sf12surveyHistory.done
-                                  ? '검진/외래 일정 전에 설문을 완료해주세요.'
+                                  ? '외래/검진 일정 전에 설문을 완료해주세요.'
                                   : '모든 설문이 완료되었습니다.',
                           style: const TextStyle(
                             fontSize: 13,
@@ -134,10 +134,10 @@ class SurveyCheckView extends StatelessWidget {
                         BlocBuilder<CurrentTimeCubit, DateTime>(
                           builder: (context, _) => Text(
                             !group.isBetweenSurveyDateTime
-                                ? '다음 검진/외래 예약일은 [${DateFormat('yyyy.MM.dd').format(group.reseverdAt)}] 입니다.'
+                                ? '다음 외래/검진 예약일은 [${DateFormat('yyyy.MM.dd').format(group.reseverdAt)}] 입니다.'
                                 : !group.sf12surveyHistory.done
-                                    ? '검진/외래 일정까지 ${DdayParser.parseDday(group.reseverdAt).replaceAll('D-', '')}일 남았습니다.'
-                                    : '검진/외래 시 담당의에게 결과를 제시해 주세요.',
+                                    ? '외래/검진 일정까지 ${DdayParser.parseDday(group.reseverdAt).replaceAll('D-', '')}일 남았습니다.'
+                                    : '외래/검진 시 담당의에게 결과를 제시해 주세요.',
                             style: const TextStyle(
                               fontSize: 13,
                               color: AppColors.magenta,

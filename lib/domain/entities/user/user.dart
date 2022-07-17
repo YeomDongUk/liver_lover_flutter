@@ -10,7 +10,7 @@ class User extends Equatable {
     required this.height,
     required this.weight,
     required this.pinCode,
-    required this.metabolicDisease,
+    required this.point,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -22,7 +22,7 @@ class User extends Equatable {
         height: json['height'] as int,
         weight: json['weight'] as int,
         pinCode: json['pinCode'] as String,
-        metabolicDisease: json['metabolicDisease'] as bool,
+        point: json['point'] as int,
       );
 
   final String id;
@@ -33,7 +33,7 @@ class User extends Equatable {
   final int height;
   final int weight;
   final String pinCode;
-  final bool metabolicDisease;
+  final int point;
 
   User copyWith({
     String? name,
@@ -43,7 +43,7 @@ class User extends Equatable {
     int? height,
     int? weight,
     String? pinCode,
-    bool? metabolicDisease,
+    int? point,
   }) =>
       User(
         id: id,
@@ -54,7 +54,7 @@ class User extends Equatable {
         height: height ?? this.height,
         weight: weight ?? this.weight,
         pinCode: pinCode ?? this.pinCode,
-        metabolicDisease: metabolicDisease ?? this.metabolicDisease,
+        point: point ?? this.point,
       );
 
   static const empty = User(
@@ -66,7 +66,7 @@ class User extends Equatable {
     height: 0,
     weight: 0,
     pinCode: '000000',
-    metabolicDisease: false,
+    point: 0,
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -78,7 +78,7 @@ class User extends Equatable {
         'height': height,
         'weight': weight,
         'pinCode': pinCode,
-        'metabolicDisease': metabolicDisease,
+        'point': point,
       };
 
   @override
@@ -91,6 +91,6 @@ class User extends Equatable {
         height,
         weight,
         pinCode,
-        metabolicDisease,
+        point,
       ];
 }

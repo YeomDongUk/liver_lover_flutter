@@ -27,7 +27,7 @@ void main() {
     height: 173,
     weight: 64,
     pinCode: '000000',
-    metabolicDisease: false,
+    point: 0,
   );
 
   test('get User', () async {

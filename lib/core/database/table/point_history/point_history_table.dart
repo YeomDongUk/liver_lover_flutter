@@ -2,11 +2,10 @@ import 'package:drift/drift.dart';
 import 'package:yak/core/database/table/common_table.dart';
 
 enum PointHistoryEvent {
-  survey,
-  medication,
-  hospitalVisit,
-  liverLevel,
-  booldGlucose,
+  medicationComplete,
+  hospitalVisitScheduleCreate,
+  examinationResultCreate,
+  surveyComplete,
 }
 
 @DataClassName('PointHistoryModel')

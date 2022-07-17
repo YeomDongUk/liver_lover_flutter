@@ -13,9 +13,11 @@ import 'package:yak/presentation/bloc/medication_schedules/medication_schedules_
 import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
-import 'package:yak/presentation/page/home/hoem_screen.dart';
-import 'package:yak/presentation/page/home/hospital_visit_schedules_screen.dart';
-import 'package:yak/presentation/page/medication_management/medication_management_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_diary/health_diary_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_information_screen.dart';
+import 'package:yak/presentation/page/home/screens/hoem_screen.dart';
+import 'package:yak/presentation/page/home/screens/hospital_visit_schedules_screen.dart';
+import 'package:yak/presentation/page/home/screens/medication_management_screen.dart';
 
 import 'package:yak/presentation/widget/home/global_navigation_bar.dart';
 
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    print("??");
     _pageController = PageController(initialPage: 5);
 
     _hospitalVisitSchedulesCubit = context.read<HospitalVisitSchedulesCubit>()
@@ -83,8 +86,8 @@ class _HomePageState extends State<HomePage> {
             const MedicationManagementScreen(),
             const HospitalVisitSchedulesScreen(),
             Container(),
-            Container(),
-            Container(),
+            const HealthDiaryScreen(),
+            const HealthInformationScreen(),
             const HomeScreen(),
           ],
         ),

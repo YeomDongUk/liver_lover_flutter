@@ -22,6 +22,7 @@ import 'package:yak/presentation/bloc/my/update_user/update_user_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
 import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
+import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/icon_back_button.dart';
 import 'package:yak/presentation/widget/common/opacity_check_box.dart';
 import 'package:yak/presentation/widget/metabolic_disease/update_metabolic_disease_tab_view.dart';
@@ -63,14 +64,15 @@ class _MyPageState extends State<MyPage> with SingleTickerProviderStateMixin {
           children: [
             Stack(
               children: [
-                const Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Divider(
-                    height: 4,
-                    thickness: 4,
-                    color: AppColors.blueGrayLight,
+                Positioned.fill(
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    color: Colors.white,
+                    child: const Divider(
+                      height: 4,
+                      thickness: 4,
+                      color: AppColors.blueGrayLight,
+                    ),
                   ),
                 ),
                 TabBar(
@@ -89,9 +91,9 @@ class _MyPageState extends State<MyPage> with SingleTickerProviderStateMixin {
             Expanded(
               child: TabBarView(
                 controller: tabController,
-                children: [
-                  const UpdateUserTabView(),
-                  const UpdateMetabolicDiseaseTabView(),
+                children: const [
+                  UpdateUserTabView(),
+                  UpdateMetabolicDiseaseTabView(),
                 ],
               ),
             ),
@@ -165,16 +167,9 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
           Expanded(
             child: Align(
               alignment: Alignment.topCenter,
-              child: Container(
+              child: CommonShadowBox(
                 margin:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                  boxShadow: [
-                    BoxShadow(color: Color(0x7ecdced2), blurRadius: 20)
-                  ],
-                  color: Colors.white,
-                ),
                 child: ListView(
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(24),
@@ -340,23 +335,6 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        OpacityCheckBox(
-                          onChanged: updateUserCubit.updateMetabolicDisease,
-                          value: state.metabolicDisease.value,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          '현재 대사질환이 있습니다.',
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ).rixMGoB,
                         ),
                       ],
                     ),

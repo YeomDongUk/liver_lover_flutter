@@ -25,12 +25,19 @@ class MetabolicDiseaseLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   Future<void> upsertMetabolicDisease({
     required String userId,
     required MetabolicDiseasesCompanion companion,
-  }) =>
-      into(table).insertOnConflictUpdate(
+  }) async {
+    try {
+      await getMetabolicDisease(userId: userId);
+      await (update(table)..where((tbl) => tbl.userId.equals(userId)))
+          .write(companion);
+    } catch (e) {
+      await into(table).insert(
         companion.copyWith(
           userId: companion.userId == const Value<String>.absent()
               ? Value(userId)
               : companion.userId,
         ),
       );
+    }
+  }
 }

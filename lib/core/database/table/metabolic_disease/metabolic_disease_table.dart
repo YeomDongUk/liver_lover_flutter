@@ -18,20 +18,20 @@ class MetabolicDiseases extends UserReferenceTable {
   /// B형 간염확인일
   DateTimeColumn get hbvConfirmedAt => dateTime().nullable()();
 
-  /// B형 간염 바이러스 비활동성 보유상태 확인일
-  DateTimeColumn get hbvInactivityConfirmedAt => dateTime().nullable()();
+  // /// B형 간염 바이러스 비활동성 보유상태 확인일
+  // DateTimeColumn get hbvInactivityConfirmedAt => dateTime().nullable()();
 
-  /// 만성 B형 간염 확인일
-  DateTimeColumn get chronicHbvConfirmedAt => dateTime().nullable()();
+  // /// 만성 B형 간염 확인일
+  // DateTimeColumn get chronicHbvConfirmedAt => dateTime().nullable()();
 
-  /// 간경병증 확인일
-  DateTimeColumn get cirrhosisConfirmedAt => dateTime().nullable()();
+  /// 간경병증 여부
+  BoolColumn get cirrhosis => boolean().nullable()();
 
   /// C형 간염 여부
   BoolColumn get hcv => boolean().nullable()();
 
-  ///  지방간 여부
-  BoolColumn get fattyRiver => boolean().nullable()();
+  // ///  지방간 여부
+  // BoolColumn get fattyLiver => boolean().nullable()();
 
   @override
   List<Set<Column>>? get uniqueKeys => [

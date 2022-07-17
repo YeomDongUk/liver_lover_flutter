@@ -48,7 +48,7 @@ class _UpcomingHospitalVisitSchedulePageViewState
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: HomeLabel(
-            grayText: '정기검진/외래 ',
+            grayText: '외래/검진',
             primaryText: '예약일정',
           ),
         ),

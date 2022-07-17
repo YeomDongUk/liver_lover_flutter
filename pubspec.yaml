@@ -41,6 +41,11 @@ dependencies:
       ref: master
   flutter_speed_dial: ^6.0.0
   scrollable_positioned_list: ^0.3.2
+  url_launcher: ^6.1.4
+  dropdown_button2: ^1.6.3
+  carousel_slider: ^4.1.1
+  table_calendar:
+    path: ../../development/table_calendar
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
@@ -40,23 +41,29 @@ class _HomeScreenState extends State<HomeScreen>
             button: true,
             child: IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () => print("?"),
-              icon: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 20,
+              onPressed: () => context.beamToNamed(Routes.pointHistory),
+              icon: BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, state) => RichText(
+                  text: TextSpan(
+                    style: GoogleFonts.lato(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '${state.user.point}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: 'P',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
-                  children: [
-                    TextSpan(
-                      text: '27',
-                      style: const TextStyle().airbnbB,
-                    ),
-                    TextSpan(
-                      text: 'P',
-                      style: const TextStyle().airbnbBl,
-                    ),
-                  ],
                 ),
               ),
             ),

@@ -36,7 +36,6 @@ class JoinCubit extends Cubit<JoinState> {
         sex: state.sex.value,
         height: state.height.value!,
         weight: state.weight.value!,
-        metabolicDisease: Value(state.metabolicDisease.value),
         pinCode: state.pinCode.value,
       );
       try {
@@ -126,12 +125,6 @@ class JoinCubit extends Cubit<JoinState> {
   void updateverifingPinCode(String verifingPinCode) => emit(
         state.copyWith(
           verifingPinCode: PinCode.dirty(verifingPinCode),
-        ),
-      );
-
-  void updateMetabolicDisease(bool metabolicDisease) => emit(
-        state.copyWith(
-          metabolicDisease: MetabolicDisease.dirty(metabolicDisease),
         ),
       );
 }

@@ -76,7 +76,7 @@ class _CreateHospitalVisitSchedulePageState
       child: Scaffold(
         appBar: CommonAppBar(
           leading: const IconBackButton(),
-          title: const Text('검진/외래 등록'),
+          title: const Text('외래/검진 등록'),
         ),
         body: SafeArea(
           child: ListView(

@@ -23,7 +23,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
   final int height;
   final int weight;
   final String pinCode;
-  final bool metabolicDisease;
+  final int point;
   UserModel(
       {required this.id,
       required this.createdAt,
@@ -35,7 +35,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
       required this.height,
       required this.weight,
       required this.pinCode,
-      required this.metabolicDisease});
+      required this.point});
   factory UserModel.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return UserModel(
@@ -59,8 +59,8 @@ class UserModel extends DataClass implements Insertable<UserModel> {
           .mapFromDatabaseResponse(data['${effectivePrefix}weight'])!,
       pinCode: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}pin_code'])!,
-      metabolicDisease: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}metabolic_disease'])!,
+      point: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}point'])!,
     );
   }
   @override
@@ -76,7 +76,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
     map['height'] = Variable<int>(height);
     map['weight'] = Variable<int>(weight);
     map['pin_code'] = Variable<String>(pinCode);
-    map['metabolic_disease'] = Variable<bool>(metabolicDisease);
+    map['point'] = Variable<int>(point);
     return map;
   }
 
@@ -92,7 +92,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
       height: Value(height),
       weight: Value(weight),
       pinCode: Value(pinCode),
-      metabolicDisease: Value(metabolicDisease),
+      point: Value(point),
     );
   }
 
@@ -110,7 +110,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
       height: serializer.fromJson<int>(json['height']),
       weight: serializer.fromJson<int>(json['weight']),
       pinCode: serializer.fromJson<String>(json['pinCode']),
-      metabolicDisease: serializer.fromJson<bool>(json['metabolicDisease']),
+      point: serializer.fromJson<int>(json['point']),
     );
   }
   @override
@@ -127,7 +127,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
       'height': serializer.toJson<int>(height),
       'weight': serializer.toJson<int>(weight),
       'pinCode': serializer.toJson<String>(pinCode),
-      'metabolicDisease': serializer.toJson<bool>(metabolicDisease),
+      'point': serializer.toJson<int>(point),
     };
   }
 
@@ -142,7 +142,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
           int? height,
           int? weight,
           String? pinCode,
-          bool? metabolicDisease}) =>
+          int? point}) =>
       UserModel(
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
@@ -154,7 +154,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
         height: height ?? this.height,
         weight: weight ?? this.weight,
         pinCode: pinCode ?? this.pinCode,
-        metabolicDisease: metabolicDisease ?? this.metabolicDisease,
+        point: point ?? this.point,
       );
   @override
   String toString() {
@@ -169,14 +169,14 @@ class UserModel extends DataClass implements Insertable<UserModel> {
           ..write('height: $height, ')
           ..write('weight: $weight, ')
           ..write('pinCode: $pinCode, ')
-          ..write('metabolicDisease: $metabolicDisease')
+          ..write('point: $point')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(id, createdAt, updatedAt, name, phone,
-      birthYear, sex, height, weight, pinCode, metabolicDisease);
+      birthYear, sex, height, weight, pinCode, point);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -191,7 +191,7 @@ class UserModel extends DataClass implements Insertable<UserModel> {
           other.height == this.height &&
           other.weight == this.weight &&
           other.pinCode == this.pinCode &&
-          other.metabolicDisease == this.metabolicDisease);
+          other.point == this.point);
 }
 
 class UsersCompanion extends UpdateCompanion<UserModel> {
@@ -205,7 +205,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
   final Value<int> height;
   final Value<int> weight;
   final Value<String> pinCode;
-  final Value<bool> metabolicDisease;
+  final Value<int> point;
   const UsersCompanion({
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -217,7 +217,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
     this.height = const Value.absent(),
     this.weight = const Value.absent(),
     this.pinCode = const Value.absent(),
-    this.metabolicDisease = const Value.absent(),
+    this.point = const Value.absent(),
   });
   UsersCompanion.insert({
     this.id = const Value.absent(),
@@ -230,7 +230,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
     required int height,
     required int weight,
     required String pinCode,
-    this.metabolicDisease = const Value.absent(),
+    this.point = const Value.absent(),
   })  : name = Value(name),
         phone = Value(phone),
         birthYear = Value(birthYear),
@@ -249,7 +249,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
     Expression<int>? height,
     Expression<int>? weight,
     Expression<String>? pinCode,
-    Expression<bool>? metabolicDisease,
+    Expression<int>? point,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -262,7 +262,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
       if (height != null) 'height': height,
       if (weight != null) 'weight': weight,
       if (pinCode != null) 'pin_code': pinCode,
-      if (metabolicDisease != null) 'metabolic_disease': metabolicDisease,
+      if (point != null) 'point': point,
     });
   }
 
@@ -277,7 +277,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
       Value<int>? height,
       Value<int>? weight,
       Value<String>? pinCode,
-      Value<bool>? metabolicDisease}) {
+      Value<int>? point}) {
     return UsersCompanion(
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
@@ -289,7 +289,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
       height: height ?? this.height,
       weight: weight ?? this.weight,
       pinCode: pinCode ?? this.pinCode,
-      metabolicDisease: metabolicDisease ?? this.metabolicDisease,
+      point: point ?? this.point,
     );
   }
 
@@ -326,8 +326,8 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
     if (pinCode.present) {
       map['pin_code'] = Variable<String>(pinCode.value);
     }
-    if (metabolicDisease.present) {
-      map['metabolic_disease'] = Variable<bool>(metabolicDisease.value);
+    if (point.present) {
+      map['point'] = Variable<int>(point.value);
     }
     return map;
   }
@@ -345,7 +345,7 @@ class UsersCompanion extends UpdateCompanion<UserModel> {
           ..write('height: $height, ')
           ..write('weight: $weight, ')
           ..write('pinCode: $pinCode, ')
-          ..write('metabolicDisease: $metabolicDisease')
+          ..write('point: $point')
           ..write(')'))
         .toString();
   }
@@ -422,15 +422,13 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserModel> {
       check: () => pinCode.length.equalsExp(const Constant(6)),
       type: const StringType(),
       requiredDuringInsert: true);
-  final VerificationMeta _metabolicDiseaseMeta =
-      const VerificationMeta('metabolicDisease');
+  final VerificationMeta _pointMeta = const VerificationMeta('point');
   @override
-  late final GeneratedColumn<bool?> metabolicDisease = GeneratedColumn<bool?>(
-      'metabolic_disease', aliasedName, false,
-      type: const BoolType(),
+  late final GeneratedColumn<int?> point = GeneratedColumn<int?>(
+      'point', aliasedName, false,
+      type: const IntType(),
       requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (metabolic_disease IN (0, 1))',
-      defaultValue: const Constant(false));
+      defaultValue: const Constant(0));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -443,7 +441,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserModel> {
         height,
         weight,
         pinCode,
-        metabolicDisease
+        point
       ];
   @override
   String get aliasedName => _alias ?? 'users';
@@ -507,11 +505,9 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserModel> {
     } else if (isInserting) {
       context.missing(_pinCodeMeta);
     }
-    if (data.containsKey('metabolic_disease')) {
+    if (data.containsKey('point')) {
       context.handle(
-          _metabolicDiseaseMeta,
-          metabolicDisease.isAcceptableOrUnknown(
-              data['metabolic_disease']!, _metabolicDiseaseMeta));
+          _pointMeta, point.isAcceptableOrUnknown(data['point']!, _pointMeta));
     }
     return context;
   }
@@ -3475,383 +3471,6 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
           HospitalVisitScheduleType.values);
 }
 
-class BloodGlucoseHistoryModel extends DataClass
-    implements Insertable<BloodGlucoseHistoryModel> {
-  /// 유저 아이디
-  final String userId;
-
-  /// 아이디
-  final String id;
-
-  /// 생성일
-  final DateTime createdAt;
-
-  /// 수정일
-  final DateTime updatedAt;
-  final DateTime date;
-  final BloodGlucosesTime time;
-  final int value;
-  BloodGlucoseHistoryModel(
-      {required this.userId,
-      required this.id,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.date,
-      required this.time,
-      required this.value});
-  factory BloodGlucoseHistoryModel.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return BloodGlucoseHistoryModel(
-      userId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      createdAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      updatedAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
-      date: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}date'])!,
-      time: $BloodGlucoseHistoriesTable.$converter0.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}time']))!,
-      value: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}value'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['user_id'] = Variable<String>(userId);
-    map['id'] = Variable<String>(id);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['date'] = Variable<DateTime>(date);
-    {
-      final converter = $BloodGlucoseHistoriesTable.$converter0;
-      map['time'] = Variable<int>(converter.mapToSql(time)!);
-    }
-    map['value'] = Variable<int>(value);
-    return map;
-  }
-
-  BloodGlucoseHistoriesCompanion toCompanion(bool nullToAbsent) {
-    return BloodGlucoseHistoriesCompanion(
-      userId: Value(userId),
-      id: Value(id),
-      createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
-      date: Value(date),
-      time: Value(time),
-      value: Value(value),
-    );
-  }
-
-  factory BloodGlucoseHistoryModel.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return BloodGlucoseHistoryModel(
-      userId: serializer.fromJson<String>(json['userId']),
-      id: serializer.fromJson<String>(json['id']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      date: serializer.fromJson<DateTime>(json['date']),
-      time: serializer.fromJson<BloodGlucosesTime>(json['time']),
-      value: serializer.fromJson<int>(json['value']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'userId': serializer.toJson<String>(userId),
-      'id': serializer.toJson<String>(id),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'date': serializer.toJson<DateTime>(date),
-      'time': serializer.toJson<BloodGlucosesTime>(time),
-      'value': serializer.toJson<int>(value),
-    };
-  }
-
-  BloodGlucoseHistoryModel copyWith(
-          {String? userId,
-          String? id,
-          DateTime? createdAt,
-          DateTime? updatedAt,
-          DateTime? date,
-          BloodGlucosesTime? time,
-          int? value}) =>
-      BloodGlucoseHistoryModel(
-        userId: userId ?? this.userId,
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        date: date ?? this.date,
-        time: time ?? this.time,
-        value: value ?? this.value,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('BloodGlucoseHistoryModel(')
-          ..write('userId: $userId, ')
-          ..write('id: $id, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('date: $date, ')
-          ..write('time: $time, ')
-          ..write('value: $value')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(userId, id, createdAt, updatedAt, date, time, value);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is BloodGlucoseHistoryModel &&
-          other.userId == this.userId &&
-          other.id == this.id &&
-          other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt &&
-          other.date == this.date &&
-          other.time == this.time &&
-          other.value == this.value);
-}
-
-class BloodGlucoseHistoriesCompanion
-    extends UpdateCompanion<BloodGlucoseHistoryModel> {
-  final Value<String> userId;
-  final Value<String> id;
-  final Value<DateTime> createdAt;
-  final Value<DateTime> updatedAt;
-  final Value<DateTime> date;
-  final Value<BloodGlucosesTime> time;
-  final Value<int> value;
-  const BloodGlucoseHistoriesCompanion({
-    this.userId = const Value.absent(),
-    this.id = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    this.date = const Value.absent(),
-    this.time = const Value.absent(),
-    this.value = const Value.absent(),
-  });
-  BloodGlucoseHistoriesCompanion.insert({
-    required String userId,
-    this.id = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    required DateTime date,
-    required BloodGlucosesTime time,
-    required int value,
-  })  : userId = Value(userId),
-        date = Value(date),
-        time = Value(time),
-        value = Value(value);
-  static Insertable<BloodGlucoseHistoryModel> custom({
-    Expression<String>? userId,
-    Expression<String>? id,
-    Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
-    Expression<DateTime>? date,
-    Expression<BloodGlucosesTime>? time,
-    Expression<int>? value,
-  }) {
-    return RawValuesInsertable({
-      if (userId != null) 'user_id': userId,
-      if (id != null) 'id': id,
-      if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
-      if (date != null) 'date': date,
-      if (time != null) 'time': time,
-      if (value != null) 'value': value,
-    });
-  }
-
-  BloodGlucoseHistoriesCompanion copyWith(
-      {Value<String>? userId,
-      Value<String>? id,
-      Value<DateTime>? createdAt,
-      Value<DateTime>? updatedAt,
-      Value<DateTime>? date,
-      Value<BloodGlucosesTime>? time,
-      Value<int>? value}) {
-    return BloodGlucoseHistoriesCompanion(
-      userId: userId ?? this.userId,
-      id: id ?? this.id,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      date: date ?? this.date,
-      time: time ?? this.time,
-      value: value ?? this.value,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (userId.present) {
-      map['user_id'] = Variable<String>(userId.value);
-    }
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (date.present) {
-      map['date'] = Variable<DateTime>(date.value);
-    }
-    if (time.present) {
-      final converter = $BloodGlucoseHistoriesTable.$converter0;
-      map['time'] = Variable<int>(converter.mapToSql(time.value)!);
-    }
-    if (value.present) {
-      map['value'] = Variable<int>(value.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('BloodGlucoseHistoriesCompanion(')
-          ..write('userId: $userId, ')
-          ..write('id: $id, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('date: $date, ')
-          ..write('time: $time, ')
-          ..write('value: $value')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $BloodGlucoseHistoriesTable extends BloodGlucoseHistories
-    with TableInfo<$BloodGlucoseHistoriesTable, BloodGlucoseHistoryModel> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $BloodGlucoseHistoriesTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
-  @override
-  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
-      'user_id', aliasedName, false,
-      type: const StringType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'REFERENCES users (id)');
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
-      'id', aliasedName, false,
-      type: const StringType(),
-      requiredDuringInsert: false,
-      clientDefault: newCuid);
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
-      'created_at', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultValue: currentDate);
-  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
-  @override
-  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
-      'updated_at', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultValue: currentDate);
-  final VerificationMeta _dateMeta = const VerificationMeta('date');
-  @override
-  late final GeneratedColumn<DateTime?> date = GeneratedColumn<DateTime?>(
-      'date', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _timeMeta = const VerificationMeta('time');
-  @override
-  late final GeneratedColumnWithTypeConverter<BloodGlucosesTime, int?> time =
-      GeneratedColumn<int?>('time', aliasedName, false,
-              type: const IntType(), requiredDuringInsert: true)
-          .withConverter<BloodGlucosesTime>(
-              $BloodGlucoseHistoriesTable.$converter0);
-  final VerificationMeta _valueMeta = const VerificationMeta('value');
-  @override
-  late final GeneratedColumn<int?> value = GeneratedColumn<int?>(
-      'value', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [userId, id, createdAt, updatedAt, date, time, value];
-  @override
-  String get aliasedName => _alias ?? 'blood_glucose_histories';
-  @override
-  String get actualTableName => 'blood_glucose_histories';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<BloodGlucoseHistoryModel> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('user_id')) {
-      context.handle(_userIdMeta,
-          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
-    } else if (isInserting) {
-      context.missing(_userIdMeta);
-    }
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    }
-    if (data.containsKey('date')) {
-      context.handle(
-          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
-    } else if (isInserting) {
-      context.missing(_dateMeta);
-    }
-    context.handle(_timeMeta, const VerificationResult.success());
-    if (data.containsKey('value')) {
-      context.handle(
-          _valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
-    } else if (isInserting) {
-      context.missing(_valueMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  List<Set<GeneratedColumn>> get uniqueKeys => [
-        {userId, date, time},
-      ];
-  @override
-  BloodGlucoseHistoryModel map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
-    return BloodGlucoseHistoryModel.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $BloodGlucoseHistoriesTable createAlias(String alias) {
-    return $BloodGlucoseHistoriesTable(attachedDatabase, alias);
-  }
-
-  static TypeConverter<BloodGlucosesTime, int> $converter0 =
-      const EnumIndexConverter<BloodGlucosesTime>(BloodGlucosesTime.values);
-}
-
 class LiverLevelHistoryModel extends DataClass
     implements Insertable<LiverLevelHistoryModel> {
   /// 유저 아이디
@@ -5603,20 +5222,11 @@ class MetabolicDiseaseModel extends DataClass
   /// B형 간염확인일
   final DateTime? hbvConfirmedAt;
 
-  /// B형 간염 바이러스 비활동성 보유상태 확인일
-  final DateTime? hbvInactivityConfirmedAt;
-
-  /// 만성 B형 간염 확인일
-  final DateTime? chronicHbvConfirmedAt;
-
-  /// 간경병증 확인일
-  final DateTime? cirrhosisConfirmedAt;
+  /// 간경병증 여부
+  final bool? cirrhosis;
 
   /// C형 간염 여부
   final bool? hcv;
-
-  ///  지방간 여부
-  final bool? fattyRiver;
   MetabolicDiseaseModel(
       {required this.userId,
       required this.id,
@@ -5627,11 +5237,8 @@ class MetabolicDiseaseModel extends DataClass
       this.vaccinConfirmedAt,
       this.hbv,
       this.hbvConfirmedAt,
-      this.hbvInactivityConfirmedAt,
-      this.chronicHbvConfirmedAt,
-      this.cirrhosisConfirmedAt,
-      this.hcv,
-      this.fattyRiver});
+      this.cirrhosis,
+      this.hcv});
   factory MetabolicDiseaseModel.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -5654,16 +5261,10 @@ class MetabolicDiseaseModel extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}hbv']),
       hbvConfirmedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}hbv_confirmed_at']),
-      hbvInactivityConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
-          data['${effectivePrefix}hbv_inactivity_confirmed_at']),
-      chronicHbvConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
-          data['${effectivePrefix}chronic_hbv_confirmed_at']),
-      cirrhosisConfirmedAt: const DateTimeType().mapFromDatabaseResponse(
-          data['${effectivePrefix}cirrhosis_confirmed_at']),
+      cirrhosis: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}cirrhosis']),
       hcv: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}hcv']),
-      fattyRiver: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fatty_river']),
     );
   }
   @override
@@ -5688,22 +5289,11 @@ class MetabolicDiseaseModel extends DataClass
     if (!nullToAbsent || hbvConfirmedAt != null) {
       map['hbv_confirmed_at'] = Variable<DateTime?>(hbvConfirmedAt);
     }
-    if (!nullToAbsent || hbvInactivityConfirmedAt != null) {
-      map['hbv_inactivity_confirmed_at'] =
-          Variable<DateTime?>(hbvInactivityConfirmedAt);
-    }
-    if (!nullToAbsent || chronicHbvConfirmedAt != null) {
-      map['chronic_hbv_confirmed_at'] =
-          Variable<DateTime?>(chronicHbvConfirmedAt);
-    }
-    if (!nullToAbsent || cirrhosisConfirmedAt != null) {
-      map['cirrhosis_confirmed_at'] = Variable<DateTime?>(cirrhosisConfirmedAt);
+    if (!nullToAbsent || cirrhosis != null) {
+      map['cirrhosis'] = Variable<bool?>(cirrhosis);
     }
     if (!nullToAbsent || hcv != null) {
       map['hcv'] = Variable<bool?>(hcv);
-    }
-    if (!nullToAbsent || fattyRiver != null) {
-      map['fatty_river'] = Variable<bool?>(fattyRiver);
     }
     return map;
   }
@@ -5725,19 +5315,10 @@ class MetabolicDiseaseModel extends DataClass
       hbvConfirmedAt: hbvConfirmedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(hbvConfirmedAt),
-      hbvInactivityConfirmedAt: hbvInactivityConfirmedAt == null && nullToAbsent
+      cirrhosis: cirrhosis == null && nullToAbsent
           ? const Value.absent()
-          : Value(hbvInactivityConfirmedAt),
-      chronicHbvConfirmedAt: chronicHbvConfirmedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(chronicHbvConfirmedAt),
-      cirrhosisConfirmedAt: cirrhosisConfirmedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(cirrhosisConfirmedAt),
+          : Value(cirrhosis),
       hcv: hcv == null && nullToAbsent ? const Value.absent() : Value(hcv),
-      fattyRiver: fattyRiver == null && nullToAbsent
-          ? const Value.absent()
-          : Value(fattyRiver),
     );
   }
 
@@ -5756,14 +5337,8 @@ class MetabolicDiseaseModel extends DataClass
           serializer.fromJson<DateTime?>(json['vaccinConfirmedAt']),
       hbv: serializer.fromJson<bool?>(json['hbv']),
       hbvConfirmedAt: serializer.fromJson<DateTime?>(json['hbvConfirmedAt']),
-      hbvInactivityConfirmedAt:
-          serializer.fromJson<DateTime?>(json['hbvInactivityConfirmedAt']),
-      chronicHbvConfirmedAt:
-          serializer.fromJson<DateTime?>(json['chronicHbvConfirmedAt']),
-      cirrhosisConfirmedAt:
-          serializer.fromJson<DateTime?>(json['cirrhosisConfirmedAt']),
+      cirrhosis: serializer.fromJson<bool?>(json['cirrhosis']),
       hcv: serializer.fromJson<bool?>(json['hcv']),
-      fattyRiver: serializer.fromJson<bool?>(json['fattyRiver']),
     );
   }
   @override
@@ -5779,14 +5354,8 @@ class MetabolicDiseaseModel extends DataClass
       'vaccinConfirmedAt': serializer.toJson<DateTime?>(vaccinConfirmedAt),
       'hbv': serializer.toJson<bool?>(hbv),
       'hbvConfirmedAt': serializer.toJson<DateTime?>(hbvConfirmedAt),
-      'hbvInactivityConfirmedAt':
-          serializer.toJson<DateTime?>(hbvInactivityConfirmedAt),
-      'chronicHbvConfirmedAt':
-          serializer.toJson<DateTime?>(chronicHbvConfirmedAt),
-      'cirrhosisConfirmedAt':
-          serializer.toJson<DateTime?>(cirrhosisConfirmedAt),
+      'cirrhosis': serializer.toJson<bool?>(cirrhosis),
       'hcv': serializer.toJson<bool?>(hcv),
-      'fattyRiver': serializer.toJson<bool?>(fattyRiver),
     };
   }
 
@@ -5800,11 +5369,8 @@ class MetabolicDiseaseModel extends DataClass
           DateTime? vaccinConfirmedAt,
           bool? hbv,
           DateTime? hbvConfirmedAt,
-          DateTime? hbvInactivityConfirmedAt,
-          DateTime? chronicHbvConfirmedAt,
-          DateTime? cirrhosisConfirmedAt,
-          bool? hcv,
-          bool? fattyRiver}) =>
+          bool? cirrhosis,
+          bool? hcv}) =>
       MetabolicDiseaseModel(
         userId: userId ?? this.userId,
         id: id ?? this.id,
@@ -5815,13 +5381,8 @@ class MetabolicDiseaseModel extends DataClass
         vaccinConfirmedAt: vaccinConfirmedAt ?? this.vaccinConfirmedAt,
         hbv: hbv ?? this.hbv,
         hbvConfirmedAt: hbvConfirmedAt ?? this.hbvConfirmedAt,
-        hbvInactivityConfirmedAt:
-            hbvInactivityConfirmedAt ?? this.hbvInactivityConfirmedAt,
-        chronicHbvConfirmedAt:
-            chronicHbvConfirmedAt ?? this.chronicHbvConfirmedAt,
-        cirrhosisConfirmedAt: cirrhosisConfirmedAt ?? this.cirrhosisConfirmedAt,
+        cirrhosis: cirrhosis ?? this.cirrhosis,
         hcv: hcv ?? this.hcv,
-        fattyRiver: fattyRiver ?? this.fattyRiver,
       );
   @override
   String toString() {
@@ -5835,11 +5396,8 @@ class MetabolicDiseaseModel extends DataClass
           ..write('vaccinConfirmedAt: $vaccinConfirmedAt, ')
           ..write('hbv: $hbv, ')
           ..write('hbvConfirmedAt: $hbvConfirmedAt, ')
-          ..write('hbvInactivityConfirmedAt: $hbvInactivityConfirmedAt, ')
-          ..write('chronicHbvConfirmedAt: $chronicHbvConfirmedAt, ')
-          ..write('cirrhosisConfirmedAt: $cirrhosisConfirmedAt, ')
-          ..write('hcv: $hcv, ')
-          ..write('fattyRiver: $fattyRiver')
+          ..write('cirrhosis: $cirrhosis, ')
+          ..write('hcv: $hcv')
           ..write(')'))
         .toString();
   }
@@ -5855,11 +5413,8 @@ class MetabolicDiseaseModel extends DataClass
       vaccinConfirmedAt,
       hbv,
       hbvConfirmedAt,
-      hbvInactivityConfirmedAt,
-      chronicHbvConfirmedAt,
-      cirrhosisConfirmedAt,
-      hcv,
-      fattyRiver);
+      cirrhosis,
+      hcv);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5873,11 +5428,8 @@ class MetabolicDiseaseModel extends DataClass
           other.vaccinConfirmedAt == this.vaccinConfirmedAt &&
           other.hbv == this.hbv &&
           other.hbvConfirmedAt == this.hbvConfirmedAt &&
-          other.hbvInactivityConfirmedAt == this.hbvInactivityConfirmedAt &&
-          other.chronicHbvConfirmedAt == this.chronicHbvConfirmedAt &&
-          other.cirrhosisConfirmedAt == this.cirrhosisConfirmedAt &&
-          other.hcv == this.hcv &&
-          other.fattyRiver == this.fattyRiver);
+          other.cirrhosis == this.cirrhosis &&
+          other.hcv == this.hcv);
 }
 
 class MetabolicDiseasesCompanion
@@ -5891,11 +5443,8 @@ class MetabolicDiseasesCompanion
   final Value<DateTime?> vaccinConfirmedAt;
   final Value<bool?> hbv;
   final Value<DateTime?> hbvConfirmedAt;
-  final Value<DateTime?> hbvInactivityConfirmedAt;
-  final Value<DateTime?> chronicHbvConfirmedAt;
-  final Value<DateTime?> cirrhosisConfirmedAt;
+  final Value<bool?> cirrhosis;
   final Value<bool?> hcv;
-  final Value<bool?> fattyRiver;
   const MetabolicDiseasesCompanion({
     this.userId = const Value.absent(),
     this.id = const Value.absent(),
@@ -5906,11 +5455,8 @@ class MetabolicDiseasesCompanion
     this.vaccinConfirmedAt = const Value.absent(),
     this.hbv = const Value.absent(),
     this.hbvConfirmedAt = const Value.absent(),
-    this.hbvInactivityConfirmedAt = const Value.absent(),
-    this.chronicHbvConfirmedAt = const Value.absent(),
-    this.cirrhosisConfirmedAt = const Value.absent(),
+    this.cirrhosis = const Value.absent(),
     this.hcv = const Value.absent(),
-    this.fattyRiver = const Value.absent(),
   });
   MetabolicDiseasesCompanion.insert({
     required String userId,
@@ -5922,11 +5468,8 @@ class MetabolicDiseasesCompanion
     this.vaccinConfirmedAt = const Value.absent(),
     this.hbv = const Value.absent(),
     this.hbvConfirmedAt = const Value.absent(),
-    this.hbvInactivityConfirmedAt = const Value.absent(),
-    this.chronicHbvConfirmedAt = const Value.absent(),
-    this.cirrhosisConfirmedAt = const Value.absent(),
+    this.cirrhosis = const Value.absent(),
     this.hcv = const Value.absent(),
-    this.fattyRiver = const Value.absent(),
   }) : userId = Value(userId);
   static Insertable<MetabolicDiseaseModel> custom({
     Expression<String>? userId,
@@ -5938,11 +5481,8 @@ class MetabolicDiseasesCompanion
     Expression<DateTime?>? vaccinConfirmedAt,
     Expression<bool?>? hbv,
     Expression<DateTime?>? hbvConfirmedAt,
-    Expression<DateTime?>? hbvInactivityConfirmedAt,
-    Expression<DateTime?>? chronicHbvConfirmedAt,
-    Expression<DateTime?>? cirrhosisConfirmedAt,
+    Expression<bool?>? cirrhosis,
     Expression<bool?>? hcv,
-    Expression<bool?>? fattyRiver,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
@@ -5955,14 +5495,8 @@ class MetabolicDiseasesCompanion
       if (vaccinConfirmedAt != null) 'vaccin_confirmed_at': vaccinConfirmedAt,
       if (hbv != null) 'hbv': hbv,
       if (hbvConfirmedAt != null) 'hbv_confirmed_at': hbvConfirmedAt,
-      if (hbvInactivityConfirmedAt != null)
-        'hbv_inactivity_confirmed_at': hbvInactivityConfirmedAt,
-      if (chronicHbvConfirmedAt != null)
-        'chronic_hbv_confirmed_at': chronicHbvConfirmedAt,
-      if (cirrhosisConfirmedAt != null)
-        'cirrhosis_confirmed_at': cirrhosisConfirmedAt,
+      if (cirrhosis != null) 'cirrhosis': cirrhosis,
       if (hcv != null) 'hcv': hcv,
-      if (fattyRiver != null) 'fatty_river': fattyRiver,
     });
   }
 
@@ -5976,11 +5510,8 @@ class MetabolicDiseasesCompanion
       Value<DateTime?>? vaccinConfirmedAt,
       Value<bool?>? hbv,
       Value<DateTime?>? hbvConfirmedAt,
-      Value<DateTime?>? hbvInactivityConfirmedAt,
-      Value<DateTime?>? chronicHbvConfirmedAt,
-      Value<DateTime?>? cirrhosisConfirmedAt,
-      Value<bool?>? hcv,
-      Value<bool?>? fattyRiver}) {
+      Value<bool?>? cirrhosis,
+      Value<bool?>? hcv}) {
     return MetabolicDiseasesCompanion(
       userId: userId ?? this.userId,
       id: id ?? this.id,
@@ -5991,13 +5522,8 @@ class MetabolicDiseasesCompanion
       vaccinConfirmedAt: vaccinConfirmedAt ?? this.vaccinConfirmedAt,
       hbv: hbv ?? this.hbv,
       hbvConfirmedAt: hbvConfirmedAt ?? this.hbvConfirmedAt,
-      hbvInactivityConfirmedAt:
-          hbvInactivityConfirmedAt ?? this.hbvInactivityConfirmedAt,
-      chronicHbvConfirmedAt:
-          chronicHbvConfirmedAt ?? this.chronicHbvConfirmedAt,
-      cirrhosisConfirmedAt: cirrhosisConfirmedAt ?? this.cirrhosisConfirmedAt,
+      cirrhosis: cirrhosis ?? this.cirrhosis,
       hcv: hcv ?? this.hcv,
-      fattyRiver: fattyRiver ?? this.fattyRiver,
     );
   }
 
@@ -6032,23 +5558,11 @@ class MetabolicDiseasesCompanion
     if (hbvConfirmedAt.present) {
       map['hbv_confirmed_at'] = Variable<DateTime?>(hbvConfirmedAt.value);
     }
-    if (hbvInactivityConfirmedAt.present) {
-      map['hbv_inactivity_confirmed_at'] =
-          Variable<DateTime?>(hbvInactivityConfirmedAt.value);
-    }
-    if (chronicHbvConfirmedAt.present) {
-      map['chronic_hbv_confirmed_at'] =
-          Variable<DateTime?>(chronicHbvConfirmedAt.value);
-    }
-    if (cirrhosisConfirmedAt.present) {
-      map['cirrhosis_confirmed_at'] =
-          Variable<DateTime?>(cirrhosisConfirmedAt.value);
+    if (cirrhosis.present) {
+      map['cirrhosis'] = Variable<bool?>(cirrhosis.value);
     }
     if (hcv.present) {
       map['hcv'] = Variable<bool?>(hcv.value);
-    }
-    if (fattyRiver.present) {
-      map['fatty_river'] = Variable<bool?>(fattyRiver.value);
     }
     return map;
   }
@@ -6065,11 +5579,8 @@ class MetabolicDiseasesCompanion
           ..write('vaccinConfirmedAt: $vaccinConfirmedAt, ')
           ..write('hbv: $hbv, ')
           ..write('hbvConfirmedAt: $hbvConfirmedAt, ')
-          ..write('hbvInactivityConfirmedAt: $hbvInactivityConfirmedAt, ')
-          ..write('chronicHbvConfirmedAt: $chronicHbvConfirmedAt, ')
-          ..write('cirrhosisConfirmedAt: $cirrhosisConfirmedAt, ')
-          ..write('hcv: $hcv, ')
-          ..write('fattyRiver: $fattyRiver')
+          ..write('cirrhosis: $cirrhosis, ')
+          ..write('hcv: $hcv')
           ..write(')'))
         .toString();
   }
@@ -6141,25 +5652,13 @@ class $MetabolicDiseasesTable extends MetabolicDiseases
   late final GeneratedColumn<DateTime?> hbvConfirmedAt =
       GeneratedColumn<DateTime?>('hbv_confirmed_at', aliasedName, true,
           type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _hbvInactivityConfirmedAtMeta =
-      const VerificationMeta('hbvInactivityConfirmedAt');
+  final VerificationMeta _cirrhosisMeta = const VerificationMeta('cirrhosis');
   @override
-  late final GeneratedColumn<DateTime?> hbvInactivityConfirmedAt =
-      GeneratedColumn<DateTime?>(
-          'hbv_inactivity_confirmed_at', aliasedName, true,
-          type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _chronicHbvConfirmedAtMeta =
-      const VerificationMeta('chronicHbvConfirmedAt');
-  @override
-  late final GeneratedColumn<DateTime?> chronicHbvConfirmedAt =
-      GeneratedColumn<DateTime?>('chronic_hbv_confirmed_at', aliasedName, true,
-          type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _cirrhosisConfirmedAtMeta =
-      const VerificationMeta('cirrhosisConfirmedAt');
-  @override
-  late final GeneratedColumn<DateTime?> cirrhosisConfirmedAt =
-      GeneratedColumn<DateTime?>('cirrhosis_confirmed_at', aliasedName, true,
-          type: const IntType(), requiredDuringInsert: false);
+  late final GeneratedColumn<bool?> cirrhosis = GeneratedColumn<bool?>(
+      'cirrhosis', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (cirrhosis IN (0, 1))');
   final VerificationMeta _hcvMeta = const VerificationMeta('hcv');
   @override
   late final GeneratedColumn<bool?> hcv = GeneratedColumn<bool?>(
@@ -6167,13 +5666,6 @@ class $MetabolicDiseasesTable extends MetabolicDiseases
       type: const BoolType(),
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (hcv IN (0, 1))');
-  final VerificationMeta _fattyRiverMeta = const VerificationMeta('fattyRiver');
-  @override
-  late final GeneratedColumn<bool?> fattyRiver = GeneratedColumn<bool?>(
-      'fatty_river', aliasedName, true,
-      type: const BoolType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (fatty_river IN (0, 1))');
   @override
   List<GeneratedColumn> get $columns => [
         userId,
@@ -6185,11 +5677,8 @@ class $MetabolicDiseasesTable extends MetabolicDiseases
         vaccinConfirmedAt,
         hbv,
         hbvConfirmedAt,
-        hbvInactivityConfirmedAt,
-        chronicHbvConfirmedAt,
-        cirrhosisConfirmedAt,
-        hcv,
-        fattyRiver
+        cirrhosis,
+        hcv
       ];
   @override
   String get aliasedName => _alias ?? 'metabolic_diseases';
@@ -6244,34 +5733,13 @@ class $MetabolicDiseasesTable extends MetabolicDiseases
           hbvConfirmedAt.isAcceptableOrUnknown(
               data['hbv_confirmed_at']!, _hbvConfirmedAtMeta));
     }
-    if (data.containsKey('hbv_inactivity_confirmed_at')) {
-      context.handle(
-          _hbvInactivityConfirmedAtMeta,
-          hbvInactivityConfirmedAt.isAcceptableOrUnknown(
-              data['hbv_inactivity_confirmed_at']!,
-              _hbvInactivityConfirmedAtMeta));
-    }
-    if (data.containsKey('chronic_hbv_confirmed_at')) {
-      context.handle(
-          _chronicHbvConfirmedAtMeta,
-          chronicHbvConfirmedAt.isAcceptableOrUnknown(
-              data['chronic_hbv_confirmed_at']!, _chronicHbvConfirmedAtMeta));
-    }
-    if (data.containsKey('cirrhosis_confirmed_at')) {
-      context.handle(
-          _cirrhosisConfirmedAtMeta,
-          cirrhosisConfirmedAt.isAcceptableOrUnknown(
-              data['cirrhosis_confirmed_at']!, _cirrhosisConfirmedAtMeta));
+    if (data.containsKey('cirrhosis')) {
+      context.handle(_cirrhosisMeta,
+          cirrhosis.isAcceptableOrUnknown(data['cirrhosis']!, _cirrhosisMeta));
     }
     if (data.containsKey('hcv')) {
       context.handle(
           _hcvMeta, hcv.isAcceptableOrUnknown(data['hcv']!, _hcvMeta));
-    }
-    if (data.containsKey('fatty_river')) {
-      context.handle(
-          _fattyRiverMeta,
-          fattyRiver.isAcceptableOrUnknown(
-              data['fatty_river']!, _fattyRiverMeta));
     }
     return context;
   }
@@ -6294,6 +5762,2184 @@ class $MetabolicDiseasesTable extends MetabolicDiseases
   }
 }
 
+class ExaminationResultModel extends DataClass
+    implements Insertable<ExaminationResultModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+
+  /// 검사일
+  final DateTime examinedAt;
+
+  /// 혈소판
+  final int? platelet;
+
+  /// 간효소
+  final int? ast;
+
+  /// 간효소
+  final int? atl;
+
+  /// 간효소
+  final int? ggt;
+
+  /// 빌리루빈
+  final int? bilirubin;
+
+  /// 알부민
+  final int? albumin;
+
+  /// 알파태아단백질
+  final int? afp;
+
+  /// 알부민
+  final int? hbvDna;
+
+  /// 알부민
+  final int? hcvDna;
+
+  /// 지방간
+  final bool? fattyLiver;
+
+  /// 양성종양(혈관종, 낭종 등)
+  final bool? benignTumor;
+
+  /// 양성종양(혈관종, 낭종 등)
+  final bool? dangerousNodule;
+  ExaminationResultModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.examinedAt,
+      this.platelet,
+      this.ast,
+      this.atl,
+      this.ggt,
+      this.bilirubin,
+      this.albumin,
+      this.afp,
+      this.hbvDna,
+      this.hcvDna,
+      this.fattyLiver,
+      this.benignTumor,
+      this.dangerousNodule});
+  factory ExaminationResultModel.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return ExaminationResultModel(
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      examinedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}examined_at'])!,
+      platelet: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}platelet']),
+      ast: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}ast']),
+      atl: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}atl']),
+      ggt: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}ggt']),
+      bilirubin: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}bilirubin']),
+      albumin: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}albumin']),
+      afp: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}afp']),
+      hbvDna: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hbv_dna']),
+      hcvDna: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hcv_dna']),
+      fattyLiver: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}fatty_liver']),
+      benignTumor: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}benign_tumor']),
+      dangerousNodule: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}dangerous_nodule']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['examined_at'] = Variable<DateTime>(examinedAt);
+    if (!nullToAbsent || platelet != null) {
+      map['platelet'] = Variable<int?>(platelet);
+    }
+    if (!nullToAbsent || ast != null) {
+      map['ast'] = Variable<int?>(ast);
+    }
+    if (!nullToAbsent || atl != null) {
+      map['atl'] = Variable<int?>(atl);
+    }
+    if (!nullToAbsent || ggt != null) {
+      map['ggt'] = Variable<int?>(ggt);
+    }
+    if (!nullToAbsent || bilirubin != null) {
+      map['bilirubin'] = Variable<int?>(bilirubin);
+    }
+    if (!nullToAbsent || albumin != null) {
+      map['albumin'] = Variable<int?>(albumin);
+    }
+    if (!nullToAbsent || afp != null) {
+      map['afp'] = Variable<int?>(afp);
+    }
+    if (!nullToAbsent || hbvDna != null) {
+      map['hbv_dna'] = Variable<int?>(hbvDna);
+    }
+    if (!nullToAbsent || hcvDna != null) {
+      map['hcv_dna'] = Variable<int?>(hcvDna);
+    }
+    if (!nullToAbsent || fattyLiver != null) {
+      map['fatty_liver'] = Variable<bool?>(fattyLiver);
+    }
+    if (!nullToAbsent || benignTumor != null) {
+      map['benign_tumor'] = Variable<bool?>(benignTumor);
+    }
+    if (!nullToAbsent || dangerousNodule != null) {
+      map['dangerous_nodule'] = Variable<bool?>(dangerousNodule);
+    }
+    return map;
+  }
+
+  ExaminationResultsCompanion toCompanion(bool nullToAbsent) {
+    return ExaminationResultsCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      examinedAt: Value(examinedAt),
+      platelet: platelet == null && nullToAbsent
+          ? const Value.absent()
+          : Value(platelet),
+      ast: ast == null && nullToAbsent ? const Value.absent() : Value(ast),
+      atl: atl == null && nullToAbsent ? const Value.absent() : Value(atl),
+      ggt: ggt == null && nullToAbsent ? const Value.absent() : Value(ggt),
+      bilirubin: bilirubin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bilirubin),
+      albumin: albumin == null && nullToAbsent
+          ? const Value.absent()
+          : Value(albumin),
+      afp: afp == null && nullToAbsent ? const Value.absent() : Value(afp),
+      hbvDna:
+          hbvDna == null && nullToAbsent ? const Value.absent() : Value(hbvDna),
+      hcvDna:
+          hcvDna == null && nullToAbsent ? const Value.absent() : Value(hcvDna),
+      fattyLiver: fattyLiver == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fattyLiver),
+      benignTumor: benignTumor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(benignTumor),
+      dangerousNodule: dangerousNodule == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dangerousNodule),
+    );
+  }
+
+  factory ExaminationResultModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExaminationResultModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      examinedAt: serializer.fromJson<DateTime>(json['examinedAt']),
+      platelet: serializer.fromJson<int?>(json['platelet']),
+      ast: serializer.fromJson<int?>(json['ast']),
+      atl: serializer.fromJson<int?>(json['atl']),
+      ggt: serializer.fromJson<int?>(json['ggt']),
+      bilirubin: serializer.fromJson<int?>(json['bilirubin']),
+      albumin: serializer.fromJson<int?>(json['albumin']),
+      afp: serializer.fromJson<int?>(json['afp']),
+      hbvDna: serializer.fromJson<int?>(json['hbvDna']),
+      hcvDna: serializer.fromJson<int?>(json['hcvDna']),
+      fattyLiver: serializer.fromJson<bool?>(json['fattyLiver']),
+      benignTumor: serializer.fromJson<bool?>(json['benignTumor']),
+      dangerousNodule: serializer.fromJson<bool?>(json['dangerousNodule']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'examinedAt': serializer.toJson<DateTime>(examinedAt),
+      'platelet': serializer.toJson<int?>(platelet),
+      'ast': serializer.toJson<int?>(ast),
+      'atl': serializer.toJson<int?>(atl),
+      'ggt': serializer.toJson<int?>(ggt),
+      'bilirubin': serializer.toJson<int?>(bilirubin),
+      'albumin': serializer.toJson<int?>(albumin),
+      'afp': serializer.toJson<int?>(afp),
+      'hbvDna': serializer.toJson<int?>(hbvDna),
+      'hcvDna': serializer.toJson<int?>(hcvDna),
+      'fattyLiver': serializer.toJson<bool?>(fattyLiver),
+      'benignTumor': serializer.toJson<bool?>(benignTumor),
+      'dangerousNodule': serializer.toJson<bool?>(dangerousNodule),
+    };
+  }
+
+  ExaminationResultModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          DateTime? examinedAt,
+          int? platelet,
+          int? ast,
+          int? atl,
+          int? ggt,
+          int? bilirubin,
+          int? albumin,
+          int? afp,
+          int? hbvDna,
+          int? hcvDna,
+          bool? fattyLiver,
+          bool? benignTumor,
+          bool? dangerousNodule}) =>
+      ExaminationResultModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        examinedAt: examinedAt ?? this.examinedAt,
+        platelet: platelet ?? this.platelet,
+        ast: ast ?? this.ast,
+        atl: atl ?? this.atl,
+        ggt: ggt ?? this.ggt,
+        bilirubin: bilirubin ?? this.bilirubin,
+        albumin: albumin ?? this.albumin,
+        afp: afp ?? this.afp,
+        hbvDna: hbvDna ?? this.hbvDna,
+        hcvDna: hcvDna ?? this.hcvDna,
+        fattyLiver: fattyLiver ?? this.fattyLiver,
+        benignTumor: benignTumor ?? this.benignTumor,
+        dangerousNodule: dangerousNodule ?? this.dangerousNodule,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ExaminationResultModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('examinedAt: $examinedAt, ')
+          ..write('platelet: $platelet, ')
+          ..write('ast: $ast, ')
+          ..write('atl: $atl, ')
+          ..write('ggt: $ggt, ')
+          ..write('bilirubin: $bilirubin, ')
+          ..write('albumin: $albumin, ')
+          ..write('afp: $afp, ')
+          ..write('hbvDna: $hbvDna, ')
+          ..write('hcvDna: $hcvDna, ')
+          ..write('fattyLiver: $fattyLiver, ')
+          ..write('benignTumor: $benignTumor, ')
+          ..write('dangerousNodule: $dangerousNodule')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      userId,
+      id,
+      createdAt,
+      updatedAt,
+      examinedAt,
+      platelet,
+      ast,
+      atl,
+      ggt,
+      bilirubin,
+      albumin,
+      afp,
+      hbvDna,
+      hcvDna,
+      fattyLiver,
+      benignTumor,
+      dangerousNodule);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExaminationResultModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.examinedAt == this.examinedAt &&
+          other.platelet == this.platelet &&
+          other.ast == this.ast &&
+          other.atl == this.atl &&
+          other.ggt == this.ggt &&
+          other.bilirubin == this.bilirubin &&
+          other.albumin == this.albumin &&
+          other.afp == this.afp &&
+          other.hbvDna == this.hbvDna &&
+          other.hcvDna == this.hcvDna &&
+          other.fattyLiver == this.fattyLiver &&
+          other.benignTumor == this.benignTumor &&
+          other.dangerousNodule == this.dangerousNodule);
+}
+
+class ExaminationResultsCompanion
+    extends UpdateCompanion<ExaminationResultModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime> examinedAt;
+  final Value<int?> platelet;
+  final Value<int?> ast;
+  final Value<int?> atl;
+  final Value<int?> ggt;
+  final Value<int?> bilirubin;
+  final Value<int?> albumin;
+  final Value<int?> afp;
+  final Value<int?> hbvDna;
+  final Value<int?> hcvDna;
+  final Value<bool?> fattyLiver;
+  final Value<bool?> benignTumor;
+  final Value<bool?> dangerousNodule;
+  const ExaminationResultsCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.examinedAt = const Value.absent(),
+    this.platelet = const Value.absent(),
+    this.ast = const Value.absent(),
+    this.atl = const Value.absent(),
+    this.ggt = const Value.absent(),
+    this.bilirubin = const Value.absent(),
+    this.albumin = const Value.absent(),
+    this.afp = const Value.absent(),
+    this.hbvDna = const Value.absent(),
+    this.hcvDna = const Value.absent(),
+    this.fattyLiver = const Value.absent(),
+    this.benignTumor = const Value.absent(),
+    this.dangerousNodule = const Value.absent(),
+  });
+  ExaminationResultsCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required DateTime examinedAt,
+    this.platelet = const Value.absent(),
+    this.ast = const Value.absent(),
+    this.atl = const Value.absent(),
+    this.ggt = const Value.absent(),
+    this.bilirubin = const Value.absent(),
+    this.albumin = const Value.absent(),
+    this.afp = const Value.absent(),
+    this.hbvDna = const Value.absent(),
+    this.hcvDna = const Value.absent(),
+    this.fattyLiver = const Value.absent(),
+    this.benignTumor = const Value.absent(),
+    this.dangerousNodule = const Value.absent(),
+  })  : userId = Value(userId),
+        examinedAt = Value(examinedAt);
+  static Insertable<ExaminationResultModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? examinedAt,
+    Expression<int?>? platelet,
+    Expression<int?>? ast,
+    Expression<int?>? atl,
+    Expression<int?>? ggt,
+    Expression<int?>? bilirubin,
+    Expression<int?>? albumin,
+    Expression<int?>? afp,
+    Expression<int?>? hbvDna,
+    Expression<int?>? hcvDna,
+    Expression<bool?>? fattyLiver,
+    Expression<bool?>? benignTumor,
+    Expression<bool?>? dangerousNodule,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (examinedAt != null) 'examined_at': examinedAt,
+      if (platelet != null) 'platelet': platelet,
+      if (ast != null) 'ast': ast,
+      if (atl != null) 'atl': atl,
+      if (ggt != null) 'ggt': ggt,
+      if (bilirubin != null) 'bilirubin': bilirubin,
+      if (albumin != null) 'albumin': albumin,
+      if (afp != null) 'afp': afp,
+      if (hbvDna != null) 'hbv_dna': hbvDna,
+      if (hcvDna != null) 'hcv_dna': hcvDna,
+      if (fattyLiver != null) 'fatty_liver': fattyLiver,
+      if (benignTumor != null) 'benign_tumor': benignTumor,
+      if (dangerousNodule != null) 'dangerous_nodule': dangerousNodule,
+    });
+  }
+
+  ExaminationResultsCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<DateTime>? examinedAt,
+      Value<int?>? platelet,
+      Value<int?>? ast,
+      Value<int?>? atl,
+      Value<int?>? ggt,
+      Value<int?>? bilirubin,
+      Value<int?>? albumin,
+      Value<int?>? afp,
+      Value<int?>? hbvDna,
+      Value<int?>? hcvDna,
+      Value<bool?>? fattyLiver,
+      Value<bool?>? benignTumor,
+      Value<bool?>? dangerousNodule}) {
+    return ExaminationResultsCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      examinedAt: examinedAt ?? this.examinedAt,
+      platelet: platelet ?? this.platelet,
+      ast: ast ?? this.ast,
+      atl: atl ?? this.atl,
+      ggt: ggt ?? this.ggt,
+      bilirubin: bilirubin ?? this.bilirubin,
+      albumin: albumin ?? this.albumin,
+      afp: afp ?? this.afp,
+      hbvDna: hbvDna ?? this.hbvDna,
+      hcvDna: hcvDna ?? this.hcvDna,
+      fattyLiver: fattyLiver ?? this.fattyLiver,
+      benignTumor: benignTumor ?? this.benignTumor,
+      dangerousNodule: dangerousNodule ?? this.dangerousNodule,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (examinedAt.present) {
+      map['examined_at'] = Variable<DateTime>(examinedAt.value);
+    }
+    if (platelet.present) {
+      map['platelet'] = Variable<int?>(platelet.value);
+    }
+    if (ast.present) {
+      map['ast'] = Variable<int?>(ast.value);
+    }
+    if (atl.present) {
+      map['atl'] = Variable<int?>(atl.value);
+    }
+    if (ggt.present) {
+      map['ggt'] = Variable<int?>(ggt.value);
+    }
+    if (bilirubin.present) {
+      map['bilirubin'] = Variable<int?>(bilirubin.value);
+    }
+    if (albumin.present) {
+      map['albumin'] = Variable<int?>(albumin.value);
+    }
+    if (afp.present) {
+      map['afp'] = Variable<int?>(afp.value);
+    }
+    if (hbvDna.present) {
+      map['hbv_dna'] = Variable<int?>(hbvDna.value);
+    }
+    if (hcvDna.present) {
+      map['hcv_dna'] = Variable<int?>(hcvDna.value);
+    }
+    if (fattyLiver.present) {
+      map['fatty_liver'] = Variable<bool?>(fattyLiver.value);
+    }
+    if (benignTumor.present) {
+      map['benign_tumor'] = Variable<bool?>(benignTumor.value);
+    }
+    if (dangerousNodule.present) {
+      map['dangerous_nodule'] = Variable<bool?>(dangerousNodule.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExaminationResultsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('examinedAt: $examinedAt, ')
+          ..write('platelet: $platelet, ')
+          ..write('ast: $ast, ')
+          ..write('atl: $atl, ')
+          ..write('ggt: $ggt, ')
+          ..write('bilirubin: $bilirubin, ')
+          ..write('albumin: $albumin, ')
+          ..write('afp: $afp, ')
+          ..write('hbvDna: $hbvDna, ')
+          ..write('hcvDna: $hcvDna, ')
+          ..write('fattyLiver: $fattyLiver, ')
+          ..write('benignTumor: $benignTumor, ')
+          ..write('dangerousNodule: $dangerousNodule')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ExaminationResultsTable extends ExaminationResults
+    with TableInfo<$ExaminationResultsTable, ExaminationResultModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ExaminationResultsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _examinedAtMeta = const VerificationMeta('examinedAt');
+  @override
+  late final GeneratedColumn<DateTime?> examinedAt = GeneratedColumn<DateTime?>(
+      'examined_at', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _plateletMeta = const VerificationMeta('platelet');
+  @override
+  late final GeneratedColumn<int?> platelet = GeneratedColumn<int?>(
+      'platelet', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _astMeta = const VerificationMeta('ast');
+  @override
+  late final GeneratedColumn<int?> ast = GeneratedColumn<int?>(
+      'ast', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _atlMeta = const VerificationMeta('atl');
+  @override
+  late final GeneratedColumn<int?> atl = GeneratedColumn<int?>(
+      'atl', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _ggtMeta = const VerificationMeta('ggt');
+  @override
+  late final GeneratedColumn<int?> ggt = GeneratedColumn<int?>(
+      'ggt', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _bilirubinMeta = const VerificationMeta('bilirubin');
+  @override
+  late final GeneratedColumn<int?> bilirubin = GeneratedColumn<int?>(
+      'bilirubin', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _albuminMeta = const VerificationMeta('albumin');
+  @override
+  late final GeneratedColumn<int?> albumin = GeneratedColumn<int?>(
+      'albumin', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _afpMeta = const VerificationMeta('afp');
+  @override
+  late final GeneratedColumn<int?> afp = GeneratedColumn<int?>(
+      'afp', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _hbvDnaMeta = const VerificationMeta('hbvDna');
+  @override
+  late final GeneratedColumn<int?> hbvDna = GeneratedColumn<int?>(
+      'hbv_dna', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _hcvDnaMeta = const VerificationMeta('hcvDna');
+  @override
+  late final GeneratedColumn<int?> hcvDna = GeneratedColumn<int?>(
+      'hcv_dna', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _fattyLiverMeta = const VerificationMeta('fattyLiver');
+  @override
+  late final GeneratedColumn<bool?> fattyLiver = GeneratedColumn<bool?>(
+      'fatty_liver', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (fatty_liver IN (0, 1))');
+  final VerificationMeta _benignTumorMeta =
+      const VerificationMeta('benignTumor');
+  @override
+  late final GeneratedColumn<bool?> benignTumor = GeneratedColumn<bool?>(
+      'benign_tumor', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (benign_tumor IN (0, 1))');
+  final VerificationMeta _dangerousNoduleMeta =
+      const VerificationMeta('dangerousNodule');
+  @override
+  late final GeneratedColumn<bool?> dangerousNodule = GeneratedColumn<bool?>(
+      'dangerous_nodule', aliasedName, true,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (dangerous_nodule IN (0, 1))');
+  @override
+  List<GeneratedColumn> get $columns => [
+        userId,
+        id,
+        createdAt,
+        updatedAt,
+        examinedAt,
+        platelet,
+        ast,
+        atl,
+        ggt,
+        bilirubin,
+        albumin,
+        afp,
+        hbvDna,
+        hcvDna,
+        fattyLiver,
+        benignTumor,
+        dangerousNodule
+      ];
+  @override
+  String get aliasedName => _alias ?? 'examination_results';
+  @override
+  String get actualTableName => 'examination_results';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ExaminationResultModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('examined_at')) {
+      context.handle(
+          _examinedAtMeta,
+          examinedAt.isAcceptableOrUnknown(
+              data['examined_at']!, _examinedAtMeta));
+    } else if (isInserting) {
+      context.missing(_examinedAtMeta);
+    }
+    if (data.containsKey('platelet')) {
+      context.handle(_plateletMeta,
+          platelet.isAcceptableOrUnknown(data['platelet']!, _plateletMeta));
+    }
+    if (data.containsKey('ast')) {
+      context.handle(
+          _astMeta, ast.isAcceptableOrUnknown(data['ast']!, _astMeta));
+    }
+    if (data.containsKey('atl')) {
+      context.handle(
+          _atlMeta, atl.isAcceptableOrUnknown(data['atl']!, _atlMeta));
+    }
+    if (data.containsKey('ggt')) {
+      context.handle(
+          _ggtMeta, ggt.isAcceptableOrUnknown(data['ggt']!, _ggtMeta));
+    }
+    if (data.containsKey('bilirubin')) {
+      context.handle(_bilirubinMeta,
+          bilirubin.isAcceptableOrUnknown(data['bilirubin']!, _bilirubinMeta));
+    }
+    if (data.containsKey('albumin')) {
+      context.handle(_albuminMeta,
+          albumin.isAcceptableOrUnknown(data['albumin']!, _albuminMeta));
+    }
+    if (data.containsKey('afp')) {
+      context.handle(
+          _afpMeta, afp.isAcceptableOrUnknown(data['afp']!, _afpMeta));
+    }
+    if (data.containsKey('hbv_dna')) {
+      context.handle(_hbvDnaMeta,
+          hbvDna.isAcceptableOrUnknown(data['hbv_dna']!, _hbvDnaMeta));
+    }
+    if (data.containsKey('hcv_dna')) {
+      context.handle(_hcvDnaMeta,
+          hcvDna.isAcceptableOrUnknown(data['hcv_dna']!, _hcvDnaMeta));
+    }
+    if (data.containsKey('fatty_liver')) {
+      context.handle(
+          _fattyLiverMeta,
+          fattyLiver.isAcceptableOrUnknown(
+              data['fatty_liver']!, _fattyLiverMeta));
+    }
+    if (data.containsKey('benign_tumor')) {
+      context.handle(
+          _benignTumorMeta,
+          benignTumor.isAcceptableOrUnknown(
+              data['benign_tumor']!, _benignTumorMeta));
+    }
+    if (data.containsKey('dangerous_nodule')) {
+      context.handle(
+          _dangerousNoduleMeta,
+          dangerousNodule.isAcceptableOrUnknown(
+              data['dangerous_nodule']!, _dangerousNoduleMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, examinedAt},
+      ];
+  @override
+  ExaminationResultModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return ExaminationResultModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $ExaminationResultsTable createAlias(String alias) {
+    return $ExaminationResultsTable(attachedDatabase, alias);
+  }
+}
+
+class HealthQuestionModel extends DataClass
+    implements Insertable<HealthQuestionModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final String qusetion;
+  final String? doctorName;
+  final String? answer;
+  HealthQuestionModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.qusetion,
+      this.doctorName,
+      this.answer});
+  factory HealthQuestionModel.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return HealthQuestionModel(
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      qusetion: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}qusetion'])!,
+      doctorName: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}doctor_name']),
+      answer: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}answer']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['qusetion'] = Variable<String>(qusetion);
+    if (!nullToAbsent || doctorName != null) {
+      map['doctor_name'] = Variable<String?>(doctorName);
+    }
+    if (!nullToAbsent || answer != null) {
+      map['answer'] = Variable<String?>(answer);
+    }
+    return map;
+  }
+
+  HealthQuestionsCompanion toCompanion(bool nullToAbsent) {
+    return HealthQuestionsCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      qusetion: Value(qusetion),
+      doctorName: doctorName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(doctorName),
+      answer:
+          answer == null && nullToAbsent ? const Value.absent() : Value(answer),
+    );
+  }
+
+  factory HealthQuestionModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HealthQuestionModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      qusetion: serializer.fromJson<String>(json['qusetion']),
+      doctorName: serializer.fromJson<String?>(json['doctorName']),
+      answer: serializer.fromJson<String?>(json['answer']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'qusetion': serializer.toJson<String>(qusetion),
+      'doctorName': serializer.toJson<String?>(doctorName),
+      'answer': serializer.toJson<String?>(answer),
+    };
+  }
+
+  HealthQuestionModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? qusetion,
+          String? doctorName,
+          String? answer}) =>
+      HealthQuestionModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        qusetion: qusetion ?? this.qusetion,
+        doctorName: doctorName ?? this.doctorName,
+        answer: answer ?? this.answer,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('HealthQuestionModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('qusetion: $qusetion, ')
+          ..write('doctorName: $doctorName, ')
+          ..write('answer: $answer')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      userId, id, createdAt, updatedAt, qusetion, doctorName, answer);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HealthQuestionModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.qusetion == this.qusetion &&
+          other.doctorName == this.doctorName &&
+          other.answer == this.answer);
+}
+
+class HealthQuestionsCompanion extends UpdateCompanion<HealthQuestionModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> qusetion;
+  final Value<String?> doctorName;
+  final Value<String?> answer;
+  const HealthQuestionsCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.qusetion = const Value.absent(),
+    this.doctorName = const Value.absent(),
+    this.answer = const Value.absent(),
+  });
+  HealthQuestionsCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required String qusetion,
+    this.doctorName = const Value.absent(),
+    this.answer = const Value.absent(),
+  })  : userId = Value(userId),
+        qusetion = Value(qusetion);
+  static Insertable<HealthQuestionModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? qusetion,
+    Expression<String?>? doctorName,
+    Expression<String?>? answer,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (qusetion != null) 'qusetion': qusetion,
+      if (doctorName != null) 'doctor_name': doctorName,
+      if (answer != null) 'answer': answer,
+    });
+  }
+
+  HealthQuestionsCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? qusetion,
+      Value<String?>? doctorName,
+      Value<String?>? answer}) {
+    return HealthQuestionsCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      qusetion: qusetion ?? this.qusetion,
+      doctorName: doctorName ?? this.doctorName,
+      answer: answer ?? this.answer,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (qusetion.present) {
+      map['qusetion'] = Variable<String>(qusetion.value);
+    }
+    if (doctorName.present) {
+      map['doctor_name'] = Variable<String?>(doctorName.value);
+    }
+    if (answer.present) {
+      map['answer'] = Variable<String?>(answer.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HealthQuestionsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('qusetion: $qusetion, ')
+          ..write('doctorName: $doctorName, ')
+          ..write('answer: $answer')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HealthQuestionsTable extends HealthQuestions
+    with TableInfo<$HealthQuestionsTable, HealthQuestionModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HealthQuestionsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _qusetionMeta = const VerificationMeta('qusetion');
+  @override
+  late final GeneratedColumn<String?> qusetion = GeneratedColumn<String?>(
+      'qusetion', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _doctorNameMeta = const VerificationMeta('doctorName');
+  @override
+  late final GeneratedColumn<String?> doctorName = GeneratedColumn<String?>(
+      'doctor_name', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _answerMeta = const VerificationMeta('answer');
+  @override
+  late final GeneratedColumn<String?> answer = GeneratedColumn<String?>(
+      'answer', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [userId, id, createdAt, updatedAt, qusetion, doctorName, answer];
+  @override
+  String get aliasedName => _alias ?? 'health_questions';
+  @override
+  String get actualTableName => 'health_questions';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<HealthQuestionModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('qusetion')) {
+      context.handle(_qusetionMeta,
+          qusetion.isAcceptableOrUnknown(data['qusetion']!, _qusetionMeta));
+    } else if (isInserting) {
+      context.missing(_qusetionMeta);
+    }
+    if (data.containsKey('doctor_name')) {
+      context.handle(
+          _doctorNameMeta,
+          doctorName.isAcceptableOrUnknown(
+              data['doctor_name']!, _doctorNameMeta));
+    }
+    if (data.containsKey('answer')) {
+      context.handle(_answerMeta,
+          answer.isAcceptableOrUnknown(data['answer']!, _answerMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HealthQuestionModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return HealthQuestionModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $HealthQuestionsTable createAlias(String alias) {
+    return $HealthQuestionsTable(attachedDatabase, alias);
+  }
+}
+
+class DrinkingHistoryModel extends DataClass
+    implements Insertable<DrinkingHistoryModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final int amount;
+  final DateTime date;
+  DrinkingHistoryModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.amount,
+      required this.date});
+  factory DrinkingHistoryModel.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return DrinkingHistoryModel(
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      amount: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['amount'] = Variable<int>(amount);
+    map['date'] = Variable<DateTime>(date);
+    return map;
+  }
+
+  DrinkingHistoriesCompanion toCompanion(bool nullToAbsent) {
+    return DrinkingHistoriesCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      amount: Value(amount),
+      date: Value(date),
+    );
+  }
+
+  factory DrinkingHistoryModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DrinkingHistoryModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      amount: serializer.fromJson<int>(json['amount']),
+      date: serializer.fromJson<DateTime>(json['date']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'amount': serializer.toJson<int>(amount),
+      'date': serializer.toJson<DateTime>(date),
+    };
+  }
+
+  DrinkingHistoryModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          int? amount,
+          DateTime? date}) =>
+      DrinkingHistoryModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        amount: amount ?? this.amount,
+        date: date ?? this.date,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('DrinkingHistoryModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('amount: $amount, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(userId, id, createdAt, updatedAt, amount, date);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DrinkingHistoryModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.amount == this.amount &&
+          other.date == this.date);
+}
+
+class DrinkingHistoriesCompanion extends UpdateCompanion<DrinkingHistoryModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> amount;
+  final Value<DateTime> date;
+  const DrinkingHistoriesCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.date = const Value.absent(),
+  });
+  DrinkingHistoriesCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required int amount,
+    required DateTime date,
+  })  : userId = Value(userId),
+        amount = Value(amount),
+        date = Value(date);
+  static Insertable<DrinkingHistoryModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? amount,
+    Expression<DateTime>? date,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (amount != null) 'amount': amount,
+      if (date != null) 'date': date,
+    });
+  }
+
+  DrinkingHistoriesCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<int>? amount,
+      Value<DateTime>? date}) {
+    return DrinkingHistoriesCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      amount: amount ?? this.amount,
+      date: date ?? this.date,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<int>(amount.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DrinkingHistoriesCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('amount: $amount, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DrinkingHistoriesTable extends DrinkingHistories
+    with TableInfo<$DrinkingHistoriesTable, DrinkingHistoryModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DrinkingHistoriesTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<int?> amount = GeneratedColumn<int?>(
+      'amount', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime?> date = GeneratedColumn<DateTime?>(
+      'date', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [userId, id, createdAt, updatedAt, amount, date];
+  @override
+  String get aliasedName => _alias ?? 'drinking_histories';
+  @override
+  String get actualTableName => 'drinking_histories';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DrinkingHistoryModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, date},
+      ];
+  @override
+  DrinkingHistoryModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return DrinkingHistoryModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $DrinkingHistoriesTable createAlias(String alias) {
+    return $DrinkingHistoriesTable(attachedDatabase, alias);
+  }
+}
+
+class SmokingHistoryModel extends DataClass
+    implements Insertable<SmokingHistoryModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final int amount;
+  final DateTime date;
+  SmokingHistoryModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.amount,
+      required this.date});
+  factory SmokingHistoryModel.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return SmokingHistoryModel(
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      amount: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['amount'] = Variable<int>(amount);
+    map['date'] = Variable<DateTime>(date);
+    return map;
+  }
+
+  SmokingHistoriesCompanion toCompanion(bool nullToAbsent) {
+    return SmokingHistoriesCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      amount: Value(amount),
+      date: Value(date),
+    );
+  }
+
+  factory SmokingHistoryModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SmokingHistoryModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      amount: serializer.fromJson<int>(json['amount']),
+      date: serializer.fromJson<DateTime>(json['date']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'amount': serializer.toJson<int>(amount),
+      'date': serializer.toJson<DateTime>(date),
+    };
+  }
+
+  SmokingHistoryModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          int? amount,
+          DateTime? date}) =>
+      SmokingHistoryModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        amount: amount ?? this.amount,
+        date: date ?? this.date,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SmokingHistoryModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('amount: $amount, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(userId, id, createdAt, updatedAt, amount, date);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SmokingHistoryModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.amount == this.amount &&
+          other.date == this.date);
+}
+
+class SmokingHistoriesCompanion extends UpdateCompanion<SmokingHistoryModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> amount;
+  final Value<DateTime> date;
+  const SmokingHistoriesCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.date = const Value.absent(),
+  });
+  SmokingHistoriesCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required int amount,
+    required DateTime date,
+  })  : userId = Value(userId),
+        amount = Value(amount),
+        date = Value(date);
+  static Insertable<SmokingHistoryModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? amount,
+    Expression<DateTime>? date,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (amount != null) 'amount': amount,
+      if (date != null) 'date': date,
+    });
+  }
+
+  SmokingHistoriesCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<int>? amount,
+      Value<DateTime>? date}) {
+    return SmokingHistoriesCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      amount: amount ?? this.amount,
+      date: date ?? this.date,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<int>(amount.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SmokingHistoriesCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('amount: $amount, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SmokingHistoriesTable extends SmokingHistories
+    with TableInfo<$SmokingHistoriesTable, SmokingHistoryModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SmokingHistoriesTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<int?> amount = GeneratedColumn<int?>(
+      'amount', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime?> date = GeneratedColumn<DateTime?>(
+      'date', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [userId, id, createdAt, updatedAt, amount, date];
+  @override
+  String get aliasedName => _alias ?? 'smoking_histories';
+  @override
+  String get actualTableName => 'smoking_histories';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<SmokingHistoryModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, date},
+      ];
+  @override
+  SmokingHistoryModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return SmokingHistoryModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $SmokingHistoriesTable createAlias(String alias) {
+    return $SmokingHistoriesTable(attachedDatabase, alias);
+  }
+}
+
+class ExcerciseHistoryModel extends DataClass
+    implements Insertable<ExcerciseHistoryModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final int minuite;
+  final DateTime date;
+  ExcerciseHistoryModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.minuite,
+      required this.date});
+  factory ExcerciseHistoryModel.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return ExcerciseHistoryModel(
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      minuite: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}minuite'])!,
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['minuite'] = Variable<int>(minuite);
+    map['date'] = Variable<DateTime>(date);
+    return map;
+  }
+
+  ExcerciseHistoriesCompanion toCompanion(bool nullToAbsent) {
+    return ExcerciseHistoriesCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      minuite: Value(minuite),
+      date: Value(date),
+    );
+  }
+
+  factory ExcerciseHistoryModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ExcerciseHistoryModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      minuite: serializer.fromJson<int>(json['minuite']),
+      date: serializer.fromJson<DateTime>(json['date']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'minuite': serializer.toJson<int>(minuite),
+      'date': serializer.toJson<DateTime>(date),
+    };
+  }
+
+  ExcerciseHistoryModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          int? minuite,
+          DateTime? date}) =>
+      ExcerciseHistoryModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        minuite: minuite ?? this.minuite,
+        date: date ?? this.date,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ExcerciseHistoryModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('minuite: $minuite, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(userId, id, createdAt, updatedAt, minuite, date);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ExcerciseHistoryModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.minuite == this.minuite &&
+          other.date == this.date);
+}
+
+class ExcerciseHistoriesCompanion
+    extends UpdateCompanion<ExcerciseHistoryModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> minuite;
+  final Value<DateTime> date;
+  const ExcerciseHistoriesCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.minuite = const Value.absent(),
+    this.date = const Value.absent(),
+  });
+  ExcerciseHistoriesCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required int minuite,
+    required DateTime date,
+  })  : userId = Value(userId),
+        minuite = Value(minuite),
+        date = Value(date);
+  static Insertable<ExcerciseHistoryModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? minuite,
+    Expression<DateTime>? date,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (minuite != null) 'minuite': minuite,
+      if (date != null) 'date': date,
+    });
+  }
+
+  ExcerciseHistoriesCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<int>? minuite,
+      Value<DateTime>? date}) {
+    return ExcerciseHistoriesCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      minuite: minuite ?? this.minuite,
+      date: date ?? this.date,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (minuite.present) {
+      map['minuite'] = Variable<int>(minuite.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ExcerciseHistoriesCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('minuite: $minuite, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ExcerciseHistoriesTable extends ExcerciseHistories
+    with TableInfo<$ExcerciseHistoriesTable, ExcerciseHistoryModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ExcerciseHistoriesTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _minuiteMeta = const VerificationMeta('minuite');
+  @override
+  late final GeneratedColumn<int?> minuite = GeneratedColumn<int?>(
+      'minuite', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime?> date = GeneratedColumn<DateTime?>(
+      'date', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [userId, id, createdAt, updatedAt, minuite, date];
+  @override
+  String get aliasedName => _alias ?? 'excercise_histories';
+  @override
+  String get actualTableName => 'excercise_histories';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ExcerciseHistoryModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('minuite')) {
+      context.handle(_minuiteMeta,
+          minuite.isAcceptableOrUnknown(data['minuite']!, _minuiteMeta));
+    } else if (isInserting) {
+      context.missing(_minuiteMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, date},
+      ];
+  @override
+  ExcerciseHistoryModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return ExcerciseHistoryModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $ExcerciseHistoriesTable createAlias(String alias) {
+    return $ExcerciseHistoriesTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $UsersTable users = $UsersTable(this);
@@ -6307,8 +7953,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MedicationNotificationsTable(this);
   late final $HospitalVisitSchedulesTable hospitalVisitSchedules =
       $HospitalVisitSchedulesTable(this);
-  late final $BloodGlucoseHistoriesTable bloodGlucoseHistories =
-      $BloodGlucoseHistoriesTable(this);
   late final $LiverLevelHistoriesTable liverLevelHistories =
       $LiverLevelHistoriesTable(this);
   late final $PointHistoriesTable pointHistories = $PointHistoriesTable(this);
@@ -6321,6 +7965,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $SF12SurveyAnswersTable(this);
   late final $MetabolicDiseasesTable metabolicDiseases =
       $MetabolicDiseasesTable(this);
+  late final $ExaminationResultsTable examinationResults =
+      $ExaminationResultsTable(this);
+  late final $HealthQuestionsTable healthQuestions =
+      $HealthQuestionsTable(this);
+  late final $DrinkingHistoriesTable drinkingHistories =
+      $DrinkingHistoriesTable(this);
+  late final $SmokingHistoriesTable smokingHistories =
+      $SmokingHistoriesTable(this);
+  late final $ExcerciseHistoriesTable excerciseHistories =
+      $ExcerciseHistoriesTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -6332,12 +7986,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         medicationSchedules,
         medicationNotifications,
         hospitalVisitSchedules,
-        bloodGlucoseHistories,
         liverLevelHistories,
         pointHistories,
         sF12SurveyHistories,
         medicationAdherenceSurveyHistories,
         sF12SurveyAnswers,
-        metabolicDiseases
+        metabolicDiseases,
+        examinationResults,
+        healthQuestions,
+        drinkingHistories,
+        smokingHistories,
+        excerciseHistories
       ];
 }

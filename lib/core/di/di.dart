@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/core/user/user_id.dart';
+import 'package:yak/data/datasources/local/health_question/health_question_local_data_source.dart';
 import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visit_schedule_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_information/medication_information_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_notification/medication_notification_local_data_source.dart';
@@ -20,6 +21,7 @@ import 'package:yak/data/datasources/local/sf12_survey/sf_12_survey_answer_local
 import 'package:yak/data/datasources/local/survey_group/survey_group_local_data_source.dart';
 import 'package:yak/data/datasources/local/user/user_local_data_source.dart';
 import 'package:yak/data/datasources/remote/pill/pill_remote_data_source.dart';
+import 'package:yak/data/repositories/health_question/health_question_repository_impl.dart';
 import 'package:yak/data/repositories/hospital_visit_schedule/hospital_visit_schedule_repository_impl.dart';
 import 'package:yak/data/repositories/medication_schedule/medication_schedule_repository_impl.dart';
 import 'package:yak/data/repositories/metabolic_disease/metabolic_disease_repository_impl.dart';
@@ -27,6 +29,7 @@ import 'package:yak/data/repositories/pill/pill_repository_impl.dart';
 import 'package:yak/data/repositories/survey/sf_12_survey_answer/sf_12_survey_answer_repository.dart';
 import 'package:yak/data/repositories/survey/survey_group_repository_impl.dart';
 import 'package:yak/data/repositories/user/user_repository_impl.dart';
+import 'package:yak/domain/repositories/health_question/health_question_repository.dart';
 import 'package:yak/domain/repositories/hospital_visit_schedule/hospital_visit_schedule_repository.dart';
 import 'package:yak/domain/repositories/medication_schedule/medication_schedule_repository.dart';
 import 'package:yak/domain/repositories/metabolic_disease/metabolic_disease_repository.dart';
@@ -34,6 +37,10 @@ import 'package:yak/domain/repositories/pill/pill_repository.dart';
 import 'package:yak/domain/repositories/survey/sf_12_survey_answer/sf_12_survey_answer_repository.dart';
 import 'package:yak/domain/repositories/survey/survey_group_repository.dart';
 import 'package:yak/domain/repositories/user/user_repository.dart';
+import 'package:yak/domain/usecases/health_question/delete_health_question.dart';
+import 'package:yak/domain/usecases/health_question/get_health_questions.dart';
+import 'package:yak/domain/usecases/health_question/update_health_question.dart';
+import 'package:yak/domain/usecases/health_question/write_health_question.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/create_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedules.dart';
@@ -256,6 +263,35 @@ class Di {
       ..registerSingleton<UpsertMetabolicDisease>(
         (c) => UpsertMetabolicDisease(
           metabolicDiseaseRepository: c<MetabolicDiseaseRepository>(),
+        ),
+      )
+      ..registerSingleton<HealthQuestionLocalDataSource>(
+        (c) => HealthQuestionLocalDataSourceImpl(c<AppDatabase>()),
+      )
+      ..registerSingleton<HealthQuestionRepository>(
+        (c) => HealthQuestionRepositoryImpl(
+          userId: c<UserId>(),
+          healthQuestionLocalDataSource: c<HealthQuestionLocalDataSource>(),
+        ),
+      )
+      ..registerSingleton<GetHealthQuestions>(
+        (c) => GetHealthQuestions(
+          healthQuestionRepository: c<HealthQuestionRepository>(),
+        ),
+      )
+      ..registerSingleton<WriteHealthQuestion>(
+        (c) => WriteHealthQuestion(
+          healthQuestionRepository: c<HealthQuestionRepository>(),
+        ),
+      )
+      ..registerSingleton<UpdateHealthQuestion>(
+        (c) => UpdateHealthQuestion(
+          healthQuestionRepository: c<HealthQuestionRepository>(),
+        ),
+      )
+      ..registerSingleton<DeleteHealthQuestion>(
+        (c) => DeleteHealthQuestion(
+          healthQuestionRepository: c<HealthQuestionRepository>(),
         ),
       );
   }

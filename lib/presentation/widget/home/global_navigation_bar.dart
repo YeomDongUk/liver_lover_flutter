@@ -24,7 +24,7 @@ class _GlobalNavigationBarState extends State<GlobalNavigationBar> {
   ];
   final strings = [
     '복약관리',
-    '검진/외래',
+    '외래/검진',
     '혈액검사',
     '건강일기',
     '건강정보',

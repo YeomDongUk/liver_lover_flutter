@@ -8,11 +8,11 @@ class MetabolicDisease extends Equatable {
     required this.vaccinConfirmedAt,
     required this.hbv,
     required this.hbvConfirmedAt,
-    required this.hbvInactivityConfirmedAt,
-    required this.chronicHbvConfirmedAt,
-    required this.cirrhosisConfirmedAt,
+    // required this.hbvInactivityConfirmedAt,
+    // required this.chronicHbvConfirmedAt,
+    required this.cirrhosis,
     required this.hcv,
-    required this.fattyRiver,
+    // required this.fattyLiver,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -24,11 +24,11 @@ class MetabolicDisease extends Equatable {
         vaccinConfirmedAt: null,
         hbv: null,
         hbvConfirmedAt: null,
-        hbvInactivityConfirmedAt: null,
-        chronicHbvConfirmedAt: null,
-        cirrhosisConfirmedAt: null,
+        // hbvInactivityConfirmedAt: null,
+        // chronicHbvConfirmedAt: null,
+        cirrhosis: null,
         hcv: null,
-        fattyRiver: null,
+        // fattyLiver: null,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
@@ -53,23 +53,19 @@ class MetabolicDisease extends Equatable {
             : DateTime.fromMillisecondsSinceEpoch(
                 json['hbvConfirmedAt'] as int,
               ),
-        hbvInactivityConfirmedAt: json['hbvInactivityConfirmedAt'] == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(
-                json['hbvInactivityConfirmedAt'] as int,
-              ),
-        chronicHbvConfirmedAt: json['chronicHbvConfirmedAt'] == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(
-                json['chronicHbvConfirmedAt'] as int,
-              ),
-        cirrhosisConfirmedAt: json['cirrhosisConfirmedAt'] == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(
-                json['cirrhosisConfirmedAt'] as int,
-              ),
+        // hbvInactivityConfirmedAt: json['hbvInactivityConfirmedAt'] == null
+        //     ? null
+        //     : DateTime.fromMillisecondsSinceEpoch(
+        //         json['hbvInactivityConfirmedAt'] as int,
+        //       ),
+        // chronicHbvConfirmedAt: json['chronicHbvConfirmedAt'] == null
+        //     ? null
+        //     : DateTime.fromMillisecondsSinceEpoch(
+        //         json['chronicHbvConfirmedAt'] as int,
+        //       ),
+        cirrhosis: json['cirrhosis'] as bool?,
         hcv: json['hcv'] as bool?,
-        fattyRiver: json['fattyRiver'] as bool?,
+        // fattyLiver: json['fattyLiver'] as bool?,
         createdAt:
             DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
         updatedAt:
@@ -94,20 +90,20 @@ class MetabolicDisease extends Equatable {
   /// B형 간염확인일
   final DateTime? hbvConfirmedAt;
 
-  /// B형 간염 바이러스 비활동성 보유상태 확인일
-  final DateTime? hbvInactivityConfirmedAt;
+  // /// B형 간염 바이러스 비활동성 보유상태 확인일
+  // final DateTime? hbvInactivityConfirmedAt;
 
-  /// 만성 B형 간염 확인일
-  final DateTime? chronicHbvConfirmedAt;
-
-  /// 간경병증 확인일
-  final DateTime? cirrhosisConfirmedAt;
+  // /// 만성 B형 간염 확인일
+  // final DateTime? chronicHbvConfirmedAt;
 
   /// C형 간염 여부
   final bool? hcv;
 
-  ///  지방간 여부
-  final bool? fattyRiver;
+  // ///  지방간 여부
+  // final bool? fattyLiver;
+
+  /// 간경병증 여부
+  final bool? cirrhosis;
 
   /// 생성일
   final DateTime createdAt;
@@ -121,11 +117,11 @@ class MetabolicDisease extends Equatable {
     DateTime? vaccinConfirmedAt,
     bool? hbv,
     DateTime? hbvConfirmedAt,
-    DateTime? hbvInactivityConfirmedAt,
-    DateTime? chronicHbvConfirmedAt,
-    DateTime? cirrhosisConfirmedAt,
+    // DateTime? hbvInactivityConfirmedAt,
+    // DateTime? chronicHbvConfirmedAt,
+    bool? cirrhosis,
     bool? hcv,
-    bool? fattyRiver,
+    // bool? fattyLiver,
   }) =>
       MetabolicDisease(
         id: id,
@@ -134,13 +130,13 @@ class MetabolicDisease extends Equatable {
         vaccinConfirmedAt: vaccinConfirmedAt ?? this.vaccinConfirmedAt,
         hbv: hbv ?? this.hbv,
         hbvConfirmedAt: hbvConfirmedAt ?? this.hbvConfirmedAt,
-        hbvInactivityConfirmedAt:
-            hbvInactivityConfirmedAt ?? this.hbvInactivityConfirmedAt,
-        chronicHbvConfirmedAt:
-            chronicHbvConfirmedAt ?? this.chronicHbvConfirmedAt,
-        cirrhosisConfirmedAt: cirrhosisConfirmedAt ?? this.cirrhosisConfirmedAt,
+        // hbvInactivityConfirmedAt:
+        //     hbvInactivityConfirmedAt ?? this.hbvInactivityConfirmedAt,
+        // chronicHbvConfirmedAt:
+        //     chronicHbvConfirmedAt ?? this.chronicHbvConfirmedAt,
+        cirrhosis: cirrhosis ?? this.cirrhosis,
         hcv: hcv ?? this.hcv,
-        fattyRiver: fattyRiver ?? this.fattyRiver,
+        // fattyLiver: fattyLiver ?? this.fattyLiver,
         createdAt: createdAt,
         updatedAt: updatedAt,
       );
@@ -153,11 +149,11 @@ class MetabolicDisease extends Equatable {
         vaccinConfirmedAt,
         hbv,
         hbvConfirmedAt,
-        hbvInactivityConfirmedAt,
-        chronicHbvConfirmedAt,
-        cirrhosisConfirmedAt,
+        // hbvInactivityConfirmedAt,
+        // chronicHbvConfirmedAt,
+        cirrhosis,
         hcv,
-        fattyRiver,
+        // fattyLiver,
         createdAt,
         updatedAt,
       ];

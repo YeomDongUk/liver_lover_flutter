@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/upsert/upsert_metabolic_disease_cubit.dart';
+import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 
 class HCVUpdateForm extends StatelessWidget {
   const HCVUpdateForm({super.key});
@@ -14,13 +15,8 @@ class HCVUpdateForm extends StatelessWidget {
 
     return BlocBuilder<UpsertMetabolicDiseaseCubit,
         UpsertMetabolicDiseaseState>(
-      builder: (context, state) => Container(
+      builder: (context, state) => CommonShadowBox(
         padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(6)),
-          boxShadow: [BoxShadow(color: Color(0x7ecdced2), blurRadius: 20)],
-          color: Colors.white,
-        ),
         child: Row(
           children: [
             Text(

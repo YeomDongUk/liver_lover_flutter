@@ -23,7 +23,6 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
             phone: Phone.dirty(user.phone),
             sex: Sex.dirty(user.sex),
             weight: Weight.dirty(user.weight),
-            metabolicDisease: MetabolicDisease.dirty(user.metabolicDisease),
           ),
         );
   final UpdateUser updateUser;
@@ -64,12 +63,6 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
         ),
       );
 
-  void updateMetabolicDisease(bool metabolicDisease) => emit(
-        state.copyWith(
-          metabolicDisease: MetabolicDisease.dirty(metabolicDisease),
-        ),
-      );
-
   Future<User?> submit() async {
     final either = await updateUser.call(
       UsersCompanion(
@@ -79,7 +72,6 @@ class UpdateUserCubit extends Cubit<UpdateUserState> {
         sex: Value(state.sex.value),
         height: Value(state.height.value!),
         weight: Value(state.weight.value!),
-        metabolicDisease: Value(state.metabolicDisease.value),
       ),
     );
 

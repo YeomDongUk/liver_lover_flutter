@@ -25,14 +25,8 @@ class UpsertMetabolicDiseaseCubit extends Cubit<UpsertMetabolicDiseaseState> {
         vaccinConfirmedAt: Value(state.metabolicDisease.vaccinConfirmedAt),
         hbv: Value(state.metabolicDisease.hbv),
         hbvConfirmedAt: Value(state.metabolicDisease.hbvConfirmedAt),
-        hbvInactivityConfirmedAt:
-            Value(state.metabolicDisease.hbvInactivityConfirmedAt),
-        chronicHbvConfirmedAt:
-            Value(state.metabolicDisease.chronicHbvConfirmedAt),
-        cirrhosisConfirmedAt:
-            Value(state.metabolicDisease.cirrhosisConfirmedAt),
+        cirrhosis: Value(state.metabolicDisease.cirrhosis),
         hcv: Value(state.metabolicDisease.hcv),
-        fattyRiver: Value(state.metabolicDisease.fattyRiver),
       ),
     );
 
@@ -46,11 +40,13 @@ class UpsertMetabolicDiseaseCubit extends Cubit<UpsertMetabolicDiseaseState> {
 
   void updateHav(bool hav) => emit(
         state.copyWith(
+          status: FormzStatus.valid,
           metabolicDisease: state.metabolicDisease.copyWith(hav: hav),
         ),
       );
   void updateAntiHavConfirmedAt(DateTime antiHavConfirmedAt) => emit(
         state.copyWith(
+          status: FormzStatus.valid,
           metabolicDisease: state.metabolicDisease
               .copyWith(antiHavConfirmedAt: antiHavConfirmedAt),
         ),
@@ -58,6 +54,7 @@ class UpsertMetabolicDiseaseCubit extends Cubit<UpsertMetabolicDiseaseState> {
 
   void updateVaccinConfirmedAt(DateTime vaccinConfirmedAt) => emit(
         state.copyWith(
+          status: FormzStatus.valid,
           metabolicDisease: state.metabolicDisease
               .copyWith(vaccinConfirmedAt: vaccinConfirmedAt),
         ),
@@ -65,50 +62,31 @@ class UpsertMetabolicDiseaseCubit extends Cubit<UpsertMetabolicDiseaseState> {
 
   void updateHbv(bool hbv) => emit(
         state.copyWith(
+          status: FormzStatus.valid,
           metabolicDisease: state.metabolicDisease.copyWith(hbv: hbv),
         ),
       );
 
   void updateHbvConfirmedAt(DateTime hbvConfirmedAt) => emit(
         state.copyWith(
+          status: FormzStatus.valid,
           metabolicDisease:
               state.metabolicDisease.copyWith(hbvConfirmedAt: hbvConfirmedAt),
         ),
       );
 
-  void updateHbvInactivityConfirmedAt(DateTime hbvInactivityConfirmedAt) =>
-      emit(
+  void updateCirrhosis(bool cirrhosis) => emit(
         state.copyWith(
-          metabolicDisease: state.metabolicDisease
-              .copyWith(hbvInactivityConfirmedAt: hbvInactivityConfirmedAt),
-        ),
-      );
-
-  void updateChronicHbvConfirmedAt(DateTime chronicHbvConfirmedAt) => emit(
-        state.copyWith(
-          metabolicDisease: state.metabolicDisease
-              .copyWith(chronicHbvConfirmedAt: chronicHbvConfirmedAt),
-        ),
-      );
-
-  void updateCirrhosisConfirmedAt(DateTime cirrhosisConfirmedAt) => emit(
-        state.copyWith(
-          metabolicDisease: state.metabolicDisease
-              .copyWith(cirrhosisConfirmedAt: cirrhosisConfirmedAt),
+          status: FormzStatus.valid,
+          metabolicDisease:
+              state.metabolicDisease.copyWith(cirrhosis: cirrhosis),
         ),
       );
 
   void updateHcv(bool hcv) => emit(
         state.copyWith(
+          status: FormzStatus.valid,
           metabolicDisease: state.metabolicDisease.copyWith(hcv: hcv),
-        ),
-      );
-
-  void updateFattyRiver(bool fattyRiver) => emit(
-        state.copyWith(
-          metabolicDisease: state.metabolicDisease.copyWith(
-            fattyRiver: fattyRiver,
-          ),
         ),
       );
 }

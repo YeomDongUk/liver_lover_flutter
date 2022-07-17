@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
+import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 
 class HospitalVisitScheduleUpdateDialog extends StatelessWidget {
   const HospitalVisitScheduleUpdateDialog({
@@ -111,13 +112,8 @@ class HospitalVisitScheduleUpdateDialog extends StatelessWidget {
               const SizedBox(height: 10),
               const Divider(),
             ],
-            Container(
+            CommonShadowBox(
               margin: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                border: Border.all(color: const Color(0xffebebec)),
-                color: Colors.white,
-              ),
               child: Column(
                 children: [],
               ),
@@ -130,7 +126,7 @@ class HospitalVisitScheduleUpdateDialog extends StatelessWidget {
                   fixedSize: const Size.fromHeight(60),
                 ),
                 child: Text(
-                  '다음 검진/외래 일정 등록',
+                  '다음 외래/검진 일정 등록',
                   style: const TextStyle(
                     fontSize: 17,
                   ).rixMGoEB.copyWith(fontWeight: FontWeight.w800),

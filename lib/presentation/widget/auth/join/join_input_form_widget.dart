@@ -45,8 +45,10 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
         children: [
           Expanded(
             child: ListView(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 50).copyWith(top: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 50).copyWith(
+                top: 50,
+                bottom: 24,
+              ),
               children: [
                 Text(
                   '개인정보를\n입력해주세요.',
@@ -226,24 +228,6 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    OpacityCheckBox(
-                      onChanged: joinCubit.updateMetabolicDisease,
-                      value: state.metabolicDisease.value,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      '현재 대사질환이 있습니다.',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ).rixMGoB,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
               ],
             ),
           ),

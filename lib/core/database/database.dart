@@ -4,7 +4,10 @@ import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
 import 'package:yak/core/class/notification.dart';
 
-import 'table/blood_glucose_history/blood_glucose_history_table.dart';
+import 'table/drinking_history/drinking_history_table.dart';
+import 'table/examination_result/examination_result_table.dart';
+import 'table/exercise_history/exercise_history_table.dart';
+import 'table/health_question/health_question_table.dart';
 import 'table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'table/liver_level_history/liver_level_table.dart';
 import 'table/medication_adherence_survey_history/medication_adherence_survey_history.dart';
@@ -17,6 +20,7 @@ import 'table/point_history/point_history_table.dart';
 import 'table/prescription/prescription_table.dart';
 import 'table/sf_12_survey/sf12_survey_answer.dart';
 import 'table/sf_12_survey/sf12_survey_history_table.dart';
+import 'table/smoking_history/smoking_history_table.dart';
 import 'table/user/user_table.dart';
 
 part 'database.g.dart';
@@ -31,17 +35,17 @@ part 'database.g.dart';
     MedicationSchedules,
     MedicationNotifications,
     HospitalVisitSchedules,
-    BloodGlucoseHistories,
     LiverLevelHistories,
     PointHistories,
     SF12SurveyHistories,
     MedicationAdherenceSurveyHistories,
     SF12SurveyAnswers,
     MetabolicDiseases,
-  ],
-  daos: [
-    // UserDao,
-    // WeightHistoryDao,
+    ExaminationResults,
+    HealthQuestions,
+    DrinkingHistories,
+    SmokingHistories,
+    ExcerciseHistories,
   ],
 )
 class AppDatabase extends _$AppDatabase {

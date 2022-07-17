@@ -11,7 +11,6 @@ class JoinState extends Equatable {
     this.weight = const Weight.pure(),
     this.pinCode = const PinCode.pure(),
     this.verifingPinCode = const PinCode.pure(),
-    this.metabolicDisease = const MetabolicDisease.pure(),
   });
 
   final JoinForm joinForm;
@@ -23,7 +22,6 @@ class JoinState extends Equatable {
   final Weight weight;
   final PinCode pinCode;
   final PinCode verifingPinCode;
-  final MetabolicDisease metabolicDisease;
 
   JoinState copyWith({
     FormzStatus? status,
@@ -36,7 +34,6 @@ class JoinState extends Equatable {
     Weight? weight,
     PinCode? pinCode,
     PinCode? verifingPinCode,
-    MetabolicDisease? metabolicDisease,
   }) =>
       JoinState(
         joinForm: joinForm ?? this.joinForm,
@@ -48,7 +45,6 @@ class JoinState extends Equatable {
         weight: weight ?? this.weight,
         pinCode: pinCode ?? this.pinCode,
         verifingPinCode: verifingPinCode ?? this.verifingPinCode,
-        metabolicDisease: metabolicDisease ?? this.metabolicDisease,
       );
 
   @override
@@ -62,6 +58,5 @@ class JoinState extends Equatable {
         weight,
         pinCode,
         verifingPinCode,
-        metabolicDisease,
       ];
 }

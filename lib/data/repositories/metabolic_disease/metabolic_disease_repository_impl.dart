@@ -25,7 +25,7 @@ class MetabolicDiseaseRepositoryImpl implements MetabolicDiseaseRepository {
 
       return Right(MetabolicDisease.fromJson(metabolicDisease.toJson()));
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -41,7 +41,8 @@ class MetabolicDiseaseRepositoryImpl implements MetabolicDiseaseRepository {
 
       return const Right(null);
     } catch (e) {
-      return Left(QueryFailure());
+      print(e);
+      return const Left(QueryFailure());
     }
   }
 }

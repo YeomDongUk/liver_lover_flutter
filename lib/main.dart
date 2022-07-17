@@ -2,13 +2,16 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:yak/core/di/di.dart';
 import 'package:yak/core/router/auth_location.dart';
+import 'package:yak/core/router/health_question_location.dart';
 import 'package:yak/core/router/home_location.dart';
 import 'package:yak/core/router/hospital_visit_schedule_location.dart';
 import 'package:yak/core/router/medication_schedule_location.dart';
 import 'package:yak/core/router/my_location.dart';
+import 'package:yak/core/router/point_location.dart';
 import 'package:yak/core/router/prescription_location.dart';
 import 'package:yak/core/router/sf_12_survey_location.dart';
 import 'package:yak/core/static/color.dart';
@@ -17,7 +20,7 @@ import 'package:yak/core/user/user_id.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedules.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
-import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules.dart';
+
 import 'package:yak/domain/usecases/medication_schedule/get_today_medication_schedules.dart';
 import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
@@ -35,6 +38,8 @@ Future<void> main() async {
   await Di.setup(false);
 
   // await Hive.initFlutter();
+  await initializeDateFormatting();
+
   runApp(YackApp());
 }
 
@@ -63,7 +68,9 @@ class YackApp extends StatelessWidget {
         MedicationScheduleLocation(),
         HospitalVisitScheduleLocation(),
         SF12SurveyLocation(),
-        MyLocation()
+        MyLocation(),
+        PointLocation(),
+        HealthQuestionLocation(),
       ],
     ),
   );
@@ -159,6 +166,7 @@ class YackApp extends StatelessWidget {
               elevation: 0,
               shadowColor: Colors.transparent,
               primary: AppColors.primary,
+              fixedSize: const Size.fromHeight(70),
               textStyle: const TextStyle(
                 color: Colors.white,
               ).rixMGoEB,

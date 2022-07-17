@@ -11,7 +11,7 @@ void main() {
     height: 173,
     weight: 64,
     pinCode: '000000',
-    metabolicDisease: false,
+    point: 0,
     createdAt: DateTime(1900),
     updatedAt: DateTime(1900),
   );
@@ -25,7 +25,7 @@ void main() {
     'height': 173,
     'weight': 64,
     'pinCode': '000000',
-    'metabolicDisease': false,
+    'point': 0,
     'createdAt': DateTime(1900).millisecondsSinceEpoch,
     'updatedAt': DateTime(1900).millisecondsSinceEpoch,
   };

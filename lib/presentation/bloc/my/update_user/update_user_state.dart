@@ -9,7 +9,6 @@ class UpdateUserState extends Equatable {
     this.sex = const Sex.pure(),
     this.height = const Height.pure(),
     this.weight = const Weight.pure(),
-    this.metabolicDisease = const MetabolicDisease.pure(),
   });
 
   final FormzStatus status;
@@ -19,7 +18,6 @@ class UpdateUserState extends Equatable {
   final Sex sex;
   final Height height;
   final Weight weight;
-  final MetabolicDisease metabolicDisease;
 
   bool get isValid => status == FormzStatus.valid;
 
@@ -30,7 +28,6 @@ class UpdateUserState extends Equatable {
     Sex? sex,
     Height? height,
     Weight? weight,
-    MetabolicDisease? metabolicDisease,
   }) =>
       UpdateUserState(
         status: Formz.validate(
@@ -42,7 +39,6 @@ class UpdateUserState extends Equatable {
               sex ?? this.sex,
               height ?? this.height,
               weight ?? this.weight,
-              metabolicDisease ?? this.metabolicDisease,
             ],
           ),
         ),
@@ -52,7 +48,6 @@ class UpdateUserState extends Equatable {
         sex: sex ?? this.sex,
         height: height ?? this.height,
         weight: weight ?? this.weight,
-        metabolicDisease: metabolicDisease ?? this.metabolicDisease,
       );
   @override
   List<Object> get props => [
@@ -63,6 +58,5 @@ class UpdateUserState extends Equatable {
         sex,
         height,
         weight,
-        metabolicDisease,
       ];
 }

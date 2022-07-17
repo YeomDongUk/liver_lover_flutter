@@ -20,6 +20,12 @@ class Routes {
   static const String answerCreate = Path.answers + Path.create;
   static const String create = Path.create;
   static const String my = Path.my;
+  static const String point = Path.point;
+  static const String pointInformation = Path.point + Path.information;
+  static const String pointHistory = Path.point + Path.histories;
+  static const String healthQuestions = Path.healthQuestions;
+  static const String healthQuestionCreate = Path.healthQuestions + Path.create;
+  static const String healthQuestionUpdate = Path.healthQuestions + Path.update;
 }
 
 class Path {
@@ -36,4 +42,7 @@ class Path {
   static const String answers = '/answers';
   static const String my = '/my';
   static const String pinCode = '/pin-code';
+  static const String point = '/point';
+  static const String information = '/information';
+  static const String healthQuestions = '/health-questions';
 }
