@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/table/common_table.dart';
 
 enum HospitalVisitScheduleType {
@@ -12,6 +15,9 @@ enum HospitalVisitScheduleType {
 /// 병원 방문일 테이블
 @DataClassName('HospitalVisitScheduleModel')
 class HospitalVisitSchedules extends UserReferenceTable {
+  /// 진료 타입
+  IntColumn get type => intEnum<HospitalVisitScheduleType>()();
+
   /// 병원 이름
   TextColumn get hospitalName => text()();
 
@@ -20,6 +26,9 @@ class HospitalVisitSchedules extends UserReferenceTable {
 
   /// 의사 이름
   TextColumn get doctorName => text()();
+
+  /// 진료실
+  TextColumn get doctorOffice => text()();
 
   /// 방문 예약일
   DateTimeColumn get reservedAt =>
@@ -37,8 +46,6 @@ class HospitalVisitSchedules extends UserReferenceTable {
 
   /// 30분 후 알림
   BoolColumn get afterPush => boolean().withDefault(const Constant(false))();
-
-  IntColumn get type => intEnum<HospitalVisitScheduleType>()();
 
   @override
   List<Set<Column>>? get uniqueKeys => [

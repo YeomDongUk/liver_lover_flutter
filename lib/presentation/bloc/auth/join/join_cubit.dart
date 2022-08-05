@@ -1,14 +1,15 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:drift/drift.dart';
+// Package imports:
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/form/common.dart';
 import 'package:yak/domain/entities/user/user.dart';
 import 'package:yak/domain/usecases/user/create_user.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/auth/join/join_form.dart';
-
 import '../../../../core/form/auth/auth_form.dart';
 
 part 'join_state.dart';

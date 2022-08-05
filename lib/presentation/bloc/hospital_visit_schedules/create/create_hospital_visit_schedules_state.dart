@@ -3,9 +3,11 @@ part of 'create_hospital_visit_schedules_cubit.dart';
 class CreateHospitalVisitSchedulesState extends Equatable {
   const CreateHospitalVisitSchedulesState({
     this.status = FormzStatus.pure,
+    this.hospitalVisitType = const HospitalVisitType.pure(),
     this.hospitalName = const HospitalName.pure(),
     this.medicalSubject = const MedicalSubject.pure(),
     this.doctorName = const DoctorName.pure(),
+    this.doctorOffice = const DoctorOffice.pure(),
     this.reservedAt = const ReservedAt.pure(),
     this.push = const Push.pure(),
     this.beforePush = const BeforePush.pure(),
@@ -13,7 +15,9 @@ class CreateHospitalVisitSchedulesState extends Equatable {
   });
 
   final FormzStatus status;
+  final HospitalVisitType hospitalVisitType;
   final HospitalName hospitalName;
+  final DoctorOffice doctorOffice;
   final MedicalSubject medicalSubject;
   final DoctorName doctorName;
   final ReservedAt reservedAt;
@@ -23,9 +27,11 @@ class CreateHospitalVisitSchedulesState extends Equatable {
 
   CreateHospitalVisitSchedulesState copyWith({
     FormzStatus? status,
+    HospitalVisitType? hospitalVisitType,
     HospitalName? hospitalName,
     MedicalSubject? medicalSubject,
     DoctorName? doctorName,
+    DoctorOffice? doctorOffice,
     ReservedAt? reservedAt,
     Push? push,
     BeforePush? beforePush,
@@ -33,9 +39,11 @@ class CreateHospitalVisitSchedulesState extends Equatable {
   }) =>
       CreateHospitalVisitSchedulesState(
         status: status ?? this.status,
+        hospitalVisitType: hospitalVisitType ?? this.hospitalVisitType,
         hospitalName: hospitalName ?? this.hospitalName,
         medicalSubject: medicalSubject ?? this.medicalSubject,
         doctorName: doctorName ?? this.doctorName,
+        doctorOffice: doctorOffice ?? this.doctorOffice,
         reservedAt: reservedAt ?? this.reservedAt,
         push: push ?? this.push,
         beforePush: beforePush ?? this.beforePush,
@@ -45,9 +53,11 @@ class CreateHospitalVisitSchedulesState extends Equatable {
   @override
   List<Object> get props => [
         status,
+        hospitalVisitType,
         hospitalName,
         medicalSubject,
         doctorName,
+        doctorOffice,
         reservedAt,
         push,
         beforePush,

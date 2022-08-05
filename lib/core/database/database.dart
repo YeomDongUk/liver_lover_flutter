@@ -1,20 +1,24 @@
 // ignore_for_file: always_use_package_imports
 
+// Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
-import 'package:yak/core/class/notification.dart';
 
+// Project imports:
+import 'package:yak/core/class/notification.dart';
 import 'table/drinking_history/drinking_history_table.dart';
 import 'table/examination_result/examination_result_table.dart';
 import 'table/exercise_history/exercise_history_table.dart';
 import 'table/health_question/health_question_table.dart';
+import 'table/hospital/hospital_table.dart';
 import 'table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'table/liver_level_history/liver_level_table.dart';
+import 'table/medication_adherence_survey_history/medication_adherence_survey_answer.dart';
 import 'table/medication_adherence_survey_history/medication_adherence_survey_history.dart';
 import 'table/medication_information/medication_information_table.dart';
-import 'table/medication_notification/medication_notification_table.dart';
 import 'table/medication_schedule/medication_schedule_table.dart';
 import 'table/metabolic_disease/metabolic_disease_table.dart';
+import 'table/notification/notification_table.dart';
 import 'table/pill/pill_table.dart';
 import 'table/point_history/point_history_table.dart';
 import 'table/prescription/prescription_table.dart';
@@ -33,7 +37,6 @@ part 'database.g.dart';
     Prescriptions,
     MedicationInformations,
     MedicationSchedules,
-    MedicationNotifications,
     HospitalVisitSchedules,
     LiverLevelHistories,
     PointHistories,
@@ -46,6 +49,9 @@ part 'database.g.dart';
     DrinkingHistories,
     SmokingHistories,
     ExcerciseHistories,
+    Hospitals,
+    Notifications,
+    MedicationAdherenceSurveyAnswers,
   ],
 )
 class AppDatabase extends _$AppDatabase {

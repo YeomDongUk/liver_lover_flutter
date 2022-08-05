@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/icon.dart';
 
@@ -25,7 +28,7 @@ class _GlobalNavigationBarState extends State<GlobalNavigationBar> {
   final strings = [
     '복약관리',
     '외래/검진',
-    '혈액검사',
+    '검사결과',
     '건강일기',
     '건강정보',
   ];
@@ -55,8 +58,8 @@ class _GlobalNavigationBarState extends State<GlobalNavigationBar> {
           boxShadow: [
             BoxShadow(
               color: AppColors.blueGrayLight,
-              blurRadius: 20,
-            )
+              blurRadius: 5,
+            ),
           ],
         ),
         child: Material(

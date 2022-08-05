@@ -1,5 +1,9 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
+import 'package:logger/logger.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/user/user_id.dart';
@@ -29,14 +33,15 @@ class HospitalVisitScheduleRepositoryImpl
           await hospitalVisitScheduleLocalDataSource
               .createHospitalVisitSchedule(
         userId: _userId,
-        companion: companion,
+        companion: companion.copyWith(userId: Value(_userId)),
       );
 
       return Right(
         HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
       );
     } catch (e) {
-      return Left(CreateFailure());
+      Logger().e(e);
+      return const Left(CreateFailure());
     }
   }
 
@@ -51,9 +56,11 @@ class HospitalVisitScheduleRepositoryImpl
         userId: _userId,
       );
 
-      return deletedCount == 1 ? Right(deletedCount) : Left(QueryFailure());
+      return deletedCount == 1
+          ? Right(deletedCount)
+          : const Left(QueryFailure());
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -74,7 +81,7 @@ class HospitalVisitScheduleRepositoryImpl
             .toList(),
       );
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -96,7 +103,7 @@ class HospitalVisitScheduleRepositoryImpl
         HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
       );
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -114,7 +121,7 @@ class HospitalVisitScheduleRepositoryImpl
         HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
       );
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 }

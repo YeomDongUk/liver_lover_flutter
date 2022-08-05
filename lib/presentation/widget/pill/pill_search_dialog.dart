@@ -1,6 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
+
+// Project imports:
 import 'package:yak/domain/usecases/pill/search_pills.dart';
 import 'package:yak/presentation/bloc/pill/search/pill_search_cubit.dart';
 

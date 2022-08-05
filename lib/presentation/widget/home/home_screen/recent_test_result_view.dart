@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/widget/common/pageview_indicator.dart';

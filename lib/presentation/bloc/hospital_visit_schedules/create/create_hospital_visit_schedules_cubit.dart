@@ -1,8 +1,12 @@
+// Package imports:
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/core/form/common.dart';
 import 'package:yak/core/form/hospital_visit_schedule/hospital_schedule_forms.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
@@ -16,6 +20,26 @@ class CreateHospitalVisitSchedulesCubit
       : super(const CreateHospitalVisitSchedulesState());
 
   final CreateHospitalVisitSchedule createHospitalVisitSchedule;
+
+  void udpateHospitalVisitScheduleType(
+    HospitalVisitScheduleType hospitalVisitScheduleType,
+  ) {
+    emit(
+      state.copyWith(
+        hospitalVisitType: HospitalVisitType.dirty(hospitalVisitScheduleType),
+      ),
+    );
+    emit(state.copyWith(status: formStatus));
+  }
+
+  void updateDoctorOffice(String doctorOffice) {
+    emit(
+      state.copyWith(
+        doctorOffice: DoctorOffice.dirty(doctorOffice),
+      ),
+    );
+    emit(state.copyWith(status: formStatus));
+  }
 
   void updateHospitalName(String hospitalName) {
     emit(
@@ -80,35 +104,28 @@ class CreateHospitalVisitSchedulesCubit
     emit(state.copyWith(status: formStatus));
   }
 
-  Future<HospitalVisitSchedule> submit() async {
-    try {
-      final result = await createHospitalVisitSchedule.call(
-        HospitalVisitSchedulesCompanion(
-          hospitalName: Value(state.hospitalName.value),
-          medicalSubject: Value(state.medicalSubject.value),
-          doctorName: Value(state.doctorName.value),
-          reservedAt: Value(
-            DateTime.fromMillisecondsSinceEpoch(
-              int.parse(state.reservedAt.value),
-            ),
-          ),
+  Future<HospitalVisitSchedule?> submit() async {
+    final result = await createHospitalVisitSchedule.call(
+      HospitalVisitSchedulesCompanion.insert(
+        userId: '',
+        type: state.hospitalVisitType.value!,
+        doctorOffice: state.doctorOffice.value,
+        hospitalName: state.hospitalName.value,
+        medicalSubject: state.medicalSubject.value,
+        doctorName: state.doctorName.value,
+        reservedAt: DateTime.fromMillisecondsSinceEpoch(
+          int.parse(state.reservedAt.value),
         ),
-      );
-      if (result.isRight()) {
-        return result.fold(
-          (l) => l,
-          (r) => r,
-        ) as HospitalVisitSchedule;
-      } else {
-        result.fold(
-          (l) => l,
-          (r) => r,
-        );
-        throw Exception();
-      }
-    } catch (e) {
-      rethrow;
-    }
+        push: Value(state.push.value),
+        afterPush: Value(state.afterPush.value),
+        beforePush: Value(state.beforePush.value),
+      ),
+    );
+
+    return result.fold(
+      (l) => null,
+      (r) => r,
+    );
   }
 
   FormzStatus get formStatus => Formz.validate(

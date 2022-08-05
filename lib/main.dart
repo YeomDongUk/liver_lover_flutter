@@ -1,14 +1,23 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kiwi/kiwi.dart';
+
+// Project imports:
 import 'package:yak/core/di/di.dart';
+import 'package:yak/core/hive/hive_data_source.dart';
+import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/core/router/auth_location.dart';
+import 'package:yak/core/router/drinking_history_location.dart';
 import 'package:yak/core/router/health_question_location.dart';
 import 'package:yak/core/router/home_location.dart';
 import 'package:yak/core/router/hospital_visit_schedule_location.dart';
+import 'package:yak/core/router/medication_adherence_survey_location.dart';
 import 'package:yak/core/router/medication_schedule_location.dart';
 import 'package:yak/core/router/my_location.dart';
 import 'package:yak/core/router/point_location.dart';
@@ -20,7 +29,6 @@ import 'package:yak/core/user/user_id.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedules.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
-
 import 'package:yak/domain/usecases/medication_schedule/get_today_medication_schedules.dart';
 import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
@@ -36,7 +44,8 @@ import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Di.setup(false);
-
+  await KiwiContainer().resolve<LocalNotification>().initialize();
+  await KiwiContainer().resolve<HiveDataSource>().initHive();
   // await Hive.initFlutter();
   await initializeDateFormatting();
 
@@ -71,6 +80,8 @@ class YackApp extends StatelessWidget {
         MyLocation(),
         PointLocation(),
         HealthQuestionLocation(),
+        DrinkingHistoryLocation(),
+        MedicationAdherenceSurveyLocation(),
       ],
     ),
   );
@@ -143,6 +154,7 @@ class YackApp extends StatelessWidget {
           ),
           textTheme: const TextTheme(),
           appBarTheme: AppBarTheme(
+            centerTitle: true,
             titleTextStyle: const TextStyle(
               fontSize: 18,
               color: Colors.black,

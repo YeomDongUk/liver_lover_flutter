@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:intl/intl.dart';
+
+// Project imports:
 import 'package:yak/domain/entities/survey/medication_adherence/medication_adherence_survey_question.dart';
 import 'package:yak/domain/entities/survey/sf12/sf12_question.dart';
 
@@ -28,7 +31,10 @@ final sf12Questions = [
       'id': 2,
       'question':
           '''지난 4주 동안에, 귀하의 신체적인 건강 때문에 귀하의 일이나 일상적인 활동을 하는 데 다음과 같은 문제가 얼마나 자주 있었습니까?''',
-      'items': ['원하는 것보다 적은 양의 일을 했다', '일이나 다른 일상적인 활동 중에서 할 수 없는 것이 있었다.'],
+      'items': [
+        '원하는 것보다 적은 양의 일을 했다',
+        '일이나 다른 일상적인 활동 중에서 할 수 없는 것이 있었다.',
+      ],
       'options': ['항상 그랬다', '대부분 그랬다', '때때로 그랬다', '드물게 그랬다', '전혀 그렇지 않았다'],
     },
     <String, dynamic>{
@@ -94,6 +100,7 @@ final sf12Questions = [
 final reservedAtDateFormat = DateFormat('yyyy.MM.dd HH:mm');
 final yyyyMMddFormat = DateFormat('yyyy.MM.dd');
 final hhmmFormat = DateFormat('HH:mm');
+final numberForamt = NumberFormat('###,###,###,###.###');
 const medicationAdherenceSurveyQuestions = [
   MedicationAdherenceSurveyQuestion(
     id: 0,

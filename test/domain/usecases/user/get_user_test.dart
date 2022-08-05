@@ -1,20 +1,29 @@
+// Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+// Project imports:
 import 'package:yak/domain/entities/user/user.dart';
 import 'package:yak/domain/repositories/user/user_repository.dart';
 import 'package:yak/domain/usecases/user/get_user.dart';
+import '../../../mock/mock_hive_data_source.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
   late GetUser getUser;
   late MockUserRepository mockUserRepository;
+  late MockHiveDataSource mockHiveDataSource;
 
   setUp(() {
     mockUserRepository = MockUserRepository();
-    getUser = GetUser(mockUserRepository);
+    mockHiveDataSource = MockHiveDataSource();
+    getUser = GetUser(
+      userRepository: mockUserRepository,
+      hiveDataSource: mockHiveDataSource,
+    );
   });
 
   const pinCode = '000000';

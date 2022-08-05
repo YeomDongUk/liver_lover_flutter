@@ -1,8 +1,13 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:kiwi/kiwi.dart';
+
+// Project imports:
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/health_question/health_question.dart';

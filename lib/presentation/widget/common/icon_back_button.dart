@@ -1,5 +1,8 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class IconBackButton extends StatelessWidget {

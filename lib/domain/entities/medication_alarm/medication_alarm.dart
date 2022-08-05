@@ -1,4 +1,6 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
+
 // import 'package:yak/core/database/table/medication_alarm/medication_notification_table.dart';
 
 // class MedicationAlarm extends Equatable {

@@ -1,10 +1,15 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart';
+
+// Project imports:
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/static.dart';

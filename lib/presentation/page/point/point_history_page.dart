@@ -1,7 +1,12 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+// Project imports:
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
@@ -25,9 +30,7 @@ class _PointHistoryPageState extends State<PointHistoryPage> {
         actions: [
           IconButton(
             onPressed: () => context.beamToNamed(Routes.pointInformation),
-            icon: const Icon(
-              Icons.info_outline,
-            ),
+            icon: SvgPicture.asset('assets/svg/icon_info.svg'),
           ),
         ],
       ),

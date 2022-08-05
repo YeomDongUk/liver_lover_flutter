@@ -1,11 +1,18 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+// Project imports:
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
-import 'package:yak/presentation/page/home/screens/drinking_history/drinking_history_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_diary/drinking_history/drinking_histories_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_diary/excercise_history/excercise_histories_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_diary/health_questions_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_diary/smoking_history/smoking_histories_screen.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 
 class HealthDiaryScreen extends StatefulWidget {
@@ -46,7 +53,7 @@ class _HealthDiaryScreenState extends State<HealthDiaryScreen>
     super.build(context);
     return Scaffold(
       appBar: CommonAppBar(
-        title: const Text('건강정보'),
+        title: const Text('건강일기'),
         leading: IconButton(
           onPressed: () => context.read<PageController>().jumpToPage(5),
           icon: SvgPicture.asset('assets/svg/home.svg'),
@@ -90,9 +97,9 @@ class _HealthDiaryScreenState extends State<HealthDiaryScreen>
               child: TabBarView(
                 controller: tabController,
                 children: [
-                  const DrinkingHistoryScreen(),
-                  Container(),
-                  Container(),
+                  const DrinkingHistoriesScreen(),
+                  const SmokingHistoriesScreen(),
+                  const ExcerciseHistoriesScreen(),
                   const HealthQuestionsScreen(),
                   Container(),
                 ],

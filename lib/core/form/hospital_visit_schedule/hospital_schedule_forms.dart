@@ -1,4 +1,22 @@
+// Package imports:
 import 'package:formz/formz.dart';
+
+// Project imports:
+import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
+
+enum HospitalVisitTypeValidationError { empty }
+
+class HospitalVisitType extends FormzInput<HospitalVisitScheduleType?,
+    HospitalVisitTypeValidationError> {
+  const HospitalVisitType.pure() : super.pure(null);
+  const HospitalVisitType.dirty(super.value) : super.dirty();
+
+  @override
+  HospitalVisitTypeValidationError? validator(
+    HospitalVisitScheduleType? value,
+  ) =>
+      value == null ? HospitalVisitTypeValidationError.empty : null;
+}
 
 enum HospitalNameValidationError {
   empty,
@@ -10,7 +28,20 @@ class HospitalName extends FormzInput<String, HospitalNameValidationError> {
 
   @override
   HospitalNameValidationError? validator(String value) =>
-      value.isEmpty ? HospitalNameValidationError.empty : null;
+      value.trim().isEmpty ? HospitalNameValidationError.empty : null;
+}
+
+enum DoctorOfficeValidationError {
+  empty,
+}
+
+class DoctorOffice extends FormzInput<String, DoctorOfficeValidationError> {
+  const DoctorOffice.pure() : super.pure('');
+  const DoctorOffice.dirty(super.value) : super.dirty();
+
+  @override
+  DoctorOfficeValidationError? validator(String value) =>
+      value.trim().isEmpty ? DoctorOfficeValidationError.empty : null;
 }
 
 enum MedicalSubjectValidationError {
@@ -23,7 +54,7 @@ class MedicalSubject extends FormzInput<String, MedicalSubjectValidationError> {
 
   @override
   MedicalSubjectValidationError? validator(String value) =>
-      value.isEmpty ? MedicalSubjectValidationError.empty : null;
+      value.trim().isEmpty ? MedicalSubjectValidationError.empty : null;
 }
 
 enum DoctorNameValidationError {
@@ -36,7 +67,7 @@ class DoctorName extends FormzInput<String, DoctorNameValidationError> {
 
   @override
   DoctorNameValidationError? validator(String value) =>
-      value.isEmpty ? DoctorNameValidationError.empty : null;
+      value.trim().isEmpty ? DoctorNameValidationError.empty : null;
 }
 
 enum VisitedAtValidationError {

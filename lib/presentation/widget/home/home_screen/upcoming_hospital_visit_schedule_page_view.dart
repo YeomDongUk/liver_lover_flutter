@@ -1,8 +1,13 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+// Project imports:
 import 'package:yak/core/class/d_day_parser.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
@@ -84,7 +89,7 @@ class _UpcomingHospitalVisitSchedulePageViewState
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '등록된 복약일정이 없습니다.',
+                                    '등록된 예약 일정이 없습니다.',
                                     style: const TextStyle(
                                       fontSize: 17,
                                       color: AppColors.magenta,

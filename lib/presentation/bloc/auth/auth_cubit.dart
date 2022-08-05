@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/domain/entities/user/user.dart';
 

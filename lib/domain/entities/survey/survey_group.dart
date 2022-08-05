@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:yak/domain/entities/survey/medication_adherence/medication_adherence_survey_history.dart';
 import 'package:yak/domain/entities/survey/sf12/sf12_survey_history.dart';
 
@@ -31,15 +34,18 @@ class SurveyGroup extends Equatable {
 
   bool get canSurvey => visitedAt == null && isBetweenSurveyDateTime;
 
-  bool get isBetweenSurveyDateTime =>
-      DateTime.now().isBefore(
-        reseverdAt,
-      ) &&
-      DateTime.now().isAfter(
-        reseverdAt.add(
-          const Duration(hours: -3),
-        ),
-      );
+  bool get isBetweenSurveyDateTime {
+    final now = DateTime.now();
+    return reseverdAt.isAfter(
+          now,
+        ) &&
+        now.isAfter(
+          reseverdAt.add(
+            const Duration(days: -3),
+          ),
+        );
+  }
+
   @override
   List<Object?> get props => [
         reseverdAt,

@@ -1,5 +1,10 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
+
+// Project imports:
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/presentation/page/auth/auth_page.dart';
 import 'package:yak/presentation/page/auth/join/join_page.dart';

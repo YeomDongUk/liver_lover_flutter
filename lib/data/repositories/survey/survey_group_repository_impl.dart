@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
+
+// Project imports:
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/survey_group/survey_group_local_data_source.dart';
@@ -42,7 +45,7 @@ class SurveyGroupRepositoryImpl implements SurveyGroupRepository {
             .toList(),
       );
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(const QueryFailure());
     }
   }
 
@@ -70,7 +73,7 @@ class SurveyGroupRepositoryImpl implements SurveyGroupRepository {
         ),
       );
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(const QueryFailure());
     }
   }
 }

@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/user/user_local_data_source.dart';

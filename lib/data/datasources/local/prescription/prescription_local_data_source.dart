@@ -1,10 +1,11 @@
+// Package imports:
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
-import 'package:yak/core/class/notification.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/medication_schedule/medication_schedule_table.dart';
 import 'package:yak/data/datasources/local/medication_information/medication_information_local_data_source.dart';
-import 'package:yak/data/datasources/local/medication_notification/medication_notification_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
 import 'package:yak/data/models/prescription/prescription_overview_model.dart';
 import 'package:yak/data/models/prescription/prescription_write_response.dart';
@@ -40,7 +41,6 @@ class PrescriptionLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
     super.attachedDatabase,
     this.medicationInformationLocalDataSource,
     this.medicationScheduleLocalDataSource,
-    this.medicationNotificationLocalDataSource,
   );
 
   $PrescriptionsTable get table => attachedDatabase.prescriptions;
@@ -49,8 +49,6 @@ class PrescriptionLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
       medicationInformationLocalDataSource;
 
   final MedicationScheduleLocalDataSource medicationScheduleLocalDataSource;
-  final MedicationNotificationLocalDataSource
-      medicationNotificationLocalDataSource;
 
   @override
   Future<PrescriptionModel> getPrescription(String id) =>
@@ -140,22 +138,22 @@ class PrescriptionLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
         final medicationScheduleModels = await medicationScheduleLocalDataSource
             .createMedicationSchedules(medicationSchedulesCompanions);
 
-        await Future.wait([
-          medicationNotificationLocalDataSource.createMedicationNotifications(
-            medicationScheduleModels: medicationScheduleModels,
-            type: NotificationType.before,
-            status: prescriptionModel.beforePush
-                ? NotificationStatus.on
-                : NotificationStatus.off,
-          ),
-          medicationNotificationLocalDataSource.createMedicationNotifications(
-            medicationScheduleModels: medicationScheduleModels,
-            type: NotificationType.after,
-            status: prescriptionModel.afterPush
-                ? NotificationStatus.on
-                : NotificationStatus.off,
-          )
-        ]);
+        // await Future.wait([
+        //   medicationNotificationLocalDataSource.createMedicationNotifications(
+        //     medicationScheduleModels: medicationScheduleModels,
+        //     type: NotificationType.before,
+        //     status: prescriptionModel.beforePush
+        //         ? NotificationStatus.on
+        //         : NotificationStatus.off,
+        //   ),
+        //   medicationNotificationLocalDataSource.createMedicationNotifications(
+        //     medicationScheduleModels: medicationScheduleModels,
+        //     type: NotificationType.after,
+        //     status: prescriptionModel.afterPush
+        //         ? NotificationStatus.on
+        //         : NotificationStatus.off,
+        //   )
+        // ]);
 
         return PrescriptionWriteResponse(
           prescriptionModel: prescriptionModel,

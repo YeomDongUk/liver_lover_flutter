@@ -1,8 +1,13 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+
+// Project imports:
 import 'package:yak/core/class/d_day_parser.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
@@ -18,14 +23,11 @@ class SurveyCheckView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SurveyGroupsCubit, SurveyGroupsState>(
-      buildWhen: (previous, current) =>
-          previous.groups.isEmpty ||
-          current.groups.isEmpty ||
-          previous.groups.first != current.groups.first,
       builder: (context, state) {
         final groups =
             state.groups.where((element) => element.visitedAt == null);
-        if (groups.isEmpty)
+
+        if (groups.isEmpty) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -69,19 +71,19 @@ class SurveyCheckView extends StatelessWidget {
                     ),
                     const Divider(),
                     Row(
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                           child: _SurveyStateButton(
                             done: false,
                             isBetweenSurveyDateTime: false,
                             surveyName: '삶의 질(SF-12)',
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 67,
                           child: VerticalDivider(),
                         ),
-                        const Expanded(
+                        Expanded(
                           child: _SurveyStateButton(
                             done: false,
                             isBetweenSurveyDateTime: false,
@@ -95,6 +97,7 @@ class SurveyCheckView extends StatelessWidget {
               ),
             ],
           );
+        }
 
         final group = groups.first;
 
@@ -158,11 +161,9 @@ class SurveyCheckView extends StatelessWidget {
                         children: [
                           Expanded(
                             child: _SurveyStateButton(
-                              onTap: () {
-                                context.beamToNamed(
-                                  '${Routes.sf12Surveys}/${group.sf12surveyHistory.id}${Routes.answerCreate}',
-                                );
-                              },
+                              onTap: () => context.beamToNamed(
+                                '${Routes.sf12Surveys}/${group.sf12surveyHistory.id}${group.sf12surveyHistory.done ? Routes.answers : Routes.answerCreate}',
+                              ),
                               isBetweenSurveyDateTime:
                                   group.isBetweenSurveyDateTime,
                               surveyName: '삶의 질(SF-12)',
@@ -226,7 +227,7 @@ class _SurveyStateButton extends StatelessWidget {
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(6),
       ),
-      onTap: isBetweenSurveyDateTime && !done ? onTap : null,
+      onTap: isBetweenSurveyDateTime || done ? onTap : null,
       child: Padding(
         padding: EdgeInsets.only(
           top: 24,

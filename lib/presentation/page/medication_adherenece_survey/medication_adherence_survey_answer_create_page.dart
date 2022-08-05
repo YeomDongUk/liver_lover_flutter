@@ -1,0 +1,167 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kiwi/kiwi.dart';
+
+// Project imports:
+import 'package:yak/core/static/color.dart';
+import 'package:yak/core/static/static.dart';
+import 'package:yak/core/static/text_style.dart';
+import 'package:yak/domain/usecases/survey/medication_adherence_survey_answer/create_medication_adherence_survey_answers.dart';
+import 'package:yak/domain/usecases/survey/sf_12_survey_answer/create_sf_12_survey_answers.dart';
+import 'package:yak/presentation/bloc/medication_adherence_survey/medication_adherence_survey_cubit.dart';
+import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
+import 'package:yak/presentation/widget/common/common_app_bar.dart';
+import 'package:yak/presentation/widget/common/common_shadow_box.dart';
+import 'package:yak/presentation/widget/sf_12_survey/sf_12_survey_question_list_tile.dart';
+
+class MedicationAdherenceSurveyAnswerCreatePage extends StatefulWidget {
+  const MedicationAdherenceSurveyAnswerCreatePage(
+      {super.key, required this.surveyId});
+  final String surveyId;
+  @override
+  State<MedicationAdherenceSurveyAnswerCreatePage> createState() =>
+      _MedicationAdherenceSurveyAnswerPageSCreatetate();
+}
+
+class _MedicationAdherenceSurveyAnswerPageSCreatetate
+    extends State<MedicationAdherenceSurveyAnswerCreatePage> {
+  late final MedicationAdherenceSurveyAnswerCreateCubit
+      medicationAdherenceSurveyAnswerCreateCubit;
+
+  @override
+  void initState() {
+    medicationAdherenceSurveyAnswerCreateCubit =
+        MedicationAdherenceSurveyAnswerCreateCubit(
+      surveyId: widget.surveyId,
+      createMedicationAdherenceSurveyAnswers:
+          KiwiContainer().resolve<CreateMedicationAdherenceSurveyAnswers>(),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    medicationAdherenceSurveyAnswerCreateCubit.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CommonAppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('삶의 질(SF-12)'),
+        actions: [
+          IconButton(
+            onPressed: context.beamBack,
+            icon: SvgPicture.asset('assets/svg/close.svg'),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: BlocBuilder<MedicationAdherenceSurveyAnswerCreateCubit,
+            MedicationAdherenceSurveyAnswerCreateState>(
+          bloc: medicationAdherenceSurveyAnswerCreateCubit,
+          builder: (context, state) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: CommonShadowBox(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    itemCount: medicationAdherenceSurveyQuestions.length,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                '한국어판 건강 관련 삶의 질 평가 척도',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 15,
+                                ).rixMGoEB,
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                '''귀하의 건강 상태에 대한 귀하의 의견을 묻는 것입니다. 귀하의 대답은 귀하가 어떻게 느끼고 또한 일상 활동을 얼마나 잘 할 수 있는가를 계속적으로 관찰하는 데 도움이 됩니다. 가장 적합한 숫자에 표시해 주십시오.''',
+                                style: const TextStyle(
+                                  color: AppColors.blueGrayDark,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 13,
+                                  height: 1.2,
+                                ).rixMGoM,
+                              )
+                            ],
+                          ),
+                        );
+                      }
+
+                      final medicationAdherencesurveyQuestion =
+                          medicationAdherenceSurveyQuestions[index - 1];
+                      return SizedBox();
+                      // return MedicationAdherenceSurveyQuestionListTile(
+                      //   medicationAdherencesurveyQuestion:
+                      //       medicationAdherencesurveyQuestion,
+                      //   answers: state.answers[index - 1],
+                      //   setAnswer: (answer) =>
+                      //       medicationAdherenceSurveyAnswerCreateCubit
+                      //           .updateAnswer(
+                      //     id: medicationAdherencesurveyQuestion.id,
+                      //     answer: answer,
+                      //   ),
+                      // );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(
+                      thickness: 1,
+                      height: 43,
+                    ),
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: state.canSubmit
+                    ? () async {
+                        // final beamer = Beamer.of(context);
+                        // final surveyGroupsCubit =
+                        //     context.read<SurveyGroupsCubit>();
+                        // final rowCount =
+                        //     await medicationAdherenceSurveyAnswerCreateCubit
+                        //         .submit();
+                        // if (rowCount == null) return;
+
+                        // surveyGroupsCubit.updateMedicationAdherenceSurvey(
+                        //   medicationAdherenceSurveyId: widget.surveyId,
+                        // );
+
+                        // beamer.beamBack();
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size.fromHeight(70),
+                  textStyle: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ).rixMGoB,
+                ),
+                child: const Text('제출'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

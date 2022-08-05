@@ -1,5 +1,10 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
+
+// Project imports:
 import 'package:yak/presentation/page/home/home_page.dart';
 
 /// 홈 로케이션

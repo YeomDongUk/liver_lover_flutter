@@ -1,5 +1,10 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_svg/svg.dart';
+
+// Project imports:
 import 'package:yak/core/static/text_style.dart';
 
 class KeyPadWidget extends StatelessWidget {

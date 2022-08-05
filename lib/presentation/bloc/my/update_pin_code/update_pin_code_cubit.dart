@@ -1,6 +1,9 @@
+// Package imports:
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+
+// Project imports:
 import 'package:yak/core/form/auth/auth_form.dart';
 import 'package:yak/domain/usecases/user/update_pin_code.dart';
 

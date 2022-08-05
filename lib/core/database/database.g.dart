@@ -2436,395 +2436,6 @@ class $MedicationSchedulesTable extends MedicationSchedules
           MedicationScheduleType.values);
 }
 
-class MedicationNotificationModel extends DataClass
-    implements Insertable<MedicationNotificationModel> {
-  final int id;
-  final String medicationScheduleId;
-  final NotificationStatus status;
-  final NotificationType type;
-  final DateTime reservedAt;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  MedicationNotificationModel(
-      {required this.id,
-      required this.medicationScheduleId,
-      required this.status,
-      required this.type,
-      required this.reservedAt,
-      required this.createdAt,
-      required this.updatedAt});
-  factory MedicationNotificationModel.fromData(Map<String, dynamic> data,
-      {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return MedicationNotificationModel(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      medicationScheduleId: const StringType().mapFromDatabaseResponse(
-          data['${effectivePrefix}medication_schedule_id'])!,
-      status: $MedicationNotificationsTable.$converter0.mapToDart(
-          const IntType()
-              .mapFromDatabaseResponse(data['${effectivePrefix}status']))!,
-      type: $MedicationNotificationsTable.$converter1.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
-      reservedAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}reserved_at'])!,
-      createdAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      updatedAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['medication_schedule_id'] = Variable<String>(medicationScheduleId);
-    {
-      final converter = $MedicationNotificationsTable.$converter0;
-      map['status'] = Variable<int>(converter.mapToSql(status)!);
-    }
-    {
-      final converter = $MedicationNotificationsTable.$converter1;
-      map['type'] = Variable<int>(converter.mapToSql(type)!);
-    }
-    map['reserved_at'] = Variable<DateTime>(reservedAt);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    map['updated_at'] = Variable<DateTime>(updatedAt);
-    return map;
-  }
-
-  MedicationNotificationsCompanion toCompanion(bool nullToAbsent) {
-    return MedicationNotificationsCompanion(
-      id: Value(id),
-      medicationScheduleId: Value(medicationScheduleId),
-      status: Value(status),
-      type: Value(type),
-      reservedAt: Value(reservedAt),
-      createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
-    );
-  }
-
-  factory MedicationNotificationModel.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return MedicationNotificationModel(
-      id: serializer.fromJson<int>(json['id']),
-      medicationScheduleId:
-          serializer.fromJson<String>(json['medicationScheduleId']),
-      status: serializer.fromJson<NotificationStatus>(json['status']),
-      type: serializer.fromJson<NotificationType>(json['type']),
-      reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'medicationScheduleId': serializer.toJson<String>(medicationScheduleId),
-      'status': serializer.toJson<NotificationStatus>(status),
-      'type': serializer.toJson<NotificationType>(type),
-      'reservedAt': serializer.toJson<DateTime>(reservedAt),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
-    };
-  }
-
-  MedicationNotificationModel copyWith(
-          {int? id,
-          String? medicationScheduleId,
-          NotificationStatus? status,
-          NotificationType? type,
-          DateTime? reservedAt,
-          DateTime? createdAt,
-          DateTime? updatedAt}) =>
-      MedicationNotificationModel(
-        id: id ?? this.id,
-        medicationScheduleId: medicationScheduleId ?? this.medicationScheduleId,
-        status: status ?? this.status,
-        type: type ?? this.type,
-        reservedAt: reservedAt ?? this.reservedAt,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('MedicationNotificationModel(')
-          ..write('id: $id, ')
-          ..write('medicationScheduleId: $medicationScheduleId, ')
-          ..write('status: $status, ')
-          ..write('type: $type, ')
-          ..write('reservedAt: $reservedAt, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      id, medicationScheduleId, status, type, reservedAt, createdAt, updatedAt);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is MedicationNotificationModel &&
-          other.id == this.id &&
-          other.medicationScheduleId == this.medicationScheduleId &&
-          other.status == this.status &&
-          other.type == this.type &&
-          other.reservedAt == this.reservedAt &&
-          other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt);
-}
-
-class MedicationNotificationsCompanion
-    extends UpdateCompanion<MedicationNotificationModel> {
-  final Value<int> id;
-  final Value<String> medicationScheduleId;
-  final Value<NotificationStatus> status;
-  final Value<NotificationType> type;
-  final Value<DateTime> reservedAt;
-  final Value<DateTime> createdAt;
-  final Value<DateTime> updatedAt;
-  const MedicationNotificationsCompanion({
-    this.id = const Value.absent(),
-    this.medicationScheduleId = const Value.absent(),
-    this.status = const Value.absent(),
-    this.type = const Value.absent(),
-    this.reservedAt = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-  });
-  MedicationNotificationsCompanion.insert({
-    this.id = const Value.absent(),
-    required String medicationScheduleId,
-    required NotificationStatus status,
-    required NotificationType type,
-    required DateTime reservedAt,
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-  })  : medicationScheduleId = Value(medicationScheduleId),
-        status = Value(status),
-        type = Value(type),
-        reservedAt = Value(reservedAt);
-  static Insertable<MedicationNotificationModel> custom({
-    Expression<int>? id,
-    Expression<String>? medicationScheduleId,
-    Expression<NotificationStatus>? status,
-    Expression<NotificationType>? type,
-    Expression<DateTime>? reservedAt,
-    Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (medicationScheduleId != null)
-        'medication_schedule_id': medicationScheduleId,
-      if (status != null) 'status': status,
-      if (type != null) 'type': type,
-      if (reservedAt != null) 'reserved_at': reservedAt,
-      if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
-    });
-  }
-
-  MedicationNotificationsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? medicationScheduleId,
-      Value<NotificationStatus>? status,
-      Value<NotificationType>? type,
-      Value<DateTime>? reservedAt,
-      Value<DateTime>? createdAt,
-      Value<DateTime>? updatedAt}) {
-    return MedicationNotificationsCompanion(
-      id: id ?? this.id,
-      medicationScheduleId: medicationScheduleId ?? this.medicationScheduleId,
-      status: status ?? this.status,
-      type: type ?? this.type,
-      reservedAt: reservedAt ?? this.reservedAt,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (medicationScheduleId.present) {
-      map['medication_schedule_id'] =
-          Variable<String>(medicationScheduleId.value);
-    }
-    if (status.present) {
-      final converter = $MedicationNotificationsTable.$converter0;
-      map['status'] = Variable<int>(converter.mapToSql(status.value)!);
-    }
-    if (type.present) {
-      final converter = $MedicationNotificationsTable.$converter1;
-      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
-    }
-    if (reservedAt.present) {
-      map['reserved_at'] = Variable<DateTime>(reservedAt.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('MedicationNotificationsCompanion(')
-          ..write('id: $id, ')
-          ..write('medicationScheduleId: $medicationScheduleId, ')
-          ..write('status: $status, ')
-          ..write('type: $type, ')
-          ..write('reservedAt: $reservedAt, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $MedicationNotificationsTable extends MedicationNotifications
-    with TableInfo<$MedicationNotificationsTable, MedicationNotificationModel> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $MedicationNotificationsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _medicationScheduleIdMeta =
-      const VerificationMeta('medicationScheduleId');
-  @override
-  late final GeneratedColumn<String?> medicationScheduleId =
-      GeneratedColumn<String?>('medication_schedule_id', aliasedName, false,
-          type: const StringType(),
-          requiredDuringInsert: true,
-          defaultConstraints: 'REFERENCES medication_schedules (id)');
-  final VerificationMeta _statusMeta = const VerificationMeta('status');
-  @override
-  late final GeneratedColumnWithTypeConverter<NotificationStatus, int?> status =
-      GeneratedColumn<int?>('status', aliasedName, false,
-              type: const IntType(), requiredDuringInsert: true)
-          .withConverter<NotificationStatus>(
-              $MedicationNotificationsTable.$converter0);
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
-  @override
-  late final GeneratedColumnWithTypeConverter<NotificationType, int?> type =
-      GeneratedColumn<int?>('type', aliasedName, false,
-              type: const IntType(), requiredDuringInsert: true)
-          .withConverter<NotificationType>(
-              $MedicationNotificationsTable.$converter1);
-  final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
-  @override
-  late final GeneratedColumn<DateTime?> reservedAt = GeneratedColumn<DateTime?>(
-      'reserved_at', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
-      'created_at', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultValue: currentDate);
-  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
-  @override
-  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
-      'updated_at', aliasedName, false,
-      type: const IntType(),
-      requiredDuringInsert: false,
-      defaultValue: currentDate);
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        medicationScheduleId,
-        status,
-        type,
-        reservedAt,
-        createdAt,
-        updatedAt
-      ];
-  @override
-  String get aliasedName => _alias ?? 'medication_notifications';
-  @override
-  String get actualTableName => 'medication_notifications';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<MedicationNotificationModel> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('medication_schedule_id')) {
-      context.handle(
-          _medicationScheduleIdMeta,
-          medicationScheduleId.isAcceptableOrUnknown(
-              data['medication_schedule_id']!, _medicationScheduleIdMeta));
-    } else if (isInserting) {
-      context.missing(_medicationScheduleIdMeta);
-    }
-    context.handle(_statusMeta, const VerificationResult.success());
-    context.handle(_typeMeta, const VerificationResult.success());
-    if (data.containsKey('reserved_at')) {
-      context.handle(
-          _reservedAtMeta,
-          reservedAt.isAcceptableOrUnknown(
-              data['reserved_at']!, _reservedAtMeta));
-    } else if (isInserting) {
-      context.missing(_reservedAtMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  List<Set<GeneratedColumn>> get uniqueKeys => [
-        {medicationScheduleId, type},
-      ];
-  @override
-  MedicationNotificationModel map(Map<String, dynamic> data,
-      {String? tablePrefix}) {
-    return MedicationNotificationModel.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $MedicationNotificationsTable createAlias(String alias) {
-    return $MedicationNotificationsTable(attachedDatabase, alias);
-  }
-
-  static TypeConverter<NotificationStatus, int> $converter0 =
-      const EnumIndexConverter<NotificationStatus>(NotificationStatus.values);
-  static TypeConverter<NotificationType, int> $converter1 =
-      const EnumIndexConverter<NotificationType>(NotificationType.values);
-}
-
 class HospitalVisitScheduleModel extends DataClass
     implements Insertable<HospitalVisitScheduleModel> {
   /// 유저 아이디
@@ -2839,6 +2450,9 @@ class HospitalVisitScheduleModel extends DataClass
   /// 수정일
   final DateTime updatedAt;
 
+  /// 진료 타입
+  final HospitalVisitScheduleType type;
+
   /// 병원 이름
   final String hospitalName;
 
@@ -2847,6 +2461,9 @@ class HospitalVisitScheduleModel extends DataClass
 
   /// 의사 이름
   final String doctorName;
+
+  /// 진료실
+  final String doctorOffice;
 
   /// 방문 예약일
   final DateTime reservedAt;
@@ -2862,21 +2479,21 @@ class HospitalVisitScheduleModel extends DataClass
 
   /// 30분 후 알림
   final bool afterPush;
-  final HospitalVisitScheduleType type;
   HospitalVisitScheduleModel(
       {required this.userId,
       required this.id,
       required this.createdAt,
       required this.updatedAt,
+      required this.type,
       required this.hospitalName,
       required this.medicalSubject,
       required this.doctorName,
+      required this.doctorOffice,
       required this.reservedAt,
       this.visitedAt,
       required this.push,
       required this.beforePush,
-      required this.afterPush,
-      required this.type});
+      required this.afterPush});
   factory HospitalVisitScheduleModel.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -2889,12 +2506,16 @@ class HospitalVisitScheduleModel extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
       updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      type: $HospitalVisitSchedulesTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
       hospitalName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}hospital_name'])!,
       medicalSubject: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}medical_subject'])!,
       doctorName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}doctor_name'])!,
+      doctorOffice: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}doctor_office'])!,
       reservedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}reserved_at'])!,
       visitedAt: const DateTimeType()
@@ -2905,8 +2526,6 @@ class HospitalVisitScheduleModel extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}before_push'])!,
       afterPush: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}after_push'])!,
-      type: $HospitalVisitSchedulesTable.$converter0.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
     );
   }
   @override
@@ -2916,9 +2535,14 @@ class HospitalVisitScheduleModel extends DataClass
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
+    {
+      final converter = $HospitalVisitSchedulesTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type)!);
+    }
     map['hospital_name'] = Variable<String>(hospitalName);
     map['medical_subject'] = Variable<String>(medicalSubject);
     map['doctor_name'] = Variable<String>(doctorName);
+    map['doctor_office'] = Variable<String>(doctorOffice);
     map['reserved_at'] = Variable<DateTime>(reservedAt);
     if (!nullToAbsent || visitedAt != null) {
       map['visited_at'] = Variable<DateTime?>(visitedAt);
@@ -2926,10 +2550,6 @@ class HospitalVisitScheduleModel extends DataClass
     map['push'] = Variable<bool>(push);
     map['before_push'] = Variable<bool>(beforePush);
     map['after_push'] = Variable<bool>(afterPush);
-    {
-      final converter = $HospitalVisitSchedulesTable.$converter0;
-      map['type'] = Variable<int>(converter.mapToSql(type)!);
-    }
     return map;
   }
 
@@ -2939,9 +2559,11 @@ class HospitalVisitScheduleModel extends DataClass
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
+      type: Value(type),
       hospitalName: Value(hospitalName),
       medicalSubject: Value(medicalSubject),
       doctorName: Value(doctorName),
+      doctorOffice: Value(doctorOffice),
       reservedAt: Value(reservedAt),
       visitedAt: visitedAt == null && nullToAbsent
           ? const Value.absent()
@@ -2949,7 +2571,6 @@ class HospitalVisitScheduleModel extends DataClass
       push: Value(push),
       beforePush: Value(beforePush),
       afterPush: Value(afterPush),
-      type: Value(type),
     );
   }
 
@@ -2961,15 +2582,16 @@ class HospitalVisitScheduleModel extends DataClass
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      type: serializer.fromJson<HospitalVisitScheduleType>(json['type']),
       hospitalName: serializer.fromJson<String>(json['hospitalName']),
       medicalSubject: serializer.fromJson<String>(json['medicalSubject']),
       doctorName: serializer.fromJson<String>(json['doctorName']),
+      doctorOffice: serializer.fromJson<String>(json['doctorOffice']),
       reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
       visitedAt: serializer.fromJson<DateTime?>(json['visitedAt']),
       push: serializer.fromJson<bool>(json['push']),
       beforePush: serializer.fromJson<bool>(json['beforePush']),
       afterPush: serializer.fromJson<bool>(json['afterPush']),
-      type: serializer.fromJson<HospitalVisitScheduleType>(json['type']),
     );
   }
   @override
@@ -2980,15 +2602,16 @@ class HospitalVisitScheduleModel extends DataClass
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'type': serializer.toJson<HospitalVisitScheduleType>(type),
       'hospitalName': serializer.toJson<String>(hospitalName),
       'medicalSubject': serializer.toJson<String>(medicalSubject),
       'doctorName': serializer.toJson<String>(doctorName),
+      'doctorOffice': serializer.toJson<String>(doctorOffice),
       'reservedAt': serializer.toJson<DateTime>(reservedAt),
       'visitedAt': serializer.toJson<DateTime?>(visitedAt),
       'push': serializer.toJson<bool>(push),
       'beforePush': serializer.toJson<bool>(beforePush),
       'afterPush': serializer.toJson<bool>(afterPush),
-      'type': serializer.toJson<HospitalVisitScheduleType>(type),
     };
   }
 
@@ -2997,29 +2620,31 @@ class HospitalVisitScheduleModel extends DataClass
           String? id,
           DateTime? createdAt,
           DateTime? updatedAt,
+          HospitalVisitScheduleType? type,
           String? hospitalName,
           String? medicalSubject,
           String? doctorName,
+          String? doctorOffice,
           DateTime? reservedAt,
           DateTime? visitedAt,
           bool? push,
           bool? beforePush,
-          bool? afterPush,
-          HospitalVisitScheduleType? type}) =>
+          bool? afterPush}) =>
       HospitalVisitScheduleModel(
         userId: userId ?? this.userId,
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        type: type ?? this.type,
         hospitalName: hospitalName ?? this.hospitalName,
         medicalSubject: medicalSubject ?? this.medicalSubject,
         doctorName: doctorName ?? this.doctorName,
+        doctorOffice: doctorOffice ?? this.doctorOffice,
         reservedAt: reservedAt ?? this.reservedAt,
         visitedAt: visitedAt ?? this.visitedAt,
         push: push ?? this.push,
         beforePush: beforePush ?? this.beforePush,
         afterPush: afterPush ?? this.afterPush,
-        type: type ?? this.type,
       );
   @override
   String toString() {
@@ -3028,15 +2653,16 @@ class HospitalVisitScheduleModel extends DataClass
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('type: $type, ')
           ..write('hospitalName: $hospitalName, ')
           ..write('medicalSubject: $medicalSubject, ')
           ..write('doctorName: $doctorName, ')
+          ..write('doctorOffice: $doctorOffice, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('visitedAt: $visitedAt, ')
           ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
-          ..write('afterPush: $afterPush, ')
-          ..write('type: $type')
+          ..write('afterPush: $afterPush')
           ..write(')'))
         .toString();
   }
@@ -3047,15 +2673,16 @@ class HospitalVisitScheduleModel extends DataClass
       id,
       createdAt,
       updatedAt,
+      type,
       hospitalName,
       medicalSubject,
       doctorName,
+      doctorOffice,
       reservedAt,
       visitedAt,
       push,
       beforePush,
-      afterPush,
-      type);
+      afterPush);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3064,15 +2691,16 @@ class HospitalVisitScheduleModel extends DataClass
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
+          other.type == this.type &&
           other.hospitalName == this.hospitalName &&
           other.medicalSubject == this.medicalSubject &&
           other.doctorName == this.doctorName &&
+          other.doctorOffice == this.doctorOffice &&
           other.reservedAt == this.reservedAt &&
           other.visitedAt == this.visitedAt &&
           other.push == this.push &&
           other.beforePush == this.beforePush &&
-          other.afterPush == this.afterPush &&
-          other.type == this.type);
+          other.afterPush == this.afterPush);
 }
 
 class HospitalVisitSchedulesCompanion
@@ -3081,79 +2709,85 @@ class HospitalVisitSchedulesCompanion
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
+  final Value<HospitalVisitScheduleType> type;
   final Value<String> hospitalName;
   final Value<String> medicalSubject;
   final Value<String> doctorName;
+  final Value<String> doctorOffice;
   final Value<DateTime> reservedAt;
   final Value<DateTime?> visitedAt;
   final Value<bool> push;
   final Value<bool> beforePush;
   final Value<bool> afterPush;
-  final Value<HospitalVisitScheduleType> type;
   const HospitalVisitSchedulesCompanion({
     this.userId = const Value.absent(),
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.type = const Value.absent(),
     this.hospitalName = const Value.absent(),
     this.medicalSubject = const Value.absent(),
     this.doctorName = const Value.absent(),
+    this.doctorOffice = const Value.absent(),
     this.reservedAt = const Value.absent(),
     this.visitedAt = const Value.absent(),
     this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
-    this.type = const Value.absent(),
   });
   HospitalVisitSchedulesCompanion.insert({
     required String userId,
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    required HospitalVisitScheduleType type,
     required String hospitalName,
     required String medicalSubject,
     required String doctorName,
+    required String doctorOffice,
     required DateTime reservedAt,
     this.visitedAt = const Value.absent(),
     this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
-    required HospitalVisitScheduleType type,
   })  : userId = Value(userId),
+        type = Value(type),
         hospitalName = Value(hospitalName),
         medicalSubject = Value(medicalSubject),
         doctorName = Value(doctorName),
-        reservedAt = Value(reservedAt),
-        type = Value(type);
+        doctorOffice = Value(doctorOffice),
+        reservedAt = Value(reservedAt);
   static Insertable<HospitalVisitScheduleModel> custom({
     Expression<String>? userId,
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
+    Expression<HospitalVisitScheduleType>? type,
     Expression<String>? hospitalName,
     Expression<String>? medicalSubject,
     Expression<String>? doctorName,
+    Expression<String>? doctorOffice,
     Expression<DateTime>? reservedAt,
     Expression<DateTime?>? visitedAt,
     Expression<bool>? push,
     Expression<bool>? beforePush,
     Expression<bool>? afterPush,
-    Expression<HospitalVisitScheduleType>? type,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (type != null) 'type': type,
       if (hospitalName != null) 'hospital_name': hospitalName,
       if (medicalSubject != null) 'medical_subject': medicalSubject,
       if (doctorName != null) 'doctor_name': doctorName,
+      if (doctorOffice != null) 'doctor_office': doctorOffice,
       if (reservedAt != null) 'reserved_at': reservedAt,
       if (visitedAt != null) 'visited_at': visitedAt,
       if (push != null) 'push': push,
       if (beforePush != null) 'before_push': beforePush,
       if (afterPush != null) 'after_push': afterPush,
-      if (type != null) 'type': type,
     });
   }
 
@@ -3162,29 +2796,31 @@ class HospitalVisitSchedulesCompanion
       Value<String>? id,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
+      Value<HospitalVisitScheduleType>? type,
       Value<String>? hospitalName,
       Value<String>? medicalSubject,
       Value<String>? doctorName,
+      Value<String>? doctorOffice,
       Value<DateTime>? reservedAt,
       Value<DateTime?>? visitedAt,
       Value<bool>? push,
       Value<bool>? beforePush,
-      Value<bool>? afterPush,
-      Value<HospitalVisitScheduleType>? type}) {
+      Value<bool>? afterPush}) {
     return HospitalVisitSchedulesCompanion(
       userId: userId ?? this.userId,
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      type: type ?? this.type,
       hospitalName: hospitalName ?? this.hospitalName,
       medicalSubject: medicalSubject ?? this.medicalSubject,
       doctorName: doctorName ?? this.doctorName,
+      doctorOffice: doctorOffice ?? this.doctorOffice,
       reservedAt: reservedAt ?? this.reservedAt,
       visitedAt: visitedAt ?? this.visitedAt,
       push: push ?? this.push,
       beforePush: beforePush ?? this.beforePush,
       afterPush: afterPush ?? this.afterPush,
-      type: type ?? this.type,
     );
   }
 
@@ -3203,6 +2839,10 @@ class HospitalVisitSchedulesCompanion
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
+    if (type.present) {
+      final converter = $HospitalVisitSchedulesTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
+    }
     if (hospitalName.present) {
       map['hospital_name'] = Variable<String>(hospitalName.value);
     }
@@ -3211,6 +2851,9 @@ class HospitalVisitSchedulesCompanion
     }
     if (doctorName.present) {
       map['doctor_name'] = Variable<String>(doctorName.value);
+    }
+    if (doctorOffice.present) {
+      map['doctor_office'] = Variable<String>(doctorOffice.value);
     }
     if (reservedAt.present) {
       map['reserved_at'] = Variable<DateTime>(reservedAt.value);
@@ -3227,10 +2870,6 @@ class HospitalVisitSchedulesCompanion
     if (afterPush.present) {
       map['after_push'] = Variable<bool>(afterPush.value);
     }
-    if (type.present) {
-      final converter = $HospitalVisitSchedulesTable.$converter0;
-      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
-    }
     return map;
   }
 
@@ -3241,15 +2880,16 @@ class HospitalVisitSchedulesCompanion
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('type: $type, ')
           ..write('hospitalName: $hospitalName, ')
           ..write('medicalSubject: $medicalSubject, ')
           ..write('doctorName: $doctorName, ')
+          ..write('doctorOffice: $doctorOffice, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('visitedAt: $visitedAt, ')
           ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
-          ..write('afterPush: $afterPush, ')
-          ..write('type: $type')
+          ..write('afterPush: $afterPush')
           ..write(')'))
         .toString();
   }
@@ -3289,6 +2929,13 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: currentDate);
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumnWithTypeConverter<HospitalVisitScheduleType, int?>
+      type = GeneratedColumn<int?>('type', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<HospitalVisitScheduleType>(
+              $HospitalVisitSchedulesTable.$converter0);
   final VerificationMeta _hospitalNameMeta =
       const VerificationMeta('hospitalName');
   @override
@@ -3305,6 +2952,12 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
   @override
   late final GeneratedColumn<String?> doctorName = GeneratedColumn<String?>(
       'doctor_name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _doctorOfficeMeta =
+      const VerificationMeta('doctorOffice');
+  @override
+  late final GeneratedColumn<String?> doctorOffice = GeneratedColumn<String?>(
+      'doctor_office', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
   @override
@@ -3344,28 +2997,22 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (after_push IN (0, 1))',
       defaultValue: const Constant(false));
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
-  @override
-  late final GeneratedColumnWithTypeConverter<HospitalVisitScheduleType, int?>
-      type = GeneratedColumn<int?>('type', aliasedName, false,
-              type: const IntType(), requiredDuringInsert: true)
-          .withConverter<HospitalVisitScheduleType>(
-              $HospitalVisitSchedulesTable.$converter0);
   @override
   List<GeneratedColumn> get $columns => [
         userId,
         id,
         createdAt,
         updatedAt,
+        type,
         hospitalName,
         medicalSubject,
         doctorName,
+        doctorOffice,
         reservedAt,
         visitedAt,
         push,
         beforePush,
-        afterPush,
-        type
+        afterPush
       ];
   @override
   String get aliasedName => _alias ?? 'hospital_visit_schedules';
@@ -3394,6 +3041,7 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
     }
+    context.handle(_typeMeta, const VerificationResult.success());
     if (data.containsKey('hospital_name')) {
       context.handle(
           _hospitalNameMeta,
@@ -3417,6 +3065,14 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
               data['doctor_name']!, _doctorNameMeta));
     } else if (isInserting) {
       context.missing(_doctorNameMeta);
+    }
+    if (data.containsKey('doctor_office')) {
+      context.handle(
+          _doctorOfficeMeta,
+          doctorOffice.isAcceptableOrUnknown(
+              data['doctor_office']!, _doctorOfficeMeta));
+    } else if (isInserting) {
+      context.missing(_doctorOfficeMeta);
     }
     if (data.containsKey('reserved_at')) {
       context.handle(
@@ -3444,7 +3100,6 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
       context.handle(_afterPushMeta,
           afterPush.isAcceptableOrUnknown(data['after_push']!, _afterPushMeta));
     }
-    context.handle(_typeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -5777,7 +5432,7 @@ class ExaminationResultModel extends DataClass
   final DateTime updatedAt;
 
   /// 검사일
-  final DateTime examinedAt;
+  final DateTime date;
 
   /// 혈소판
   final int? platelet;
@@ -5786,7 +5441,7 @@ class ExaminationResultModel extends DataClass
   final int? ast;
 
   /// 간효소
-  final int? atl;
+  final int? alt;
 
   /// 간효소
   final int? ggt;
@@ -5804,32 +5459,28 @@ class ExaminationResultModel extends DataClass
   final int? hbvDna;
 
   /// 알부민
-  final int? hcvDna;
-
-  /// 지방간
-  final bool? fattyLiver;
+  final int? hcvRna;
 
   /// 양성종양(혈관종, 낭종 등)
-  final bool? benignTumor;
+  final String? benignTumor;
 
   /// 양성종양(혈관종, 낭종 등)
-  final bool? dangerousNodule;
+  final String? dangerousNodule;
   ExaminationResultModel(
       {required this.userId,
       required this.id,
       required this.createdAt,
       required this.updatedAt,
-      required this.examinedAt,
+      required this.date,
       this.platelet,
       this.ast,
-      this.atl,
+      this.alt,
       this.ggt,
       this.bilirubin,
       this.albumin,
       this.afp,
       this.hbvDna,
-      this.hcvDna,
-      this.fattyLiver,
+      this.hcvRna,
       this.benignTumor,
       this.dangerousNodule});
   factory ExaminationResultModel.fromData(Map<String, dynamic> data,
@@ -5844,14 +5495,14 @@ class ExaminationResultModel extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
       updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
-      examinedAt: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}examined_at'])!,
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date'])!,
       platelet: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}platelet']),
       ast: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}ast']),
-      atl: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}atl']),
+      alt: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}alt']),
       ggt: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}ggt']),
       bilirubin: const IntType()
@@ -5862,13 +5513,11 @@ class ExaminationResultModel extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}afp']),
       hbvDna: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}hbv_dna']),
-      hcvDna: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}hcv_dna']),
-      fattyLiver: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}fatty_liver']),
-      benignTumor: const BoolType()
+      hcvRna: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}hcv_rna']),
+      benignTumor: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}benign_tumor']),
-      dangerousNodule: const BoolType()
+      dangerousNodule: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}dangerous_nodule']),
     );
   }
@@ -5879,15 +5528,15 @@ class ExaminationResultModel extends DataClass
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['examined_at'] = Variable<DateTime>(examinedAt);
+    map['date'] = Variable<DateTime>(date);
     if (!nullToAbsent || platelet != null) {
       map['platelet'] = Variable<int?>(platelet);
     }
     if (!nullToAbsent || ast != null) {
       map['ast'] = Variable<int?>(ast);
     }
-    if (!nullToAbsent || atl != null) {
-      map['atl'] = Variable<int?>(atl);
+    if (!nullToAbsent || alt != null) {
+      map['alt'] = Variable<int?>(alt);
     }
     if (!nullToAbsent || ggt != null) {
       map['ggt'] = Variable<int?>(ggt);
@@ -5904,17 +5553,14 @@ class ExaminationResultModel extends DataClass
     if (!nullToAbsent || hbvDna != null) {
       map['hbv_dna'] = Variable<int?>(hbvDna);
     }
-    if (!nullToAbsent || hcvDna != null) {
-      map['hcv_dna'] = Variable<int?>(hcvDna);
-    }
-    if (!nullToAbsent || fattyLiver != null) {
-      map['fatty_liver'] = Variable<bool?>(fattyLiver);
+    if (!nullToAbsent || hcvRna != null) {
+      map['hcv_rna'] = Variable<int?>(hcvRna);
     }
     if (!nullToAbsent || benignTumor != null) {
-      map['benign_tumor'] = Variable<bool?>(benignTumor);
+      map['benign_tumor'] = Variable<String?>(benignTumor);
     }
     if (!nullToAbsent || dangerousNodule != null) {
-      map['dangerous_nodule'] = Variable<bool?>(dangerousNodule);
+      map['dangerous_nodule'] = Variable<String?>(dangerousNodule);
     }
     return map;
   }
@@ -5925,12 +5571,12 @@ class ExaminationResultModel extends DataClass
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      examinedAt: Value(examinedAt),
+      date: Value(date),
       platelet: platelet == null && nullToAbsent
           ? const Value.absent()
           : Value(platelet),
       ast: ast == null && nullToAbsent ? const Value.absent() : Value(ast),
-      atl: atl == null && nullToAbsent ? const Value.absent() : Value(atl),
+      alt: alt == null && nullToAbsent ? const Value.absent() : Value(alt),
       ggt: ggt == null && nullToAbsent ? const Value.absent() : Value(ggt),
       bilirubin: bilirubin == null && nullToAbsent
           ? const Value.absent()
@@ -5941,11 +5587,8 @@ class ExaminationResultModel extends DataClass
       afp: afp == null && nullToAbsent ? const Value.absent() : Value(afp),
       hbvDna:
           hbvDna == null && nullToAbsent ? const Value.absent() : Value(hbvDna),
-      hcvDna:
-          hcvDna == null && nullToAbsent ? const Value.absent() : Value(hcvDna),
-      fattyLiver: fattyLiver == null && nullToAbsent
-          ? const Value.absent()
-          : Value(fattyLiver),
+      hcvRna:
+          hcvRna == null && nullToAbsent ? const Value.absent() : Value(hcvRna),
       benignTumor: benignTumor == null && nullToAbsent
           ? const Value.absent()
           : Value(benignTumor),
@@ -5963,19 +5606,18 @@ class ExaminationResultModel extends DataClass
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      examinedAt: serializer.fromJson<DateTime>(json['examinedAt']),
+      date: serializer.fromJson<DateTime>(json['date']),
       platelet: serializer.fromJson<int?>(json['platelet']),
       ast: serializer.fromJson<int?>(json['ast']),
-      atl: serializer.fromJson<int?>(json['atl']),
+      alt: serializer.fromJson<int?>(json['alt']),
       ggt: serializer.fromJson<int?>(json['ggt']),
       bilirubin: serializer.fromJson<int?>(json['bilirubin']),
       albumin: serializer.fromJson<int?>(json['albumin']),
       afp: serializer.fromJson<int?>(json['afp']),
       hbvDna: serializer.fromJson<int?>(json['hbvDna']),
-      hcvDna: serializer.fromJson<int?>(json['hcvDna']),
-      fattyLiver: serializer.fromJson<bool?>(json['fattyLiver']),
-      benignTumor: serializer.fromJson<bool?>(json['benignTumor']),
-      dangerousNodule: serializer.fromJson<bool?>(json['dangerousNodule']),
+      hcvRna: serializer.fromJson<int?>(json['hcvRna']),
+      benignTumor: serializer.fromJson<String?>(json['benignTumor']),
+      dangerousNodule: serializer.fromJson<String?>(json['dangerousNodule']),
     );
   }
   @override
@@ -5986,19 +5628,18 @@ class ExaminationResultModel extends DataClass
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'examinedAt': serializer.toJson<DateTime>(examinedAt),
+      'date': serializer.toJson<DateTime>(date),
       'platelet': serializer.toJson<int?>(platelet),
       'ast': serializer.toJson<int?>(ast),
-      'atl': serializer.toJson<int?>(atl),
+      'alt': serializer.toJson<int?>(alt),
       'ggt': serializer.toJson<int?>(ggt),
       'bilirubin': serializer.toJson<int?>(bilirubin),
       'albumin': serializer.toJson<int?>(albumin),
       'afp': serializer.toJson<int?>(afp),
       'hbvDna': serializer.toJson<int?>(hbvDna),
-      'hcvDna': serializer.toJson<int?>(hcvDna),
-      'fattyLiver': serializer.toJson<bool?>(fattyLiver),
-      'benignTumor': serializer.toJson<bool?>(benignTumor),
-      'dangerousNodule': serializer.toJson<bool?>(dangerousNodule),
+      'hcvRna': serializer.toJson<int?>(hcvRna),
+      'benignTumor': serializer.toJson<String?>(benignTumor),
+      'dangerousNodule': serializer.toJson<String?>(dangerousNodule),
     };
   }
 
@@ -6007,35 +5648,33 @@ class ExaminationResultModel extends DataClass
           String? id,
           DateTime? createdAt,
           DateTime? updatedAt,
-          DateTime? examinedAt,
+          DateTime? date,
           int? platelet,
           int? ast,
-          int? atl,
+          int? alt,
           int? ggt,
           int? bilirubin,
           int? albumin,
           int? afp,
           int? hbvDna,
-          int? hcvDna,
-          bool? fattyLiver,
-          bool? benignTumor,
-          bool? dangerousNodule}) =>
+          int? hcvRna,
+          String? benignTumor,
+          String? dangerousNodule}) =>
       ExaminationResultModel(
         userId: userId ?? this.userId,
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
-        examinedAt: examinedAt ?? this.examinedAt,
+        date: date ?? this.date,
         platelet: platelet ?? this.platelet,
         ast: ast ?? this.ast,
-        atl: atl ?? this.atl,
+        alt: alt ?? this.alt,
         ggt: ggt ?? this.ggt,
         bilirubin: bilirubin ?? this.bilirubin,
         albumin: albumin ?? this.albumin,
         afp: afp ?? this.afp,
         hbvDna: hbvDna ?? this.hbvDna,
-        hcvDna: hcvDna ?? this.hcvDna,
-        fattyLiver: fattyLiver ?? this.fattyLiver,
+        hcvRna: hcvRna ?? this.hcvRna,
         benignTumor: benignTumor ?? this.benignTumor,
         dangerousNodule: dangerousNodule ?? this.dangerousNodule,
       );
@@ -6046,17 +5685,16 @@ class ExaminationResultModel extends DataClass
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('examinedAt: $examinedAt, ')
+          ..write('date: $date, ')
           ..write('platelet: $platelet, ')
           ..write('ast: $ast, ')
-          ..write('atl: $atl, ')
+          ..write('alt: $alt, ')
           ..write('ggt: $ggt, ')
           ..write('bilirubin: $bilirubin, ')
           ..write('albumin: $albumin, ')
           ..write('afp: $afp, ')
           ..write('hbvDna: $hbvDna, ')
-          ..write('hcvDna: $hcvDna, ')
-          ..write('fattyLiver: $fattyLiver, ')
+          ..write('hcvRna: $hcvRna, ')
           ..write('benignTumor: $benignTumor, ')
           ..write('dangerousNodule: $dangerousNodule')
           ..write(')'))
@@ -6069,17 +5707,16 @@ class ExaminationResultModel extends DataClass
       id,
       createdAt,
       updatedAt,
-      examinedAt,
+      date,
       platelet,
       ast,
-      atl,
+      alt,
       ggt,
       bilirubin,
       albumin,
       afp,
       hbvDna,
-      hcvDna,
-      fattyLiver,
+      hcvRna,
       benignTumor,
       dangerousNodule);
   @override
@@ -6090,17 +5727,16 @@ class ExaminationResultModel extends DataClass
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.examinedAt == this.examinedAt &&
+          other.date == this.date &&
           other.platelet == this.platelet &&
           other.ast == this.ast &&
-          other.atl == this.atl &&
+          other.alt == this.alt &&
           other.ggt == this.ggt &&
           other.bilirubin == this.bilirubin &&
           other.albumin == this.albumin &&
           other.afp == this.afp &&
           other.hbvDna == this.hbvDna &&
-          other.hcvDna == this.hcvDna &&
-          other.fattyLiver == this.fattyLiver &&
+          other.hcvRna == this.hcvRna &&
           other.benignTumor == this.benignTumor &&
           other.dangerousNodule == this.dangerousNodule);
 }
@@ -6111,35 +5747,33 @@ class ExaminationResultsCompanion
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> examinedAt;
+  final Value<DateTime> date;
   final Value<int?> platelet;
   final Value<int?> ast;
-  final Value<int?> atl;
+  final Value<int?> alt;
   final Value<int?> ggt;
   final Value<int?> bilirubin;
   final Value<int?> albumin;
   final Value<int?> afp;
   final Value<int?> hbvDna;
-  final Value<int?> hcvDna;
-  final Value<bool?> fattyLiver;
-  final Value<bool?> benignTumor;
-  final Value<bool?> dangerousNodule;
+  final Value<int?> hcvRna;
+  final Value<String?> benignTumor;
+  final Value<String?> dangerousNodule;
   const ExaminationResultsCompanion({
     this.userId = const Value.absent(),
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.examinedAt = const Value.absent(),
+    this.date = const Value.absent(),
     this.platelet = const Value.absent(),
     this.ast = const Value.absent(),
-    this.atl = const Value.absent(),
+    this.alt = const Value.absent(),
     this.ggt = const Value.absent(),
     this.bilirubin = const Value.absent(),
     this.albumin = const Value.absent(),
     this.afp = const Value.absent(),
     this.hbvDna = const Value.absent(),
-    this.hcvDna = const Value.absent(),
-    this.fattyLiver = const Value.absent(),
+    this.hcvRna = const Value.absent(),
     this.benignTumor = const Value.absent(),
     this.dangerousNodule = const Value.absent(),
   });
@@ -6148,56 +5782,53 @@ class ExaminationResultsCompanion
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    required DateTime examinedAt,
+    required DateTime date,
     this.platelet = const Value.absent(),
     this.ast = const Value.absent(),
-    this.atl = const Value.absent(),
+    this.alt = const Value.absent(),
     this.ggt = const Value.absent(),
     this.bilirubin = const Value.absent(),
     this.albumin = const Value.absent(),
     this.afp = const Value.absent(),
     this.hbvDna = const Value.absent(),
-    this.hcvDna = const Value.absent(),
-    this.fattyLiver = const Value.absent(),
+    this.hcvRna = const Value.absent(),
     this.benignTumor = const Value.absent(),
     this.dangerousNodule = const Value.absent(),
   })  : userId = Value(userId),
-        examinedAt = Value(examinedAt);
+        date = Value(date);
   static Insertable<ExaminationResultModel> custom({
     Expression<String>? userId,
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<DateTime>? examinedAt,
+    Expression<DateTime>? date,
     Expression<int?>? platelet,
     Expression<int?>? ast,
-    Expression<int?>? atl,
+    Expression<int?>? alt,
     Expression<int?>? ggt,
     Expression<int?>? bilirubin,
     Expression<int?>? albumin,
     Expression<int?>? afp,
     Expression<int?>? hbvDna,
-    Expression<int?>? hcvDna,
-    Expression<bool?>? fattyLiver,
-    Expression<bool?>? benignTumor,
-    Expression<bool?>? dangerousNodule,
+    Expression<int?>? hcvRna,
+    Expression<String?>? benignTumor,
+    Expression<String?>? dangerousNodule,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (examinedAt != null) 'examined_at': examinedAt,
+      if (date != null) 'date': date,
       if (platelet != null) 'platelet': platelet,
       if (ast != null) 'ast': ast,
-      if (atl != null) 'atl': atl,
+      if (alt != null) 'alt': alt,
       if (ggt != null) 'ggt': ggt,
       if (bilirubin != null) 'bilirubin': bilirubin,
       if (albumin != null) 'albumin': albumin,
       if (afp != null) 'afp': afp,
       if (hbvDna != null) 'hbv_dna': hbvDna,
-      if (hcvDna != null) 'hcv_dna': hcvDna,
-      if (fattyLiver != null) 'fatty_liver': fattyLiver,
+      if (hcvRna != null) 'hcv_rna': hcvRna,
       if (benignTumor != null) 'benign_tumor': benignTumor,
       if (dangerousNodule != null) 'dangerous_nodule': dangerousNodule,
     });
@@ -6208,35 +5839,33 @@ class ExaminationResultsCompanion
       Value<String>? id,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
-      Value<DateTime>? examinedAt,
+      Value<DateTime>? date,
       Value<int?>? platelet,
       Value<int?>? ast,
-      Value<int?>? atl,
+      Value<int?>? alt,
       Value<int?>? ggt,
       Value<int?>? bilirubin,
       Value<int?>? albumin,
       Value<int?>? afp,
       Value<int?>? hbvDna,
-      Value<int?>? hcvDna,
-      Value<bool?>? fattyLiver,
-      Value<bool?>? benignTumor,
-      Value<bool?>? dangerousNodule}) {
+      Value<int?>? hcvRna,
+      Value<String?>? benignTumor,
+      Value<String?>? dangerousNodule}) {
     return ExaminationResultsCompanion(
       userId: userId ?? this.userId,
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      examinedAt: examinedAt ?? this.examinedAt,
+      date: date ?? this.date,
       platelet: platelet ?? this.platelet,
       ast: ast ?? this.ast,
-      atl: atl ?? this.atl,
+      alt: alt ?? this.alt,
       ggt: ggt ?? this.ggt,
       bilirubin: bilirubin ?? this.bilirubin,
       albumin: albumin ?? this.albumin,
       afp: afp ?? this.afp,
       hbvDna: hbvDna ?? this.hbvDna,
-      hcvDna: hcvDna ?? this.hcvDna,
-      fattyLiver: fattyLiver ?? this.fattyLiver,
+      hcvRna: hcvRna ?? this.hcvRna,
       benignTumor: benignTumor ?? this.benignTumor,
       dangerousNodule: dangerousNodule ?? this.dangerousNodule,
     );
@@ -6257,8 +5886,8 @@ class ExaminationResultsCompanion
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
-    if (examinedAt.present) {
-      map['examined_at'] = Variable<DateTime>(examinedAt.value);
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
     }
     if (platelet.present) {
       map['platelet'] = Variable<int?>(platelet.value);
@@ -6266,8 +5895,8 @@ class ExaminationResultsCompanion
     if (ast.present) {
       map['ast'] = Variable<int?>(ast.value);
     }
-    if (atl.present) {
-      map['atl'] = Variable<int?>(atl.value);
+    if (alt.present) {
+      map['alt'] = Variable<int?>(alt.value);
     }
     if (ggt.present) {
       map['ggt'] = Variable<int?>(ggt.value);
@@ -6284,17 +5913,14 @@ class ExaminationResultsCompanion
     if (hbvDna.present) {
       map['hbv_dna'] = Variable<int?>(hbvDna.value);
     }
-    if (hcvDna.present) {
-      map['hcv_dna'] = Variable<int?>(hcvDna.value);
-    }
-    if (fattyLiver.present) {
-      map['fatty_liver'] = Variable<bool?>(fattyLiver.value);
+    if (hcvRna.present) {
+      map['hcv_rna'] = Variable<int?>(hcvRna.value);
     }
     if (benignTumor.present) {
-      map['benign_tumor'] = Variable<bool?>(benignTumor.value);
+      map['benign_tumor'] = Variable<String?>(benignTumor.value);
     }
     if (dangerousNodule.present) {
-      map['dangerous_nodule'] = Variable<bool?>(dangerousNodule.value);
+      map['dangerous_nodule'] = Variable<String?>(dangerousNodule.value);
     }
     return map;
   }
@@ -6306,17 +5932,16 @@ class ExaminationResultsCompanion
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('examinedAt: $examinedAt, ')
+          ..write('date: $date, ')
           ..write('platelet: $platelet, ')
           ..write('ast: $ast, ')
-          ..write('atl: $atl, ')
+          ..write('alt: $alt, ')
           ..write('ggt: $ggt, ')
           ..write('bilirubin: $bilirubin, ')
           ..write('albumin: $albumin, ')
           ..write('afp: $afp, ')
           ..write('hbvDna: $hbvDna, ')
-          ..write('hcvDna: $hcvDna, ')
-          ..write('fattyLiver: $fattyLiver, ')
+          ..write('hcvRna: $hcvRna, ')
           ..write('benignTumor: $benignTumor, ')
           ..write('dangerousNodule: $dangerousNodule')
           ..write(')'))
@@ -6358,10 +5983,10 @@ class $ExaminationResultsTable extends ExaminationResults
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: currentDate);
-  final VerificationMeta _examinedAtMeta = const VerificationMeta('examinedAt');
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
-  late final GeneratedColumn<DateTime?> examinedAt = GeneratedColumn<DateTime?>(
-      'examined_at', aliasedName, false,
+  late final GeneratedColumn<DateTime?> date = GeneratedColumn<DateTime?>(
+      'date', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _plateletMeta = const VerificationMeta('platelet');
   @override
@@ -6373,10 +5998,10 @@ class $ExaminationResultsTable extends ExaminationResults
   late final GeneratedColumn<int?> ast = GeneratedColumn<int?>(
       'ast', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _atlMeta = const VerificationMeta('atl');
+  final VerificationMeta _altMeta = const VerificationMeta('alt');
   @override
-  late final GeneratedColumn<int?> atl = GeneratedColumn<int?>(
-      'atl', aliasedName, true,
+  late final GeneratedColumn<int?> alt = GeneratedColumn<int?>(
+      'alt', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _ggtMeta = const VerificationMeta('ggt');
   @override
@@ -6403,51 +6028,39 @@ class $ExaminationResultsTable extends ExaminationResults
   late final GeneratedColumn<int?> hbvDna = GeneratedColumn<int?>(
       'hbv_dna', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _hcvDnaMeta = const VerificationMeta('hcvDna');
+  final VerificationMeta _hcvRnaMeta = const VerificationMeta('hcvRna');
   @override
-  late final GeneratedColumn<int?> hcvDna = GeneratedColumn<int?>(
-      'hcv_dna', aliasedName, true,
+  late final GeneratedColumn<int?> hcvRna = GeneratedColumn<int?>(
+      'hcv_rna', aliasedName, true,
       type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _fattyLiverMeta = const VerificationMeta('fattyLiver');
-  @override
-  late final GeneratedColumn<bool?> fattyLiver = GeneratedColumn<bool?>(
-      'fatty_liver', aliasedName, true,
-      type: const BoolType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (fatty_liver IN (0, 1))');
   final VerificationMeta _benignTumorMeta =
       const VerificationMeta('benignTumor');
   @override
-  late final GeneratedColumn<bool?> benignTumor = GeneratedColumn<bool?>(
+  late final GeneratedColumn<String?> benignTumor = GeneratedColumn<String?>(
       'benign_tumor', aliasedName, true,
-      type: const BoolType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (benign_tumor IN (0, 1))');
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _dangerousNoduleMeta =
       const VerificationMeta('dangerousNodule');
   @override
-  late final GeneratedColumn<bool?> dangerousNodule = GeneratedColumn<bool?>(
-      'dangerous_nodule', aliasedName, true,
-      type: const BoolType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (dangerous_nodule IN (0, 1))');
+  late final GeneratedColumn<String?> dangerousNodule =
+      GeneratedColumn<String?>('dangerous_nodule', aliasedName, true,
+          type: const StringType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         userId,
         id,
         createdAt,
         updatedAt,
-        examinedAt,
+        date,
         platelet,
         ast,
-        atl,
+        alt,
         ggt,
         bilirubin,
         albumin,
         afp,
         hbvDna,
-        hcvDna,
-        fattyLiver,
+        hcvRna,
         benignTumor,
         dangerousNodule
       ];
@@ -6478,13 +6091,11 @@ class $ExaminationResultsTable extends ExaminationResults
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
     }
-    if (data.containsKey('examined_at')) {
+    if (data.containsKey('date')) {
       context.handle(
-          _examinedAtMeta,
-          examinedAt.isAcceptableOrUnknown(
-              data['examined_at']!, _examinedAtMeta));
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
     } else if (isInserting) {
-      context.missing(_examinedAtMeta);
+      context.missing(_dateMeta);
     }
     if (data.containsKey('platelet')) {
       context.handle(_plateletMeta,
@@ -6494,9 +6105,9 @@ class $ExaminationResultsTable extends ExaminationResults
       context.handle(
           _astMeta, ast.isAcceptableOrUnknown(data['ast']!, _astMeta));
     }
-    if (data.containsKey('atl')) {
+    if (data.containsKey('alt')) {
       context.handle(
-          _atlMeta, atl.isAcceptableOrUnknown(data['atl']!, _atlMeta));
+          _altMeta, alt.isAcceptableOrUnknown(data['alt']!, _altMeta));
     }
     if (data.containsKey('ggt')) {
       context.handle(
@@ -6518,15 +6129,9 @@ class $ExaminationResultsTable extends ExaminationResults
       context.handle(_hbvDnaMeta,
           hbvDna.isAcceptableOrUnknown(data['hbv_dna']!, _hbvDnaMeta));
     }
-    if (data.containsKey('hcv_dna')) {
-      context.handle(_hcvDnaMeta,
-          hcvDna.isAcceptableOrUnknown(data['hcv_dna']!, _hcvDnaMeta));
-    }
-    if (data.containsKey('fatty_liver')) {
-      context.handle(
-          _fattyLiverMeta,
-          fattyLiver.isAcceptableOrUnknown(
-              data['fatty_liver']!, _fattyLiverMeta));
+    if (data.containsKey('hcv_rna')) {
+      context.handle(_hcvRnaMeta,
+          hcvRna.isAcceptableOrUnknown(data['hcv_rna']!, _hcvRnaMeta));
     }
     if (data.containsKey('benign_tumor')) {
       context.handle(
@@ -6547,7 +6152,7 @@ class $ExaminationResultsTable extends ExaminationResults
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
-        {userId, examinedAt},
+        {userId, date},
       ];
   @override
   ExaminationResultModel map(Map<String, dynamic> data, {String? tablePrefix}) {
@@ -7616,15 +7221,21 @@ class ExcerciseHistoryModel extends DataClass
 
   /// 수정일
   final DateTime updatedAt;
-  final int minuite;
   final DateTime date;
+
+  /// 운동 시간 (분)
+  final int minuite;
+
+  ///  체중(g)
+  final int weight;
   ExcerciseHistoryModel(
       {required this.userId,
       required this.id,
       required this.createdAt,
       required this.updatedAt,
+      required this.date,
       required this.minuite,
-      required this.date});
+      required this.weight});
   factory ExcerciseHistoryModel.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -7637,10 +7248,12 @@ class ExcerciseHistoryModel extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
       updatedAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
-      minuite: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}minuite'])!,
       date: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}date'])!,
+      minuite: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}minuite'])!,
+      weight: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}weight'])!,
     );
   }
   @override
@@ -7650,8 +7263,9 @@ class ExcerciseHistoryModel extends DataClass
     map['id'] = Variable<String>(id);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['minuite'] = Variable<int>(minuite);
     map['date'] = Variable<DateTime>(date);
+    map['minuite'] = Variable<int>(minuite);
+    map['weight'] = Variable<int>(weight);
     return map;
   }
 
@@ -7661,8 +7275,9 @@ class ExcerciseHistoryModel extends DataClass
       id: Value(id),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      minuite: Value(minuite),
       date: Value(date),
+      minuite: Value(minuite),
+      weight: Value(weight),
     );
   }
 
@@ -7674,8 +7289,9 @@ class ExcerciseHistoryModel extends DataClass
       id: serializer.fromJson<String>(json['id']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      minuite: serializer.fromJson<int>(json['minuite']),
       date: serializer.fromJson<DateTime>(json['date']),
+      minuite: serializer.fromJson<int>(json['minuite']),
+      weight: serializer.fromJson<int>(json['weight']),
     );
   }
   @override
@@ -7686,8 +7302,9 @@ class ExcerciseHistoryModel extends DataClass
       'id': serializer.toJson<String>(id),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'minuite': serializer.toJson<int>(minuite),
       'date': serializer.toJson<DateTime>(date),
+      'minuite': serializer.toJson<int>(minuite),
+      'weight': serializer.toJson<int>(weight),
     };
   }
 
@@ -7696,15 +7313,17 @@ class ExcerciseHistoryModel extends DataClass
           String? id,
           DateTime? createdAt,
           DateTime? updatedAt,
+          DateTime? date,
           int? minuite,
-          DateTime? date}) =>
+          int? weight}) =>
       ExcerciseHistoryModel(
         userId: userId ?? this.userId,
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
-        minuite: minuite ?? this.minuite,
         date: date ?? this.date,
+        minuite: minuite ?? this.minuite,
+        weight: weight ?? this.weight,
       );
   @override
   String toString() {
@@ -7713,15 +7332,16 @@ class ExcerciseHistoryModel extends DataClass
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('date: $date, ')
           ..write('minuite: $minuite, ')
-          ..write('date: $date')
+          ..write('weight: $weight')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(userId, id, createdAt, updatedAt, minuite, date);
+      Object.hash(userId, id, createdAt, updatedAt, date, minuite, weight);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7730,8 +7350,9 @@ class ExcerciseHistoryModel extends DataClass
           other.id == this.id &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
+          other.date == this.date &&
           other.minuite == this.minuite &&
-          other.date == this.date);
+          other.weight == this.weight);
 }
 
 class ExcerciseHistoriesCompanion
@@ -7740,41 +7361,47 @@ class ExcerciseHistoriesCompanion
   final Value<String> id;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<int> minuite;
   final Value<DateTime> date;
+  final Value<int> minuite;
+  final Value<int> weight;
   const ExcerciseHistoriesCompanion({
     this.userId = const Value.absent(),
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    this.minuite = const Value.absent(),
     this.date = const Value.absent(),
+    this.minuite = const Value.absent(),
+    this.weight = const Value.absent(),
   });
   ExcerciseHistoriesCompanion.insert({
     required String userId,
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    required int minuite,
     required DateTime date,
+    required int minuite,
+    required int weight,
   })  : userId = Value(userId),
+        date = Value(date),
         minuite = Value(minuite),
-        date = Value(date);
+        weight = Value(weight);
   static Insertable<ExcerciseHistoryModel> custom({
     Expression<String>? userId,
     Expression<String>? id,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
-    Expression<int>? minuite,
     Expression<DateTime>? date,
+    Expression<int>? minuite,
+    Expression<int>? weight,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
       if (id != null) 'id': id,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (minuite != null) 'minuite': minuite,
       if (date != null) 'date': date,
+      if (minuite != null) 'minuite': minuite,
+      if (weight != null) 'weight': weight,
     });
   }
 
@@ -7783,15 +7410,17 @@ class ExcerciseHistoriesCompanion
       Value<String>? id,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
+      Value<DateTime>? date,
       Value<int>? minuite,
-      Value<DateTime>? date}) {
+      Value<int>? weight}) {
     return ExcerciseHistoriesCompanion(
       userId: userId ?? this.userId,
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      minuite: minuite ?? this.minuite,
       date: date ?? this.date,
+      minuite: minuite ?? this.minuite,
+      weight: weight ?? this.weight,
     );
   }
 
@@ -7810,11 +7439,14 @@ class ExcerciseHistoriesCompanion
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
     if (minuite.present) {
       map['minuite'] = Variable<int>(minuite.value);
     }
-    if (date.present) {
-      map['date'] = Variable<DateTime>(date.value);
+    if (weight.present) {
+      map['weight'] = Variable<int>(weight.value);
     }
     return map;
   }
@@ -7826,8 +7458,9 @@ class ExcerciseHistoriesCompanion
           ..write('id: $id, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('date: $date, ')
           ..write('minuite: $minuite, ')
-          ..write('date: $date')
+          ..write('weight: $weight')
           ..write(')'))
         .toString();
   }
@@ -7867,19 +7500,24 @@ class $ExcerciseHistoriesTable extends ExcerciseHistories
       type: const IntType(),
       requiredDuringInsert: false,
       defaultValue: currentDate);
-  final VerificationMeta _minuiteMeta = const VerificationMeta('minuite');
-  @override
-  late final GeneratedColumn<int?> minuite = GeneratedColumn<int?>(
-      'minuite', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime?> date = GeneratedColumn<DateTime?>(
       'date', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _minuiteMeta = const VerificationMeta('minuite');
+  @override
+  late final GeneratedColumn<int?> minuite = GeneratedColumn<int?>(
+      'minuite', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _weightMeta = const VerificationMeta('weight');
+  @override
+  late final GeneratedColumn<int?> weight = GeneratedColumn<int?>(
+      'weight', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [userId, id, createdAt, updatedAt, minuite, date];
+      [userId, id, createdAt, updatedAt, date, minuite, weight];
   @override
   String get aliasedName => _alias ?? 'excercise_histories';
   @override
@@ -7907,17 +7545,23 @@ class $ExcerciseHistoriesTable extends ExcerciseHistories
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
     }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
     if (data.containsKey('minuite')) {
       context.handle(_minuiteMeta,
           minuite.isAcceptableOrUnknown(data['minuite']!, _minuiteMeta));
     } else if (isInserting) {
       context.missing(_minuiteMeta);
     }
-    if (data.containsKey('date')) {
-      context.handle(
-          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    if (data.containsKey('weight')) {
+      context.handle(_weightMeta,
+          weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
     } else if (isInserting) {
-      context.missing(_dateMeta);
+      context.missing(_weightMeta);
     }
     return context;
   }
@@ -7940,6 +7584,1122 @@ class $ExcerciseHistoriesTable extends ExcerciseHistories
   }
 }
 
+class HospitalModel extends DataClass implements Insertable<HospitalModel> {
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final String name;
+  final String logo;
+  HospitalModel(
+      {required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.name,
+      required this.logo});
+  factory HospitalModel.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return HospitalModel(
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      logo: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}logo'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['name'] = Variable<String>(name);
+    map['logo'] = Variable<String>(logo);
+    return map;
+  }
+
+  HospitalsCompanion toCompanion(bool nullToAbsent) {
+    return HospitalsCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      name: Value(name),
+      logo: Value(logo),
+    );
+  }
+
+  factory HospitalModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HospitalModel(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      name: serializer.fromJson<String>(json['name']),
+      logo: serializer.fromJson<String>(json['logo']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'name': serializer.toJson<String>(name),
+      'logo': serializer.toJson<String>(logo),
+    };
+  }
+
+  HospitalModel copyWith(
+          {String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? name,
+          String? logo}) =>
+      HospitalModel(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        name: name ?? this.name,
+        logo: logo ?? this.logo,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('HospitalModel(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('name: $name, ')
+          ..write('logo: $logo')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, createdAt, updatedAt, name, logo);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HospitalModel &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.name == this.name &&
+          other.logo == this.logo);
+}
+
+class HospitalsCompanion extends UpdateCompanion<HospitalModel> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> name;
+  final Value<String> logo;
+  const HospitalsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.name = const Value.absent(),
+    this.logo = const Value.absent(),
+  });
+  HospitalsCompanion.insert({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required String name,
+    required String logo,
+  })  : name = Value(name),
+        logo = Value(logo);
+  static Insertable<HospitalModel> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? name,
+    Expression<String>? logo,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (name != null) 'name': name,
+      if (logo != null) 'logo': logo,
+    });
+  }
+
+  HospitalsCompanion copyWith(
+      {Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? name,
+      Value<String>? logo}) {
+    return HospitalsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      name: name ?? this.name,
+      logo: logo ?? this.logo,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (logo.present) {
+      map['logo'] = Variable<String>(logo.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HospitalsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('name: $name, ')
+          ..write('logo: $logo')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $HospitalsTable extends Hospitals
+    with TableInfo<$HospitalsTable, HospitalModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HospitalsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _logoMeta = const VerificationMeta('logo');
+  @override
+  late final GeneratedColumn<String?> logo = GeneratedColumn<String?>(
+      'logo', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, createdAt, updatedAt, name, logo];
+  @override
+  String get aliasedName => _alias ?? 'hospitals';
+  @override
+  String get actualTableName => 'hospitals';
+  @override
+  VerificationContext validateIntegrity(Insertable<HospitalModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('logo')) {
+      context.handle(
+          _logoMeta, logo.isAcceptableOrUnknown(data['logo']!, _logoMeta));
+    } else if (isInserting) {
+      context.missing(_logoMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {name},
+        {logo},
+      ];
+  @override
+  HospitalModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return HospitalModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $HospitalsTable createAlias(String alias) {
+    return $HospitalsTable(attachedDatabase, alias);
+  }
+}
+
+class NotificationModel extends DataClass
+    implements Insertable<NotificationModel> {
+  final int id;
+  final String userId;
+  final String scheduleId;
+  final NotificationStatus status;
+  final NotificationType type;
+  final NotificationSubType subType;
+  final DateTime reservedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  NotificationModel(
+      {required this.id,
+      required this.userId,
+      required this.scheduleId,
+      required this.status,
+      required this.type,
+      required this.subType,
+      required this.reservedAt,
+      required this.createdAt,
+      required this.updatedAt});
+  factory NotificationModel.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return NotificationModel(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      scheduleId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}schedule_id'])!,
+      status: $NotificationsTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}status']))!,
+      type: $NotificationsTable.$converter1.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
+      subType: $NotificationsTable.$converter2.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}sub_type']))!,
+      reservedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}reserved_at'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['schedule_id'] = Variable<String>(scheduleId);
+    {
+      final converter = $NotificationsTable.$converter0;
+      map['status'] = Variable<int>(converter.mapToSql(status)!);
+    }
+    {
+      final converter = $NotificationsTable.$converter1;
+      map['type'] = Variable<int>(converter.mapToSql(type)!);
+    }
+    {
+      final converter = $NotificationsTable.$converter2;
+      map['sub_type'] = Variable<int>(converter.mapToSql(subType)!);
+    }
+    map['reserved_at'] = Variable<DateTime>(reservedAt);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  NotificationsCompanion toCompanion(bool nullToAbsent) {
+    return NotificationsCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      scheduleId: Value(scheduleId),
+      status: Value(status),
+      type: Value(type),
+      subType: Value(subType),
+      reservedAt: Value(reservedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory NotificationModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NotificationModel(
+      id: serializer.fromJson<int>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      scheduleId: serializer.fromJson<String>(json['scheduleId']),
+      status: serializer.fromJson<NotificationStatus>(json['status']),
+      type: serializer.fromJson<NotificationType>(json['type']),
+      subType: serializer.fromJson<NotificationSubType>(json['subType']),
+      reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userId': serializer.toJson<String>(userId),
+      'scheduleId': serializer.toJson<String>(scheduleId),
+      'status': serializer.toJson<NotificationStatus>(status),
+      'type': serializer.toJson<NotificationType>(type),
+      'subType': serializer.toJson<NotificationSubType>(subType),
+      'reservedAt': serializer.toJson<DateTime>(reservedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  NotificationModel copyWith(
+          {int? id,
+          String? userId,
+          String? scheduleId,
+          NotificationStatus? status,
+          NotificationType? type,
+          NotificationSubType? subType,
+          DateTime? reservedAt,
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
+      NotificationModel(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        scheduleId: scheduleId ?? this.scheduleId,
+        status: status ?? this.status,
+        type: type ?? this.type,
+        subType: subType ?? this.subType,
+        reservedAt: reservedAt ?? this.reservedAt,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NotificationModel(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('status: $status, ')
+          ..write('type: $type, ')
+          ..write('subType: $subType, ')
+          ..write('reservedAt: $reservedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, userId, scheduleId, status, type, subType,
+      reservedAt, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NotificationModel &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.scheduleId == this.scheduleId &&
+          other.status == this.status &&
+          other.type == this.type &&
+          other.subType == this.subType &&
+          other.reservedAt == this.reservedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class NotificationsCompanion extends UpdateCompanion<NotificationModel> {
+  final Value<int> id;
+  final Value<String> userId;
+  final Value<String> scheduleId;
+  final Value<NotificationStatus> status;
+  final Value<NotificationType> type;
+  final Value<NotificationSubType> subType;
+  final Value<DateTime> reservedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const NotificationsCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.scheduleId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.type = const Value.absent(),
+    this.subType = const Value.absent(),
+    this.reservedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  NotificationsCompanion.insert({
+    this.id = const Value.absent(),
+    required String userId,
+    required String scheduleId,
+    required NotificationStatus status,
+    required NotificationType type,
+    required NotificationSubType subType,
+    required DateTime reservedAt,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  })  : userId = Value(userId),
+        scheduleId = Value(scheduleId),
+        status = Value(status),
+        type = Value(type),
+        subType = Value(subType),
+        reservedAt = Value(reservedAt);
+  static Insertable<NotificationModel> custom({
+    Expression<int>? id,
+    Expression<String>? userId,
+    Expression<String>? scheduleId,
+    Expression<NotificationStatus>? status,
+    Expression<NotificationType>? type,
+    Expression<NotificationSubType>? subType,
+    Expression<DateTime>? reservedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (scheduleId != null) 'schedule_id': scheduleId,
+      if (status != null) 'status': status,
+      if (type != null) 'type': type,
+      if (subType != null) 'sub_type': subType,
+      if (reservedAt != null) 'reserved_at': reservedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  NotificationsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? userId,
+      Value<String>? scheduleId,
+      Value<NotificationStatus>? status,
+      Value<NotificationType>? type,
+      Value<NotificationSubType>? subType,
+      Value<DateTime>? reservedAt,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt}) {
+    return NotificationsCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      scheduleId: scheduleId ?? this.scheduleId,
+      status: status ?? this.status,
+      type: type ?? this.type,
+      subType: subType ?? this.subType,
+      reservedAt: reservedAt ?? this.reservedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (scheduleId.present) {
+      map['schedule_id'] = Variable<String>(scheduleId.value);
+    }
+    if (status.present) {
+      final converter = $NotificationsTable.$converter0;
+      map['status'] = Variable<int>(converter.mapToSql(status.value)!);
+    }
+    if (type.present) {
+      final converter = $NotificationsTable.$converter1;
+      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
+    }
+    if (subType.present) {
+      final converter = $NotificationsTable.$converter2;
+      map['sub_type'] = Variable<int>(converter.mapToSql(subType.value)!);
+    }
+    if (reservedAt.present) {
+      map['reserved_at'] = Variable<DateTime>(reservedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotificationsCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('status: $status, ')
+          ..write('type: $type, ')
+          ..write('subType: $subType, ')
+          ..write('reservedAt: $reservedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $NotificationsTable extends Notifications
+    with TableInfo<$NotificationsTable, NotificationModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotificationsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _scheduleIdMeta = const VerificationMeta('scheduleId');
+  @override
+  late final GeneratedColumn<String?> scheduleId = GeneratedColumn<String?>(
+      'schedule_id', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumnWithTypeConverter<NotificationStatus, int?> status =
+      GeneratedColumn<int?>('status', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<NotificationStatus>($NotificationsTable.$converter0);
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumnWithTypeConverter<NotificationType, int?> type =
+      GeneratedColumn<int?>('type', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<NotificationType>($NotificationsTable.$converter1);
+  final VerificationMeta _subTypeMeta = const VerificationMeta('subType');
+  @override
+  late final GeneratedColumnWithTypeConverter<NotificationSubType, int?>
+      subType = GeneratedColumn<int?>('sub_type', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<NotificationSubType>($NotificationsTable.$converter2);
+  final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
+  @override
+  late final GeneratedColumn<DateTime?> reservedAt = GeneratedColumn<DateTime?>(
+      'reserved_at', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userId,
+        scheduleId,
+        status,
+        type,
+        subType,
+        reservedAt,
+        createdAt,
+        updatedAt
+      ];
+  @override
+  String get aliasedName => _alias ?? 'notifications';
+  @override
+  String get actualTableName => 'notifications';
+  @override
+  VerificationContext validateIntegrity(Insertable<NotificationModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('schedule_id')) {
+      context.handle(
+          _scheduleIdMeta,
+          scheduleId.isAcceptableOrUnknown(
+              data['schedule_id']!, _scheduleIdMeta));
+    } else if (isInserting) {
+      context.missing(_scheduleIdMeta);
+    }
+    context.handle(_statusMeta, const VerificationResult.success());
+    context.handle(_typeMeta, const VerificationResult.success());
+    context.handle(_subTypeMeta, const VerificationResult.success());
+    if (data.containsKey('reserved_at')) {
+      context.handle(
+          _reservedAtMeta,
+          reservedAt.isAcceptableOrUnknown(
+              data['reserved_at']!, _reservedAtMeta));
+    } else if (isInserting) {
+      context.missing(_reservedAtMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {scheduleId, type, subType},
+      ];
+  @override
+  NotificationModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return NotificationModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $NotificationsTable createAlias(String alias) {
+    return $NotificationsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<NotificationStatus, int> $converter0 =
+      const EnumIndexConverter<NotificationStatus>(NotificationStatus.values);
+  static TypeConverter<NotificationType, int> $converter1 =
+      const EnumIndexConverter<NotificationType>(NotificationType.values);
+  static TypeConverter<NotificationSubType, int> $converter2 =
+      const EnumIndexConverter<NotificationSubType>(NotificationSubType.values);
+}
+
+class MedicationAdherenceSurveyAnswerModel extends DataClass
+    implements Insertable<MedicationAdherenceSurveyAnswerModel> {
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final String medicationAdherenceSurveyHistoryId;
+  final int questionId;
+  final String answers;
+  MedicationAdherenceSurveyAnswerModel(
+      {required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.medicationAdherenceSurveyHistoryId,
+      required this.questionId,
+      required this.answers});
+  factory MedicationAdherenceSurveyAnswerModel.fromData(
+      Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return MedicationAdherenceSurveyAnswerModel(
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      updatedAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      medicationAdherenceSurveyHistoryId: const StringType()
+          .mapFromDatabaseResponse(data[
+              '${effectivePrefix}medication_adherence_survey_history_id'])!,
+      questionId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}question_id'])!,
+      answers: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}answers'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['medication_adherence_survey_history_id'] =
+        Variable<String>(medicationAdherenceSurveyHistoryId);
+    map['question_id'] = Variable<int>(questionId);
+    map['answers'] = Variable<String>(answers);
+    return map;
+  }
+
+  MedicationAdherenceSurveyAnswersCompanion toCompanion(bool nullToAbsent) {
+    return MedicationAdherenceSurveyAnswersCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      medicationAdherenceSurveyHistoryId:
+          Value(medicationAdherenceSurveyHistoryId),
+      questionId: Value(questionId),
+      answers: Value(answers),
+    );
+  }
+
+  factory MedicationAdherenceSurveyAnswerModel.fromJson(
+      Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationAdherenceSurveyAnswerModel(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      medicationAdherenceSurveyHistoryId: serializer
+          .fromJson<String>(json['medicationAdherenceSurveyHistoryId']),
+      questionId: serializer.fromJson<int>(json['questionId']),
+      answers: serializer.fromJson<String>(json['answers']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'medicationAdherenceSurveyHistoryId':
+          serializer.toJson<String>(medicationAdherenceSurveyHistoryId),
+      'questionId': serializer.toJson<int>(questionId),
+      'answers': serializer.toJson<String>(answers),
+    };
+  }
+
+  MedicationAdherenceSurveyAnswerModel copyWith(
+          {String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? medicationAdherenceSurveyHistoryId,
+          int? questionId,
+          String? answers}) =>
+      MedicationAdherenceSurveyAnswerModel(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        medicationAdherenceSurveyHistoryId:
+            medicationAdherenceSurveyHistoryId ??
+                this.medicationAdherenceSurveyHistoryId,
+        questionId: questionId ?? this.questionId,
+        answers: answers ?? this.answers,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('MedicationAdherenceSurveyAnswerModel(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write(
+              'medicationAdherenceSurveyHistoryId: $medicationAdherenceSurveyHistoryId, ')
+          ..write('questionId: $questionId, ')
+          ..write('answers: $answers')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, createdAt, updatedAt,
+      medicationAdherenceSurveyHistoryId, questionId, answers);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationAdherenceSurveyAnswerModel &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.medicationAdherenceSurveyHistoryId ==
+              this.medicationAdherenceSurveyHistoryId &&
+          other.questionId == this.questionId &&
+          other.answers == this.answers);
+}
+
+class MedicationAdherenceSurveyAnswersCompanion
+    extends UpdateCompanion<MedicationAdherenceSurveyAnswerModel> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> medicationAdherenceSurveyHistoryId;
+  final Value<int> questionId;
+  final Value<String> answers;
+  const MedicationAdherenceSurveyAnswersCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.medicationAdherenceSurveyHistoryId = const Value.absent(),
+    this.questionId = const Value.absent(),
+    this.answers = const Value.absent(),
+  });
+  MedicationAdherenceSurveyAnswersCompanion.insert({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required String medicationAdherenceSurveyHistoryId,
+    required int questionId,
+    required String answers,
+  })  : medicationAdherenceSurveyHistoryId =
+            Value(medicationAdherenceSurveyHistoryId),
+        questionId = Value(questionId),
+        answers = Value(answers);
+  static Insertable<MedicationAdherenceSurveyAnswerModel> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? medicationAdherenceSurveyHistoryId,
+    Expression<int>? questionId,
+    Expression<String>? answers,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (medicationAdherenceSurveyHistoryId != null)
+        'medication_adherence_survey_history_id':
+            medicationAdherenceSurveyHistoryId,
+      if (questionId != null) 'question_id': questionId,
+      if (answers != null) 'answers': answers,
+    });
+  }
+
+  MedicationAdherenceSurveyAnswersCompanion copyWith(
+      {Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? medicationAdherenceSurveyHistoryId,
+      Value<int>? questionId,
+      Value<String>? answers}) {
+    return MedicationAdherenceSurveyAnswersCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      medicationAdherenceSurveyHistoryId: medicationAdherenceSurveyHistoryId ??
+          this.medicationAdherenceSurveyHistoryId,
+      questionId: questionId ?? this.questionId,
+      answers: answers ?? this.answers,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (medicationAdherenceSurveyHistoryId.present) {
+      map['medication_adherence_survey_history_id'] =
+          Variable<String>(medicationAdherenceSurveyHistoryId.value);
+    }
+    if (questionId.present) {
+      map['question_id'] = Variable<int>(questionId.value);
+    }
+    if (answers.present) {
+      map['answers'] = Variable<String>(answers.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationAdherenceSurveyAnswersCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write(
+              'medicationAdherenceSurveyHistoryId: $medicationAdherenceSurveyHistoryId, ')
+          ..write('questionId: $questionId, ')
+          ..write('answers: $answers')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicationAdherenceSurveyAnswersTable
+    extends MedicationAdherenceSurveyAnswers
+    with
+        TableInfo<$MedicationAdherenceSurveyAnswersTable,
+            MedicationAdherenceSurveyAnswerModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationAdherenceSurveyAnswersTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime?> updatedAt = GeneratedColumn<DateTime?>(
+      'updated_at', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultValue: currentDate);
+  final VerificationMeta _medicationAdherenceSurveyHistoryIdMeta =
+      const VerificationMeta('medicationAdherenceSurveyHistoryId');
+  @override
+  late final GeneratedColumn<String?> medicationAdherenceSurveyHistoryId =
+      GeneratedColumn<String?>(
+          'medication_adherence_survey_history_id', aliasedName, false,
+          type: const StringType(),
+          requiredDuringInsert: true,
+          defaultConstraints:
+              'REFERENCES medication_adherence_survey_histories (id)');
+  final VerificationMeta _questionIdMeta = const VerificationMeta('questionId');
+  @override
+  late final GeneratedColumn<int?> questionId = GeneratedColumn<int?>(
+      'question_id', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _answersMeta = const VerificationMeta('answers');
+  @override
+  late final GeneratedColumn<String?> answers = GeneratedColumn<String?>(
+      'answers', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        createdAt,
+        updatedAt,
+        medicationAdherenceSurveyHistoryId,
+        questionId,
+        answers
+      ];
+  @override
+  String get aliasedName => _alias ?? 'medication_adherence_survey_answers';
+  @override
+  String get actualTableName => 'medication_adherence_survey_answers';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<MedicationAdherenceSurveyAnswerModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('medication_adherence_survey_history_id')) {
+      context.handle(
+          _medicationAdherenceSurveyHistoryIdMeta,
+          medicationAdherenceSurveyHistoryId.isAcceptableOrUnknown(
+              data['medication_adherence_survey_history_id']!,
+              _medicationAdherenceSurveyHistoryIdMeta));
+    } else if (isInserting) {
+      context.missing(_medicationAdherenceSurveyHistoryIdMeta);
+    }
+    if (data.containsKey('question_id')) {
+      context.handle(
+          _questionIdMeta,
+          questionId.isAcceptableOrUnknown(
+              data['question_id']!, _questionIdMeta));
+    } else if (isInserting) {
+      context.missing(_questionIdMeta);
+    }
+    if (data.containsKey('answers')) {
+      context.handle(_answersMeta,
+          answers.isAcceptableOrUnknown(data['answers']!, _answersMeta));
+    } else if (isInserting) {
+      context.missing(_answersMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {medicationAdherenceSurveyHistoryId, questionId},
+      ];
+  @override
+  MedicationAdherenceSurveyAnswerModel map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    return MedicationAdherenceSurveyAnswerModel.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $MedicationAdherenceSurveyAnswersTable createAlias(String alias) {
+    return $MedicationAdherenceSurveyAnswersTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $UsersTable users = $UsersTable(this);
@@ -7949,8 +8709,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MedicationInformationsTable(this);
   late final $MedicationSchedulesTable medicationSchedules =
       $MedicationSchedulesTable(this);
-  late final $MedicationNotificationsTable medicationNotifications =
-      $MedicationNotificationsTable(this);
   late final $HospitalVisitSchedulesTable hospitalVisitSchedules =
       $HospitalVisitSchedulesTable(this);
   late final $LiverLevelHistoriesTable liverLevelHistories =
@@ -7975,6 +8733,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $SmokingHistoriesTable(this);
   late final $ExcerciseHistoriesTable excerciseHistories =
       $ExcerciseHistoriesTable(this);
+  late final $HospitalsTable hospitals = $HospitalsTable(this);
+  late final $NotificationsTable notifications = $NotificationsTable(this);
+  late final $MedicationAdherenceSurveyAnswersTable
+      medicationAdherenceSurveyAnswers =
+      $MedicationAdherenceSurveyAnswersTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -7984,7 +8747,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         prescriptions,
         medicationInformations,
         medicationSchedules,
-        medicationNotifications,
         hospitalVisitSchedules,
         liverLevelHistories,
         pointHistories,
@@ -7996,6 +8758,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         healthQuestions,
         drinkingHistories,
         smokingHistories,
-        excerciseHistories
+        excerciseHistories,
+        hospitals,
+        notifications,
+        medicationAdherenceSurveyAnswers
       ];
 }

@@ -1,5 +1,8 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Project imports:
 import 'package:yak/core/static/text_style.dart';
 
 class JoinInputFormField extends StatelessWidget {
@@ -12,6 +15,7 @@ class JoinInputFormField extends StatelessWidget {
     this.keyboardType,
     this.textInputAction,
     this.inputFormatters,
+    this.textStyle,
   });
 
   final FocusNode focusNode;
@@ -21,6 +25,7 @@ class JoinInputFormField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
   final List<TextInputFormatter>? inputFormatters;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) => TextFormField(

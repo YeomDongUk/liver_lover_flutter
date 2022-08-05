@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/user/user_id.dart';
@@ -27,7 +30,7 @@ class SF12SurveyAnswerRepositoryImpl implements SF12SurveyAnswerRepository {
       );
       return Right(surveyAnswerModels.length);
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -48,6 +51,8 @@ class SF12SurveyAnswerRepositoryImpl implements SF12SurveyAnswerRepository {
               id: e.id,
               questionId: e.questionId,
               answers: e.answers.split(',').map(int.parse).toList(),
+              createdAt: e.createdAt,
+              updatedAt: e.updatedAt,
             ),
           )
           .toList(),

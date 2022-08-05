@@ -1,7 +1,10 @@
+// Package imports:
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedule.dart';
@@ -80,21 +83,22 @@ class HospitalVisitSchedulesCubit extends Cubit<HospitalVisitSchedulesState>
     final index = schedules.indexWhere((element) => element.id == id);
     final oldState = state;
 
-    if (index == -1) return;
+    // if (index == -1) return;
 
     // schedules[index] = schedules[index].copyWith(visitedAt: DateTime.now());
-
+    final visitedAt = DateTime.now();
     try {
       await updateHospitalVisitSchedule.call(
         HospitalVisitSchedulesCompanion(
           id: Value(id),
-          visitedAt: Value(DateTime.now()),
-          updatedAt: Value(DateTime.now()),
+          visitedAt: Value(visitedAt),
+          updatedAt: Value(visitedAt),
         ),
       );
       emit(
         HospitalVisitSchedulesScheduleUpdated(
-          hospitalVisitSchedules: schedules..removeAt(index),
+          hospitalVisitSchedules: schedules
+            ..[index] = schedules[index].copyWith(visitedAt: visitedAt),
         ),
       );
     } catch (e) {

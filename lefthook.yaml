@@ -1,0 +1,7 @@
+pre-commit:
+  parallel: true
+  commands:
+    import-sorting:
+      run: flutter pub run import_sorter:main
+    check-code-format:
+      run: flutter format --set-exit-if-changed --dry-run .

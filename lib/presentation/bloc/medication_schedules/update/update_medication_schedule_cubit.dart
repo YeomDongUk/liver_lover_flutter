@@ -1,5 +1,6 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+// Package imports:
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'update_medication_schedule_state.dart';
 

@@ -1,30 +1,28 @@
+// Dart imports:
 import 'dart:io';
-import 'package:beamer/beamer.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+// Project imports:
 import 'package:yak/core/input_formtters/input_formatter.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
-import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
-import 'package:yak/domain/entities/metabolic_disease.dart';
-import 'package:yak/domain/usecases/metabolic_disease/upsert_metabolic_disease.dart';
 import 'package:yak/domain/usecases/user/update_user.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
-import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
-import 'package:yak/presentation/bloc/metabolic_disease/upsert/upsert_metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/my/update_user/update_user_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
 import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/icon_back_button.dart';
-import 'package:yak/presentation/widget/common/opacity_check_box.dart';
 import 'package:yak/presentation/widget/metabolic_disease/update_metabolic_disease_tab_view.dart';
 
 class MyPage extends StatefulWidget {

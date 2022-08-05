@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/data/models/survey_group/survey_group_model.dart';
 
@@ -31,6 +34,7 @@ class SurveyGroupLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
           medicationAdherenceHistorieTable.hospitalVisitScheduleId.equalsExp(
             sf12historyTable.hospitalVisitScheduleId,
           ),
+          useColumns: true,
         ),
         leftOuterJoin(
           hospitalVisitScheduleTable,
@@ -73,6 +77,7 @@ class SurveyGroupLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
           medicationAdherenceHistorieTable.hospitalVisitScheduleId.equalsExp(
             sf12historyTable.hospitalVisitScheduleId,
           ),
+          useColumns: true,
         ),
         leftOuterJoin(
           hospitalVisitScheduleTable,

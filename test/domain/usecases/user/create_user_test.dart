@@ -1,19 +1,23 @@
+// Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/domain/entities/user/user.dart';
 import 'package:yak/domain/repositories/user/user_repository.dart';
 import 'package:yak/domain/usecases/user/create_user.dart';
+import '../../../mock/mock_hive_data_source.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
   late CreateUser createUser;
   late MockUserRepository mockUserRepository;
-
+  late MockHiveDataSource mockHiveDataSource;
   final userJson = {
     'id': newCuid(),
     'name': '염동욱',
@@ -33,7 +37,11 @@ void main() {
 
   setUp(() {
     mockUserRepository = MockUserRepository();
-    createUser = CreateUser(mockUserRepository);
+    mockHiveDataSource = MockHiveDataSource();
+    createUser = CreateUser(
+      userRepository: mockUserRepository,
+      hiveDataSource: mockHiveDataSource,
+    );
   });
 
   setUpAll(() {
@@ -64,7 +72,7 @@ void main() {
   test('should get create failure from repository', () async {
     // assert
     when(() => mockUserRepository.createUser(any())).thenAnswer(
-      (invocation) async => Left(CreateFailure()),
+      (invocation) async => const Left(CreateFailure()),
     );
 
     // act

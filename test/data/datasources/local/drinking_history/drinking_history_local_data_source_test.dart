@@ -1,6 +1,9 @@
+// Package imports:
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/data/datasources/local/drinking_history/drinking_history_local_data_source.dart';
 

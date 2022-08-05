@@ -1,9 +1,13 @@
+// Package imports:
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 
 abstract class UserLocalDataSource {
   Future<UserModel> createUser(UsersCompanion companion);
   Future<UserModel> getUser(String pinCode);
+  Future<UserModel> getUserWithId(String id);
   Future<UserModel> updateUser({
     required String userId,
     required UsersCompanion companion,
@@ -28,6 +32,9 @@ class UserLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   @override
   Future<UserModel> getUser(String pinCode) =>
       (select(users)..where((u) => u.pinCode.equals(pinCode))).getSingle();
+  @override
+  Future<UserModel> getUserWithId(String id) =>
+      (select(users)..where((u) => u.id.equals(id))).getSingle();
 
   @override
   Future<UserModel> updateUser({

@@ -1,9 +1,17 @@
+// Package imports:
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+// Project imports:
+import 'package:yak/core/class/notification.dart';
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
+import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visit_schedule_local_data_source.dart';
+
+class MockLocalNotificationImpl extends Mock implements LocalNotification {}
 
 void main() {
   late final AppDatabase attachedDatabase;
@@ -13,27 +21,34 @@ void main() {
   setUpAll(() async {
     attachedDatabase = AppDatabase(
       LazyDatabase(
-        () => NativeDatabase.memory(logStatements: true),
+        NativeDatabase.memory,
       ),
     );
 
     hospitalVisitScheduleLocalDataSourceImpl =
         HospitalVisitScheduleLocalDataSourceImpl(
-      attachedDatabase,
+      attachedDatabase: attachedDatabase,
+      localNotification: MockLocalNotificationImpl(),
     );
 
     await Future.wait(
       List.generate(
-        100,
+        5,
         (index) => hospitalVisitScheduleLocalDataSourceImpl
             .createHospitalVisitSchedule(
           userId: 'test',
-          companion: HospitalVisitSchedulesCompanion(
+          companion: HospitalVisitSchedulesCompanion.insert(
             id: Value('$index'),
-            hospitalName: const Value('테스트 병원'),
-            medicalSubject: const Value('테스트 진료과목'),
-            doctorName: const Value('테스트 의사'),
-            reservedAt: Value(DateTime.now().add(Duration(days: index))),
+            userId: 'test',
+            type: HospitalVisitScheduleType.regular,
+            hospitalName: '테스트 병원',
+            doctorOffice: '테스트 진료실',
+            medicalSubject: '테스트 진료과목',
+            doctorName: '테스트 의사',
+            reservedAt: DateTime.now().add(Duration(days: index)),
+            push: const Value(true),
+            afterPush: const Value(true),
+            beforePush: const Value(true),
           ),
         ),
       ),
@@ -49,12 +64,17 @@ void main() {
               .createHospitalVisitSchedule(
             userId: 'test',
             companion: HospitalVisitSchedulesCompanion.insert(
+              type: HospitalVisitScheduleType.regular,
               userId: 'test',
+              doctorOffice: '테스트 실',
               hospitalName: '테스트 병원',
               medicalSubject: '테스트 진료과목',
               doctorName: '테스트 의사',
-              reservedAt: DateTime.now().add(const Duration(days: -1)),
-              type: HospitalVisitScheduleType.regular,
+              reservedAt:
+                  DateTime.now().add(const Duration(days: -1, hours: 12)),
+              push: const Value(true),
+              afterPush: const Value(true),
+              beforePush: const Value(true),
             ),
           );
         } catch (e) {
@@ -70,11 +90,15 @@ void main() {
         userId: 'test',
         companion: HospitalVisitSchedulesCompanion.insert(
           userId: 'test',
+          doctorOffice: '테스트 실',
           hospitalName: '테스트 병원',
           medicalSubject: '테스트 진료과목',
           doctorName: '테스트 의사',
           type: HospitalVisitScheduleType.regular,
-          reservedAt: DateTime.now().add(const Duration(days: 1)),
+          reservedAt: DateTime.now().add(const Duration(days: 1, hours: 12)),
+          push: const Value(true),
+          afterPush: const Value(true),
+          beforePush: const Value(true),
         ),
       );
       expect(
@@ -119,7 +143,42 @@ void main() {
         userId: 'test',
         visited: false,
       );
+
       expect(hospitalVisitSchedules.isNotEmpty, true);
+    });
+
+    test('병원 방문 일정 알림 생성 조회', () async {
+      when(
+        () => hospitalVisitScheduleLocalDataSourceImpl.localNotification
+            .createHospitalVisitNotification(
+          NotificationModel(
+            id: 1,
+            userId: 'test',
+            scheduleId: 'hospitalVisitSchedulesId',
+            status: NotificationStatus.on,
+            type: NotificationType.hospitalVisit,
+            subType: NotificationSubType.beforeDay,
+            reservedAt: DateTime.now(),
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ),
+        ),
+      ).thenAnswer((invocation) => Future(() => true));
+
+      // print(hospitalVisitNotifications);
+      final query =
+          hospitalVisitScheduleLocalDataSourceImpl.attachedDatabase.select(
+        hospitalVisitScheduleLocalDataSourceImpl.attachedDatabase.notifications,
+      );
+      final hospitalVisitNotifications = await (query
+            ..where((tbl) => tbl.userId.equals('test'))
+            ..where(
+              (tbl) => tbl.type.equals(NotificationType.hospitalVisit.index),
+            ))
+          .get();
+      // .get();
+
+      expect(hospitalVisitNotifications.isNotEmpty, true);
     });
   });
 

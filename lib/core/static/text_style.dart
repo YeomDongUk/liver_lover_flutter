@@ -1,24 +1,21 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-extension RixMGoTextStyle on TextStyle {
+extension RiverLoverTextStyle on TextStyle {
   TextStyle get rixMGoEB => copyWith(
-        fontFamily: 'rixMGo',
-        fontWeight: FontWeight.w800,
+        fontFamily: 'rixMGoEB',
       );
 
   TextStyle get rixMGoB => copyWith(
-        fontFamily: 'rixMGo',
-        fontWeight: FontWeight.w700,
+        fontFamily: 'rixMGoB',
       );
 
   TextStyle get rixMGoM => copyWith(
-        fontFamily: 'rixMGo',
-        fontWeight: FontWeight.w500,
+        fontFamily: 'rixMGoM',
       );
 
   TextStyle get rixMGoL => copyWith(
-        fontFamily: 'rixMGo',
-        fontWeight: FontWeight.w300,
+        fontFamily: 'rixMGoL',
       );
 
   // ================================================================================================ //

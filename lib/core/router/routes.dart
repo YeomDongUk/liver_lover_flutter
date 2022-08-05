@@ -16,6 +16,8 @@ class Routes {
   static const String myPinCodeUpdate = Path.my + Path.pinCode + Path.update;
   // '${Path.hospitalVisitSchedules}/create';
   static const String sf12Surveys = Path.sf12Surveys;
+  static const String medicationAdherenceSurveys =
+      Path.medicationAdherenceSurveys;
   static const String answers = Path.answers;
   static const String answerCreate = Path.answers + Path.create;
   static const String create = Path.create;
@@ -26,6 +28,10 @@ class Routes {
   static const String healthQuestions = Path.healthQuestions;
   static const String healthQuestionCreate = Path.healthQuestions + Path.create;
   static const String healthQuestionUpdate = Path.healthQuestions + Path.update;
+  static const String dringkingHistories = Path.dringkingHistories;
+  static const String graphs = Path.graphs;
+  static const String dringkingHistoriesGraphs =
+      Path.dringkingHistories + Path.graphs;
 }
 
 class Path {
@@ -39,10 +45,14 @@ class Path {
   static const String update = '/update';
   static const String histories = '/histories';
   static const String sf12Surveys = '/sf-12-surveys';
+  static const String medicationAdherenceSurveys =
+      '/medication-adherence-surveys';
   static const String answers = '/answers';
   static const String my = '/my';
   static const String pinCode = '/pin-code';
   static const String point = '/point';
   static const String information = '/information';
   static const String healthQuestions = '/health-questions';
+  static const String dringkingHistories = '/drinking-histories';
+  static const String graphs = '/graphs';
 }

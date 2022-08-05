@@ -1,5 +1,8 @@
-import 'package:yak/core/error/failure.dart';
+// Package imports:
 import 'package:dartz/dartz.dart';
+
+// Project imports:
+import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/usecases/usecase.dart';
 import 'package:yak/domain/repositories/drinking_history/drinking_history_repository.dart';
 

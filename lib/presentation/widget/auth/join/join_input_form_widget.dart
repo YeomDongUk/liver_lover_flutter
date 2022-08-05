@@ -1,9 +1,15 @@
+// Dart imports:
 import 'dart:io';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+// Project imports:
 import 'package:yak/core/input_formtters/input_formatter.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/auth/join/join_cubit.dart';

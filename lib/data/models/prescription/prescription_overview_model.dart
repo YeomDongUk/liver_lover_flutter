@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 
 @immutable
@@ -54,7 +57,7 @@ class PrescriptionOverviewModel extends PrescriptionModel {
           other.medicationInformations == medicationInformations);
 
   @override
-  String toString() => (StringBuffer('$runtimeType(')
+  String toString() => (StringBuffer('$this(')
         ..write('userId: $userId, ')
         ..write('id: $id, ')
         ..write('createdAt: $createdAt, ')

@@ -1,6 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+// Package imports:
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+
+// Project imports:
 import 'package:yak/domain/entities/pill/pill.dart';
 import 'package:yak/domain/usecases/pill/search_pills.dart';
 

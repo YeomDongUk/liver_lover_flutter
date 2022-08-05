@@ -1,4 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:yak/core/static/color.dart';
 
 class CommonAppBar extends AppBar {

@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/data/datasources/local/pill/pill_local_data_source.dart';
@@ -21,7 +24,7 @@ class PillRepositoryImpl implements PillRepository {
       final pillModel = await pillLocalDataSource.getPill(id);
       return Right(Pill.fromJson(pillModel.toJson()));
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -34,7 +37,7 @@ class PillRepositoryImpl implements PillRepository {
         apiModels.map((apiModel) => Pill.fromJson(apiModel.toMap())).toList(),
       );
     } catch (error) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -44,7 +47,7 @@ class PillRepositoryImpl implements PillRepository {
       await pillLocalDataSource.createPill(companion);
       return const Right(null);
     } catch (e) {
-      return Left(CreateFailure());
+      return const Left(CreateFailure());
     }
   }
 
@@ -56,7 +59,7 @@ class PillRepositoryImpl implements PillRepository {
       final pillModels = await pillLocalDataSource.createPills(companions);
       return Right(pillModels.map((e) => Pill.fromJson(e.toJson())).toList());
     } catch (e) {
-      return Left(CreateFailure());
+      return const Left(CreateFailure());
     }
   }
 }

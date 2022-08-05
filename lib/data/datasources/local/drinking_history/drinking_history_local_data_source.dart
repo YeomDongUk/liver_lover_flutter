@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/data/models/drinking_history/drinking_history_avergage.dart';
 
@@ -64,7 +67,7 @@ class DrinkingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
                 0,
                 (previousValue, element) => previousValue + element.amount,
               ) /
-              drinkingHistoryModels.length;
+              30;
 
       return DrinkingHistoryAverage(drikingHistoryId: id, average: average);
     }

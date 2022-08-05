@@ -1,6 +1,9 @@
+// Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/core/user/user_id.dart';
@@ -41,6 +44,7 @@ void main() {
       (invocation) async => HospitalVisitScheduleModel(
         id: newCuid(),
         userId: 'test',
+        doctorOffice: '테스트 실',
         hospitalName: '삼성 서울 병원',
         medicalSubject: '소화기 내과',
         doctorName: '염동욱',
@@ -76,6 +80,7 @@ void main() {
         id: newCuid(),
         userId: 'test',
         type: HospitalVisitScheduleType.regular,
+        doctorOffice: '테스트 실',
         hospitalName: '삼성 서울 병원',
         medicalSubject: '소화기 내과',
         doctorName: '염동욱',
@@ -112,6 +117,7 @@ void main() {
         (index) => HospitalVisitScheduleModel(
           id: newCuid(),
           userId: 'test',
+          doctorOffice: '테스트 실',
           hospitalName: '삼성 서울 병원',
           type: HospitalVisitScheduleType.regular,
           medicalSubject: '소화기 내과',

@@ -1,5 +1,8 @@
+// Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/core/database/table/user/user_table.dart';
 

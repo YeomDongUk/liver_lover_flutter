@@ -1,3 +1,4 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
 
 class SF12Question extends Equatable {
@@ -16,8 +17,14 @@ class SF12Question extends Equatable {
       );
 
   final int id;
+
+  /// 질문
   final String question;
+
+  /// 서브 질문
   final List<String>? items;
+
+  /// 선택지
   final List<String> options;
 
   @override

@@ -1,6 +1,9 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/user/user_id.dart';
@@ -28,8 +31,8 @@ class UserRepositoryImpl implements UserRepository {
         ),
       );
       return Right(User.fromJson(userModel.toJson()));
-    } on SqliteException catch (error) {
-      return Left(CreateFailure());
+    } on SqliteException {
+      return const Left(CreateFailure());
     }
   }
 
@@ -39,7 +42,7 @@ class UserRepositoryImpl implements UserRepository {
       final userModel = await userLocalDataSource.getUser(pinCode);
       return Right(User.fromJson(userModel.toJson()));
     } on SqliteException {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -55,8 +58,8 @@ class UserRepositoryImpl implements UserRepository {
         ),
       );
       return Right(User.fromJson(userModel.toJson()));
-    } on SqliteException catch (error) {
-      return Left(CreateFailure());
+    } on SqliteException {
+      return const Left(CreateFailure());
     }
   }
 
@@ -69,7 +72,17 @@ class UserRepositoryImpl implements UserRepository {
       );
       return const Right(null);
     } catch (e) {
-      return Left(QueryFailure());
+      return const Left(QueryFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> getUserWithId(String id) async {
+    try {
+      final userModel = await userLocalDataSource.getUserWithId(id);
+      return Right(User.fromJson(userModel.toJson()));
+    } on SqliteException {
+      return const Left(QueryFailure());
     }
   }
 }

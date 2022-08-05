@@ -1,10 +1,19 @@
+// Dart imports:
 import 'dart:math';
-import 'package:beamer/beamer.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+// Project imports:
+import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/icon.dart';
 import 'package:yak/core/static/text_style.dart';
@@ -13,12 +22,12 @@ import 'package:yak/presentation/bloc/medication_schedules/medication_schedules_
 import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
+import 'package:yak/presentation/page/home/screens/examination_result/examination_result_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_diary/health_diary_screen.dart';
-import 'package:yak/presentation/page/home/screens/health_information_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_information/health_information_screen.dart';
 import 'package:yak/presentation/page/home/screens/hoem_screen.dart';
-import 'package:yak/presentation/page/home/screens/hospital_visit_schedules_screen.dart';
-import 'package:yak/presentation/page/home/screens/medication_management_screen.dart';
-
+import 'package:yak/presentation/page/home/screens/hospital_visit_schedule/hospital_visit_schedules_screen.dart';
+import 'package:yak/presentation/page/home/screens/medication_schedule/medication_management_screen.dart';
 import 'package:yak/presentation/widget/home/global_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,7 +48,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    print("??");
     _pageController = PageController(initialPage: 5);
 
     _hospitalVisitSchedulesCubit = context.read<HospitalVisitSchedulesCubit>()
@@ -52,6 +60,11 @@ class _HomePageState extends State<HomePage> {
     _metabolicDiseaseCubit = context.read<MetabolicDiseaseCubit>()
       ..loadMetabolicDisease();
     _itemcrollController = ItemScrollController();
+    KiwiContainer().resolve<LocalNotification>().requestPermission();
+
+    // AwesomeNotifications()
+    //     .isNotificationAllowed()
+    //     .then((value) => AwesomeNotifications().);
     super.initState();
   }
 
@@ -82,13 +95,13 @@ class _HomePageState extends State<HomePage> {
         child: PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
-          children: [
-            const MedicationManagementScreen(),
-            const HospitalVisitSchedulesScreen(),
-            Container(),
-            const HealthDiaryScreen(),
-            const HealthInformationScreen(),
-            const HomeScreen(),
+          children: const [
+            MedicationManagementScreen(),
+            HospitalVisitSchedulesScreen(),
+            ExaminationResultScreen(),
+            HealthDiaryScreen(),
+            HealthInformationScreen(),
+            HomeScreen(),
           ],
         ),
       ),

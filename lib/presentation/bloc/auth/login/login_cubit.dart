@@ -1,9 +1,12 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+// Package imports:
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+
+// Project imports:
+import 'package:yak/core/form/auth/auth_form.dart';
 import 'package:yak/domain/usecases/user/get_user.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
-import 'package:yak/core/form/auth/auth_form.dart';
 
 part 'login_state.dart';
 
@@ -19,7 +22,7 @@ class LoginCubit extends Cubit<LoginState> {
     if (state.status.isValid) {
       try {
         final getUserResult = await getUser.call(state.pinCode.value);
-        print(getUserResult);
+
         return emit(
           getUserResult.fold(
             (l) => state.copyWith(status: FormzStatus.submissionFailure),

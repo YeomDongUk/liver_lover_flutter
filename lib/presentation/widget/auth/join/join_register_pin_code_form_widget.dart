@@ -1,6 +1,11 @@
-import 'package:beamer/beamer.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Project imports:
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/auth/join/join_cubit.dart';

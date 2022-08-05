@@ -18,5 +18,5 @@ class CalendarState extends Equatable {
       );
 
   @override
-  List<Object> get props => [selectedDate, focusDate];
+  List<Object?> get props => [selectedDate, focusDate];
 }

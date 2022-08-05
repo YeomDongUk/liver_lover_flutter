@@ -1,7 +1,9 @@
+// Package imports:
 import 'package:dartz/dartz.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/error/failure.dart';
-import 'package:yak/data/models/drinking_history/drinking_history_avergage.dart';
 import 'package:yak/domain/entities/drinking_history/drinking_history.dart';
 
 abstract class DrinkingHistoryRepository {
