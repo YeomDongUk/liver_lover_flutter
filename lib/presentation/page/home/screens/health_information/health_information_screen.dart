@@ -20,8 +20,8 @@ import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/fibrosis_circulator/fibrosis_circulator_cubit.dart';
 import 'package:yak/presentation/bloc/page_b_circulator/page_b_circulator_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
-import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
+import 'package:yak/presentation/widget/common/common_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/health_information/health_information_dialog.dart';
 
@@ -187,9 +187,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         SizedBox(
                           width: 190,
                           child: JoinContainer(
-                            child: JoinInputFormField(
+                            child: CommonInputFormField(
                               focusNode: focusNodes[0],
-                              initialValue: '',
                               onChanged: (str) => fibrosisCirculatorCubit
                                   .updateAge(int.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
@@ -220,9 +219,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         SizedBox(
                           width: 190,
                           child: JoinContainer(
-                            child: JoinInputFormField(
+                            child: CommonInputFormField(
                               focusNode: focusNodes[1],
-                              initialValue: '',
                               onChanged: (str) => fibrosisCirculatorCubit
                                   .updateAst(int.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
@@ -253,9 +251,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         SizedBox(
                           width: 190,
                           child: JoinContainer(
-                            child: JoinInputFormField(
+                            child: CommonInputFormField(
                               focusNode: focusNodes[2],
-                              initialValue: '',
                               onChanged: (str) => fibrosisCirculatorCubit
                                   .updateAlt(int.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
@@ -286,9 +283,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         SizedBox(
                           width: 190,
                           child: JoinContainer(
-                            child: JoinInputFormField(
+                            child: CommonInputFormField(
                               focusNode: focusNodes[3],
-                              initialValue: '',
                               onChanged: (str) => fibrosisCirculatorCubit
                                   .updatePlatelet(int.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
@@ -378,9 +374,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         SizedBox(
                           width: 190,
                           child: JoinContainer(
-                            child: JoinInputFormField(
+                            child: CommonInputFormField(
                               focusNode: focusNodes[5],
-                              initialValue: '',
                               onChanged: (str) => pageBCirculatorCubit
                                   .updateAge(int.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
@@ -480,9 +475,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         SizedBox(
                           width: 190,
                           child: JoinContainer(
-                            child: JoinInputFormField(
+                            child: CommonInputFormField(
                               focusNode: focusNodes[7],
-                              initialValue: '',
                               onChanged: (str) => pageBCirculatorCubit
                                   .updatePlatelet(int.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
@@ -513,9 +507,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         SizedBox(
                           width: 190,
                           child: JoinContainer(
-                            child: JoinInputFormField(
+                            child: CommonInputFormField(
                               focusNode: focusNodes[8],
-                              initialValue: '',
                               onChanged: (str) => pageBCirculatorCubit
                                   .updateAlbumin(int.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
@@ -999,7 +992,6 @@ class LiverHealthWhitePaperTabViewState
 
 class _InformationBox extends StatelessWidget {
   const _InformationBox({
-    super.key,
     required this.label,
     required this.strings,
     required this.urls,
@@ -1008,6 +1000,7 @@ class _InformationBox extends StatelessWidget {
   final String label;
   final List<String> strings;
   final List<String> urls;
+
   @override
   Widget build(BuildContext context) {
     return CommonShadowBox(

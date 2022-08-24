@@ -11,8 +11,9 @@ import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/presentation/page/home/screens/health_diary/drinking_history/drinking_histories_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_diary/excercise_history/excercise_histories_screen.dart';
-import 'package:yak/presentation/page/home/screens/health_diary/health_questions_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_diary/health_question/health_questions_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_diary/smoking_history/smoking_histories_screen.dart';
+import 'package:yak/presentation/page/home/screens/health_diary/survey_group/survey_groups_screen.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 
 class HealthDiaryScreen extends StatefulWidget {
@@ -52,6 +53,7 @@ class _HealthDiaryScreenState extends State<HealthDiaryScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CommonAppBar(
         title: const Text('건강일기'),
         leading: IconButton(
@@ -96,12 +98,12 @@ class _HealthDiaryScreenState extends State<HealthDiaryScreen>
             Expanded(
               child: TabBarView(
                 controller: tabController,
-                children: [
-                  const DrinkingHistoriesScreen(),
-                  const SmokingHistoriesScreen(),
-                  const ExcerciseHistoriesScreen(),
-                  const HealthQuestionsScreen(),
-                  Container(),
+                children: const [
+                  DrinkingHistoriesScreen(),
+                  SmokingHistoriesScreen(),
+                  ExcerciseHistoriesScreen(),
+                  HealthQuestionsScreen(),
+                  SurveyGroupsScreen(),
                 ],
               ),
             ),

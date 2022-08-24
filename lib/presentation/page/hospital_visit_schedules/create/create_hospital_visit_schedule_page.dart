@@ -20,11 +20,11 @@ import 'package:yak/presentation/bloc/hospital_visit_schedules/create/create_hos
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
+import 'package:yak/presentation/widget/common/common_input_date_field.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/common_switch.dart';
 import 'package:yak/presentation/widget/common/icon_back_button.dart';
-import 'package:yak/presentation/widget/common/opacity_check_box.dart';
-import 'package:yak/presentation/widget/hospital_visit_schedule/create/hospital_visit_schedule_input_date_field.dart';
+import 'package:yak/presentation/widget/common/opacity_check_button.dart';
 import 'package:yak/presentation/widget/hospital_visit_schedule/create/hospital_visit_schedule_text_field.dart';
 
 class CreateHospitalVisitSchedulePage extends StatefulWidget {
@@ -64,28 +64,24 @@ class _CreateHospitalVisitSchedulePageState
   @override
   void dispose() {
     createHospitalVisitSchedulesCubit.close();
-    focusNodes.forEach((element) => element.dispose());
+    for (final element in focusNodes) {
+      element.dispose();
+    }
     super.dispose();
   }
 
   void openDateTimePicker() {
-    final reservedAt =
-        int.tryParse(createHospitalVisitSchedulesCubit.state.reservedAt.value);
-    final reservedDate = reservedAt == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(reservedAt);
+    final reservedAt = createHospitalVisitSchedulesCubit.state.reservedAt.value;
+
     final now = DateTime.now();
 
     DatePicker.showDateTimePicker(
       context,
       locale: LocaleType.ko,
-      currentTime: reservedDate == null || reservedDate.isBefore(now)
-          ? now
-          : reservedDate,
+      currentTime:
+          reservedAt == null || reservedAt.isBefore(now) ? now : reservedAt,
       minTime: now,
-      onConfirm: (dt) => createHospitalVisitSchedulesCubit.updateReservedAt(
-        dt.millisecondsSinceEpoch,
-      ),
+      onConfirm: createHospitalVisitSchedulesCubit.updateReservedAt,
     );
   }
 
@@ -268,9 +264,9 @@ class _CreateHospitalVisitSchedulePageState
                 buildWhen: (previous, current) =>
                     previous.reservedAt.value != current.reservedAt.value,
                 bloc: createHospitalVisitSchedulesCubit,
-                builder: (context, state) => HospitalScheduleInputDateField(
+                builder: (context, state) => CommonInputDateField(
                   label: '예약일시',
-                  strDateTimeAt: state.reservedAt.value,
+                  dateTime: state.reservedAt.value,
                   onTap: openDateTimePicker,
                 ),
               ),
@@ -296,72 +292,71 @@ class _CreateHospitalVisitSchedulePageState
                 focusNode: focusNodes[3],
               ),
               const SizedBox(height: 24),
-              CommonShadowBox(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          '알림설정',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Theme.of(context).primaryColor,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
-                        Text(
-                          '알림사용',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const SizedBox(width: 9),
-                        BlocBuilder<CreateHospitalVisitSchedulesCubit,
-                            CreateHospitalVisitSchedulesState>(
-                          buildWhen: (previous, current) =>
-                              previous.push.value != current.push.value,
-                          bloc: createHospitalVisitSchedulesCubit,
-                          builder: (context, state) => CommonSwitch(
-                            value: createHospitalVisitSchedulesCubit
-                                .state.push.value,
+              BlocBuilder<CreateHospitalVisitSchedulesCubit,
+                  CreateHospitalVisitSchedulesState>(
+                bloc: createHospitalVisitSchedulesCubit,
+                builder: (context, state) => CommonShadowBox(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            '알림설정',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Theme.of(context).primaryColor,
+                            ).rixMGoB,
+                          ),
+                          const Spacer(),
+                          Text(
+                            '알림사용',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
+                          const SizedBox(width: 9),
+                          CommonSwitch(
+                            value: state.push.value,
                             onToggle:
                                 createHospitalVisitSchedulesCubit.updatePush,
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        OpacityCheckBox(
-                          value: createHospitalVisitSchedulesCubit
-                              .state.beforePush.value,
-                          onChanged: createHospitalVisitSchedulesCubit
-                              .updateBeforePush,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          '1일 전 알림',
-                          style: const TextStyle(fontSize: 15).rixMGoB,
-                        ),
-                        const Spacer(),
-                        OpacityCheckBox(
-                          value: createHospitalVisitSchedulesCubit
-                              .state.afterPush.value,
-                          onChanged:
-                              createHospitalVisitSchedulesCubit.updateAfterPush,
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          '2시간 전 알림',
-                          style: const TextStyle(fontSize: 15).rixMGoB,
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        children: [
+                          OpacityCheckButton(
+                            opacity: state.beforePush.value ? 1 : 0,
+                            onTap: !state.push.value
+                                ? () => null
+                                : () => createHospitalVisitSchedulesCubit
+                                    .updateBeforePush(!state.beforePush.value),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '1일 전 알림',
+                            style: const TextStyle(fontSize: 15).rixMGoB,
+                          ),
+                          const Spacer(),
+                          OpacityCheckButton(
+                            opacity: state.afterPush.value ? 1 : 0,
+                            onTap: !state.push.value
+                                ? () => null
+                                : () => createHospitalVisitSchedulesCubit
+                                    .updateAfterPush(!state.afterPush.value),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            '2시간 전 알림',
+                            style: const TextStyle(fontSize: 15).rixMGoB,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -372,7 +367,6 @@ class _CreateHospitalVisitSchedulePageState
                           1
                       ? () => createHospitalVisitSchedulesCubit.submit().then(
                             (hospitalVisitSchedule) {
-                              /// TODO: 실패 액션 필요
                               if (hospitalVisitSchedule == null) return;
                               context
                                   .read<HospitalVisitSchedulesCubit>()

@@ -1,11 +1,11 @@
-// Package imports:
-import 'package:equatable/equatable.dart';
+// Project imports:
+import 'package:yak/domain/entities/survey/survey_question.dart';
 
-class SF12Question extends Equatable {
+class SF12Question extends SurveryQuestion {
   const SF12Question({
-    required this.id,
-    required this.question,
-    required this.options,
+    required super.id,
+    required super.question,
+    required super.options,
     this.items,
   });
 
@@ -16,22 +16,12 @@ class SF12Question extends Equatable {
         options: json['options'] as List<String>,
       );
 
-  final int id;
-
-  /// 질문
-  final String question;
-
   /// 서브 질문
   final List<String>? items;
 
-  /// 선택지
-  final List<String> options;
-
   @override
   List<Object?> get props => [
-        id,
-        question,
+        ...super.props,
         items,
-        options,
       ];
 }

@@ -2,6 +2,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
@@ -41,7 +42,8 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final userModel = await userLocalDataSource.getUser(pinCode);
       return Right(User.fromJson(userModel.toJson()));
-    } on SqliteException {
+    } catch (e) {
+      Logger().e(e);
       return const Left(QueryFailure());
     }
   }
@@ -85,4 +87,16 @@ class UserRepositoryImpl implements UserRepository {
       return const Left(QueryFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, User>> autoLogin() async {
+    final userModel = await userLocalDataSource.autoLogin();
+
+    if (userModel == null) return const Left(QueryFailure());
+    return Right(User.fromJson(userModel.toJson()));
+  }
+
+  @override
+  Future<Either<Failure, void>> logOut() async =>
+      Right(await userLocalDataSource.logOut());
 }

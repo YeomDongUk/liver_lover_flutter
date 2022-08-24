@@ -45,7 +45,7 @@ class SurveyGroupRepositoryImpl implements SurveyGroupRepository {
             .toList(),
       );
     } catch (e) {
-      return const Left(const QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 
@@ -73,7 +73,7 @@ class SurveyGroupRepositoryImpl implements SurveyGroupRepository {
         ),
       );
     } catch (e) {
-      return const Left(const QueryFailure());
+      return const Left(QueryFailure());
     }
   }
 }

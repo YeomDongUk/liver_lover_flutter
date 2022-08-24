@@ -1,4 +1,7 @@
 // Flutter imports:
+// ignore_for_file: lines_longer_than_80_chars
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -122,63 +125,66 @@ class _ExcerciseHistoriesScreenState extends State<ExcerciseHistoriesScreen>
             builder: (context, calendarState) =>
                 BlocBuilder<ExcerciseHistoriesCubit, ExcerciseHistoriesState>(
               bloc: excerciseHistoriesCubit,
-              builder: (context, state) => WeeklyTableCalendar(
-                singleMarkerBuilder: (context, day, event) => Container(
-                  width: 10,
-                  height: 10,
-                  decoration: const BoxDecoration(
-                    color: AppColors.green,
-                    shape: BoxShape.circle,
+              builder: (context, state) {
+                print(state);
+                return WeeklyTableCalendar(
+                  singleMarkerBuilder: (context, day, event) => Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(
+                      color: AppColors.green,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                ),
-                firstDay: calendarCubit.firstDay,
-                focusedDay: calendarState.focusDate,
-                currentDay: calendarState.selectedDate,
-                eventLoader: (dateTime) => state.excerciseHistories
-                    .map(
-                      (e) =>
-                          yyyyMMddFormat.format(e.date) ==
-                          yyyyMMddFormat.format(dateTime),
-                    )
-                    .toList()
-                    .where((element) => element == true)
-                    .toList(),
-                selectedDayPredicate: (day) =>
-                    day == calendarState.selectedDate,
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (!isSameDay(calendarState.selectedDate, selectedDay)) {
-                    calendarCubit.updateSelectDate(selectedDay);
-                    final excerciseHistory = excerciseHistoriesCubit
-                        .state.excerciseHistories
-                        .firstWhereOrNull(
-                      (element) => element.date == selectedDay,
+                  firstDay: calendarCubit.firstDay,
+                  focusedDay: calendarState.focusDate,
+                  currentDay: calendarState.selectedDate,
+                  eventLoader: (dateTime) => state.excerciseHistories
+                      .map(
+                        (e) =>
+                            yyyyMMddFormat.format(e.date) ==
+                            yyyyMMddFormat.format(dateTime),
+                      )
+                      .toList()
+                      .where((element) => element == true)
+                      .toList(),
+                  selectedDayPredicate: (day) =>
+                      day == calendarState.selectedDate,
+                  onDaySelected: (selectedDay, focusedDay) {
+                    if (!isSameDay(calendarState.selectedDate, selectedDay)) {
+                      calendarCubit.updateSelectDate(selectedDay);
+                      final excerciseHistory = excerciseHistoriesCubit
+                          .state.excerciseHistories
+                          .firstWhereOrNull(
+                        (element) => element.date == selectedDay,
+                      );
+
+                      excerciseHistoryCubit.updateExcerciseHistory(
+                        excerciseHistory,
+                      );
+                    }
+                  },
+                  onPageChanged: (dateTime) {
+                    final startDate = dateTime.add(
+                      Duration(
+                        days: -(dateTime.weekday == 7 ? 0 : dateTime.weekday),
+                      ),
                     );
 
-                    excerciseHistoryCubit.updateExcerciseHistory(
-                      excerciseHistory,
+                    calendarCubit.updateFocusDate(
+                      startDate.isBefore(calendarCubit.firstDay)
+                          ? calendarCubit.firstDay
+                          : startDate,
                     );
-                  }
-                },
-                onPageChanged: (dateTime) {
-                  final startDate = dateTime.add(
-                    Duration(
-                      days: -(dateTime.weekday == 7 ? 0 : dateTime.weekday),
-                    ),
-                  );
-
-                  calendarCubit.updateFocusDate(
-                    startDate.isBefore(calendarCubit.firstDay)
-                        ? calendarCubit.firstDay
-                        : startDate,
-                  );
-                  excerciseHistoriesCubit.load(
-                    BetweenDateTime(
-                      start: startDate,
-                      end: startDate.add(const Duration(days: 6)),
-                    ),
-                  );
-                },
-              ),
+                    excerciseHistoriesCubit.load(
+                      BetweenDateTime(
+                        start: startDate,
+                        end: startDate.add(const Duration(days: 6)),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
         ),
@@ -187,210 +193,217 @@ class _ExcerciseHistoriesScreenState extends State<ExcerciseHistoriesScreen>
           margin: const EdgeInsets.all(16),
           child: BlocBuilder<ExcerciseHistoryCubit, ExcerciseHistoryState>(
             bloc: excerciseHistoryCubit,
-            builder: (context, state) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Text(
-                    '운동량',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).primaryColor,
-                    ).rixMGoEB,
+            builder: (context, state) {
+              print(state);
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Text(
+                      '운동량',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).primaryColor,
+                      ).rixMGoEB,
+                    ),
                   ),
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            '일 평균 운동량 (최근 한달)',
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.gray,
-                            ).rixMGoM,
-                          ),
-                          Expanded(
-                            child: RichText(
-                              textAlign: TextAlign.right,
-                              maxLines: 1,
-                              text: TextSpan(
-                                style: GoogleFonts.lato(),
-                                children: [
-                                  TextSpan(
-                                    text: '${(state.average * 10).ceil() / 10}',
-                                    style: const TextStyle(
-                                      fontSize: 25,
-                                      color: AppColors.blueGrayDark,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const WidgetSpan(child: SizedBox(width: 8)),
-                                  TextSpan(
-                                    text: '분',
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: AppColors.gray,
-                                    ).rixMGoM,
-                                  ),
-                                ],
-                              ),
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              '일 평균 운동량 (최근 한달)',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.gray,
+                              ).rixMGoM,
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text(
-                            '오늘 운동량',
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.gray,
-                            ).rixMGoM,
-                          ),
-                          const Spacer(),
-                          BlocBuilder<CalendarCubit, CalendarState>(
-                            bloc: calendarCubit,
-                            builder: (context, calendarState) =>
-                                BlocBuilder<CurrentTimeCubit, DateTime>(
-                              builder: (context, now) {
-                                final excerciseHistory = state.excerciseHistory;
-                                final nowDate =
-                                    DateTime(now.year, now.month, now.day);
-                                final isSameDate = yyyyMMddFormat
-                                        .format(calendarState.selectedDate) ==
-                                    yyyyMMddFormat.format(nowDate);
-
-                                return RichText(
-                                  text: TextSpan(
-                                    style: GoogleFonts.lato(),
-                                    children: [
-                                      if (!isSameDate ||
-                                          excerciseHistory != null)
-                                        TextSpan(
-                                          text:
-                                              '${excerciseHistory?.minuite ?? 0}',
-                                          style: const TextStyle(
-                                            fontSize: 25,
-                                            color: AppColors.blueGrayDark,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      else
-                                        WidgetSpan(
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 8),
-                                            child: GestureDetector(
-                                              onTap: openCreateHistoryDialog,
-                                              child: SvgPicture.asset(
-                                                'assets/svg/add.svg',
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      const WidgetSpan(
-                                        child: SizedBox(width: 8),
-                                      ),
-                                      TextSpan(
-                                        text: '분',
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: AppColors.gray,
-                                        ).rixMGoM,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Row(
-                    children: [
-                      Text(
-                        '체중',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Theme.of(context).primaryColor,
-                        ).rixMGoM,
-                      ),
-                      const Spacer(),
-                      BlocBuilder<CalendarCubit, CalendarState>(
-                        bloc: calendarCubit,
-                        builder: (context, calendarState) =>
-                            BlocBuilder<CurrentTimeCubit, DateTime>(
-                          builder: (context, now) {
-                            final excerciseHistory = state.excerciseHistory;
-                            final nowDate =
-                                DateTime(now.year, now.month, now.day);
-                            final isSameDate = yyyyMMddFormat
-                                    .format(calendarState.selectedDate) ==
-                                yyyyMMddFormat.format(nowDate);
-
-                            return RichText(
-                              text: TextSpan(
-                                style: GoogleFonts.lato(),
-                                children: [
-                                  if (!isSameDate || excerciseHistory != null)
+                            Expanded(
+                              child: RichText(
+                                textAlign: TextAlign.right,
+                                maxLines: 1,
+                                text: TextSpan(
+                                  style: GoogleFonts.lato(),
+                                  children: [
                                     TextSpan(
-                                      text: '${excerciseHistory?.weight ?? 0}',
+                                      text:
+                                          '${(state.average * 10).ceil() / 10}',
                                       style: const TextStyle(
                                         fontSize: 25,
                                         color: AppColors.blueGrayDark,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                    )
-                                  else
-                                    WidgetSpan(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: GestureDetector(
-                                          onTap: openCreateHistoryDialog,
-                                          child: SvgPicture.asset(
-                                            'assets/svg/add.svg',
+                                    ),
+                                    const WidgetSpan(child: SizedBox(width: 8)),
+                                    TextSpan(
+                                      text: '분',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: AppColors.gray,
+                                      ).rixMGoM,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Text(
+                              '오늘 운동량',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.gray,
+                              ).rixMGoM,
+                            ),
+                            const Spacer(),
+                            BlocBuilder<CalendarCubit, CalendarState>(
+                              bloc: calendarCubit,
+                              builder: (context, calendarState) =>
+                                  BlocBuilder<CurrentTimeCubit, DateTime>(
+                                builder: (context, now) {
+                                  final excerciseHistory =
+                                      state.excerciseHistory;
+                                  final nowDate =
+                                      DateTime(now.year, now.month, now.day);
+                                  final isSameDate = yyyyMMddFormat
+                                          .format(calendarState.selectedDate) ==
+                                      yyyyMMddFormat.format(nowDate);
+
+                                  return RichText(
+                                    text: TextSpan(
+                                      style: GoogleFonts.lato(),
+                                      children: [
+                                        if (!isSameDate ||
+                                            excerciseHistory != null)
+                                          TextSpan(
+                                            text:
+                                                '${excerciseHistory?.minuite ?? 0}',
+                                            style: const TextStyle(
+                                              fontSize: 25,
+                                              color: AppColors.blueGrayDark,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          )
+                                        else
+                                          WidgetSpan(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8),
+                                              child: GestureDetector(
+                                                onTap: openCreateHistoryDialog,
+                                                child: SvgPicture.asset(
+                                                  'assets/svg/add.svg',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        const WidgetSpan(
+                                          child: SizedBox(width: 8),
+                                        ),
+                                        TextSpan(
+                                          text: '분',
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                            color: AppColors.gray,
+                                          ).rixMGoM,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Row(
+                      children: [
+                        Text(
+                          '체중',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Theme.of(context).primaryColor,
+                          ).rixMGoM,
+                        ),
+                        const Spacer(),
+                        BlocBuilder<CalendarCubit, CalendarState>(
+                          bloc: calendarCubit,
+                          builder: (context, calendarState) =>
+                              BlocBuilder<CurrentTimeCubit, DateTime>(
+                            builder: (context, now) {
+                              final excerciseHistory = state.excerciseHistory;
+                              final nowDate =
+                                  DateTime(now.year, now.month, now.day);
+                              final isSameDate = yyyyMMddFormat
+                                      .format(calendarState.selectedDate) ==
+                                  yyyyMMddFormat.format(nowDate);
+
+                              return RichText(
+                                text: TextSpan(
+                                  style: GoogleFonts.lato(),
+                                  children: [
+                                    if (!isSameDate || excerciseHistory != null)
+                                      TextSpan(
+                                        text:
+                                            '${excerciseHistory?.weight ?? 0}',
+                                        style: const TextStyle(
+                                          fontSize: 25,
+                                          color: AppColors.blueGrayDark,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    else
+                                      WidgetSpan(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8),
+                                          child: GestureDetector(
+                                            onTap: openCreateHistoryDialog,
+                                            child: SvgPicture.asset(
+                                              'assets/svg/add.svg',
+                                            ),
                                           ),
                                         ),
                                       ),
+                                    const WidgetSpan(
+                                      child: SizedBox(width: 8),
                                     ),
-                                  const WidgetSpan(
-                                    child: SizedBox(width: 8),
-                                  ),
-                                  TextSpan(
-                                    text: 'kg',
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: AppColors.gray,
-                                    ).rixMGoM,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                    TextSpan(
+                                      text: 'kg',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: AppColors.gray,
+                                      ).rixMGoM,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
         ),
         const SizedBox(height: 16),
         GoGraphButton(
-          onPressed: () => context.beamToNamed(Routes.dringkingHistoriesGraphs),
+          onPressed: () => context.beamToNamed(Routes.excerciseHistoriesGraphs),
         ),
         const SizedBox(height: 24),
       ],

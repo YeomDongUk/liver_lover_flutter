@@ -9,8 +9,8 @@ import 'package:yak/core/database/table/common_table.dart';
 class Pills extends CommonTable {
   TextColumn get entpName => text()();
   TextColumn get name => text()();
-  TextColumn get material => text()();
-  TextColumn get imageUrl => text()();
-  TextColumn get effect => text()();
-  TextColumn get useage => text()();
+  TextColumn get material => text().nullable()();
+  BlobColumn get image => blob().nullable()();
+  TextColumn get effect => text().nullable()();
+  TextColumn get useage => text().nullable()();
 }

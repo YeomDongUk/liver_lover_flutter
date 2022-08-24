@@ -6,10 +6,12 @@ import 'package:equatable/equatable.dart';
 import 'package:yak/domain/entities/health_question/health_question.dart';
 import 'package:yak/domain/usecases/health_question/delete_health_question.dart';
 import 'package:yak/domain/usecases/health_question/get_health_questions.dart';
+import 'package:yak/presentation/bloc/on_user_cubit.dart';
 
 part 'health_questions_state.dart';
 
-class HealthQuestionsCubit extends Cubit<HealthQuestionsState> {
+class HealthQuestionsCubit extends Cubit<HealthQuestionsState>
+    implements IonUserCubit {
   HealthQuestionsCubit({
     required this.getHealthQuestions,
     required this.deleteHealthQuestion,
@@ -57,4 +59,7 @@ class HealthQuestionsCubit extends Cubit<HealthQuestionsState> {
 
     emit(HealthQuestionsDeleteSuccess(healthQuestions: healthQuestions));
   }
+
+  @override
+  void onLogout() => emit(const HealthQuestionsInitial());
 }

@@ -19,4 +19,6 @@ abstract class SmokingHistoryRepository {
   Future<Either<Failure, double>> getSmokingHistoryAverage({
     required String id,
   });
+
+  Either<Failure, Stream<SmokingHistory?>> getLastSmokingHistoryStream();
 }

@@ -16,8 +16,8 @@ import 'package:yak/domain/entities/drinking_history/drinking_history.dart';
 import 'package:yak/domain/usecases/drinking_history/upsert_drinking_history.dart';
 import 'package:yak/presentation/bloc/drinking_histories/create/create_drinking_history_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
-import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_dialog.dart';
+import 'package:yak/presentation/widget/common/common_input_form_field.dart';
 
 class CreateDrinkingHistoryDialog extends StatefulWidget {
   const CreateDrinkingHistoryDialog({
@@ -190,10 +190,9 @@ class _CreateDrinkingHistoryDialogState
                             SizedBox(
                               height: 48,
                               child: JoinContainer(
-                                child: JoinInputFormField(
+                                child: CommonInputFormField(
                                   onChanged: (str) => createDrinkingHistoryCubit
                                       .updateAmount(double.tryParse(str)),
-                                  initialValue: '',
                                   focusNode: focusNode,
                                   keyboardType:
                                       const TextInputType.numberWithOptions(

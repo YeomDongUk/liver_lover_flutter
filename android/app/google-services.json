@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:406387123118:android:9a0c7a2ad224e091d15e3f",
+        "mobilesdk_app_id": "1:406387123118:android:2c185a9293a7ab2bd15e3f",
         "android_client_info": {
-          "package_name": "com.example.yak"
+          "package_name": "com.eden.riverlover"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "406387123118-imo4bdruq7pjf003jpbgpgb619vj5o8v.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "406387123118-5sl2ovdqvnjj0rkifa8qgoopad1cvcsj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.eden.riverlover"
+              }
             }
           ]
         }

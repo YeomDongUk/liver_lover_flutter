@@ -1,4 +1,5 @@
 // Dart imports:
+import 'dart:async';
 import 'dart:math';
 
 // Flutter imports:
@@ -15,20 +16,30 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 // Project imports:
 import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/core/router/routes.dart';
+import 'package:yak/core/static/functions.dart';
 import 'package:yak/core/static/icon.dart';
 import 'package:yak/core/static/text_style.dart';
+import 'package:yak/core/user/user_id.dart';
+import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visit_schedule_local_data_source.dart';
+import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
+import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
+import 'package:yak/domain/usecases/notification/init_notifications.dart';
+import 'package:yak/domain/usecases/point_history/init_point_history_subscription.dart';
+import 'package:yak/presentation/bloc/health_questions/health_questions_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
+import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
 import 'package:yak/presentation/page/home/screens/examination_result/examination_result_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_diary/health_diary_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_information/health_information_screen.dart';
 import 'package:yak/presentation/page/home/screens/hoem_screen.dart';
 import 'package:yak/presentation/page/home/screens/hospital_visit_schedule/hospital_visit_schedules_screen.dart';
-import 'package:yak/presentation/page/home/screens/medication_schedule/medication_management_screen.dart';
+import 'package:yak/presentation/page/home/screens/medication_management/medication_management_screen.dart';
 import 'package:yak/presentation/widget/home/global_navigation_bar.dart';
+import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_detail_dialog.dart';
+import 'package:yak/presentation/widget/medication_schedule/medication_schedule_check_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,11 +51,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final PageController _pageController;
   late final HospitalVisitSchedulesCubit _hospitalVisitSchedulesCubit;
-  late final MedicationSchedulesCubit _medicationSchedulesCubit;
   late final TodayMedicationSchedulesCubit _todayMedicationSchedulesCubit;
   late final SurveyGroupsCubit _surveyGroupsCubit;
   late final MetabolicDiseaseCubit _metabolicDiseaseCubit;
   late final ItemScrollController _itemcrollController;
+  late final UserPointCubit _userPointCubit;
+  late final HealthQuestionsCubit _healthQuestionsCubit;
+  late final _localNotification = KiwiContainer().resolve<LocalNotification>();
+  late final StreamSubscription _notificationSubscription;
 
   @override
   void initState() {
@@ -52,29 +66,75 @@ class _HomePageState extends State<HomePage> {
 
     _hospitalVisitSchedulesCubit = context.read<HospitalVisitSchedulesCubit>()
       ..loadSchedules();
-    _medicationSchedulesCubit = context.read<MedicationSchedulesCubit>()
-      ..loadSchedules();
     _todayMedicationSchedulesCubit =
         context.read<TodayMedicationSchedulesCubit>()..loadSchedules();
     _surveyGroupsCubit = context.read<SurveyGroupsCubit>()..loadSurveyGroups();
     _metabolicDiseaseCubit = context.read<MetabolicDiseaseCubit>()
       ..loadMetabolicDisease();
-    _itemcrollController = ItemScrollController();
-    KiwiContainer().resolve<LocalNotification>().requestPermission();
+    _userPointCubit = context.read<UserPointCubit>()..loadUserPoint();
 
-    // AwesomeNotifications()
-    //     .isNotificationAllowed()
-    //     .then((value) => AwesomeNotifications().);
+    _itemcrollController = ItemScrollController();
+    _healthQuestionsCubit = context.read<HealthQuestionsCubit>();
+
+    _localNotification.requestPermission();
+
+    _notificationSubscription =
+        _localNotification.receiveStream().listen((event) {
+      if (event.channelKey == 'hospital_visit') {
+        final hospitalVisitScheduleId =
+            event.payload!['scheduleIds']!.split(',').first;
+
+        KiwiContainer()
+            .resolve<HospitalVisitScheduleLocalDataSource>()
+            .getHospitalVisitSchedule(
+              id: hospitalVisitScheduleId,
+              userId: KiwiContainer().resolve<UserId>().value,
+            )
+            .then(
+              (value) => showDialog<void>(
+                context: context,
+                builder: (_) => HospitalVisitScheduleDetailDialog(
+                  hospitalVisitSchedule:
+                      HospitalVisitSchedule.fromJson(value.toJson()),
+                ),
+              ),
+            );
+      }
+      if (event.channelKey == 'medication') {
+        final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+          int.parse(event.payload!['reservedAt']!),
+        );
+
+        KiwiContainer()
+            .resolve<MedicationScheduleLocalDataSource>()
+            .getMedicationGroup(reservedAt: reservedAt)
+            .then(
+              (value) => showDialog<void>(
+                context: context,
+                builder: (_) => MedicationScheduleCheckDialog(
+                  medicationSchedulesGroup: value,
+                ),
+              ),
+            );
+      }
+    });
+
+    KiwiContainer().resolve<InitNotificaions>().call(null);
+
+    KiwiContainer().resolve<InitPointHistorySubscription>().call(null);
+
     super.initState();
   }
 
   @override
   void dispose() {
     _hospitalVisitSchedulesCubit.onLogout();
-    _medicationSchedulesCubit.onLogout();
     _todayMedicationSchedulesCubit.onLogout();
     _surveyGroupsCubit.onLogout();
     _metabolicDiseaseCubit.onLogout();
+    _healthQuestionsCubit.onLogout();
+    _userPointCubit.onLogout();
+    _notificationSubscription.cancel();
     _pageController.dispose();
 
     super.dispose();
@@ -116,6 +176,9 @@ class _HomePageState extends State<HomePage> {
         spaceBetweenChildren: 8,
         children: [
           SpeedDialChild(
+            // () => context.beamToNamed('/prescriptions/create'),
+
+            onTap: showInProgressToast,
             backgroundColor: Colors.white,
             child: Icon(
               IconDatas.scan,
@@ -134,6 +197,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SpeedDialChild(
+            onTap: () => context.beamToNamed(Routes.medicationSchedulesCreate),
             backgroundColor: Colors.white,
             child: Icon(
               IconDatas.medication,
@@ -163,7 +227,26 @@ class _HomePageState extends State<HomePage> {
             labelWidget: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                '진료 일정등록',
+                '진료일정 등록',
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                ).rixMGoB,
+              ),
+            ),
+          ),
+          SpeedDialChild(
+            onTap: () => context.beamToNamed(Routes.healthQuestionCreate),
+            backgroundColor: Colors.white,
+            child: Icon(
+              IconDatas.question,
+              size: 19,
+              color: Theme.of(context).primaryColor,
+            ),
+            labelWidget: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                '질문 등록',
                 style: const TextStyle(
                   fontSize: 10,
                   color: Colors.white,

@@ -65,7 +65,6 @@ class ExaminationResultRepositoryImpl implements ExaminationResultRepository {
         ),
       );
     } catch (e) {
-      print(e);
       return const Left(QueryFailure());
     }
   }

@@ -21,11 +21,11 @@ class CommonDialog extends StatelessWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: child == null
           ? null
-          : Column(
-              mainAxisSize: MainAxisSize.min,
+          : ListView(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
               children: [
                 CommonShadowBox(
                   padding: padding,

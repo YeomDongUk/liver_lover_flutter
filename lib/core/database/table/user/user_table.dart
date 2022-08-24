@@ -26,8 +26,6 @@ class Users extends CommonTable {
   TextColumn get pinCode =>
       text().check(pinCode.length.equalsExp(const Constant(6)))();
 
-  IntColumn get point => integer().withDefault(const Constant(0))();
-
   @override
   List<Set<Column>>? get uniqueKeys => [
         {

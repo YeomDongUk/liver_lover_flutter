@@ -8,7 +8,7 @@ class CreateHospitalVisitSchedulesState extends Equatable {
     this.medicalSubject = const MedicalSubject.pure(),
     this.doctorName = const DoctorName.pure(),
     this.doctorOffice = const DoctorOffice.pure(),
-    this.reservedAt = const ReservedAt.pure(),
+    this.reservedAt = const AfterNowDateInput.pure(),
     this.push = const Push.pure(),
     this.beforePush = const BeforePush.pure(),
     this.afterPush = const AfterPush.pure(),
@@ -20,7 +20,7 @@ class CreateHospitalVisitSchedulesState extends Equatable {
   final DoctorOffice doctorOffice;
   final MedicalSubject medicalSubject;
   final DoctorName doctorName;
-  final ReservedAt reservedAt;
+  final AfterNowDateInput reservedAt;
   final Push push;
   final BeforePush beforePush;
   final AfterPush afterPush;
@@ -32,7 +32,7 @@ class CreateHospitalVisitSchedulesState extends Equatable {
     MedicalSubject? medicalSubject,
     DoctorName? doctorName,
     DoctorOffice? doctorOffice,
-    ReservedAt? reservedAt,
+    AfterNowDateInput? reservedAt,
     Push? push,
     BeforePush? beforePush,
     AfterPush? afterPush,

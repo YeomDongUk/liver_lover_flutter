@@ -12,6 +12,7 @@ import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/health_question/health_question.dart';
 import 'package:yak/domain/usecases/health_question/write_health_question.dart';
+import 'package:yak/presentation/bloc/health_questions/health_questions_cubit.dart';
 import 'package:yak/presentation/bloc/health_questions/write/health_question_write_cubit.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/icon_back_button.dart';
@@ -21,11 +22,10 @@ class UpdateHealthQuestionPage extends StatefulWidget {
     super.key,
     required this.id,
     required this.healthQuestion,
-    required this.onUpdate,
   });
   final String id;
   final HealthQuestion healthQuestion;
-  final void Function(HealthQuestion healthQuestion)? onUpdate;
+
   @override
   State<UpdateHealthQuestionPage> createState() =>
       _UpdateHealthQuestionPageState();
@@ -82,7 +82,7 @@ class _UpdateHealthQuestionPageState extends State<UpdateHealthQuestionPage> {
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                           hintText:
-                              '실시간 질의응답은 아닙니다.\n질문할 내용을 저장하시고 진료일에 질문내용을 담당의에게 보여주세요.',
+                              '''실시간 질의응답은 아닙니다.\n질문할 내용을 저장하시고 진료일에 질문내용을 담당의에게 보여주세요.''',
                           hintMaxLines: 5,
                           hintStyle: TextStyle(color: AppColors.blueGrayDark),
                         ),
@@ -104,8 +104,11 @@ class _UpdateHealthQuestionPageState extends State<UpdateHealthQuestionPage> {
                               final healthQuestion =
                                   await writeHealthQuestionCubit.submit();
 
-                              if (healthQuestion != null) {
-                                widget.onUpdate?.call(healthQuestion);
+                              if (healthQuestion != null && mounted) {
+                                context
+                                    .read<HealthQuestionsCubit>()
+                                    .onUpdate(healthQuestion);
+
                                 beamer.beamBack();
                               }
                             },

@@ -1,58 +1,67 @@
 class Routes {
   const Routes._();
 
-  static const String auth = Path.auth;
-  static const String login = Path.auth + Path.login;
-  static const String join = Path.auth + Path.join;
-  static const String home = Path.home;
-  static const String hospitalVisitSchedules = Path.hospitalVisitSchedules;
-  static const String hospitalVisitScheduleCreate =
+  static const auth = Path.auth;
+  static const login = Path.auth + Path.login;
+  static const join = Path.auth + Path.join;
+  static const home = Path.home;
+  static const hospitalVisitSchedules = Path.hospitalVisitSchedules;
+  static const hospitalVisitScheduleCreate =
       Path.hospitalVisitSchedules + Path.create;
-
-  static const String hospitalVisitScheduleUpdate =
+  static const hospitalVisitSchedulesCalendar =
+      Path.hospitalVisitSchedules + Path.calendar;
+  static const hospitalVisitScheduleUpdate =
       Path.hospitalVisitSchedules + Path.update;
-  static const String hospitalVisitScheduleHistories =
+  static const hospitalVisitScheduleHistories =
       Path.hospitalVisitSchedules + Path.histories;
-  static const String myPinCodeUpdate = Path.my + Path.pinCode + Path.update;
+  static const myPinCodeUpdate = Path.my + Path.pinCode + Path.update;
   // '${Path.hospitalVisitSchedules}/create';
-  static const String sf12Surveys = Path.sf12Surveys;
-  static const String medicationAdherenceSurveys =
-      Path.medicationAdherenceSurveys;
-  static const String answers = Path.answers;
-  static const String answerCreate = Path.answers + Path.create;
-  static const String create = Path.create;
-  static const String my = Path.my;
-  static const String point = Path.point;
-  static const String pointInformation = Path.point + Path.information;
-  static const String pointHistory = Path.point + Path.histories;
-  static const String healthQuestions = Path.healthQuestions;
-  static const String healthQuestionCreate = Path.healthQuestions + Path.create;
-  static const String healthQuestionUpdate = Path.healthQuestions + Path.update;
-  static const String dringkingHistories = Path.dringkingHistories;
-  static const String graphs = Path.graphs;
-  static const String dringkingHistoriesGraphs =
-      Path.dringkingHistories + Path.graphs;
+  static const sf12Surveys = Path.sf12Surveys;
+  static const medicationAdherenceSurveys = Path.medicationAdherenceSurveys;
+  static const answers = Path.answers;
+  static const answerCreate = Path.answers + Path.create;
+  static const create = Path.create;
+  static const my = Path.my;
+  static const point = Path.point;
+  static const pointInformation = Path.point + Path.information;
+  static const pointHistory = Path.point + Path.histories;
+  static const healthQuestions = Path.healthQuestions;
+  static const healthQuestionCreate = Path.healthQuestions + Path.create;
+  static const healthQuestionUpdate = Path.healthQuestions + Path.update;
+  static const dringkingHistories = Path.dringkingHistories;
+  static const smokingHistories = Path.smokingHistories;
+  static const excerciseHistories = Path.excerciseHistories;
+  static const graphs = Path.graphs;
+  static const dringkingHistoriesGraphs = Path.dringkingHistories + Path.graphs;
+  static const smokingHistoriesGraphs = Path.smokingHistories + Path.graphs;
+  static const excerciseHistoriesGraphs = Path.excerciseHistories + Path.graphs;
+  static const medicationSchedules = Path.medicationSchedules;
+  static const medicationSchedulesCreate =
+      Path.medicationSchedules + Path.create;
 }
 
 class Path {
   const Path._();
-  static const String home = '/';
-  static const String auth = '/auth';
-  static const String login = '/login';
-  static const String join = '/join';
-  static const String hospitalVisitSchedules = '/hospital-visit-schedules';
-  static const String create = '/create';
-  static const String update = '/update';
-  static const String histories = '/histories';
-  static const String sf12Surveys = '/sf-12-surveys';
-  static const String medicationAdherenceSurveys =
-      '/medication-adherence-surveys';
-  static const String answers = '/answers';
-  static const String my = '/my';
-  static const String pinCode = '/pin-code';
-  static const String point = '/point';
-  static const String information = '/information';
-  static const String healthQuestions = '/health-questions';
-  static const String dringkingHistories = '/drinking-histories';
-  static const String graphs = '/graphs';
+  static const home = '/';
+  static const auth = '/auth';
+  static const login = '/login';
+  static const join = '/join';
+  static const hospitalVisitSchedules = '/hospital-visit-schedules';
+  static const create = '/create';
+  static const update = '/update';
+  static const histories = '/histories';
+  static const sf12Surveys = '/sf-12-surveys';
+  static const medicationAdherenceSurveys = '/medication-adherence-surveys';
+  static const answers = '/answers';
+  static const my = '/my';
+  static const pinCode = '/pin-code';
+  static const point = '/point';
+  static const information = '/information';
+  static const healthQuestions = '/health-questions';
+  static const dringkingHistories = '/drinking-histories';
+  static const smokingHistories = '/smoking-histories';
+  static const excerciseHistories = '/excercise-histories';
+  static const graphs = '/graphs';
+  static const calendar = '/calendar';
+  static const medicationSchedules = '/medication-schedules';
 }

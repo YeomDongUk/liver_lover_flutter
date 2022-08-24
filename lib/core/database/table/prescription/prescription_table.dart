@@ -7,11 +7,16 @@ import 'package:yak/core/database/table/common_table.dart';
 /// 처방전 테이블
 @DataClassName('PrescriptionModel')
 class Prescriptions extends UserReferenceTable {
+  /// 의사 이름
   TextColumn get doctorName => text()();
-  DateTimeColumn get prescribedAt => dateTime()();
-  DateTimeColumn get medicationStartAt => dateTime()();
-  DateTimeColumn get medicationEndAt => dateTime()();
-  BoolColumn get push => boolean().withDefault(const Constant(false))();
-  BoolColumn get beforePush => boolean().withDefault(const Constant(false))();
-  BoolColumn get afterPush => boolean().withDefault(const Constant(false))();
+
+  /// 처방일
+  DateTimeColumn get prescriptedAt => dateTime()();
+
+  /// 복약 시작일
+  DateTimeColumn get medicatedAt => dateTime()();
+
+  /// 복약 기간
+  IntColumn get duration =>
+      integer().check(duration.isBiggerOrEqual(const Constant(0)))();
 }

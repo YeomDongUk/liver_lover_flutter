@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:yak/core/static/color.dart';
 
 // Project imports:
 import 'package:yak/core/static/text_style.dart';
@@ -81,6 +82,7 @@ class _UpdatePinCodePageState extends State<UpdatePinCodePage> {
       backgroundColor: Colors.white,
       appBar: CommonAppBar(
         automaticallyImplyLeading: false,
+        title: const Text('PIN 번호 수정'),
         actions: [
           IconButton(
             onPressed: () => context.beamBack(),
@@ -109,12 +111,15 @@ class _UpdatePinCodePageState extends State<UpdatePinCodePage> {
                 ...[
                   Text(
                     state.step == UpdatePinCodeStep.create
-                        ? 'PIN 번호를\n입력해 주세요'
+                        ? 'PIN 번호를\n생성해주세요'
                         : '동일한 PIN 번호를\n재입력해 주세요',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30,
-                      color: Theme.of(context).primaryColor,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
                     ).rixMGoL,
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 72),
                   PinCodeInputWidget(
@@ -157,6 +162,10 @@ class _UpdatePinCodePageState extends State<UpdatePinCodePage> {
                           : null,
                   child: Text(
                     state.step == UpdatePinCodeStep.create ? '다음' : '저장',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ).rixMGoB,
                   ),
                 ),
               ],

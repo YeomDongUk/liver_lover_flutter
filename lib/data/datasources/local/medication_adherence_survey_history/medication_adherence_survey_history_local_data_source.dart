@@ -10,22 +10,6 @@ abstract class MedicationAdherenceSurveyHistoryLocalDataSource {
     required String hospitalVisitScheduleId,
     required String userId,
   });
-
-  // Future<MedicationAdherenceSurveyHistoryModel> createSurveyHistory({
-  //   required String userId,
-  //   required MedicationAdherenceSurveyHistoriesCompanion companion,
-  // });
-
-  // Future<MedicationAdherenceSurveyHistoryModel> updateSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  //   required MedicationAdherenceSurveyHistoriesCompanion companion,
-  // });
-
-  // Future<int> deleteSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  // });
 }
 
 class MedicationAdherenceSurveyHistoryLocalDataSourceImpl
@@ -34,23 +18,6 @@ class MedicationAdherenceSurveyHistoryLocalDataSourceImpl
   MedicationAdherenceSurveyHistoryLocalDataSourceImpl(super.attachedDatabase);
 
   late final table = attachedDatabase.medicationAdherenceSurveyHistories;
-  // @override
-  // Future<MedicationAdherenceSurveyHistoryModel> createSurveyHistory({
-  //   required String userId,
-  //   required MedicationAdherenceSurveyHistoriesCompanion companion,
-  // }) {
-  //   // TODO: implement createSurveyHistory
-  //   throw UnimplementedError();
-  // }
-
-  // @override
-  // Future<int> deleteSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  // }) {
-  //   // TODO: implement deleteSurveyHistory
-  //   throw UnimplementedError();
-  // }
 
   @override
   Future<MedicationAdherenceSurveyHistoryModel>
@@ -74,14 +41,4 @@ class MedicationAdherenceSurveyHistoryLocalDataSourceImpl
 
     return result.readTable(table);
   }
-
-  // @override
-  // Future<MedicationAdherenceSurveyHistoryModel> updateSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  //   required MedicationAdherenceSurveyHistoriesCompanion companion,
-  // }) {
-  //   // TODO: implement updateSurveyHistory
-  //   throw UnimplementedError();
-  // }
 }

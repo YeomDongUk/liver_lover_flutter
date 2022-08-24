@@ -113,7 +113,6 @@ class JoinRegisterPinCodeFormWidget extends StatelessWidget {
                     if (isVerifing) {
                       final user = await joinCubit.submit();
                       if (user == null) {
-                        print('핀번호가 중복됩니다.');
                       } else {
                         authCubit.updateUser(user);
                         joinCubit.next();

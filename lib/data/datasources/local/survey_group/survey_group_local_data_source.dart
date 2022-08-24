@@ -87,10 +87,7 @@ class SurveyGroupLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
         ),
       ],
     )
-          ..where(
-            hospitalVisitScheduleTable.userId.equals(userId) &
-                hospitalVisitScheduleTable.visitedAt.isNull(),
-          )
+          ..where(hospitalVisitScheduleTable.userId.equals(userId))
           ..orderBy([
             OrderingTerm.asc(hospitalVisitScheduleTable.reservedAt),
           ]))

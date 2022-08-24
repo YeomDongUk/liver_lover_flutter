@@ -6,8 +6,6 @@ class AlarmsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Alarms Page"),
-    );
+    return const Center(child: Text('Alarms Page'));
   }
 }

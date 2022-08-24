@@ -21,6 +21,10 @@ abstract class SmokingHistoryLocalDataSource {
     required String id,
     required String userId,
   });
+
+  Stream<SmokingHistoryModel?> getLastSmokingHistoryStream({
+    required String userId,
+  });
 }
 
 class SmokingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
@@ -84,6 +88,7 @@ class SmokingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
         onConflict: DoUpdate(
           (old) => SmokingHistoriesCompanion.custom(
             amount: Constant(companion.amount.value),
+            updatedAt: Constant(DateTime.now()),
           ),
           target: [
             table.userId,
@@ -91,4 +96,13 @@ class SmokingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
           ],
         ),
       );
+
+  @override
+  Stream<SmokingHistoryModel?> getLastSmokingHistoryStream({
+    required String userId,
+  }) =>
+      (select(table)
+            ..where((tbl) => tbl.userId.equals(userId))
+            ..orderBy([(u) => OrderingTerm.desc(u.createdAt)]))
+          .watchSingleOrNull();
 }

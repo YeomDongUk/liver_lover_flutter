@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Project imports:
@@ -56,10 +55,9 @@ class HBVUpdateForm extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                         ).rixMGoEB,
                       ),
-                      const Spacer(),
-                      SizedBox(
-                        width: 159,
+                      Expanded(
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             OpacityCheckButton(
                               onTap: () => cubit.updateHbv(true),

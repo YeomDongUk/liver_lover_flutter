@@ -25,6 +25,12 @@ abstract class HospitalVisitScheduleRepository {
     required HospitalVisitSchedulesCompanion companion,
   });
 
+  Future<Either<Failure, HospitalVisitSchedule>>
+      toggleHospitalVisitSchedulePush({
+    required String id,
+    required HospitalVisitSchedulesCompanion companion,
+  });
+
   Future<Either<Failure, int>> deleteHospitalVisitSchedule({
     required String id,
   });

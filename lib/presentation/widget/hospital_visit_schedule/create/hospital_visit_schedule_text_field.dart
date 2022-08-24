@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
-import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
+import 'package:yak/presentation/widget/common/common_input_form_field.dart';
 
 class HospitalVisitScheduleTextField extends StatelessWidget {
   const HospitalVisitScheduleTextField({
@@ -40,7 +40,7 @@ class HospitalVisitScheduleTextField extends StatelessWidget {
           height: 48,
           child: JoinContainer(
             color: Colors.white,
-            child: JoinInputFormField(
+            child: CommonInputFormField(
               initialValue: initialValue ?? '',
               focusNode: focusNode,
               onChanged: onChanged,

@@ -1,6 +1,9 @@
 // Package imports:
 import 'package:equatable/equatable.dart';
 
+// Project imports:
+import 'package:yak/core/static/static.dart';
+
 class SmokingHistory extends Equatable {
   const SmokingHistory({
     required this.id,
@@ -38,6 +41,9 @@ class SmokingHistory extends Equatable {
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
+
+  bool get isValid =>
+      yyyyMMddFormat.format(date) == yyyyMMddFormat.format(DateTime.now());
 
   @override
   List<Object?> get props => [

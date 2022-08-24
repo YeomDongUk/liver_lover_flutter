@@ -19,4 +19,6 @@ abstract class DrinkingHistoryRepository {
   Future<Either<Failure, double>> getDrinkingHistoryAverage({
     required String id,
   });
+
+  Either<Failure, Stream<DrinkingHistory?>> getLastDrinkingHistoryStream();
 }

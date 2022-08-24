@@ -1,4 +1,7 @@
 // Flutter imports:
+// ignore_for_file: lines_longer_than_80_chars
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -196,7 +199,6 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(examinationResultCubit.state.examinationResult);
     return Scaffold(
       appBar: CommonAppBar(
         title: const Text('검사결과'),

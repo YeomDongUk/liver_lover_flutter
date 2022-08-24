@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:dartz/dartz.dart';
+import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
@@ -13,26 +14,29 @@ class MedicationAdherenceSurveyAnswerRepositoryImpl
     implements MedicationAdherenceSurveyAnswerRepository {
   MedicationAdherenceSurveyAnswerRepositoryImpl({
     required this.userId,
-    required this.sf12SurveyAnswerLocalDataSource,
+    required this.medicationAdherenceSurveyAnswerLocalDataSource,
   });
 
   final UserId userId;
   String get _userId => userId.value;
   final MedicationAdherenceSurveyAnswerLocalDataSource
-      sf12SurveyAnswerLocalDataSource;
+      medicationAdherenceSurveyAnswerLocalDataSource;
   @override
   Future<Either<Failure, int>> createAnswers({
     required List<MedicationAdherenceSurveyAnswersCompanion> companions,
   }) async {
     try {
       final surveyAnswerModels =
-          await sf12SurveyAnswerLocalDataSource.createSurveyAnswers(
+          await medicationAdherenceSurveyAnswerLocalDataSource
+              .createSurveyAnswers(
+        userId: userId.value,
         surveyHistoryId:
             companions.first.medicationAdherenceSurveyHistoryId.value,
         companions: companions,
       );
       return Right(surveyAnswerModels.length);
     } catch (e) {
+      Logger().e(e);
       return const Left(QueryFailure());
     }
   }
@@ -41,22 +45,29 @@ class MedicationAdherenceSurveyAnswerRepositoryImpl
   Future<Either<Failure, List<MedicationAdherenceAnswer>>> getAnswers({
     required String surveyId,
   }) async {
-    final surveyAnswerModels =
-        await sf12SurveyAnswerLocalDataSource.getSurveyAnswers(
-      userId: _userId,
-      surveyHistoryId: surveyId,
-    );
+    try {
+      final surveyAnswerModels =
+          await medicationAdherenceSurveyAnswerLocalDataSource.getSurveyAnswers(
+        userId: _userId,
+        surveyHistoryId: surveyId,
+      );
 
-    return Right(
-      surveyAnswerModels
-          .map(
-            (e) => MedicationAdherenceAnswer(
-              id: e.id,
-              questionId: e.questionId,
-              answers: e.answers.split(',').map(int.parse).toList(),
-            ),
-          )
-          .toList(),
-    );
+      return Right(
+        surveyAnswerModels
+            .map(
+              (e) => MedicationAdherenceAnswer(
+                id: e.id,
+                questionId: e.questionId,
+                answer: int.parse(e.answers),
+                createdAt: e.createdAt,
+                updatedAt: e.updatedAt,
+              ),
+            )
+            .toList(),
+      );
+    } catch (e) {
+      Logger().e(e);
+      return const Left(QueryFailure());
+    }
   }
 }

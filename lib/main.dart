@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,8 +12,10 @@ import 'package:kiwi/kiwi.dart';
 
 // Project imports:
 import 'package:yak/core/di/di.dart';
-import 'package:yak/core/hive/hive_data_source.dart';
 import 'package:yak/core/local_notification/local_notification.dart';
+import 'package:yak/core/object_box/object_box.dart';
+import 'package:yak/core/router/excercise_history_location.dart';
+import 'package:yak/core/router/smoking_history_location.dart';
 import 'package:yak/core/router/auth_location.dart';
 import 'package:yak/core/router/drinking_history_location.dart';
 import 'package:yak/core/router/health_question_location.dart';
@@ -26,28 +30,43 @@ import 'package:yak/core/router/sf_12_survey_location.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/core/user/user_id.dart';
+import 'package:yak/domain/usecases/health_question/delete_health_question.dart';
+import 'package:yak/domain/usecases/health_question/get_health_questions.dart';
+import 'package:yak/domain/usecases/hospital_visit_schedule/delete_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedules.dart';
+import 'package:yak/domain/usecases/hospital_visit_schedule/toggle_hospital_visit_schedule_push.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
-import 'package:yak/domain/usecases/medication_schedule/get_today_medication_schedules.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules_groups.dart';
 import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_history.dart';
+import 'package:yak/domain/usecases/user_point/get_user_point.dart';
+import 'package:yak/firebase_options.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
+import 'package:yak/presentation/bloc/health_questions/health_questions_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
+import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Di.setup(false);
   await KiwiContainer().resolve<LocalNotification>().initialize();
-  await KiwiContainer().resolve<HiveDataSource>().initHive();
+  await KiwiContainer().resolve<ObjectBox>().init();
   // await Hive.initFlutter();
   await initializeDateFormatting();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseRemoteConfig.instance.setConfigSettings(
+    RemoteConfigSettings(
+      fetchTimeout: const Duration(seconds: 30),
+      minimumFetchInterval: Duration.zero,
+    ),
+  );
 
   runApp(YackApp());
 }
@@ -82,6 +101,8 @@ class YackApp extends StatelessWidget {
         HealthQuestionLocation(),
         DrinkingHistoryLocation(),
         MedicationAdherenceSurveyLocation(),
+        SmokingHistoryLocation(),
+        ExcerciseHistoryLocation(),
       ],
     ),
   );
@@ -108,16 +129,16 @@ class YackApp extends StatelessWidget {
                 KiwiContainer().resolve<GetHospitalVisitSchedules>(),
             updateHospitalVisitSchedule:
                 KiwiContainer().resolve<UpdateHospitalVisitSchedule>(),
+            toggleHospitalVisitSchedulePush:
+                KiwiContainer().resolve<ToggleHospitalVisitSchedulePush>(),
+            deleteHospitalVisitSchedule:
+                KiwiContainer().resolve<DeleteHospitalVisitSchedule>(),
           ),
-        ),
-        BlocProvider<MedicationSchedulesCubit>(
-          create: (_) => MedicationSchedulesCubit(
-              // KiwiContainer().resolve<GetMedicationSchedules>(),
-              ),
         ),
         BlocProvider<TodayMedicationSchedulesCubit>(
           create: (_) => TodayMedicationSchedulesCubit(
-            KiwiContainer().resolve<GetTodayMedicationSchedules>(),
+            getMedicationSchedulesGroups:
+                KiwiContainer().resolve<GetMedicationSchedulesGroups>(),
           ),
         ),
         BlocProvider<SurveyGroupsCubit>(
@@ -132,7 +153,19 @@ class YackApp extends StatelessWidget {
           create: (context) => MetabolicDiseaseCubit(
             getMetabolicDisease: KiwiContainer().resolve<GetMetabolicDisease>(),
           ),
-        )
+        ),
+        BlocProvider<UserPointCubit>(
+          create: (context) => UserPointCubit(
+            getUserPoint: KiwiContainer().resolve<GetUserPoint>(),
+          ),
+        ),
+        BlocProvider<HealthQuestionsCubit>(
+          create: (context) => HealthQuestionsCubit(
+            getHealthQuestions: KiwiContainer().resolve<GetHealthQuestions>(),
+            deleteHealthQuestion:
+                KiwiContainer().resolve<DeleteHealthQuestion>(),
+          ),
+        ),
       ],
       child: MaterialApp.router(
         themeMode: ThemeMode.light,

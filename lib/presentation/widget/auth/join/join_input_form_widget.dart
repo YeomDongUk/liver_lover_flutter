@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // Project imports:
@@ -14,8 +15,7 @@ import 'package:yak/core/input_formtters/input_formatter.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/auth/join/join_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
-import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
-import 'package:yak/presentation/widget/common/opacity_check_box.dart';
+import 'package:yak/presentation/widget/common/common_input_form_field.dart';
 
 class JoinInputFormWidget extends StatefulWidget {
   const JoinInputFormWidget({super.key});
@@ -73,8 +73,9 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                 ),
                 const SizedBox(height: 50),
                 JoinContainer(
+                  color: Colors.white,
                   label: '성명',
-                  child: JoinInputFormField(
+                  child: CommonInputFormField(
                     focusNode: focusNodes[0],
                     initialValue: state.name.value,
                     onChanged: joinCubit.updateName,
@@ -86,8 +87,13 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                 ),
                 const SizedBox(height: 20),
                 JoinContainer(
+                  color: Colors.white,
                   label: '휴대폰 번호',
-                  child: JoinInputFormField(
+                  child: CommonInputFormField(
+                    textStyle: GoogleFonts.lato(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
                     focusNode: focusNodes[1],
                     initialValue: state.phone.value,
                     onChanged: (str) => state.phone.value != str
@@ -112,8 +118,13 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                   children: [
                     Expanded(
                       child: JoinContainer(
+                        color: Colors.white,
                         label: '생년',
-                        child: JoinInputFormField(
+                        child: CommonInputFormField(
+                          textStyle: GoogleFonts.lato(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
                           focusNode: focusNodes[2],
                           initialValue: '${state.birthYear.value ?? ''}',
                           onChanged: (str) =>
@@ -130,6 +141,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                     const SizedBox(width: 35),
                     Expanded(
                       child: JoinContainer(
+                        color: Colors.white,
                         label: '성별',
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -189,8 +201,13 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                   children: [
                     Expanded(
                       child: JoinContainer(
+                        color: Colors.white,
                         label: '신장(CM)',
-                        child: JoinInputFormField(
+                        child: CommonInputFormField(
+                          textStyle: GoogleFonts.lato(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
                           focusNode: focusNodes[3],
                           initialValue: '${state.height.value ?? ''}',
                           onChanged: (str) =>
@@ -213,8 +230,13 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                     const SizedBox(width: 35),
                     Expanded(
                       child: JoinContainer(
+                        color: Colors.white,
                         label: '체중(KG)',
-                        child: JoinInputFormField(
+                        child: CommonInputFormField(
+                          textStyle: GoogleFonts.lato(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
                           focusNode: focusNodes[4],
                           initialValue: '${state.weight.value ?? ''}',
                           onChanged: (str) =>

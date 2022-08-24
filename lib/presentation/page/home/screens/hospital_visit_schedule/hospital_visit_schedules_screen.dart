@@ -9,9 +9,11 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 // Project imports:
 import 'package:yak/core/router/routes.dart';
+import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_detail_container.dart';
+import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_empty_widget.dart';
 
 class HospitalVisitSchedulesScreen extends StatefulWidget {
   const HospitalVisitSchedulesScreen({
@@ -47,18 +49,46 @@ class _HospitalVisitSchedulesScreenState
       body: SafeArea(
         child: BlocBuilder<HospitalVisitSchedulesCubit,
             HospitalVisitSchedulesState>(
-          builder: (context, state) => ScrollablePositionedList.separated(
-            itemScrollController: context.read<ItemScrollController>(),
-            itemCount: state.hospitalVisitSchedules.length,
-            padding: const EdgeInsets.all(16),
-            itemBuilder: (context, index) =>
-                HospitalVisitScheduleDetailContainer(
-              hospitalVisitSchedule: state.hospitalVisitSchedules[index],
-            ),
-            separatorBuilder: (context, index) => const Divider(
-              height: 10,
-            ),
-          ),
+          builder: (context, state) {
+            return state.hospitalVisitSchedules.isEmpty
+                ? const HospitalVisitScheduleEmptyWidget()
+                : ScrollablePositionedList.separated(
+                    padding: const EdgeInsets.all(16),
+                    itemScrollController: context.read<ItemScrollController>(),
+                    itemCount: state.hospitalVisitSchedules.length + 1,
+                    itemBuilder: (context, index) =>
+                        index == state.hospitalVisitSchedules.length
+                            ? SizedBox(
+                                height: 60,
+                                child: ElevatedButton(
+                                  onPressed: () => context.beamToNamed(
+                                    Routes.hospitalVisitSchedulesCalendar,
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    '외래/검진 이력',
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.white,
+                                    ).rixMGoEB,
+                                  ),
+                                ),
+                              )
+                            : HospitalVisitScheduleDetailContainer(
+                                hospitalVisitSchedule:
+                                    state.hospitalVisitSchedules[index],
+                              ),
+                    separatorBuilder: (context, index) => Divider(
+                      height: index == state.hospitalVisitSchedules.length - 1
+                          ? 16
+                          : 10,
+                    ),
+                  );
+          },
         ),
       ),
     );

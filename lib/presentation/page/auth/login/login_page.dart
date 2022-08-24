@@ -81,9 +81,9 @@ class _LoginPageState extends State<LoginPage> {
 
           if (state.status == FormzStatus.submissionFailure) {
             /// TODO: 로그인 실패 액션 필요
-            showAboutDialog(
-              context: context,
-            );
+            // showAboutDialog(
+            //   context: context,
+            // );
           }
         },
         child: SafeArea(

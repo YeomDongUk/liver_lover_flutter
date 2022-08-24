@@ -8,10 +8,23 @@ enum NotificationStatus {
 
 enum NotificationType {
   /// 복약
-  medication,
+  medication(
+    channelKey: 'medication',
+    title: '복약시간',
+  ),
 
   /// 병원 방문
-  hospitalVisit,
+  hospitalVisit(
+    channelKey: 'hospital_visit',
+    title: '병원 방문',
+  );
+
+  const NotificationType({
+    required this.channelKey,
+    required this.title,
+  });
+  final String channelKey;
+  final String title;
 }
 
 enum NotificationSubType {

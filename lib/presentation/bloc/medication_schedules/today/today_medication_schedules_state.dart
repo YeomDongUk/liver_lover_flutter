@@ -1,12 +1,14 @@
 part of 'today_medication_schedules_cubit.dart';
 
 abstract class TodayMedicationSchedulesState extends Equatable {
-  const TodayMedicationSchedulesState({this.medicationSchedules = const []});
-  final List<MedicationSchedule> medicationSchedules;
+  const TodayMedicationSchedulesState({
+    this.medicationSchedulesGroups = const [],
+  });
+  final List<MedicationSchedulesGroup> medicationSchedulesGroups;
 
   @override
   List<Object> get props => [
-        medicationSchedules,
+        medicationSchedulesGroups,
       ];
 }
 
@@ -16,12 +18,13 @@ class TodayMedicationSchedulesInitial extends TodayMedicationSchedulesState {
 
 class TodayMedicationSchedulesLoadInProgress
     extends TodayMedicationSchedulesState {
-  const TodayMedicationSchedulesLoadInProgress({super.medicationSchedules});
+  const TodayMedicationSchedulesLoadInProgress(
+      {super.medicationSchedulesGroups});
 }
 
 class TodayMedicationSchedulesLoadSuccess
     extends TodayMedicationSchedulesState {
-  const TodayMedicationSchedulesLoadSuccess({super.medicationSchedules});
+  const TodayMedicationSchedulesLoadSuccess({super.medicationSchedulesGroups});
 }
 
 class TodayMedicationSchedulesLoadFailure
@@ -31,15 +34,18 @@ class TodayMedicationSchedulesLoadFailure
 
 class TodayMedicationSchedulesScheduleAdded
     extends TodayMedicationSchedulesState {
-  const TodayMedicationSchedulesScheduleAdded({super.medicationSchedules});
+  const TodayMedicationSchedulesScheduleAdded(
+      {super.medicationSchedulesGroups});
 }
 
 class TodayMedicationSchedulesScheduleUpdated
     extends TodayMedicationSchedulesState {
-  const TodayMedicationSchedulesScheduleUpdated({super.medicationSchedules});
+  const TodayMedicationSchedulesScheduleUpdated(
+      {super.medicationSchedulesGroups});
 }
 
 class TodayMedicationSchedulesScheduleDeleted
     extends TodayMedicationSchedulesState {
-  const TodayMedicationSchedulesScheduleDeleted({super.medicationSchedules});
+  const TodayMedicationSchedulesScheduleDeleted(
+      {super.medicationSchedulesGroups});
 }

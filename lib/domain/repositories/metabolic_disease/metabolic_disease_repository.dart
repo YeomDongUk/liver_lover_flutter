@@ -1,6 +1,5 @@
 // Package imports:
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';

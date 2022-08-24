@@ -44,7 +44,6 @@ class MetabolicDiseaseRepositoryImpl implements MetabolicDiseaseRepository {
 
       return const Right(null);
     } catch (e) {
-      print(e);
       return const Left(QueryFailure());
     }
   }

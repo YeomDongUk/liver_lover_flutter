@@ -6,8 +6,8 @@ class PillsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Pills Page"),
+    return const Center(
+      child: Text('Pills Page'),
     );
   }
 }

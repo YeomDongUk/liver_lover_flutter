@@ -16,7 +16,7 @@ import 'package:yak/presentation/bloc/sf_12_survey/answer/create/sf_12_survey_cu
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
-import 'package:yak/presentation/widget/sf_12_survey/sf_12_survey_question_list_tile.dart';
+import 'package:yak/presentation/widget/sf_12_survey/survey_question_list_tile.dart';
 
 class SF12SurveyAnswerCreatePage extends StatefulWidget {
   const SF12SurveyAnswerCreatePage({super.key, required this.surveyId});
@@ -105,10 +105,10 @@ class _SF12SurveyAnswerPageSCreatetate
                       }
 
                       final sf12surveyQuestion = sf12Questions[index - 1];
-                      return SF12SurveyQuestionListTile(
+                      return SurveyQuestionListTile<List<String>>(
                         done: false,
-                        sf12surveyQuestion: sf12surveyQuestion,
-                        answers: state.answers[index - 1],
+                        surveyQuestion: sf12surveyQuestion,
+                        answer: state.answers[index - 1],
                         setAnswer: (answer) =>
                             sf12SurveyAnswerCreateCubit.updateAnswer(
                           id: sf12surveyQuestion.id,

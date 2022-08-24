@@ -85,4 +85,16 @@ class DrinkingHistoryRepositoryImpl implements DrinkingHistoryRepository {
       return const Left(QueryFailure());
     }
   }
+
+  @override
+  Either<Failure, Stream<DrinkingHistory?>> getLastDrinkingHistoryStream() =>
+      Right(
+        drinkingHistoryLocalDataSource
+            .getLastDrinkingHistoryStream(userId: userId.value)
+            .map(
+              (event) => event == null
+                  ? null
+                  : DrinkingHistory.fromJson(event.toJson()),
+            ),
+      );
 }

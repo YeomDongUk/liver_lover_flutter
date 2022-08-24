@@ -60,6 +60,7 @@ class HospitalVisitScheduleRepositoryImpl
           ? Right(deletedCount)
           : const Left(QueryFailure());
     } catch (e) {
+      Logger().e(e);
       return const Left(QueryFailure());
     }
   }
@@ -117,6 +118,29 @@ class HospitalVisitScheduleRepositoryImpl
         id: id,
         userId: _userId,
       );
+      return Right(
+        HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
+      );
+    } catch (e) {
+      return const Left(QueryFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, HospitalVisitSchedule>>
+      toggleHospitalVisitSchedulePush({
+    required String id,
+    required HospitalVisitSchedulesCompanion companion,
+  }) async {
+    try {
+      final hospitalVisitScheduleModel =
+          await hospitalVisitScheduleLocalDataSource
+              .toggleHospitalVisitSchedulePush(
+        id: id,
+        userId: _userId,
+        companion: companion,
+      );
+
       return Right(
         HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
       );

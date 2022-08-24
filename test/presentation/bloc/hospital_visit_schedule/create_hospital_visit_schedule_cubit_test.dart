@@ -26,7 +26,7 @@ void main() {
     test('예약 시간 입력', () {
       /// When: 비정상적인 예약 시간 입력
       createHospitalVisitSchedulesCubit.updateReservedAt(
-        DateTime.now().add(const Duration(days: -1)).millisecondsSinceEpoch,
+        DateTime.now().add(const Duration(days: -1)),
       );
 
       /// Then: 상태 미유효
@@ -34,7 +34,7 @@ void main() {
 
       /// When: 정상적인 예약 시간 입력
       createHospitalVisitSchedulesCubit.updateReservedAt(
-        DateTime.now().add(const Duration(days: 1)).millisecondsSinceEpoch,
+        DateTime.now().add(const Duration(days: 1)),
       );
 
       /// Then: 상태 유효

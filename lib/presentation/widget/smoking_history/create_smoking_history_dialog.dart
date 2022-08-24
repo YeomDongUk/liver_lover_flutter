@@ -14,8 +14,8 @@ import 'package:yak/domain/entities/smoking_history/smoking_history.dart';
 import 'package:yak/domain/usecases/smoking_history/upsert_smoking_history.dart';
 import 'package:yak/presentation/bloc/smoking_histories/create/create_smoking_history_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
-import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_dialog.dart';
+import 'package:yak/presentation/widget/common/common_input_form_field.dart';
 
 class CreateSmokingHistoryDialog extends StatefulWidget {
   const CreateSmokingHistoryDialog({
@@ -117,10 +117,9 @@ class _CreateSmokingHistoryDialogState
                         width: 210,
                         height: 48,
                         child: JoinContainer(
-                          child: JoinInputFormField(
+                          child: CommonInputFormField(
                             onChanged: (str) => createSmokingHistoryCubit
                                 .updateAmount(int.tryParse(str)),
-                            initialValue: '',
                             focusNode: focusNode,
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,

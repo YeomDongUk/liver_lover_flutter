@@ -5,7 +5,6 @@ import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
 
 // Project imports:
-import 'package:yak/core/class/notification.dart';
 import 'table/drinking_history/drinking_history_table.dart';
 import 'table/examination_result/examination_result_table.dart';
 import 'table/exercise_history/exercise_history_table.dart';
@@ -15,17 +14,14 @@ import 'table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'table/liver_level_history/liver_level_table.dart';
 import 'table/medication_adherence_survey_history/medication_adherence_survey_answer.dart';
 import 'table/medication_adherence_survey_history/medication_adherence_survey_history.dart';
-import 'table/medication_information/medication_information_table.dart';
-import 'table/medication_schedule/medication_schedule_table.dart';
 import 'table/metabolic_disease/metabolic_disease_table.dart';
-import 'table/notification/notification_table.dart';
 import 'table/pill/pill_table.dart';
 import 'table/point_history/point_history_table.dart';
-import 'table/prescription/prescription_table.dart';
 import 'table/sf_12_survey/sf12_survey_answer.dart';
 import 'table/sf_12_survey/sf12_survey_history_table.dart';
 import 'table/smoking_history/smoking_history_table.dart';
 import 'table/user/user_table.dart';
+import 'table/user_point/user_point.dart';
 
 part 'database.g.dart';
 
@@ -34,9 +30,6 @@ part 'database.g.dart';
   tables: [
     Users,
     Pills,
-    Prescriptions,
-    MedicationInformations,
-    MedicationSchedules,
     HospitalVisitSchedules,
     LiverLevelHistories,
     PointHistories,
@@ -50,14 +43,12 @@ part 'database.g.dart';
     SmokingHistories,
     ExcerciseHistories,
     Hospitals,
-    Notifications,
     MedicationAdherenceSurveyAnswers,
+    UserPoints,
   ],
 )
 class AppDatabase extends _$AppDatabase {
-  AppDatabase(super.e) {
-    // delete(this.sF12SurveyAnswers).go().then((value) => print(value));
-  }
+  AppDatabase(super.e);
 
   @override
   int get schemaVersion => 0;
@@ -67,19 +58,41 @@ class AppDatabase extends _$AppDatabase {
         onCreate: (m) async {
           await m.createAll();
 
-          await into(users).insertReturning(
-            UsersCompanion.insert(
-              id: const Value('test'),
-              name: '염동욱',
-              phone: '01023937318',
-              birthYear: 1995,
-              sex: 0,
-              height: 172,
-              weight: 64,
-              pinCode: '000000',
-            ),
-          );
+          // await transaction(() async {
+          //   final userModel = await into(users).insertReturning(
+          //     UsersCompanion.insert(
+          //       id: const Value('test'),
+          //       name: '염동욱',
+          //       phone: '01023937318',
+          //       birthYear: 1995,
+          //       sex: 0,
+          //       height: 172,
+          //       weight: 64,
+          //       pinCode: '000000',
+          //     ),
+          //   );
+          //   await into(userPoints).insert(
+          //     UserPointsCompanion.insert(userId: userModel.id),
+          //   );
+          //   return userModel;
+          // });
 
+          // await batch(
+          //   (batch) => batch.insertAll(
+          //     pills,
+          //     List.generate(
+          //       5,
+          //       (index) => PillsCompanion.insert(
+          //         id: Value('$index'),
+          //         name: '테스트 $index 약품',
+          //         entpName: '우리집',
+          //         // effect: '이거짱임1',
+          //         // useage: '진짜좋음',
+          //         // material: '',
+          //       ),
+          //     ),
+          //   ),
+          // );
           // await batch((batch) {
           //   // final pillsCompanions = List.generate(
           //   //   5,

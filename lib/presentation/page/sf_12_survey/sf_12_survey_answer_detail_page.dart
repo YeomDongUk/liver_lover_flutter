@@ -16,7 +16,7 @@ import 'package:yak/domain/usecases/survey/sf_12_survey_answer/get_sf_12_survey_
 import 'package:yak/presentation/bloc/sf_12_survey/answer/sf_12_answers_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
-import 'package:yak/presentation/widget/sf_12_survey/sf_12_survey_question_list_tile.dart';
+import 'package:yak/presentation/widget/sf_12_survey/survey_question_list_tile.dart';
 
 class SF12SurveyAnswerDetailPage extends StatefulWidget {
   const SF12SurveyAnswerDetailPage({
@@ -139,11 +139,11 @@ class _SF12SurveyAnswerDetailPageState
                       }
 
                       final sf12surveyQuestion = sf12Questions[index - 1];
-                      return SF12SurveyQuestionListTile(
+                      return SurveyQuestionListTile<List<String>>(
                         done: true,
                         setAnswer: null,
-                        sf12surveyQuestion: sf12surveyQuestion,
-                        answers: state.answers[index - 1].answers
+                        surveyQuestion: sf12surveyQuestion,
+                        answer: state.answers[index - 1].answers
                             .map((e) => '$e')
                             .toList(),
                       );

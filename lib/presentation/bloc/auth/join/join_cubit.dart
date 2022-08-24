@@ -5,12 +5,12 @@ import 'package:formz/formz.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/form/auth/auth_form.dart';
 import 'package:yak/core/form/common.dart';
 import 'package:yak/domain/entities/user/user.dart';
 import 'package:yak/domain/usecases/user/create_user.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/auth/join/join_form.dart';
-import '../../../../core/form/auth/auth_form.dart';
 
 part 'join_state.dart';
 
@@ -53,7 +53,6 @@ class JoinCubit extends Cubit<JoinState> {
           return null;
         }
       } catch (e) {
-        print(e);
         return null;
       }
     }

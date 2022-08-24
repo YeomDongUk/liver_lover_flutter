@@ -1,6 +1,9 @@
 // Package imports:
 import 'package:equatable/equatable.dart';
 
+// Project imports:
+import 'package:yak/core/static/static.dart';
+
 class DrinkingHistory extends Equatable {
   const DrinkingHistory({
     required this.id,
@@ -17,8 +20,10 @@ class DrinkingHistory extends Equatable {
         date: DateTime.fromMillisecondsSinceEpoch(json['date'] as int),
         createdAt:
             DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
-        updatedAt:
-            DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] as int),
+        updatedAt: DateTime.fromMillisecondsSinceEpoch(
+          json['updatedAt'] as int,
+          isUtc: true,
+        ),
       );
 
   final String id;
@@ -29,16 +34,20 @@ class DrinkingHistory extends Equatable {
 
   DrinkingHistory copyWith({
     int? amount,
+    DateTime? date,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
       DrinkingHistory(
         id: id,
-        date: date,
+        date: date ?? this.date,
         amount: amount ?? this.amount,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
+
+  bool get isValid =>
+      yyyyMMddFormat.format(date) == yyyyMMddFormat.format(DateTime.now());
 
   @override
   List<Object?> get props => [

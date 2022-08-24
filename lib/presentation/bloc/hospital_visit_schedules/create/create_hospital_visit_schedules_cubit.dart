@@ -68,10 +68,10 @@ class CreateHospitalVisitSchedulesCubit
     emit(state.copyWith(status: formStatus));
   }
 
-  void updateReservedAt(int reservedAt) {
+  void updateReservedAt(DateTime reservedAt) {
     emit(
       state.copyWith(
-        reservedAt: ReservedAt.dirty('$reservedAt'),
+        reservedAt: AfterNowDateInput.dirty(reservedAt),
       ),
     );
     emit(state.copyWith(status: formStatus));
@@ -81,27 +81,60 @@ class CreateHospitalVisitSchedulesCubit
     emit(
       state.copyWith(
         push: Push.dirty(push),
+        beforePush: push ? null : const BeforePush.dirty(false),
+        afterPush: push ? null : const AfterPush.dirty(false),
       ),
     );
-    emit(state.copyWith(status: formStatus));
+
+    emit(
+      state.copyWith(
+        status: state.push.value &&
+                !state.beforePush.value &&
+                !state.afterPush.value
+            ? FormzStatus.invalid
+            : formStatus,
+      ),
+    );
   }
 
   void updateBeforePush(bool beforePush) {
+    if (!state.push.value) return;
+
     emit(
       state.copyWith(
         beforePush: BeforePush.dirty(beforePush),
       ),
     );
-    emit(state.copyWith(status: formStatus));
+
+    emit(
+      state.copyWith(
+        status: state.push.value &&
+                !state.beforePush.value &&
+                !state.afterPush.value
+            ? FormzStatus.invalid
+            : formStatus,
+      ),
+    );
   }
 
   void updateAfterPush(bool afterPush) {
+    if (!state.push.value) return;
+
     emit(
       state.copyWith(
         afterPush: AfterPush.dirty(afterPush),
       ),
     );
-    emit(state.copyWith(status: formStatus));
+
+    emit(
+      state.copyWith(
+        status: state.push.value &&
+                !state.beforePush.value &&
+                !state.afterPush.value
+            ? FormzStatus.invalid
+            : formStatus,
+      ),
+    );
   }
 
   Future<HospitalVisitSchedule?> submit() async {
@@ -113,9 +146,7 @@ class CreateHospitalVisitSchedulesCubit
         hospitalName: state.hospitalName.value,
         medicalSubject: state.medicalSubject.value,
         doctorName: state.doctorName.value,
-        reservedAt: DateTime.fromMillisecondsSinceEpoch(
-          int.parse(state.reservedAt.value),
-        ),
+        reservedAt: state.reservedAt.value!,
         push: Value(state.push.value),
         afterPush: Value(state.afterPush.value),
         beforePush: Value(state.beforePush.value),

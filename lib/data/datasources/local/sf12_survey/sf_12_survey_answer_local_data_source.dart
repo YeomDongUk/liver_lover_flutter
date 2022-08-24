@@ -5,9 +5,11 @@ import 'package:drift/drift.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/database/table/point_history/point_history_table.dart';
 
 abstract class SF12SurveyAnswerLocalDataSource {
   Future<List<SF12SurveyAnswerModel>> createSurveyAnswers({
+    required String userId,
     required String surveyHistoryId,
     required List<SF12SurveyAnswersCompanion> companions,
   });
@@ -22,10 +24,13 @@ class SF12SurveyAnswerLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   SF12SurveyAnswerLocalDataSourceImpl(super.attachedDatabase);
 
   late final table = attachedDatabase.sF12SurveyAnswers;
+  late final maSurveyTable =
+      attachedDatabase.medicationAdherenceSurveyHistories;
   late final surveyTable = attachedDatabase.sF12SurveyHistories;
 
   @override
   Future<List<SF12SurveyAnswerModel>> createSurveyAnswers({
+    required String userId,
     required String surveyHistoryId,
     required List<SF12SurveyAnswersCompanion> companions,
   }) =>
@@ -39,6 +44,33 @@ class SF12SurveyAnswerLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
               done: Value(true),
             ),
           );
+
+          final groupedSurvey = await (select(surveyTable).join(
+            [
+              leftOuterJoin(
+                maSurveyTable,
+                maSurveyTable.hospitalVisitScheduleId
+                    .equalsExp(surveyTable.hospitalVisitScheduleId),
+              )
+            ],
+          )..where(surveyTable.id.equals(surveyHistoryId)))
+              .getSingle();
+          final forignId =
+              groupedSurvey.read(surveyTable.hospitalVisitScheduleId)!;
+          final sf12SurveyDone = groupedSurvey.read(surveyTable.done)!;
+          final maSurveyDone = groupedSurvey.read(maSurveyTable.done) ?? false;
+
+          if (sf12SurveyDone && maSurveyDone) {
+            await into(attachedDatabase.pointHistories).insert(
+              PointHistoriesCompanion.insert(
+                userId: userId,
+                forginId: forignId,
+                event: PointHistoryEvent.surveyComplete,
+                point: 30,
+              ),
+            );
+          }
+
           return (select(table)
                 ..where((t) => t.sf12SurveyHistoryId.equals(surveyHistoryId))
                 ..orderBy([

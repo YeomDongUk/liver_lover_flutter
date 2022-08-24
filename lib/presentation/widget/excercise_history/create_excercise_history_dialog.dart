@@ -14,8 +14,8 @@ import 'package:yak/domain/entities/excercise_history/excercise_history.dart';
 import 'package:yak/domain/usecases/excercise_history/upsert_excercise_history.dart';
 import 'package:yak/presentation/bloc/excercise_histories/create/create_excercise_history_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
-import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_dialog.dart';
+import 'package:yak/presentation/widget/common/common_input_form_field.dart';
 
 class CreateExcerciseHistoryDialog extends StatefulWidget {
   const CreateExcerciseHistoryDialog({
@@ -121,10 +121,9 @@ class _CreateExcerciseHistoryDialogState
                         width: 210,
                         height: 48,
                         child: JoinContainer(
-                          child: JoinInputFormField(
+                          child: CommonInputFormField(
                             onChanged: (str) => createExcerciseHistoryCubit
                                 .updateMinuite(int.tryParse(str)),
-                            initialValue: '',
                             focusNode: focusNode,
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,
@@ -166,10 +165,9 @@ class _CreateExcerciseHistoryDialogState
                         width: 210,
                         height: 48,
                         child: JoinContainer(
-                          child: JoinInputFormField(
+                          child: CommonInputFormField(
                             onChanged: (str) => createExcerciseHistoryCubit
                                 .updateWeight(double.tryParse(str)),
-                            initialValue: '',
                             focusNode: weightFocusNode,
                             keyboardType: const TextInputType.numberWithOptions(
                               decimal: true,

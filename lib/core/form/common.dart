@@ -13,26 +13,22 @@ class Name extends FormzInput<String, NameValidationError> {
       value?.isNotEmpty == true ? null : NameValidationError.empty;
 }
 
-enum ReservedAtValidationError {
-  empty,
+enum AfterNowDateInputValidationError {
+  isNull,
   wrong,
-  befreDate,
 }
 
-class ReservedAt extends FormzInput<String, ReservedAtValidationError> {
-  const ReservedAt.pure() : super.pure('');
-  const ReservedAt.dirty(super.value) : super.dirty();
+class AfterNowDateInput
+    extends FormzInput<DateTime?, AfterNowDateInputValidationError> {
+  const AfterNowDateInput.pure() : super.pure(null);
+  const AfterNowDateInput.dirty(super.value) : super.dirty();
 
   @override
-  ReservedAtValidationError? validator(String value) => value.isEmpty
-      ? ReservedAtValidationError.empty
-      : int.tryParse(value) == null
-          ? ReservedAtValidationError.wrong
-          : DateTime.fromMillisecondsSinceEpoch(
-              int.parse(value),
-            ).isBefore(DateTime.now())
-              ? ReservedAtValidationError.befreDate
-              : null;
+  AfterNowDateInputValidationError? validator(DateTime? value) => value == null
+      ? AfterNowDateInputValidationError.isNull
+      : value.isBefore(DateTime.now())
+          ? AfterNowDateInputValidationError.wrong
+          : null;
 }
 
 class Push extends FormzInput<bool, void> {
@@ -57,4 +53,35 @@ class AfterPush extends FormzInput<bool, void> {
 
   @override
   void validator(bool value) {}
+}
+
+enum DateInputValidationError {
+  isNull,
+}
+
+class DateInput extends FormzInput<DateTime?, DateInputValidationError> {
+  const DateInput.pure() : super.pure(null);
+  const DateInput.dirty(DateTime super.dateTime) : super.dirty();
+
+  @override
+  DateInputValidationError? validator(DateTime? value) =>
+      value == null ? DateInputValidationError.isNull : null;
+}
+
+enum PositiveIntInputValidationError {
+  isNull,
+  lessThenEqualZero,
+}
+
+class PositiveIntInput
+    extends FormzInput<int?, PositiveIntInputValidationError> {
+  const PositiveIntInput.pure() : super.pure(null);
+  const PositiveIntInput.dirty(super.value) : super.dirty();
+
+  @override
+  PositiveIntInputValidationError? validator(int? value) => value == null
+      ? PositiveIntInputValidationError.isNull
+      : value < 1
+          ? PositiveIntInputValidationError.lessThenEqualZero
+          : null;
 }

@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -11,6 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:yak/core/class/between.dart';
+import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
@@ -22,6 +24,7 @@ import 'package:yak/presentation/bloc/smoking_histories/smoking_histories_cubit.
 import 'package:yak/presentation/bloc/smoking_histories/smoking_history/smoking_history_cubit.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/weekly_table_calendar.dart';
+import 'package:yak/presentation/widget/health_diary/go_graph_button.dart';
 import 'package:yak/presentation/widget/smoking_history/create_smoking_history_dialog.dart';
 
 class SmokingHistoriesScreen extends StatefulWidget {
@@ -330,6 +333,11 @@ class _SmokingHistoriesScreenState extends State<SmokingHistoriesScreen>
             ],
           ),
         ),
+        const SizedBox(height: 16),
+        GoGraphButton(
+          onPressed: () => context.beamToNamed(Routes.smokingHistoriesGraphs),
+        ),
+        const SizedBox(height: 24),
       ],
     );
   }

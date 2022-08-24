@@ -18,7 +18,8 @@ class CreateMedicationAdherenceSurveyAnswers
 
   @override
   Future<Either<Failure, int>> call(
-          List<MedicationAdherenceSurveyAnswersCompanion> params) =>
+    List<MedicationAdherenceSurveyAnswersCompanion> params,
+  ) =>
       medicationAdherenceSurveyAnswerRepository.createAnswers(
         companions: params,
       );

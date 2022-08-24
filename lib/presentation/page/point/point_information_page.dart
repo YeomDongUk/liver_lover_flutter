@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path/path.dart';
 
 // Project imports:
 import 'package:yak/core/static/color.dart';
@@ -20,6 +19,7 @@ class PointInformationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CommonAppBar(
+        automaticallyImplyLeading: false,
         title: const Text('리버포인트 제도'),
         actions: [
           IconButton(

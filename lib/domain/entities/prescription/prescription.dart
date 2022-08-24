@@ -1,42 +1,47 @@
 // Package imports:
 import 'package:equatable/equatable.dart';
+import 'package:yak/domain/entities/medication_information/medication_information.dart';
 
 class Prescription extends Equatable {
   const Prescription({
     required this.id,
     required this.doctorName,
-    required this.prescribedAt,
-    required this.push,
-    required this.beforePush,
-    required this.afterPush,
-    // required this.medicationInformationGroup,
+    required this.prescriptedAt,
     required this.createdAt,
     required this.updatedAt,
+    required this.medicationStartAt,
+    required this.medicationEndAt,
+    required this.duration,
+    this.medicationInformations,
   });
 
   factory Prescription.fromJson(Map<String, dynamic> json) => Prescription(
-        id: json['id'] as String,
+        id: json['id'] as int,
         doctorName: json['doctorName'] as String,
-        prescribedAt: json['prescribedAt'] as DateTime,
-        push: json['push'] as bool,
-        beforePush: json['beforePush'] as bool,
-        afterPush: json['afterPush'] as bool,
+        medicationInformations: json['medicationInformations'] == null
+            ? null
+            : json['medicationInformations'] as List<MedicationInformation>,
+        prescriptedAt:
+            DateTime.fromMillisecondsSinceEpoch(json['prescriptedAt'] as int),
         createdAt:
             DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
         updatedAt:
             DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] as int),
-        // medicationInformationGroup: MedicationInformationGroup.fromJson(
-        //   json['medicationInformationGroup'] as Map<String, dynamic>,
-        // ),
+        duration: json['duration'] as int,
+        medicationEndAt:
+            DateTime.fromMillisecondsSinceEpoch(json['medicationEndAt'] as int),
+        medicationStartAt: DateTime.fromMillisecondsSinceEpoch(
+          json['medicationStartAt'] as int,
+        ),
       );
 
-  final String id;
+  final int id;
   final String doctorName;
-  final DateTime prescribedAt;
-  final bool push;
-  final bool beforePush;
-  final bool afterPush;
-  // final MedicationInformationGroup medicationInformationGroup;
+  final List<MedicationInformation>? medicationInformations;
+  final DateTime medicationStartAt;
+  final DateTime medicationEndAt;
+  final int duration;
+  final DateTime prescriptedAt;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -44,11 +49,11 @@ class Prescription extends Equatable {
   List<Object?> get props => [
         id,
         doctorName,
-        prescribedAt,
-        push,
-        beforePush,
-        // medicationInformationGroup,
-        afterPush,
+        prescriptedAt,
+        medicationInformations,
+        duration,
+        medicationStartAt,
+        medicationEndAt,
         createdAt,
         updatedAt,
       ];

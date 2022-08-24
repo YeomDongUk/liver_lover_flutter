@@ -5,17 +5,23 @@ class MedicationAdherenceAnswer extends Equatable {
   const MedicationAdherenceAnswer({
     required this.id,
     required this.questionId,
-    required this.answers,
+    required this.answer,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   final String id;
   final int questionId;
-  final List<int> answers;
+  final int answer;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   @override
   List<Object?> get props => [
         id,
         questionId,
-        answers,
+        answer,
+        createdAt,
+        updatedAt,
       ];
 }

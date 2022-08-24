@@ -6,12 +6,12 @@ import 'package:equatable/equatable.dart';
 import 'package:yak/domain/entities/survey/survey_group.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_history.dart';
-import 'package:yak/presentation/bloc/on_user_state.dart';
+import 'package:yak/presentation/bloc/on_user_cubit.dart';
 
 part 'survey_groups_state.dart';
 
 class SurveyGroupsCubit extends Cubit<SurveyGroupsState>
-    implements IonUserState {
+    implements IonUserCubit {
   SurveyGroupsCubit({
     required this.getSurveyGroupHistory,
     required this.getSurveyGroupHistories,
@@ -94,6 +94,34 @@ class SurveyGroupsCubit extends Cubit<SurveyGroupsState>
 
     groups[groupIndex] = surveyGroup.copyWith(
       sf12surveyHistory: surveyGroup.sf12surveyHistory.copyWith(done: true),
+    );
+
+    emit(
+      SurveyGroupsUpdated(
+        groups: groups
+          ..sort(
+            (prev, curr) => prev.reseverdAt.compareTo(curr.reseverdAt),
+          ),
+      ),
+    );
+  }
+
+  void updateMedicationAdherenceSurvey({
+    required String medicationAdherenceSurveyId,
+  }) {
+    final groups = _groups;
+    final groupIndex = groups.indexWhere(
+      (element) =>
+          element.medicationAdherenceSurveyHistory.id ==
+          medicationAdherenceSurveyId,
+    );
+    if (groupIndex == -1) return;
+
+    final surveyGroup = groups[groupIndex];
+
+    groups[groupIndex] = surveyGroup.copyWith(
+      medicationAdherenceSurveyHistory:
+          surveyGroup.medicationAdherenceSurveyHistory.copyWith(done: true),
     );
 
     emit(

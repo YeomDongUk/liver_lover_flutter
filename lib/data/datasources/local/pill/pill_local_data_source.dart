@@ -6,7 +6,9 @@ import 'package:yak/core/database/database.dart';
 
 abstract class PillLocalDataSource {
   Future<PillModel> getPill(String id);
+  Future<PillModel?> getPillOrNull(String id);
   Future<List<PillModel>> getPills(String name);
+  Future<List<PillModel>> getPillsInIds(List<String> ids);
   Future<PillModel> createPill(PillsCompanion companion);
   Future<List<PillModel>> createPills(Iterable<PillsCompanion> companions);
 }
@@ -20,6 +22,10 @@ class PillLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   @override
   Future<PillModel> getPill(String id) =>
       (select(table)..where((p) => p.id.equals(id))).getSingle();
+
+  @override
+  Future<PillModel?> getPillOrNull(String id) =>
+      (select(table)..where((p) => p.id.equals(id))).getSingleOrNull();
 
   @override
   Future<PillModel> createPill(PillsCompanion companion) => into(table)
@@ -42,4 +48,8 @@ class PillLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
           ..where((p) => p.id.isIn(companions.map((e) => e.id.value))))
         .get();
   }
+
+  @override
+  Future<List<PillModel>> getPillsInIds(List<String> ids) =>
+      (select(table)..where((p) => p.id.isIn(ids))).get();
 }

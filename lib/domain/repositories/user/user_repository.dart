@@ -9,6 +9,8 @@ import 'package:yak/domain/entities/user/user.dart';
 abstract class UserRepository {
   Future<Either<Failure, User>> getUserWithId(String id);
   Future<Either<Failure, User>> getUser(String pinCode);
+  Future<Either<Failure, User>> autoLogin();
+  Future<Either<Failure, void>> logOut();
   Future<Either<Failure, User>> createUser(UsersCompanion companion);
   Future<Either<Failure, User>> updateUser(UsersCompanion companion);
   Future<Either<Failure, void>> updatePinCode(String pinCode);

@@ -9,22 +9,6 @@ abstract class SF12SurveyHistoryLocalDataSource {
     required String hospitalVisitScheduleId,
     required String userId,
   });
-
-  // Future<SF12SurveyHistoryModel> createSurveyHistory({
-  //   required String userId,
-  //   required SF12SurveyHistoriesCompanion companion,
-  // });
-
-  // Future<SF12SurveyHistoryModel> updateSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  //   required SF12SurveyHistoriesCompanion companion,
-  // });
-
-  // Future<int> deleteSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  // });
 }
 
 class SF12SurveyHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
@@ -32,42 +16,7 @@ class SF12SurveyHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   SF12SurveyHistoryLocalDataSourceImpl(super.attachedDatabase);
   late final table = attachedDatabase.sF12SurveyHistories;
 
-  // @override
-  // Future<SF12SurveyHistoryModel> createSurveyHistory({
-  //   required String userId,
-  //   required SF12SurveyHistoriesCompanion companion,
-  // }) {
-  //   // TODO: implement createSurveyHistory
-  //   throw UnimplementedError();
-  // }
-
-  // @override
-  // Future<int> deleteSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  // }) {
-  //   // TODO: implement deleteSurveyHistory
-  //   throw UnimplementedError();
-  // }
-
-  // @override
-  // Future<SF12SurveyHistoryModel> getSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  // }) {
-  //   // TODO: implement getSurveyHistory
-  //   throw UnimplementedError();
-  // }
-
-  // @override
-  // Future<SF12SurveyHistoryModel> updateSurveyHistory({
-  //   required String id,
-  //   required String userId,
-  //   required SF12SurveyHistoriesCompanion companion,
-  // }) {
-  //   // TODO: implement updateSurveyHistory
-  //   throw UnimplementedError();
-  // }
+  // @overrid
 
   @override
   Future<SF12SurveyHistoryModel> getSurveyHistoryFromHospitalVisitScheduleId({

@@ -25,6 +25,7 @@ class SF12SurveyAnswerRepositoryImpl implements SF12SurveyAnswerRepository {
     try {
       final surveyAnswerModels =
           await sf12SurveyAnswerLocalDataSource.createSurveyAnswers(
+        userId: userId.value,
         surveyHistoryId: companions.first.sf12SurveyHistoryId.value,
         companions: companions,
       );

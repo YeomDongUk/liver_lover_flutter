@@ -7,8 +7,8 @@ import 'package:beamer/beamer.dart';
 // Project imports:
 import 'package:yak/core/router/home_location.dart';
 import 'package:yak/core/router/routes.dart';
+import 'package:yak/presentation/page/hospital_visit_schedules/calendar/hospital_visit_schedule_calendar_page.dart';
 import 'package:yak/presentation/page/hospital_visit_schedules/create/create_hospital_visit_schedule_page.dart';
-import 'package:yak/presentation/page/hospital_visit_schedules/update/update_hospital_visit_schedule_page.dart';
 
 class HospitalVisitScheduleLocation extends BeamLocation<BeamState> {
   @override
@@ -23,17 +23,14 @@ class HospitalVisitScheduleLocation extends BeamLocation<BeamState> {
           title: '외래/검진 일정 등록',
           child: CreateHospitalVisitSchedulePage(),
         ),
-      if (state.pathPatternSegments.contains('update') &&
-          state.pathParameters['id'] != null)
-        BeamPage(
+      if (state.uri.path == Routes.hospitalVisitSchedulesCalendar)
+        const BeamPage(
           type: BeamPageType.cupertino,
-          key: const ValueKey('update-hospital-visit-schedule'),
-          name: 'updateHospitalVisitSchedulePage',
-          title: '외래/검진 일정 수정',
-          child: UpdateHospitalVisitSchedulePage(
-            id: state.pathParameters['id']!,
-          ),
-        ),
+          key: ValueKey('hospital-visit-schedule-calendar'),
+          name: 'hospitalVisitScheduleCalendarPage',
+          title: '',
+          child: HospitalVisitScheduleCalendarPage(),
+        )
     ];
   }
 
@@ -41,5 +38,6 @@ class HospitalVisitScheduleLocation extends BeamLocation<BeamState> {
   List<Pattern> get pathPatterns => [
         Routes.hospitalVisitScheduleCreate,
         '${Routes.hospitalVisitScheduleUpdate}/:id',
+        Routes.hospitalVisitSchedulesCalendar,
       ];
 }

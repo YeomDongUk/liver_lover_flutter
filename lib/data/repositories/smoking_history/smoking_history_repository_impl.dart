@@ -83,4 +83,16 @@ class SmokingHistoryRepositoryImpl implements SmokingHistoryRepository {
       return const Left(QueryFailure());
     }
   }
+
+  @override
+  Either<Failure, Stream<SmokingHistory?>> getLastSmokingHistoryStream() =>
+      Right(
+        smokingHistoryLocalDataSource
+            .getLastSmokingHistoryStream(userId: userId.value)
+            .map(
+              (event) => event == null
+                  ? null
+                  : SmokingHistory.fromJson(event.toJson()),
+            ),
+      );
 }

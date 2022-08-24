@@ -1,4 +1,8 @@
 // Flutter imports:
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -6,13 +10,18 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 // Project imports:
 import 'package:yak/core/router/routes.dart';
+import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/usecases/user/auto_login.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/auth/auto_login/auto_login_cubit.dart';
+import 'package:version/version.dart';
+import 'package:yak/presentation/widget/common/common_dialog.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -30,11 +39,84 @@ class _AuthPageState extends State<AuthPage> {
       autoLogin: KiwiContainer().resolve<AutoLogin>(),
     );
     WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        Future.delayed(
-          const Duration(milliseconds: 1500),
-          autoLoginCubit.login,
-        ).then((value) => null);
+      (timeStamp) async {
+        final packageInfo = await PackageInfo.fromPlatform();
+        final version = packageInfo.version;
+
+        await FirebaseRemoteConfig.instance.setDefaults(
+          <String, dynamic>{'appVersion': version},
+        );
+
+        await FirebaseRemoteConfig.instance.fetchAndActivate();
+
+        final remoteVersion = Version.parse(
+          FirebaseRemoteConfig.instance.getValue('appVersion').asString(),
+        );
+
+        if (remoteVersion > Version.parse(version)) {
+          await showDialog<void>(
+            context: context,
+            builder: (_) => CommonDialog(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    '업데이트 알림',
+                    style: const TextStyle(
+                      fontSize: 17,
+                      color: AppColors.primary,
+                    ).rixMGoEB,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '새로운 업데이트가 있어요. 원활한 이용을 위해 앱을 업데이트 해주세요',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.blueGrayLight,
+                    ).rixMGoB,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      final downloadLinkMap = FirebaseRemoteConfig.instance
+                          .getString('downloadLink');
+
+                      final downloadLink = jsonDecode(downloadLinkMap)[
+                          Platform.isAndroid ? 'android' : 'ios'] as String?;
+
+                      if (downloadLink == null) return;
+
+                      canLaunchUrlString(downloadLink).then(
+                        (value) {
+                          if (value) launchUrlString(downloadLink);
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: Text(
+                      '업데이트 하기',
+                      style: const TextStyle(
+                        fontSize: 17,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                      ).rixMGoEB,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          await Future.delayed(
+            const Duration(milliseconds: 1500),
+            autoLoginCubit.login,
+          );
+        }
       },
     );
     super.initState();

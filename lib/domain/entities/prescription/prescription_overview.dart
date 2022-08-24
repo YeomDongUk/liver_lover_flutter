@@ -8,7 +8,7 @@ class PrescriptionOverview extends Equatable {
   const PrescriptionOverview({
     required this.id,
     required this.doctorName,
-    required this.prescribedAt,
+    required this.prescriptedAt,
     required this.push,
     required this.beforePush,
     required this.afterPush,
@@ -19,7 +19,7 @@ class PrescriptionOverview extends Equatable {
 
   final String id;
   final String doctorName;
-  final DateTime prescribedAt;
+  final DateTime prescriptedAt;
   final bool push;
   final bool beforePush;
   final bool afterPush;
@@ -38,7 +38,7 @@ class PrescriptionOverview extends Equatable {
       PrescriptionOverview(
         id: id,
         doctorName: doctorName,
-        prescribedAt: prescribedAt,
+        prescriptedAt: prescriptedAt,
         push: push ?? this.push,
         beforePush: beforePush ?? this.beforePush,
         afterPush: afterPush ?? this.afterPush,
@@ -52,7 +52,7 @@ class PrescriptionOverview extends Equatable {
   List<Object?> get props => [
         id,
         doctorName,
-        prescribedAt,
+        prescriptedAt,
         push,
         beforePush,
         afterPush,

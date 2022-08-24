@@ -11,7 +11,8 @@ class User extends Equatable {
     required this.height,
     required this.weight,
     required this.pinCode,
-    required this.point,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -23,7 +24,10 @@ class User extends Equatable {
         height: json['height'] as int,
         weight: json['weight'] as int,
         pinCode: json['pinCode'] as String,
-        point: json['point'] as int,
+        createdAt:
+            DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
+        updatedAt:
+            DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] as int),
       );
 
   final String id;
@@ -34,7 +38,8 @@ class User extends Equatable {
   final int height;
   final int weight;
   final String pinCode;
-  final int point;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   User copyWith({
     String? name,
@@ -44,7 +49,6 @@ class User extends Equatable {
     int? height,
     int? weight,
     String? pinCode,
-    int? point,
   }) =>
       User(
         id: id,
@@ -55,7 +59,8 @@ class User extends Equatable {
         height: height ?? this.height,
         weight: weight ?? this.weight,
         pinCode: pinCode ?? this.pinCode,
-        point: point ?? this.point,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
       );
 
   static const empty = User(
@@ -67,7 +72,6 @@ class User extends Equatable {
     height: 0,
     weight: 0,
     pinCode: '000000',
-    point: 0,
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -79,11 +83,12 @@ class User extends Equatable {
         'height': height,
         'weight': weight,
         'pinCode': pinCode,
-        'point': point,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
       };
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         name,
         phone,
@@ -92,6 +97,7 @@ class User extends Equatable {
         height,
         weight,
         pinCode,
-        point,
+        createdAt,
+        updatedAt,
       ];
 }

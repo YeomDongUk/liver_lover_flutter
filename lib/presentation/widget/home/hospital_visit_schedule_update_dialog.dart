@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:beamer/beamer.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
+import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
@@ -36,18 +39,18 @@ class HospitalVisitScheduleUpdateDialog extends StatelessWidget {
               children: [
                 Text(
                   time,
-                  style: TextStyle(
+                  style: GoogleFonts.lato(
                     fontSize: 30,
                     color: Theme.of(context).primaryColor,
                     height: 1,
-                  ).airbnbEB,
+                  ),
                 ),
                 Text(
                   mothDay,
-                  style: const TextStyle(
+                  style: GoogleFonts.lato(
                     fontSize: 20,
                     color: AppColors.gray,
-                  ).airbnbM,
+                  ),
                 ),
               ],
             ),
@@ -69,10 +72,10 @@ class HospitalVisitScheduleUpdateDialog extends StatelessWidget {
                           const Duration(days: -1),
                         ),
                       ),
-                      style: TextStyle(
+                      style: GoogleFonts.lato(
                         fontSize: 20,
                         color: Theme.of(context).primaryColor,
-                      ).airbnbEB,
+                      ),
                     ),
                     const SizedBox(width: 10),
                     Text(
@@ -93,10 +96,10 @@ class HospitalVisitScheduleUpdateDialog extends StatelessWidget {
                           const Duration(hours: -2),
                         ),
                       ),
-                      style: TextStyle(
+                      style: GoogleFonts.lato(
                         fontSize: 20,
                         color: Theme.of(context).primaryColor,
-                      ).airbnbEB,
+                      ),
                     ),
                     const SizedBox(width: 10),
                     Text(
@@ -126,7 +129,8 @@ class HospitalVisitScheduleUpdateDialog extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ElevatedButton(
-                onPressed: () => print("?"),
+                onPressed: () => context
+                    .beamToReplacementNamed(Routes.hospitalVisitScheduleCreate),
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size.fromHeight(60),
                 ),

@@ -14,6 +14,7 @@ class GetPrescriptionOverviews
   final PrescriptionRepository prescriptionRepository;
 
   @override
-  Future<Either<Failure, List<PrescriptionOverview>>> call(void params) =>
-      prescriptionRepository.getPrescriptionOverviews();
+  Future<Either<Failure, List<PrescriptionOverview>>> call(void params) async =>
+      const Right([]);
+  // prescriptionRepository.getPrescriptionOverviews();
 }

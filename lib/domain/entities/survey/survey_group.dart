@@ -34,6 +34,11 @@ class SurveyGroup extends Equatable {
 
   bool get canSurvey => visitedAt == null && isBetweenSurveyDateTime;
 
+  bool get done =>
+      medicationAdherenceSurveyHistory.done && sf12surveyHistory.done;
+
+  bool get isOverdue => reseverdAt.isBefore(DateTime.now());
+
   bool get isBetweenSurveyDateTime {
     final now = DateTime.now();
     return reseverdAt.isAfter(

@@ -34,14 +34,16 @@ class ExcerciseHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
     required String userId,
     required DateTime startAt,
     required DateTime endAt,
-  }) =>
-      (select(table)
-            ..where((tbl) => tbl.userId.equals(userId))
-            ..where((tbl) => tbl.date.isBetweenValues(startAt, endAt))
-            ..orderBy(
-              [(tbl) => OrderingTerm.asc(tbl.date)],
-            ))
-          .get();
+  }) async {
+    // await delete(table).go();
+    return (select(table)
+          ..where((tbl) => tbl.userId.equals(userId))
+          ..where((tbl) => tbl.date.isBetweenValues(startAt, endAt))
+          ..orderBy(
+            [(tbl) => OrderingTerm.asc(tbl.date)],
+          ))
+        .get();
+  }
 
   @override
   Future<ExcerciseHistoryAverage> getExcerciseHistoryAverage({
@@ -84,6 +86,8 @@ class ExcerciseHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
         onConflict: DoUpdate(
           (old) => ExcerciseHistoriesCompanion.custom(
             minuite: Constant(companion.minuite.value),
+            weight: Constant(companion.weight.value),
+            updatedAt: Constant(DateTime.now()),
           ),
           target: [
             table.userId,

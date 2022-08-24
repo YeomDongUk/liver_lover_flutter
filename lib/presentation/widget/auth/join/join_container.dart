@@ -10,9 +10,11 @@ class JoinContainer extends StatelessWidget {
     super.key,
     required this.child,
     this.label,
+    this.labelWidget,
     this.color,
   });
   final String? label;
+  final Widget? labelWidget;
   final Color? color;
   final Widget child;
   @override
@@ -20,14 +22,17 @@ class JoinContainer extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (label != null) ...[
-          Text(
-            label!,
-            style: const TextStyle(
-              fontSize: 15,
-              color: AppColors.gray,
-            ).rixMGoB,
-          ),
+        if (label != null || labelWidget != null) ...[
+          if (label != null)
+            Text(
+              label!,
+              style: const TextStyle(
+                fontSize: 15,
+                color: AppColors.gray,
+              ).rixMGoB,
+            )
+          else if (labelWidget != null)
+            labelWidget!,
           const SizedBox(height: 10),
         ],
         Container(

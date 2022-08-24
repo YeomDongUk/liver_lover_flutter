@@ -29,10 +29,9 @@ class CirrhosisUpdateForm extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
               ).rixMGoEB,
             ),
-            const Spacer(),
-            SizedBox(
-              width: 159,
+            Expanded(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OpacityCheckButton(
                     onTap: () => cubit.updateCirrhosis(true),

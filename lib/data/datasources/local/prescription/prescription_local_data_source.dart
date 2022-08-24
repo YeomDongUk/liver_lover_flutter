@@ -1,306 +1,245 @@
-// Package imports:
-import 'package:collection/collection.dart';
-import 'package:drift/drift.dart';
-
 // Project imports:
-import 'package:yak/core/database/database.dart';
-import 'package:yak/core/database/table/medication_schedule/medication_schedule_table.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:collection/collection.dart';
+import 'package:yak/core/object_box/object_box.dart';
+import 'package:yak/core/object_box/objectbox.g.dart';
 import 'package:yak/data/datasources/local/medication_information/medication_information_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
-import 'package:yak/data/models/prescription/prescription_overview_model.dart';
-import 'package:yak/data/models/prescription/prescription_write_response.dart';
+import 'package:yak/data/datasources/local/pill/pill_local_data_source.dart';
+import 'package:yak/data/models/medication_information/medication_information_model.dart';
+import 'package:yak/data/models/medication_schedule/medication_schedule_model.dart';
+import 'package:yak/data/models/prescription/prescription_create_input.dart';
+import 'package:yak/data/models/prescription/prescription_model.dart';
+import 'package:yak/data/models/prescription/prescription_notification_update_input.dart';
+import 'package:yak/data/models/prescription/prescription_update_input.dart';
+import 'package:yak/domain/entities/medication_information/medication_information.dart';
+import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
+import 'package:yak/domain/entities/pill/pill.dart';
+import 'package:yak/domain/entities/prescription/prescription.dart';
+
+// Project imports:
 
 abstract class PrescriptionLocalDataSource {
-  Future<PrescriptionModel> getPrescription(String id);
+  Stream<Future<List<Prescription>>> getPrescriptions({required String userId});
 
-  Future<PrescriptionWriteResponse> createPrescription({
-    required PrescriptionsCompanion prescriptionsCompanion,
-    required List<MedicationInformationsCompanion>
-        medicationInformationsCompanions,
-  });
-
-  Future<List<PrescriptionOverviewModel>> getPrescriptionOverviews(
-    String userId,
-  );
-
-  Future<int> deletePrescription({
-    required String id,
+  Future<PrescriptionModel> createPrescription({
     required String userId,
+    required PrescriptionCreateInput createInput,
   });
 
-  Future<PrescriptionWriteResponse> updatePrescription({
-    required PrescriptionsCompanion prescriptionsCompanion,
-    required List<MedicationInformationsCompanion>
-        medicationInformationsCompanions,
+  Future<PrescriptionModel> updatePrescription({
+    required String userId,
+    required PrescriptionUpdateInput updateInput,
+  });
+
+  Future<void> togglePrescriptionNotificaiton({
+    required String userId,
+    required PrescriptionNotificationUpdateInput
+        prescriptionNotificationUpdateInput,
   });
 }
 
-class PrescriptionLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
+class PrescriptionLocalDataSourceImpl
+    with ObjectBoxMixin
     implements PrescriptionLocalDataSource {
-  PrescriptionLocalDataSourceImpl(
-    super.attachedDatabase,
-    this.medicationInformationLocalDataSource,
-    this.medicationScheduleLocalDataSource,
-  );
+  PrescriptionLocalDataSourceImpl();
 
-  $PrescriptionsTable get table => attachedDatabase.prescriptions;
+  MedicationInformationLocalDataSource
+      get medicationInformationLocalDataSource =>
+          KiwiContainer().resolve<MedicationInformationLocalDataSource>();
 
-  final MedicationInformationLocalDataSource
-      medicationInformationLocalDataSource;
-
-  final MedicationScheduleLocalDataSource medicationScheduleLocalDataSource;
+  MedicationScheduleLocalDataSource get medicationScheduleLocalDataSource =>
+      KiwiContainer().resolve<MedicationScheduleLocalDataSource>();
 
   @override
-  Future<PrescriptionModel> getPrescription(String id) =>
-      (select(table)..where((p) => p.id.equals(id))).getSingle();
-
-  @override
-  Future<PrescriptionWriteResponse> createPrescription({
-    required PrescriptionsCompanion prescriptionsCompanion,
-    required List<MedicationInformationsCompanion>
-        medicationInformationsCompanions,
-  }) =>
-      transaction(() async {
-        /// 처방전 생성
-        final prescriptionModel =
-            await into(table).insertReturning(prescriptionsCompanion);
-
-        /// 처방전 약품 정보 생성
-        final medicationInformationModels =
-            await medicationInformationLocalDataSource
-                .createMedicationInformations(
-          medicationInformationsCompanions.map(
-            (model) => MedicationInformationsCompanion.insert(
-              prescriptionId: prescriptionModel.id,
-              pillId: model.pillId.value,
-              dayDuration: model.dayDuration.value,
-              takeCount: model.takeCount.value,
-              moring: model.moring,
-              afternoon: model.afternoon,
-              evening: model.evening,
-              night: model.night,
-            ),
-          ),
-        );
-
-        final medicationStartAt = prescriptionModel.medicationStartAt;
-        final medicationEndAt = prescriptionModel.medicationEndAt;
-        final days = medicationStartAt.difference(medicationEndAt).inDays.abs();
-
-        /// 복용 스케줄 목록 정리
-        final medicationSchedulesCompanions = List.generate(days, (addedDay) {
-          final medicationInformationModelTargets = medicationInformationModels
-              .where(
-                (medicationInformationModel) =>
-                    medicationInformationModel.dayDuration >= addedDay,
-              )
-              .toList();
-
-          final medicationSchedulesCompanions = [
-            (medicationScheduleLocalDataSource
-                    as MedicationScheduleLocalDataSourceImpl)
-                .convertMedicationSchedulesCompanions(
-              medicationInformationModels: medicationInformationModelTargets,
-              type: MedicationScheduleType.moring,
-              prescriptionId: prescriptionModel.id,
-              medicationDate: medicationStartAt.add(Duration(days: addedDay)),
-            ),
-            (medicationScheduleLocalDataSource
-                    as MedicationScheduleLocalDataSourceImpl)
-                .convertMedicationSchedulesCompanions(
-              medicationInformationModels: medicationInformationModelTargets,
-              type: MedicationScheduleType.afternoon,
-              prescriptionId: prescriptionModel.id,
-              medicationDate: medicationStartAt.add(Duration(days: addedDay)),
-            ),
-            (medicationScheduleLocalDataSource
-                    as MedicationScheduleLocalDataSourceImpl)
-                .convertMedicationSchedulesCompanions(
-              medicationInformationModels: medicationInformationModelTargets,
-              type: MedicationScheduleType.evening,
-              prescriptionId: prescriptionModel.id,
-              medicationDate: medicationStartAt.add(Duration(days: addedDay)),
-            ),
-            (medicationScheduleLocalDataSource
-                    as MedicationScheduleLocalDataSourceImpl)
-                .convertMedicationSchedulesCompanions(
-              medicationInformationModels: medicationInformationModelTargets,
-              type: MedicationScheduleType.night,
-              prescriptionId: prescriptionModel.id,
-              medicationDate: medicationStartAt.add(Duration(days: addedDay)),
-            )
-          ].expand((element) => element).toList();
-
-          return medicationSchedulesCompanions;
-        }).expand((e) => e).toSet();
-
-        /// 복용 스케줄 생성
-        final medicationScheduleModels = await medicationScheduleLocalDataSource
-            .createMedicationSchedules(medicationSchedulesCompanions);
-
-        // await Future.wait([
-        //   medicationNotificationLocalDataSource.createMedicationNotifications(
-        //     medicationScheduleModels: medicationScheduleModels,
-        //     type: NotificationType.before,
-        //     status: prescriptionModel.beforePush
-        //         ? NotificationStatus.on
-        //         : NotificationStatus.off,
-        //   ),
-        //   medicationNotificationLocalDataSource.createMedicationNotifications(
-        //     medicationScheduleModels: medicationScheduleModels,
-        //     type: NotificationType.after,
-        //     status: prescriptionModel.afterPush
-        //         ? NotificationStatus.on
-        //         : NotificationStatus.off,
-        //   )
-        // ]);
-
-        return PrescriptionWriteResponse(
-          prescriptionModel: prescriptionModel,
-          medicationInformationModels: medicationInformationModels,
-          medicationScheduleModels: medicationScheduleModels,
-        );
-      });
-
-  @override
-  Future<int> deletePrescription({
-    required String id,
+  Future<PrescriptionModel> createPrescription({
     required String userId,
-  }) =>
-      (delete(table)
-            ..where((p) => p.id.equals(id))
-            ..where((p) => p.userId.equals(userId)))
-          .go();
+    required PrescriptionCreateInput createInput,
+  }) async {
+    final prescriptionModel = PrescriptionModel(
+      userId: userId,
+      doctorName: createInput.doctorName,
+      medicationStartAt: createInput.medicatedAt,
+      prescriptedAt: createInput.prescriptedAt,
+      duration: createInput.duration,
+      medicationEndAt:
+          createInput.prescriptedAt.add(Duration(days: createInput.duration)),
+    );
 
-  @override
-  Future<List<PrescriptionOverviewModel>> getPrescriptionOverviews(
-    String userId,
-  ) async {
-    final queryResult = await (select(table).join([
-      leftOuterJoin(
-        attachedDatabase.medicationInformations,
-        attachedDatabase.medicationInformations.prescriptionId
-            .equalsExp(table.id),
-      ),
-    ])
-          ..orderBy([
-            OrderingTerm.desc(table.prescribedAt),
-          ])
-          ..where(table.userId.equals(userId)))
-        .get();
+    final id = prescriptionBox.put(prescriptionModel);
 
-    final groupByList =
-        queryResult.groupListsBy((element) => element.readTable(table));
+    final prescription = prescriptionBox.get(id)!;
 
-    final keys = groupByList.keys;
+    final medicationInformationModels =
+        createInput.medicationInformationCreateInputs
+            .map(
+              (e) => MedicationInformationModel(
+                prescriptionId: id,
+                pillId: e.pillId,
+                nightHour: e.nightHour,
+                eveningHour: e.eveningHour,
+                afternoonHour: e.afternoonHour,
+                medicationCycle: e.takeCycle,
+                morningHour: e.moringHour,
+                takeCount: e.takeCount,
+                push: e.push,
+                beforePush: e.beforePush,
+                afterPush: e.afterPush,
+              ),
+            )
+            .toList();
 
-    return keys
-        .map(
-          (e) => PrescriptionOverviewModel(
-            id: e.id,
-            userId: e.userId,
-            doctorName: e.doctorName,
-            prescribedAt: e.prescribedAt,
-            push: e.push,
-            medicationStartAt: e.medicationStartAt,
-            medicationEndAt: e.medicationEndAt,
-            beforePush: e.beforePush,
-            afterPush: e.afterPush,
-            createdAt: e.createdAt,
-            updatedAt: e.updatedAt,
-            medicationInformations: groupByList[e]
-                    ?.map(
-                      (e) => e.readTableOrNull(
-                        attachedDatabase.medicationInformations,
-                      ),
-                    )
-                    .where((e) => e != null)
-                    .cast<MedicationInformationModel>()
-                    .toList() ??
-                [],
-          ),
-        )
-        .toList();
+    medicationInformationLocalDataSource.createMedicationInformations(
+      prescriptionId: prescription.id,
+      userId: userId,
+      duration: prescription.duration,
+      medicationStartAt: prescription.medicationStartAt,
+      medicationInformationModels: medicationInformationModels,
+    );
+
+    return prescription;
   }
 
   @override
-  Future<PrescriptionWriteResponse> updatePrescription({
-    required PrescriptionsCompanion prescriptionsCompanion,
-    required List<MedicationInformationsCompanion>
-        medicationInformationsCompanions,
-  }) =>
-      transaction(() async {
-        /// 처방전 수정
-        await (update(table)
-              ..where((p) => p.id.equals(prescriptionsCompanion.id.value)))
-            .write(prescriptionsCompanion);
+  Stream<Future<List<Prescription>>> getPrescriptions({
+    required String userId,
+  }) {
+    final prescriptionQueryBuilder = prescriptionBox
+        .query(PrescriptionModel_.userId.equals(userId))
+      ..order(PrescriptionModel_.prescriptedAt);
 
-        /// 처방전 약품 정보 수정
-        await Future.wait(
-          medicationInformationsCompanions.map(
-            (e) => (update(attachedDatabase.medicationInformations)
-                  ..where(
-                    (m) => m.id.equals(e.id.value),
-                  ))
-                .write(
-              e,
-            ),
+    return prescriptionQueryBuilder
+        .watch(triggerImmediately: true)
+        .map((prescriptionQuery) {
+      final prescriptionModels = prescriptionQuery.find();
+
+      return Future.wait(
+        prescriptionModels.map(
+          (e) async {
+            final medicationInformationQuery = medicationInformationBox
+                .query(
+                  MedicationInformationModel_.prescriptionId.oneOf(
+                    prescriptionModels.map((e) => e.id).toList(),
+                  ),
+                )
+                .build();
+
+            final medicationInformationModels =
+                medicationInformationQuery.find();
+
+            medicationInformationQuery.close();
+
+            final subMedicationInformationModels = medicationInformationModels
+                .where((element) => element.prescriptionId == e.id)
+                .toList();
+
+            final medicationSchedulesQuery = medicationScheduleBox
+                .query(MedicationScheduleModel_.prescriptionId.equals(e.id))
+                .build();
+
+            final medicationSchedules = medicationSchedulesQuery.find();
+
+            medicationSchedulesQuery.close();
+
+            final pills = await KiwiContainer()
+                .resolve<PillLocalDataSource>()
+                .getPillsInIds(
+                  medicationInformationModels.map((e) => e.pillId).toList(),
+                );
+
+            return Prescription.fromJson(
+              e.toJson()
+                ..['medicationInformations'] =
+                    subMedicationInformationModels.map(
+                  (medicationInformationModel) {
+                    final pill = pills
+                        .where(
+                          (element) =>
+                              element.id == medicationInformationModel.pillId,
+                        )
+                        .first;
+
+                    final subMedicationScheduleModels = medicationSchedules
+                        .where(
+                          (element) =>
+                              element.medicationInformationId ==
+                              medicationInformationModel.id,
+                        )
+                        .toList();
+                    return MedicationInformation.fromJson(
+                      medicationInformationModel.toJson()
+                        ..['pill'] = Pill.fromJson(pill.toJson())
+                        ..['medicationSchedules'] = subMedicationScheduleModels
+                            .map(
+                              (e) => MedicationSchedule.fromJson(
+                                e.toJson(),
+                              ),
+                            )
+                            .toList(),
+                    );
+                  },
+                ).toList(),
+            );
+          },
+        ).toList(),
+      );
+    });
+
+    // return
+  }
+
+  @override
+  Future<PrescriptionModel> updatePrescription({
+    required String userId,
+    required PrescriptionUpdateInput updateInput,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> togglePrescriptionNotificaiton({
+    required String userId,
+    required PrescriptionNotificationUpdateInput
+        prescriptionNotificationUpdateInput,
+  }) async {
+    final medicationInformationQuery = medicationInformationBox
+        .query(
+          MedicationInformationModel_.prescriptionId.equals(
+            prescriptionNotificationUpdateInput.id,
           ),
-        );
+        )
+        .build();
 
-        /// 처방전 조회
-        final prescriptionModel = await (select(table)
-              ..where((p) => p.id.equals(prescriptionsCompanion.id.value)))
-            .getSingle();
+    final medicationInformationModels = medicationInformationQuery.find();
 
-        /// 처방전 약품 정보 조회
-        final medicationInformationModels =
-            await (select(attachedDatabase.medicationInformations)
-                  ..where(
-                    (m) => m.prescriptionId
-                        .equals(prescriptionsCompanion.id.value),
-                  ))
-                .get();
+    medicationInformationBox.putMany(
+      medicationInformationModels
+          .map(
+            (e) => e.copyWith(
+              afterPush: prescriptionNotificationUpdateInput.toggleValue,
+              beforePush: prescriptionNotificationUpdateInput.toggleValue,
+              push: prescriptionNotificationUpdateInput.toggleValue,
+            ),
+          )
+          .toList(),
+      mode: PutMode.update,
+    );
 
-// medicationInformationModels.
-        // update(attachedDatabase.medicationSchedules);
+    medicationInformationQuery.close();
 
-        // final querytResult =
-        //     await (select(attachedDatabase.medicationSchedules).join(
-        //   [
-        //     leftOuterJoin(
-        //       attachedDatabase.medicationAlarms,
-        //       attachedDatabase.medicationAlarms.medicationScheduleId
-        //           .equalsExp(attachedDatabase.medicationSchedules.id),
-        //     )
-        //   ],
-        // )..where(
-        //             attachedDatabase.medicationSchedules.prescriptionId
-        //                 .equals(prescriptionModel.id),
-        //           ))
-        //         .get();
+    await medicationScheduleLocalDataSource
+        .updateMedicationSchedulesPushByPrescriptionId(
+      userId: userId,
+      prescriptionId: prescriptionNotificationUpdateInput.id,
+      push: prescriptionNotificationUpdateInput.toggleValue,
+    );
 
-        // 기존의 스케쥴을 변경한다?
+    final prescriptionModel = prescriptionBox.get(
+      prescriptionNotificationUpdateInput.id,
+    );
 
-        // querytResult
-        //     .groupListsBy(
-        //       (element) =>
-        //           element.readTable(attachedDatabase.medicationSchedules),
-        //     )
-        //     .entries
-        //     .map((e) {
-        //   medicationInformationModels
-        //       .where((element) => element.moring != null)
-        //       .map(
-        //         (e) => e.moring!,
-        //       )
-        //       .toList();
-        // });
-
-        return PrescriptionWriteResponse(
-          prescriptionModel: prescriptionModel,
-          medicationInformationModels: medicationInformationModels,
-          medicationScheduleModels: const [],
-        );
-      });
+    prescriptionBox.put(
+      prescriptionModel!.copyWith(updatedAt: DateTime.now()),
+    );
+  }
 }

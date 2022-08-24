@@ -44,7 +44,6 @@ class _JoinPageState extends State<JoinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: BlocProvider<JoinCubit>.value(
           value: joinCubit,
@@ -100,8 +99,12 @@ class _JoinPageState extends State<JoinPage> {
                     onPressed: context.read<AuthCubit>().state.user.id != '-'
                         ? () => context.beamToReplacementNamed(Routes.home)
                         : null,
-                    child: const Text(
+                    child: Text(
                       '홈으로',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ).rixMGoB,
                     ),
                   ),
                 ],

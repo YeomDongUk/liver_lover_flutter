@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // Project imports:
 import 'package:yak/core/static/color.dart';
@@ -30,10 +31,10 @@ class ValueColumn extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           '${value ?? '-'}',
-          style: const TextStyle(
+          style: GoogleFonts.lato(
             fontSize: 35,
             color: AppColors.primary,
-          ).airbnbEB,
+          ),
         ),
         const SizedBox(height: 4),
         Text(

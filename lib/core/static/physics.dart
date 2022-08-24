@@ -1,8 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-class CustomScrollPhysics extends PageScrollPhysics {
-  const CustomScrollPhysics({
+class CustomPageScrollPhysics extends PageScrollPhysics {
+  const CustomPageScrollPhysics({
     super.parent,
     this.childWidth,
   });
@@ -10,7 +10,8 @@ class CustomScrollPhysics extends PageScrollPhysics {
   final double? childWidth;
 
   @override
-  CustomScrollPhysics applyTo(ScrollPhysics? ancestor) => CustomScrollPhysics(
+  CustomPageScrollPhysics applyTo(ScrollPhysics? ancestor) =>
+      CustomPageScrollPhysics(
         childWidth: childWidth,
         parent: buildParent(ancestor),
       );

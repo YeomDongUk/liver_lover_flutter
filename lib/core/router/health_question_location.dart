@@ -19,14 +19,12 @@ class HealthQuestionLocation extends BeamLocation<BeamState> {
     return [
       ...HomeLocation().buildPages(context, state),
       if (state.uri.path == Routes.healthQuestionCreate)
-        BeamPage(
+        const BeamPage(
           type: BeamPageType.cupertino,
-          key: const ValueKey('create-health-question-page'),
+          key: ValueKey('create-health-question-page'),
           name: 'CreateHealthQuestionPage',
           title: '건강 질문 생성',
-          child: CreateHealthQuestionPage(
-            onCreate: data as void Function(HealthQuestion)?,
-          ),
+          child: CreateHealthQuestionPage(),
         ),
       if (id != null)
         BeamPage(
@@ -36,10 +34,6 @@ class HealthQuestionLocation extends BeamLocation<BeamState> {
           title: '건강 질문 조회',
           child: HealthQuestionPage(
             id: id,
-            healthQuestion: (data as Map<String, dynamic>?)!['healthQuestion']
-                as HealthQuestion,
-            onUpdate: (data as Map<String, dynamic>?)!['onUpdate'] as void
-                Function(HealthQuestion)?,
           ),
         ),
       if (id != null && state.pathPatternSegments.contains('update'))
@@ -52,8 +46,6 @@ class HealthQuestionLocation extends BeamLocation<BeamState> {
             id: id,
             healthQuestion: (data as Map<String, dynamic>?)!['healthQuestion']
                 as HealthQuestion,
-            onUpdate: (data as Map<String, dynamic>?)!['onUpdate'] as void
-                Function(HealthQuestion)?,
           ),
         ),
     ];

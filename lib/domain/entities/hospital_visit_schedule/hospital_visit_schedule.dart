@@ -1,13 +1,24 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
 import 'package:equatable/equatable.dart';
 
 // Project imports:
 import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
+import 'package:yak/core/static/color.dart';
 
 enum HospitalVisitScheduleStatus {
-  none,
-  inProgress,
-  done,
+  done(color: AppColors.green, text: '진료완료'),
+  wating(color: AppColors.orange, text: '진료예약'),
+  inProgress(color: AppColors.magenta, text: '진료중');
+
+  const HospitalVisitScheduleStatus({
+    required this.color,
+    required this.text,
+  });
+  final Color color;
+  final String text;
 }
 
 class HospitalVisitSchedule extends Equatable {
@@ -42,7 +53,9 @@ class HospitalVisitSchedule extends Equatable {
       push: json['push'] as bool,
       beforePush: json['beforePush'] as bool,
       afterPush: json['afterPush'] as bool,
-      type: HospitalVisitScheduleType.values[json['type'] as int],
+      type: json['type'] is int
+          ? HospitalVisitScheduleType.values[json['type'] as int]
+          : json['type'] as HospitalVisitScheduleType,
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
       updatedAt: DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] as int),
     );
@@ -91,7 +104,7 @@ class HospitalVisitSchedule extends Equatable {
       ? HospitalVisitScheduleStatus.done
       : DateTime.now().isAfter(reservedAt)
           ? HospitalVisitScheduleStatus.inProgress
-          : HospitalVisitScheduleStatus.none;
+          : HospitalVisitScheduleStatus.wating;
 
   HospitalVisitSchedule copyWith({
     String? hospitalName,

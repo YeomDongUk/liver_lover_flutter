@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -7,13 +9,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kiwi/kiwi.dart';
 
 // Project imports:
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
+import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
+import 'package:yak/domain/usecases/drinking_history/get_last_drinking_history_stream.dart';
+import 'package:yak/domain/usecases/smoking_history/get_last_smoking_history_stream.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
+
+import 'package:yak/presentation/bloc/today_diary/today_diary_cubit.dart';
+import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
+
 import 'package:yak/presentation/widget/home/home_screen/home_container.dart';
 import 'package:yak/presentation/widget/home/home_screen/recent_test_result_view.dart';
 import 'package:yak/presentation/widget/home/home_screen/survey_check_view.dart';
@@ -30,147 +40,295 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
+  late final TodayDiaryCubit todayDiaryCubit;
+  late final simpleCommonSense =
+      simpleCommonSenses[Random().nextInt(simpleCommonSenses.length - 1)];
+
+  @override
+  void initState() {
+    todayDiaryCubit = TodayDiaryCubit(
+      getLastDrinkingHistoryStream:
+          KiwiContainer().resolve<GetLastDrinkingHistoryStream>(),
+      getLastSmokingHistoryStream:
+          KiwiContainer().resolve<GetLastSmokingHistoryStream>(),
+    )..startListening();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    todayDiaryCubit.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.paleGray,
-        elevation: 0,
-        leadingWidth: 100,
-        leading: Container(
-          padding: const EdgeInsets.only(left: 16),
-          alignment: Alignment.centerLeft,
-          child: Semantics(
-            button: true,
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => context.beamToNamed(Routes.pointHistory),
-              icon: BlocBuilder<AuthCubit, AuthState>(
-                builder: (context, state) => RichText(
-                  text: TextSpan(
-                    style: GoogleFonts.lato(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 20,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: '${state.user.point}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const TextSpan(
-                        text: 'P',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        title: RichText(
-          text: TextSpan(
-            style: const TextStyle(fontSize: 20).airbnbBl,
-            children: [
-              const TextSpan(
-                text: 'LIVER',
-                style: TextStyle(color: AppColors.magenta),
-              ),
-              TextSpan(
-                text: 'LOVER',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => context.beamToNamed(Routes.my),
-            icon: SvgPicture.asset('assets/svg/my_info.svg'),
-          ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.only(top: 9, bottom: 24),
-        children: [
-          Center(
-            child: BlocBuilder<CurrentTimeCubit, DateTime>(
-              builder: (context, state) => Text(
-                DateFormat('MM.dd').format(state),
-                style: const TextStyle(
-                  fontSize: 40,
-                  color: AppColors.gray,
-                ).airbnbB,
-              ),
-            ),
-          ),
-          const SizedBox(height: 9),
-          HomeContainer(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Column(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Stack(
               children: [
-                BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, state) => RichText(
+                AppBar(
+                  backgroundColor: AppColors.paleGray,
+                  automaticallyImplyLeading: false,
+                  elevation: 0,
+                  title: RichText(
                     text: TextSpan(
-                      style: const TextStyle(fontSize: 15).rixMGoB,
+                      style: const TextStyle(fontSize: 20).airbnbBl,
                       children: [
+                        const TextSpan(
+                          text: 'LIVER',
+                          style: TextStyle(color: AppColors.magenta),
+                        ),
                         TextSpan(
-                          text: state.user.name,
+                          text: 'LOVER',
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        const TextSpan(
-                          text: '님 반갑습니다.',
-                          style: TextStyle(
-                            color: AppColors.gray,
                           ),
                         ),
                       ],
                     ),
                   ),
+                  actions: [
+                    IconButton(
+                      onPressed: () => context.beamToNamed(Routes.my),
+                      icon: SvgPicture.asset('assets/svg/my_info.svg'),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  '과로와 음주를 주의하고\n충분한 영양을 섭취하세요.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColor,
-                  ).rixMGoEB,
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  '간염 백신 접종과 예방수칙 준수로\n간 건강을 지키세요.',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColors.gray,
-                  ).rixMGoB,
+                Semantics(
+                  button: true,
+                  child: Material(
+                    color: AppColors.paleGray,
+                    child: InkWell(
+                      onTap: () => context.beamToNamed(Routes.pointHistory),
+                      customBorder: const CircleBorder(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: BlocBuilder<UserPointCubit, UserPointState>(
+                          builder: (context, state) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (state.userPoint != null) ...[
+                                SvgPicture.asset(
+                                  'assets/svg/icon_${state.userPoint!.grade.toLowerCase()}.svg',
+                                  height: 17,
+                                ),
+                                const SizedBox(width: 8),
+                              ],
+                              RichText(
+                                text: TextSpan(
+                                  style: GoogleFonts.lato(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 20,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: '${state.userPoint?.point ?? 0}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: 'P',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 24),
-          const TodayMedicationSchedulePageView(),
-          const SizedBox(height: 24),
-          const UpcomingHospitalVisitSchedulePageView(),
-          const SizedBox(height: 24),
-          const SurveyCheckView(),
-          const SizedBox(height: 24),
-          const RecentTestResultView(),
-          const SizedBox(height: 24),
-          const TodayDiaryPageView(),
-        ],
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.only(top: 9, bottom: 24),
+                children: [
+                  Center(
+                    child: BlocBuilder<CurrentTimeCubit, DateTime>(
+                      builder: (context, state) => Text(
+                        DateFormat('MM.dd').format(state),
+                        style: GoogleFonts.lato(
+                          fontSize: 40,
+                          color: AppColors.gray,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 9),
+                  HomeContainer(
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 20,
+                    ),
+                    child: Column(
+                      children: [
+                        BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) => RichText(
+                            text: TextSpan(
+                              style: const TextStyle(fontSize: 15).rixMGoB,
+                              children: [
+                                TextSpan(
+                                  text: state.user.name,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: '님 반갑습니다.',
+                                  style: TextStyle(
+                                    color: AppColors.gray,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          simpleCommonSense,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).primaryColor,
+                          ).rixMGoEB,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          '간염 백신 접종과 예방수칙 준수로\n간 건강을 지키세요.',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: AppColors.gray,
+                          ).rixMGoB,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  /// TODO: 이사님한테 복약순응도 조건 정확하게 물어보기 필요함
+                  // BlocBuilder<HospitalVisitSchedulesCubit,
+                  //     HospitalVisitSchedulesState>(
+                  //   builder: (context, state) {
+                  //     final outpatientHospitalVisitSchedules =
+                  //         state.hospitalVisitSchedules
+                  //             .where(
+                  //               (element) =>
+                  //                   element.type ==
+                  //                   HospitalVisitScheduleType.outpatient,
+                  //             )
+                  //             .toList();
+
+                  //     if (outpatientHospitalVisitSchedules.length < 2) {
+                  //       return const SizedBox();
+                  //     } else {
+                  //       // outpatientHospitalVisitSchedules.sublist();
+                  //       return CommonShadowBox(
+                  //         margin: const EdgeInsets.symmetric(horizontal: 16),
+                  //         padding: const EdgeInsets.symmetric(
+                  //           horizontal: 24,
+                  //           vertical: 16,
+                  //         ).copyWith(
+                  //           top: 8,
+                  //         ),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.stretch,
+                  //           children: [
+                  //             Row(
+                  //               crossAxisAlignment: CrossAxisAlignment.end,
+                  //               children: [
+                  //                 Text(
+                  //                   '복약순응도',
+                  //                   style: const TextStyle(
+                  //                     fontSize: 15,
+                  //                     color: AppColors.primary,
+                  //                   ).rixMGoEB,
+                  //                 ),
+                  //                 const Spacer(),
+                  //                 RichText(
+                  //                   text: TextSpan(
+                  //                     children: [
+                  //                       TextSpan(
+                  //                         text: '0',
+                  //                         style: GoogleFonts.lato(
+                  //                           fontSize: 20,
+                  //                           color: AppColors.skyBlue,
+                  //                           fontWeight: FontWeight.w700,
+                  //                         ),
+                  //                       ),
+                  //                       TextSpan(
+                  //                         text: '/90',
+                  //                         style: GoogleFonts.lato(
+                  //                           fontSize: 20,
+                  //                           color: AppColors.gray,
+                  //                           fontWeight: FontWeight.w700,
+                  //                         ),
+                  //                       )
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 const SizedBox(width: 8),
+                  //                 Text(
+                  //                   '0%',
+                  //                   style: GoogleFonts.lato(
+                  //                     fontSize: 28,
+                  //                     color: AppColors.primary,
+                  //                     fontWeight: FontWeight.w900,
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             const SizedBox(height: 10),
+                  //             Container(
+                  //               width: 296,
+                  //               height: 20,
+                  //               decoration: const BoxDecoration(
+                  //                 borderRadius: BorderRadius.all(
+                  //                   Radius.circular(10),
+                  //                 ),
+                  //                 color: AppColors.blueGrayLight,
+                  //               ),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       );
+                  //     }
+                  //   },
+                  // ),
+                  // const SizedBox(height: 24),
+                  const TodayMedicationSchedulePageView(),
+                  const SizedBox(height: 24),
+                  const UpcomingHospitalVisitSchedulePageView(),
+                  const SizedBox(height: 24),
+                  const SurveyCheckView(),
+                  const SizedBox(height: 24),
+                  const RecentTestResultView(),
+                  const SizedBox(height: 24),
+                  BlocBuilder<TodayDiaryCubit, TodayDiaryState>(
+                    bloc: todayDiaryCubit,
+                    builder: (context, state) => TodayDiaryPageView(
+                      drinkingHistory: state.drinkingHistory,
+                      smokingHistory: state.smokingHistory,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

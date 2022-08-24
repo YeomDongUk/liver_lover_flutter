@@ -35,7 +35,11 @@ class CommonShadowBox extends StatelessWidget {
         border: boxDecoration?.border,
         boxShadow: boxDecoration?.boxShadow,
       ),
-      child: child,
+      child: Material(
+        color: color,
+        borderRadius: BorderRadius.circular(6),
+        child: child,
+      ),
     );
   }
 }

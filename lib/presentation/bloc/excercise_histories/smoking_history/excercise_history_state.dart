@@ -14,7 +14,7 @@ class ExcerciseHistoryState extends Equatable {
       );
   @override
   List<Object?> get props => [
-        ExcerciseHistory,
+        excerciseHistory,
         average,
       ];
 }

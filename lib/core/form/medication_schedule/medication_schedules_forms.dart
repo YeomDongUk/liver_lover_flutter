@@ -1,54 +1,30 @@
 // Package imports:
 import 'package:formz/formz.dart';
 
-enum PrescriptedAtValidationError {
-  empty,
-  wrong,
-}
-
-class PrescriptedAt extends FormzInput<String, PrescriptedAtValidationError> {
-  PrescriptedAt.pure() : super.pure('');
-
-  @override
-  PrescriptedAtValidationError? validator(String value) => value.isEmpty
-      ? PrescriptedAtValidationError.empty
-      : int.tryParse(value) == null
-          ? PrescriptedAtValidationError.wrong
-          : null;
-}
-
-enum DayDurationValidationError {
-  empty,
-}
-
-class DayDuration extends FormzInput<int?, DayDurationValidationError> {
-  const DayDuration.pure() : super.pure(null);
-  const DayDuration.dirty(super.value) : super.dirty();
-
-  @override
-  DayDurationValidationError? validator(int? value) {
-    if (value == null) return DayDurationValidationError.empty;
-    return null;
-  }
-}
+// Project imports:
+import 'package:yak/data/models/medication_information/medication_information_create_form.dart';
 
 enum MedicatedAtValidationError {
   empty,
   wrong,
-  befreDate,
+  notValidated,
 }
 
-class MedicatedAt extends FormzInput<String, MedicatedAtValidationError> {
-  MedicatedAt.pure() : super.pure('');
+class MedicationInformationCreateFormInput
+    extends FormzInput<List<MedicationInformationCreateForm>, bool> {
+  const MedicationInformationCreateFormInput.pure() : super.pure(const []);
+  const MedicationInformationCreateFormInput.dirty(super.value) : super.dirty();
 
   @override
-  MedicatedAtValidationError? validator(String value) => value.isEmpty
-      ? MedicatedAtValidationError.empty
-      : int.tryParse(value) == null
-          ? MedicatedAtValidationError.wrong
-          : DateTime.fromMillisecondsSinceEpoch(
-              int.parse(value),
-            ).isBefore(DateTime.now())
-              ? MedicatedAtValidationError.befreDate
-              : null;
+  bool? validator(List<MedicationInformationCreateForm> value) {
+    final pillIds = value.map((e) => e.pill.id).toList();
+    final map = <String, int>{};
+
+    for (final pillId in pillIds) {
+      if (map.containsKey(pillId)) return false;
+      map[pillId] = 1;
+    }
+
+    return value.every((element) => element.canSubmit) ? null : false;
+  }
 }

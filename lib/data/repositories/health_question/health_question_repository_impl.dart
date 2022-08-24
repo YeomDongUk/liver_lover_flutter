@@ -53,7 +53,6 @@ class HealthQuestionRepositoryImpl implements HealthQuestionRepository {
         ),
       );
     } catch (e) {
-      print(e);
       return const Left(QueryFailure());
     }
   }
@@ -90,7 +89,6 @@ class HealthQuestionRepositoryImpl implements HealthQuestionRepository {
         ),
       );
     } catch (e) {
-      print(e);
       return const Left(QueryFailure());
     }
   }

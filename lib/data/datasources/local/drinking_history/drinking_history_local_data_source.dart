@@ -21,6 +21,10 @@ abstract class DrinkingHistoryLocalDataSource {
     required String id,
     required String userId,
   });
+
+  Stream<DrinkingHistoryModel?> getLastDrinkingHistoryStream({
+    required String userId,
+  });
 }
 
 class DrinkingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
@@ -83,6 +87,7 @@ class DrinkingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
         onConflict: DoUpdate(
           (old) => DrinkingHistoriesCompanion.custom(
             amount: Constant(companion.amount.value),
+            updatedAt: Constant(DateTime.now()),
           ),
           target: [
             table.userId,
@@ -90,4 +95,13 @@ class DrinkingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
           ],
         ),
       );
+
+  @override
+  Stream<DrinkingHistoryModel?> getLastDrinkingHistoryStream({
+    required String userId,
+  }) =>
+      (select(table)
+            ..where((tbl) => tbl.userId.equals(userId))
+            ..orderBy([(u) => OrderingTerm.desc(u.createdAt)]))
+          .watchSingleOrNull();
 }

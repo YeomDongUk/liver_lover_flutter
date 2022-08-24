@@ -19,8 +19,8 @@ import 'package:yak/domain/usecases/user/update_user.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/my/update_user/update_user_cubit.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
-import 'package:yak/presentation/widget/auth/join/join_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
+import 'package:yak/presentation/widget/common/common_input_form_field.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/icon_back_button.dart';
 import 'package:yak/presentation/widget/metabolic_disease/update_metabolic_disease_tab_view.dart';
@@ -174,7 +174,8 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                   children: [
                     JoinContainer(
                       label: '성명',
-                      child: JoinInputFormField(
+                      color: Colors.white,
+                      child: CommonInputFormField(
                         focusNode: focusNodes[0],
                         initialValue: state.name.value,
                         onChanged: updateUserCubit.updateName,
@@ -187,7 +188,8 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                     const SizedBox(height: 20),
                     JoinContainer(
                       label: '휴대폰 번호',
-                      child: JoinInputFormField(
+                      color: Colors.white,
+                      child: CommonInputFormField(
                         focusNode: focusNodes[1],
                         initialValue: state.phone.value,
                         onChanged: (str) => state.phone.value != str
@@ -213,7 +215,8 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                         Expanded(
                           child: JoinContainer(
                             label: '생년',
-                            child: JoinInputFormField(
+                            color: Colors.white,
+                            child: CommonInputFormField(
                               focusNode: focusNodes[2],
                               initialValue: '${state.birthYear.value ?? ''}',
                               onChanged: (str) => updateUserCubit
@@ -231,6 +234,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                         Expanded(
                           child: JoinContainer(
                             label: '성별',
+                            color: Colors.white,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -292,7 +296,8 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                         Expanded(
                           child: JoinContainer(
                             label: '신장(CM)',
-                            child: JoinInputFormField(
+                            color: Colors.white,
+                            child: CommonInputFormField(
                               focusNode: focusNodes[3],
                               initialValue: '${state.height.value ?? ''}',
                               onChanged: (str) => updateUserCubit
@@ -316,7 +321,8 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                         Expanded(
                           child: JoinContainer(
                             label: '체중(KG)',
-                            child: JoinInputFormField(
+                            color: Colors.white,
+                            child: CommonInputFormField(
                               focusNode: focusNodes[4],
                               initialValue: '${state.weight.value ?? ''}',
                               onChanged: (str) => updateUserCubit
