@@ -1,6 +1,7 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:math';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -16,18 +17,15 @@ import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
-
 import 'package:yak/domain/usecases/drinking_history/get_last_drinking_history_stream.dart';
 import 'package:yak/domain/usecases/smoking_history/get_last_smoking_history_stream.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/medication_schdules_cubit.dart';
-
 import 'package:yak/presentation/bloc/today_diary/today_diary_cubit.dart';
 import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/custom_progress_bar_painter.dart';
-
 import 'package:yak/presentation/widget/home/home_screen/home_container.dart';
 import 'package:yak/presentation/widget/home/home_screen/recent_test_result_view.dart';
 import 'package:yak/presentation/widget/home/home_screen/survey_check_view.dart';

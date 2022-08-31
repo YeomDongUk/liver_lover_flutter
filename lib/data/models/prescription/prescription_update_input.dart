@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:yak/data/models/medication_information/medication_information_create_form.dart';
 
 class PrescriptionUpdateInput extends Equatable {

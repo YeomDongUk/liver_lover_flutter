@@ -1,17 +1,19 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:beamer/beamer.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:version/version.dart';
 
 // Project imports:
 import 'package:yak/core/router/routes.dart';
@@ -20,7 +22,6 @@ import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/usecases/user/auto_login.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/auth/auto_login/auto_login_cubit.dart';
-import 'package:version/version.dart';
 import 'package:yak/presentation/widget/common/common_dialog.dart';
 
 class AuthPage extends StatefulWidget {

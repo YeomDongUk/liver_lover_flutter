@@ -7,9 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:yak/core/static/color.dart';
 
 // Project imports:
+import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/usecases/user/update_pin_code.dart';
 import 'package:yak/presentation/bloc/my/update_pin_code/update_pin_code_cubit.dart';

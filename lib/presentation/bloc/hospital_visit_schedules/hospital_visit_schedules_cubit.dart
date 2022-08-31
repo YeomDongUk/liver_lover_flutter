@@ -1,6 +1,7 @@
-// Package imports:
+// Dart imports:
 import 'dart:async';
 
+// Package imports:
 import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';

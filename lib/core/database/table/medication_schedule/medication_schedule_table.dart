@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/table/common_table.dart';
 import 'package:yak/core/database/table/medication_information/medication_information_table.dart';
 

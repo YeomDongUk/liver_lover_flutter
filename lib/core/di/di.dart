@@ -87,7 +87,6 @@ import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visi
 import 'package:yak/domain/usecases/medication_schedule/do_all_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules.dart';
-
 import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
 import 'package:yak/domain/usecases/metabolic_disease/upsert_metabolic_disease.dart';

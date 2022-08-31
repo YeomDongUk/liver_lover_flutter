@@ -1,5 +1,7 @@
 // Package imports:
 import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:yak/domain/entities/medication_information/medication_information.dart';
 
 class Prescription extends Equatable {

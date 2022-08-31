@@ -1,11 +1,11 @@
 // Flutter imports:
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:beamer/beamer.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kiwi/kiwi.dart';
@@ -13,10 +13,9 @@ import 'package:kiwi/kiwi.dart';
 // Project imports:
 import 'package:yak/core/di/di.dart';
 import 'package:yak/core/local_notification/local_notification.dart';
-import 'package:yak/core/router/excercise_history_location.dart';
-import 'package:yak/core/router/smoking_history_location.dart';
 import 'package:yak/core/router/auth_location.dart';
 import 'package:yak/core/router/drinking_history_location.dart';
+import 'package:yak/core/router/excercise_history_location.dart';
 import 'package:yak/core/router/health_question_location.dart';
 import 'package:yak/core/router/home_location.dart';
 import 'package:yak/core/router/hospital_visit_schedule_location.dart';
@@ -26,6 +25,7 @@ import 'package:yak/core/router/my_location.dart';
 import 'package:yak/core/router/point_location.dart';
 import 'package:yak/core/router/prescription_location.dart';
 import 'package:yak/core/router/sf_12_survey_location.dart';
+import 'package:yak/core/router/smoking_history_location.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/core/user/user_id.dart';

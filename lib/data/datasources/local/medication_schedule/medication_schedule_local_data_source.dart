@@ -1,10 +1,11 @@
-// Project imports:
+// Package imports:
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/data/datasources/local/dao_mixin.dart';
 import 'package:yak/data/datasources/local/notification_schedule/notification_schedule_local_data_source.dart';
 import 'package:yak/data/models/medication_schedule/medication_schedule_update_input.dart';
-
 import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
 
 abstract class MedicationScheduleLocalDataSource {

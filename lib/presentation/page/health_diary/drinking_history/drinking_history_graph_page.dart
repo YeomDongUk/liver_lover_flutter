@@ -1,13 +1,15 @@
 // Flutter imports:
 
+// Dart imports:
 import 'dart:math';
 
-import 'package:collection/collection.dart';
-import 'package:cuid/cuid.dart';
-import 'package:fl_chart/fl_chart.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:collection/collection.dart';
+import 'package:cuid/cuid.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart';

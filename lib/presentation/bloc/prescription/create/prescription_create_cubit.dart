@@ -3,9 +3,9 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:yak/core/class/optional.dart';
 
 // Project imports:
+import 'package:yak/core/class/optional.dart';
 import 'package:yak/core/form/common.dart';
 import 'package:yak/core/form/medication_schedule/medication_schedules_forms.dart';
 import 'package:yak/data/models/medication_information/medication_information_create_form.dart';

@@ -1,6 +1,8 @@
-// Project imports:
+// Package imports:
 import 'package:drift/drift.dart';
 import 'package:kiwi/kiwi.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/data/datasources/local/dao_mixin.dart';
 import 'package:yak/data/datasources/local/medication_information/medication_information_local_data_source.dart';

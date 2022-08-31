@@ -1,14 +1,14 @@
 // Flutter imports:
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:yak/core/database/database.dart';
-import 'package:yak/core/static/static.dart';
+import 'package:collection/collection.dart';
 
 // Project imports:
+import 'package:yak/core/database/database.dart';
+import 'package:yak/core/static/static.dart';
 import 'package:yak/core/user/user_id.dart';
 
 abstract class LocalNotification {

@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:drift/drift.dart';
+
+// Project imports:
 import 'package:yak/core/database/table/user/user_table.dart';
 
 @DataClassName('NotificationScheduleModel')

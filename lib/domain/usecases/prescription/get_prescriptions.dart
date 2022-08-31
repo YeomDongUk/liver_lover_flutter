@@ -1,5 +1,8 @@
-import 'package:yak/core/error/failure.dart';
+// Package imports:
 import 'package:dartz/dartz.dart';
+
+// Project imports:
+import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/usecases/usecase.dart';
 import 'package:yak/domain/entities/prescription/prescription.dart';
 import 'package:yak/domain/repositories/prescription/prescription_repository.dart';

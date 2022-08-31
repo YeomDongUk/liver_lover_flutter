@@ -1,9 +1,11 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:kiwi/kiwi.dart';
-import 'package:yak/core/database/database.dart';
 
 // Project imports:
+import 'package:yak/core/database/database.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/core/user/user_id.dart';
