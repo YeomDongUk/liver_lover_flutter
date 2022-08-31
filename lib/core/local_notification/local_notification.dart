@@ -1,30 +1,37 @@
 // Flutter imports:
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:yak/core/database/database.dart';
 import 'package:yak/core/static/static.dart';
 
 // Project imports:
 import 'package:yak/core/user/user_id.dart';
-import 'package:yak/data/models/notification/schedule_notificaiton_model.dart';
 
 abstract class LocalNotification {
   Future<void> initialize();
 
-  // Future<bool> createNotification({
-  //   required ScheduleNotificationModel scheduleNotificationModel,
-  // });
-  Future<List<bool>> createNotifications({
-    required List<ScheduleNotificationModel> scheduleNotificationModels,
+  Future<void> onLoginCallback({
+    required String userId,
+    required List<NotificationScheduleModel> notificationScheduleModels,
   });
 
-  Future<void> deleteNotification({
+  Future<bool> createNotification({
+    required NotificationScheduleModel notificationScheduleModel,
+  });
+
+  Future<List<bool>> createNotifications({
+    required List<NotificationScheduleModel> notificationScheduleModels,
+  });
+
+  Future<void> cancel({
     required int scheduleNotificationId,
   });
 
-  Future<void> deleteAllMedicationScheduleNotification();
+  Future<void> cancelAll();
 
   Future<bool> getPermissionAllowed();
 
@@ -41,14 +48,18 @@ class LocalNotificationImpl implements LocalNotification {
   });
 
   final UserId userId;
+  final hospitalVisitChannelKey = 'hospital_visit';
+  final medicationChannelKey = 'medication';
+  String? prevUserId;
+  List<NotificationModel>? _scheduledNotificationModels;
 
   @override
   Future<void> initialize() => AwesomeNotifications().initialize(
         null,
         [
           NotificationChannel(
-            channelGroupKey: 'hospital_visits',
-            channelKey: 'hospital_visit',
+            channelGroupKey: '${hospitalVisitChannelKey}s',
+            channelKey: hospitalVisitChannelKey,
             channelName: 'Hospital Visit Notification Channel',
             channelDescription: 'Channel with alarm ringtone',
             defaultColor: const Color(0xFF9D50DD),
@@ -58,8 +69,8 @@ class LocalNotificationImpl implements LocalNotification {
             locked: true,
           ),
           NotificationChannel(
-            channelGroupKey: 'medications',
-            channelKey: 'medication',
+            channelGroupKey: '${medicationChannelKey}s',
+            channelKey: medicationChannelKey,
             channelName: 'Medication Schedule Channel',
             channelDescription: 'Channel with alarm ringtone',
             defaultColor: const Color(0xFF9D50DD),
@@ -96,74 +107,180 @@ class LocalNotificationImpl implements LocalNotification {
   }
 
   @override
-  Future<List<NotificationModel>> getScheduledNotifications() =>
-      AwesomeNotifications().listScheduledNotifications();
+  Future<List<NotificationModel>> getScheduledNotifications() async {
+    if (prevUserId == null || prevUserId != userId.value) {
+      prevUserId = userId.value;
 
-  Future<bool> createNotification({
-    required ScheduleNotificationModel scheduleNotificationModel,
-  }) async {
-    final id = scheduleNotificationModel.id;
-    final isMedicationSchedule = scheduleNotificationModel.type == 1;
-    final channelKey = isMedicationSchedule ? 'medication' : 'hospital_visit';
-    final isBeforePush = scheduleNotificationModel.beforePush;
-    final title = isMedicationSchedule
-        ? '복약시간 30분 ${isBeforePush ? '전' : '후'} 알림'
-        : '병원방문 ${isBeforePush ? '하루' : '2시간'}전 알림';
+      _scheduledNotificationModels =
+          await AwesomeNotifications().listScheduledNotifications();
 
-    final body = isMedicationSchedule
-        ? '''[${hhmmFormat.format(scheduleNotificationModel.reservedAt)}] ${isBeforePush ? 'OOO님 복약시간이 다가옵니다.\n지금 약을 준비해 주세요.' : '복약시간이 지났습니다.\n더 늦지 않게 약을 복용하세요!'}'''
-        : '''[${hhmmFormat.format(scheduleNotificationModel.reservedAt)}] 방문 ${isBeforePush ? '하루' : '2시간'} 전 입니다.''';
-
-    return AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: id,
-        displayOnForeground: true,
-        displayOnBackground: true,
-        channelKey: channelKey,
-        title: title,
-        body: body,
-        category: NotificationCategory.Reminder,
-        payload: {
-          'reservedAt':
-              '${scheduleNotificationModel.reservedAt.add(Duration(minutes: isBeforePush ? 30 : -30)).millisecondsSinceEpoch}',
-          'beforePush': '$isBeforePush',
-          'scheduleIds': scheduleNotificationModel.scheduleIds.join(','),
-        },
-      ),
-      schedule: NotificationCalendar.fromDate(
-        date: scheduleNotificationModel.reservedAt,
-      ),
-    );
+      return _scheduledNotificationModels!
+        ..sort(
+          (prev, curr) =>
+              _scheduleToDateTime(prev.schedule! as NotificationCalendar)
+                  .compareTo(
+            _scheduleToDateTime(curr.schedule! as NotificationCalendar),
+          ),
+        );
+    } else {
+      return _scheduledNotificationModels!
+        ..removeWhere(
+          (notificationModel) => _scheduleToDateTime(
+            notificationModel.schedule! as NotificationCalendar,
+          ).isBefore(DateTime.now()),
+        )
+        ..sort(
+          (prev, curr) =>
+              _scheduleToDateTime(prev.schedule! as NotificationCalendar)
+                  .compareTo(
+            _scheduleToDateTime(curr.schedule! as NotificationCalendar),
+          ),
+        );
+    }
   }
 
   @override
   Stream<ReceivedAction> receiveStream() => AwesomeNotifications().actionStream;
 
   @override
-  Future<void> deleteNotification({
-    required int scheduleNotificationId,
-  }) =>
-      AwesomeNotifications().cancelSchedule(scheduleNotificationId);
+  Future<List<bool>> createNotifications({
+    required List<NotificationScheduleModel> notificationScheduleModels,
+  }) async {
+    return <bool>[];
+  }
 
   @override
-  Future<List<bool>> createNotifications({
-    required List<ScheduleNotificationModel> scheduleNotificationModels,
-  }) =>
-      Future.wait(
-        scheduleNotificationModels
-            .map((e) => createNotification(scheduleNotificationModel: e))
-            .toList(),
+  Future<void> cancel({
+    required int scheduleNotificationId,
+  }) async {
+    final scheduledNotifications = await getScheduledNotifications();
+
+    await AwesomeNotifications().cancelSchedule(scheduleNotificationId);
+
+    return scheduledNotifications.removeWhere(
+      (element) => element.content!.id == scheduleNotificationId,
+    );
+  }
+
+  @override
+  Future<void> cancelAll() => AwesomeNotifications().cancelAll();
+
+  @override
+  Future<bool> createNotification({
+    required NotificationScheduleModel notificationScheduleModel,
+  }) async {
+    final date = notificationScheduleModel.reservedAt;
+
+    if (date.isBefore(DateTime.now())) {
+      return false;
+    }
+
+    final scheduledNotificaitons = await getScheduledNotifications();
+
+    final lastScheduledNotification = scheduledNotificaitons.lastOrNull;
+
+    final id = lastScheduledNotification?.content?.id;
+
+    late final String channelKey;
+    late final String title;
+    late final String body;
+
+    /// 노티 일정 타입이 복약일정이면
+    if (notificationScheduleModel.type == 0) {
+      channelKey = medicationChannelKey;
+      title =
+          '복약시간 30분 ${notificationScheduleModel.isBeforePush ? '전' : '후'} 알림';
+
+      body =
+          '[${hhmmFormat.format(notificationScheduleModel.reservedAt)}] ${notificationScheduleModel.isBeforePush ? '복약시간이 다가옵니다.\n지금 약을 준비해 주세요.' : '복약시간이 지났습니다.\n더 늦지 않게 약을 복용하세요!'}';
+    } else {
+      channelKey = hospitalVisitChannelKey;
+      title =
+          '병원방문 ${notificationScheduleModel.isBeforePush ? '하루' : '2시간'}전 알림';
+
+      body =
+          '''[${hhmmFormat.format(notificationScheduleModel.reservedAt)}] 병원 방문 ${notificationScheduleModel.isBeforePush ? '하루' : '2시간'} 전 입니다.\n늦지 않게 준비해 주세요.''';
+    }
+
+    if (id != null && scheduledNotificaitons.length >= 64) {
+      await AwesomeNotifications().cancelSchedule(id);
+      scheduledNotificaitons.removeWhere(
+        (element) => element.content?.id == id,
+      );
+    }
+
+    final content = NotificationContent(
+      id: notificationScheduleModel.id,
+      groupKey: '${channelKey}s',
+      channelKey: channelKey,
+      title: title,
+      body: body,
+      displayOnForeground: true,
+      displayOnBackground: true,
+      category: NotificationCategory.Reminder,
+      payload: {
+        'userId': notificationScheduleModel.userId,
+        'reservedAt': '${date.millisecondsSinceEpoch}',
+        'isBeforePush': '${notificationScheduleModel.isBeforePush}',
+      },
+    );
+
+    final schedule = NotificationCalendar.fromDate(
+      date: date,
+    );
+
+    final createResult = await AwesomeNotifications().createNotification(
+      content: content,
+      schedule: schedule,
+    );
+
+    if (createResult) {
+      _scheduledNotificationModels
+        ?..add(
+          NotificationModel(
+            content: content,
+            schedule: schedule,
+          ),
+        )
+        ..sort(
+          (prev, curr) =>
+              _scheduleToDateTime(prev.schedule! as NotificationCalendar)
+                  .compareTo(
+            _scheduleToDateTime(curr.schedule! as NotificationCalendar),
+          ),
+        );
+    }
+
+    return createResult;
+  }
+
+  DateTime _scheduleToDateTime(NotificationCalendar notificationSchedule) =>
+      DateTime(
+        notificationSchedule.year!,
+        notificationSchedule.month!,
+        notificationSchedule.day!,
+        notificationSchedule.hour!,
+        notificationSchedule.minute!,
       );
 
   @override
-  Future<void> deleteAllMedicationScheduleNotification() async {
-    final notifications = await getScheduledNotifications();
+  Future<void> onLoginCallback({
+    required String userId,
+    required List<NotificationScheduleModel> notificationScheduleModels,
+  }) async {
+    final scheduledNotifications = await getScheduledNotifications();
 
-    await Future.wait(
-      notifications
-          .where((e) => e.content?.channelKey == 'medication')
-          .map((e) => AwesomeNotifications().cancel(e.content!.id!))
-          .toList(),
+    await createNotifications(
+      notificationScheduleModels: notificationScheduleModels
+        ..removeWhere(
+          (element) => scheduledNotifications
+              .map(
+                (e) => e.content!.id,
+              )
+              .contains(element.id),
+        ),
     );
+
+    return;
   }
 }

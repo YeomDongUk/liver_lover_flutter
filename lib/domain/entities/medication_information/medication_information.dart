@@ -9,32 +9,32 @@ class MedicationInformation extends Equatable {
   const MedicationInformation({
     required this.id,
     required this.takeCount,
-    required this.moringHour,
-    required this.afternoonHour,
-    required this.eveningHour,
-    required this.nightHour,
+    required this.timeOne,
+    required this.timeTwo,
+    required this.timeThree,
+    required this.timeFour,
     required this.createdAt,
     required this.updatedAt,
     required this.beforePush,
     required this.afterPush,
     required this.push,
     required this.medicationSchedules,
-    required this.medicationCycle,
+    required this.takeCycle,
     this.pill,
   });
 
   factory MedicationInformation.fromJson(Map<String, dynamic> json) =>
       MedicationInformation(
-        id: json['id'] as int,
+        id: json['id'] as String,
         pill: json['pill'] as Pill?,
         takeCount: json['takeCount'] as double,
-        moringHour: json['moringHour'] as int?,
-        afternoonHour: json['afternoonHour'] as int?,
-        eveningHour: json['eveningHour'] as int?,
-        nightHour: json['nightHour'] as int?,
+        timeOne: json['timeOne'] as int?,
+        timeTwo: json['timeTwo'] as int?,
+        timeThree: json['timeThree'] as int?,
+        timeFour: json['timeFour'] as int?,
         medicationSchedules: (json['medicationSchedules'] ??
             <MedicationSchedule>[]) as List<MedicationSchedule>,
-        medicationCycle: json['medicationCycle'] as int,
+        takeCycle: json['takeCycle'] as int,
         beforePush: json['beforePush'] as bool,
         afterPush: json['afterPush'] as bool,
         push: json['push'] as bool,
@@ -44,15 +44,15 @@ class MedicationInformation extends Equatable {
             DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] as int),
       );
 
-  final int id;
+  final String id;
   final Pill? pill;
   final double takeCount;
-  final int medicationCycle;
+  final int takeCycle;
 
-  final int? moringHour;
-  final int? afternoonHour;
-  final int? eveningHour;
-  final int? nightHour;
+  final int? timeOne;
+  final int? timeTwo;
+  final int? timeThree;
+  final int? timeFour;
   final List<MedicationSchedule> medicationSchedules;
 
   /// 30분 전 알림
@@ -67,10 +67,10 @@ class MedicationInformation extends Equatable {
   final DateTime updatedAt;
 
   int get takePerDay =>
-      (moringHour == null ? 0 : 1) +
-      (afternoonHour == null ? 0 : 1) +
-      (eveningHour == null ? 0 : 1) +
-      (nightHour == null ? 0 : 1);
+      (timeOne == null ? 0 : 1) +
+      (timeTwo == null ? 0 : 1) +
+      (timeThree == null ? 0 : 1) +
+      (timeFour == null ? 0 : 1);
 
   MedicationInformation copyWith({
     Pill? pill,
@@ -80,14 +80,14 @@ class MedicationInformation extends Equatable {
         id: id,
         pill: pill ?? this.pill,
         takeCount: takeCount,
-        moringHour: moringHour,
-        afternoonHour: afternoonHour,
-        eveningHour: eveningHour,
-        nightHour: nightHour,
+        timeOne: timeOne,
+        timeTwo: timeTwo,
+        timeThree: timeThree,
+        timeFour: timeFour,
         beforePush: beforePush,
         afterPush: afterPush,
         push: push,
-        medicationCycle: medicationCycle,
+        takeCycle: takeCycle,
         medicationSchedules: medicationSchedules ?? this.medicationSchedules,
         createdAt: createdAt,
         updatedAt: updatedAt,
@@ -98,11 +98,11 @@ class MedicationInformation extends Equatable {
         id,
         pill,
         takeCount,
-        medicationCycle,
-        moringHour,
-        afternoonHour,
-        eveningHour,
-        nightHour,
+        takeCycle,
+        timeOne,
+        timeTwo,
+        timeThree,
+        timeFour,
         medicationSchedules,
         beforePush,
         afterPush,

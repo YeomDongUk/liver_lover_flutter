@@ -30,7 +30,7 @@ class ValueColumn extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          '${value ?? '-'}',
+          '${value ?? '0'}',
           style: GoogleFonts.lato(
             fontSize: 35,
             color: AppColors.primary,

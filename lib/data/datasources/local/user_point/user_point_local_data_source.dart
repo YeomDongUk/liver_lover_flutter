@@ -2,6 +2,7 @@
 import 'dart:async';
 
 // Package imports:
+import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
 
 // Project imports:
@@ -28,7 +29,19 @@ class UserPointLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
 
   @override
   Stream<UserPointModel> getUserPoint(String userId) =>
-      (select(table)..where((tbl) => tbl.userId.equals(userId))).watchSingle();
+      (select(table)..where((tbl) => tbl.userId.equals(userId)))
+          .watchSingleOrNull()
+          .map(
+            (event) =>
+                event ??
+                UserPointModel(
+                  userId: userId,
+                  id: newCuid(),
+                  point: 0,
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                ),
+          );
 
   @override
   Future<void> addUserPoint({

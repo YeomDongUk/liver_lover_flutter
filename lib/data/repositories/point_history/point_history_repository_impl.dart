@@ -34,7 +34,6 @@ class PointHistoryRepositoryImpl implements PointHistoryRepository {
             .toList(),
       );
     } catch (e) {
-      Logger().e(e);
       return const Left(QueryFailure());
     }
   }

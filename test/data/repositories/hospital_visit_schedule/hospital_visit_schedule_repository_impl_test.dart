@@ -107,7 +107,7 @@
 
 //   test('조회', () async {
 //     when(
-//       () => mockHospitalVisitScheduleLocalDataSource.getHospitalVisitSchedules(
+//       () => mockHospitalVisitScheduleLocalDataSource.getHospitalVisitSchedulesStream(
 //         userId: 'test',
 //         visited: false,
 //       ),
@@ -133,7 +133,7 @@
 //     );
 
 //     final hospitalVisitSchedules =
-//         await hospitalVisitScheduleRepositoryImpl.getHospitalVisitSchedules(
+//         await hospitalVisitScheduleRepositoryImpl.getHospitalVisitSchedulesStream(
 //       visited: false,
 //     );
 

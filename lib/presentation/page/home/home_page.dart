@@ -23,11 +23,9 @@ import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visit_schedule_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
-import 'package:yak/domain/usecases/notification/init_notifications.dart';
-import 'package:yak/domain/usecases/point_history/init_point_history_subscription.dart';
 import 'package:yak/presentation/bloc/health_questions/health_questions_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
+import 'package:yak/presentation/bloc/medication_schedules/medication_schdules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
@@ -51,23 +49,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final PageController _pageController;
   late final HospitalVisitSchedulesCubit _hospitalVisitSchedulesCubit;
-  late final TodayMedicationSchedulesCubit _todayMedicationSchedulesCubit;
+  late final MedicationSchedulesCubit _medicationSchedulesCubit;
   late final SurveyGroupsCubit _surveyGroupsCubit;
   late final MetabolicDiseaseCubit _metabolicDiseaseCubit;
   late final ItemScrollController _itemcrollController;
   late final UserPointCubit _userPointCubit;
   late final HealthQuestionsCubit _healthQuestionsCubit;
   late final _localNotification = KiwiContainer().resolve<LocalNotification>();
-  late final StreamSubscription _notificationSubscription;
+  StreamSubscription? _notificationSubscription;
 
   @override
   void initState() {
     _pageController = PageController(initialPage: 5);
 
-    _hospitalVisitSchedulesCubit = context.read<HospitalVisitSchedulesCubit>()
-      ..loadSchedules();
-    _todayMedicationSchedulesCubit =
-        context.read<TodayMedicationSchedulesCubit>()..loadSchedules();
+    _hospitalVisitSchedulesCubit = context.read<HospitalVisitSchedulesCubit>();
+    _medicationSchedulesCubit = context.read<MedicationSchedulesCubit>();
+
     _surveyGroupsCubit = context.read<SurveyGroupsCubit>()..loadSurveyGroups();
     _metabolicDiseaseCubit = context.read<MetabolicDiseaseCubit>()
       ..loadMetabolicDisease();
@@ -78,50 +75,46 @@ class _HomePageState extends State<HomePage> {
 
     _localNotification.requestPermission();
 
-    _notificationSubscription =
-        _localNotification.receiveStream().listen((event) {
-      if (event.channelKey == 'hospital_visit') {
-        final hospitalVisitScheduleId =
-            event.payload!['scheduleIds']!.split(',').first;
+    Future.wait([
+      _hospitalVisitSchedulesCubit.loadSchedules(),
+      _medicationSchedulesCubit.loadSchedules()
+    ]).then((value) {
+      _notificationSubscription =
+          _localNotification.receiveStream().listen((event) {
+        if (event.channelKey == 'hospital_visit') {
+          final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(event.payload!['reservedAt']!),
+          );
+          final userId = event.payload!['userId']!;
 
-        KiwiContainer()
-            .resolve<HospitalVisitScheduleLocalDataSource>()
-            .getHospitalVisitSchedule(
-              id: hospitalVisitScheduleId,
-              userId: KiwiContainer().resolve<UserId>().value,
-            )
-            .then(
-              (value) => showDialog<void>(
-                context: context,
-                builder: (_) => HospitalVisitScheduleDetailDialog(
-                  hospitalVisitSchedule:
-                      HospitalVisitSchedule.fromJson(value.toJson()),
-                ),
-              ),
-            );
-      }
-      if (event.channelKey == 'medication') {
-        final reservedAt = DateTime.fromMillisecondsSinceEpoch(
-          int.parse(event.payload!['reservedAt']!),
-        );
+          if (KiwiContainer().resolve<UserId>().value != userId) return;
 
-        KiwiContainer()
-            .resolve<MedicationScheduleLocalDataSource>()
-            .getMedicationGroup(reservedAt: reservedAt)
-            .then(
-              (value) => showDialog<void>(
-                context: context,
-                builder: (_) => MedicationScheduleCheckDialog(
-                  medicationSchedulesGroup: value,
+          showDialog<void>(
+            context: context,
+            builder: (_) => HospitalVisitScheduleDetailDialog(
+              reservedAt: reservedAt,
+            ),
+          );
+        }
+        if (event.channelKey == 'medication') {
+          final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(event.payload!['reservedAt']!),
+          );
+
+          KiwiContainer()
+              .resolve<MedicationScheduleLocalDataSource>()
+              .getMedicationGroup(reservedAt: reservedAt)
+              .then(
+                (value) => showDialog<void>(
+                  context: context,
+                  builder: (_) => MedicationScheduleCheckDialog(
+                    medicationSchedulesGroup: value,
+                  ),
                 ),
-              ),
-            );
-      }
+              );
+        }
+      });
     });
-
-    KiwiContainer().resolve<InitNotificaions>().call(null);
-
-    KiwiContainer().resolve<InitPointHistorySubscription>().call(null);
 
     super.initState();
   }
@@ -129,12 +122,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _hospitalVisitSchedulesCubit.onLogout();
-    _todayMedicationSchedulesCubit.onLogout();
+    _medicationSchedulesCubit.onLogout();
     _surveyGroupsCubit.onLogout();
     _metabolicDiseaseCubit.onLogout();
     _healthQuestionsCubit.onLogout();
     _userPointCubit.onLogout();
-    _notificationSubscription.cancel();
+    _notificationSubscription?.cancel();
     _pageController.dispose();
 
     super.dispose();

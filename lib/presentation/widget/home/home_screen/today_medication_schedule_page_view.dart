@@ -14,9 +14,11 @@ import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/functions.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
+import 'package:yak/domain/entities/medication_information/medication_information.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/today/today_medication_schedules_cubit.dart';
+import 'package:yak/presentation/bloc/medication_informations/medication_informations_cubit.dart';
+import 'package:yak/presentation/bloc/medication_schedules/medication_schdules_cubit.dart';
 import 'package:yak/presentation/widget/common/pageview_indicator.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_container.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_label.dart';
@@ -33,7 +35,7 @@ class TodayMedicationSchedulePageView extends StatefulWidget {
 class _TodayMedicationSchedulePageViewState
     extends State<TodayMedicationSchedulePageView> {
   late final PageController pageController;
-
+  DateTime date = DateTime.now();
   @override
   void initState() {
     pageController = PageController();
@@ -49,118 +51,152 @@ class _TodayMedicationSchedulePageViewState
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CurrentTimeCubit, DateTime>(
-      builder: (context, now) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: HomeLabel(
-              grayText: '오늘의 ',
-              primaryText: '복약일정',
-            ),
-          ),
-          SizedBox(
-            height: 108,
-            child: BlocBuilder<TodayMedicationSchedulesCubit,
-                TodayMedicationSchedulesState>(
-              builder: (context, state) {
-                final medicationSchedulesGroups =
-                    state.medicationSchedulesGroups;
+      buildWhen: (previous, current) {
+        final prevDate = DateTime(date.year, date.month, date.day);
+        final nowDate = DateTime(current.year, current.month, current.day);
 
-                if (medicationSchedulesGroups.isEmpty) {
-                  return Center(
-                    child: HomeContainer(
-                      height: 88,
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Material(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(6),
-                        child: InkWell(
-                          onTap: () => context
-                              .beamToNamed(Routes.medicationSchedulesCreate),
-                          borderRadius: BorderRadius.circular(6),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/svg/pill.svg',
-                                  color: AppColors.lightGray,
-                                ),
-                                const SizedBox(width: 24),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+        if (prevDate != nowDate) {
+          date = nowDate;
+        }
+
+        return prevDate != nowDate;
+      },
+      builder: (context, now) =>
+          BlocBuilder<MedicationSchedulesCubit, MedicationSchedulesState>(
+        builder: (context, state) {
+          final dates = state.medicationSchedulesMap.keys
+              .where(
+                (reservedAt) =>
+                    date.isAfter(reservedAt) &&
+                    !date.add(const Duration(days: 1)).isAfter(reservedAt),
+              )
+              .toList();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: HomeLabel(
+                  grayText: '오늘의 ',
+                  primaryText: '복약일정',
+                ),
+              ),
+              SizedBox(
+                height: 108,
+                child: dates.isEmpty
+                    ? Center(
+                        child: HomeContainer(
+                          height: 88,
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Material(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                            child: InkWell(
+                              onTap: () => context.beamToNamed(
+                                  Routes.medicationSchedulesCreate),
+                              borderRadius: BorderRadius.circular(6),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                child: Row(
                                   children: [
-                                    Text(
-                                      '등록된 복약일정이 없습니다.',
-                                      style: const TextStyle(
-                                        fontSize: 17,
-                                        color: AppColors.magenta,
-                                      ).rixMGoB,
+                                    SvgPicture.asset(
+                                      'assets/svg/pill.svg',
+                                      color: AppColors.lightGray,
                                     ),
-                                    const SizedBox(height: 7),
-                                    Text(
-                                      '지금 일정을 등록하세요',
-                                      style: const TextStyle(
-                                        fontSize: 13,
-                                        color: AppColors.gray,
-                                      ).rixMGoB,
+                                    const SizedBox(width: 24),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '등록된 복약일정이 없습니다.',
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            color: AppColors.magenta,
+                                          ).rixMGoB,
+                                        ),
+                                        const SizedBox(height: 7),
+                                        Text(
+                                          '지금 일정을 등록하세요',
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                            color: AppColors.gray,
+                                          ).rixMGoB,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }
+                      )
+                    : PageView.builder(
+                        controller: pageController,
+                        itemCount: dates.length,
+                        itemBuilder: (context, index) {
+                          final reservedAt = dates.elementAt(index);
 
-                return PageView.builder(
-                  controller: pageController,
-                  itemCount: medicationSchedulesGroups.length,
-                  itemBuilder: (context, index) => Center(
-                    child: MedicationScheduleOverviewContainer(
-                      medicationSchedulesGroup:
-                          medicationSchedulesGroups[index],
-                    ),
+                          final medicationInformations = state
+                              .medicationSchedulesMap[reservedAt]!
+                              .map(
+                                (medicationSchedule) =>
+                                    medicationSchedule.medicationInformationId,
+                              )
+                              .map(
+                                (medicationInformationId) => context
+                                    .read<MedicationInformationsCubit>()
+                                    .state
+                                    .informations
+                                    .firstWhere(
+                                      (element) =>
+                                          element.id == medicationInformationId,
+                                    ),
+                              )
+                              .map(
+                                (e) => e.copyWith(
+                                  medicationSchedules:
+                                      state.medicationSchedulesMap[reservedAt],
+                                ),
+                              )
+                              .toList();
+                          return Center(
+                            child: MedicationScheduleOverviewContainer(
+                              medicationSchedulesGroup:
+                                  MedicationSchedulesGroup(
+                                medicationInformations: medicationInformations,
+                                reservedAt: reservedAt,
+                                push: medicationInformations.any(
+                                  (element) => element.medicationSchedules.any(
+                                    (element) =>
+                                        element.afterPush || element.beforePush,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+              const SizedBox(height: 6),
+              if (dates.isEmpty)
+                const SizedBox.shrink()
+              else
+                Center(
+                  child: PageviewIndicator(
+                    pageController: pageController,
+                    pageCoount: dates.length,
                   ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 6),
-          BlocBuilder<TodayMedicationSchedulesCubit,
-              TodayMedicationSchedulesState>(
-            builder: (context, state) {
-              final medicationSchedulesGroups = state.medicationSchedulesGroups
-                  .where(
-                    (element) => element.reservedAt.isBefore(
-                      DateTime(
-                        now.year,
-                        now.month,
-                        now.day + 1,
-                      ),
-                    ),
-                  )
-                  .toList();
-
-              if (medicationSchedulesGroups.isEmpty) {
-                return const SizedBox.shrink();
-              }
-
-              return Center(
-                child: PageviewIndicator(
-                  pageController: pageController,
-                  pageCoount: medicationSchedulesGroups.length,
-                ),
-              );
-            },
-          ),
-        ],
+                )
+            ],
+          );
+        },
       ),
     );
   }
@@ -230,6 +266,7 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
                                   color: medicationSchedulesGroup.isAllMedicated
                                       ? AppColors.blueGrayLight
                                       : Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w900,
                                 ),
                               ),
                               const SizedBox(width: 9),
@@ -244,6 +281,7 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
                                   color: medicationSchedulesGroup.isAllMedicated
                                       ? AppColors.primary
                                       : AppColors.magenta,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ],

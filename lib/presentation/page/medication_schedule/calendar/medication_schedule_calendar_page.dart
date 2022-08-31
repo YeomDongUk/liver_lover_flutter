@@ -8,21 +8,21 @@
 // import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:kiwi/kiwi.dart';
-// import 'package:yak/core/object_box/objectbox.g.dart';
 
 // // Project imports:
 // import 'package:yak/core/static/color.dart';
 // import 'package:yak/core/static/static.dart';
 // import 'package:yak/core/static/text_style.dart';
+// import 'package:yak/core/user/user_id.dart';
 // import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
-// import 'package:yak/data/models/medication_schedule/medication_schedule_model.dart';
-// import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
+
 // import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
+// import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
+
 // import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
-// import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
+
 // import 'package:yak/presentation/widget/common/common_app_bar.dart';
 // import 'package:yak/presentation/widget/common/icon_back_button.dart';
-// import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_calendar.dart';
 
 // class MedicationScheduleCalendarPage extends StatefulWidget {
 //   const MedicationScheduleCalendarPage({super.key});
@@ -34,31 +34,24 @@
 
 // class _MedicationScheduleCalendarPageState
 //     extends State<MedicationScheduleCalendarPage> {
+
 //   late final DateTime firstDay;
 //   late final PageController pageController;
 //   late final int lastPageIndex;
 //   late int pageIndex;
+//   late final dailyMedicationScheduleStatus = KiwiContainer()
+//       .resolve<MedicationScheduleLocalDataSource>()
+//       .getDailyMedicationScheduleStatus(
+//         userId: KiwiContainer().resolve<UserId>().value,
+//       );
 //   MedicationSchedule? medicationSchedule;
 //   void Function(void Function())? _setState;
 
-//   late final medicationScheduleBox =
-//       (KiwiContainer().resolve<MedicationScheduleLocalDataSource>()
-//               as MedicationScheduleLocalDataSourceImpl)
-//           .medicationScheduleBox;
-// l
 //   @override
 //   void initState() {
-
 //     final now = DateTime.now();
-//     final queryBuilder = medicationScheduleBox.query()
-//       ..order(
-//         MedicationScheduleModel_.reservedAt,
-//         flags: 1,
-//       );
-//     final query = queryBuilder.build()..limit = 1;
 
-//     final lastReservedAt = query.findFirst()?.reservedAt;
-//     query.close();
+//     final lastReservedAt = dailyMedicationScheduleStatus.firstOrNull?.date;
 
 //     firstDay = context.read<AuthCubit>().state.user.createdAt!;
 
@@ -150,13 +143,6 @@
 //                   _setState?.call(() => pageIndex = value),
 //               itemCount: lastPageIndex + 1,
 //               itemBuilder: (context, index) =>
-//               StreamBuilder(
-
-//                 stream: medicationScheduleBox.query().watch(),
-//                 builder: (context,event){
-// return Container();
-//                 },),
-
 //             ),
 //             const SizedBox(height: 16),
 //             Container(
@@ -171,15 +157,15 @@
 //                 mainAxisAlignment: MainAxisAlignment.center,
 //                 children: const [
 //                   _MedicationScheduleStatusWidget(
-//                     status: MedicationScheduleStatus.done,
+//                     status: MedicationScheduleGroupStatus.done,
 //                   ),
 //                   SizedBox(width: 24),
 //                   _MedicationScheduleStatusWidget(
-//                     status: MedicationScheduleStatus.wating,
+//                     status: MedicationScheduleGroupStatus.partial,
 //                   ),
 //                   SizedBox(width: 24),
 //                   _MedicationScheduleStatusWidget(
-//                     status: MedicationScheduleStatus.inProgress,
+//                     status: MedicationScheduleGroupStatus.none,
 //                   ),
 //                 ],
 //               ),
@@ -197,7 +183,8 @@
 //     required this.status,
 //   });
 
-//   final MedicationScheduleStatus status;
+//   final MedicationScheduleGroupStatus status;
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return Row(

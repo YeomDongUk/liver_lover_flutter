@@ -27,7 +27,6 @@ class HospitalVisitSchedule extends Equatable {
     required this.hospitalName,
     required this.medicalSubject,
     required this.doctorName,
-    required this.doctorOffice,
     required this.reservedAt,
     required this.visitedAt,
     required this.push,
@@ -44,7 +43,6 @@ class HospitalVisitSchedule extends Equatable {
       hospitalName: json['hospitalName'] as String,
       medicalSubject: json['medicalSubject'] as String,
       doctorName: json['doctorName'] as String,
-      doctorOffice: json['doctorOffice'] as String,
       reservedAt:
           DateTime.fromMillisecondsSinceEpoch(json['reservedAt'] as int),
       visitedAt: json['visitedAt'] == null
@@ -72,9 +70,6 @@ class HospitalVisitSchedule extends Equatable {
 
   /// 의사 이름
   final String doctorName;
-
-  /// 진료실
-  final String doctorOffice;
 
   /// 방문 예약일
   final DateTime reservedAt;
@@ -110,7 +105,6 @@ class HospitalVisitSchedule extends Equatable {
     String? hospitalName,
     String? medicalSubject,
     String? doctorName,
-    String? doctorOffice,
     DateTime? reservedAt,
     DateTime? visitedAt,
     bool? push,
@@ -125,7 +119,6 @@ class HospitalVisitSchedule extends Equatable {
         hospitalName: hospitalName ?? this.hospitalName,
         medicalSubject: medicalSubject ?? this.medicalSubject,
         doctorName: doctorName ?? this.doctorName,
-        doctorOffice: doctorOffice ?? this.doctorOffice,
         reservedAt: reservedAt ?? this.reservedAt,
         visitedAt: visitedAt ?? this.visitedAt,
         push: push ?? this.push,
@@ -142,7 +135,6 @@ class HospitalVisitSchedule extends Equatable {
         hospitalName,
         medicalSubject,
         doctorName,
-        doctorOffice,
         reservedAt,
         visitedAt,
         push,

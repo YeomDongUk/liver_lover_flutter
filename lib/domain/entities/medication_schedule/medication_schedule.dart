@@ -16,8 +16,8 @@ class MedicationSchedule extends Equatable {
 
   factory MedicationSchedule.fromJson(Map<String, dynamic> json) =>
       MedicationSchedule(
-        id: json['id'] as int,
-        medicationInformationId: json['medicationInformationId'] as int,
+        id: json['id'] as String,
+        medicationInformationId: json['medicationInformationId'] as String,
         reservedAt:
             DateTime.fromMillisecondsSinceEpoch(json['reservedAt'] as int),
         medicatedAt: json['medicatedAt'] == null
@@ -33,12 +33,12 @@ class MedicationSchedule extends Equatable {
       );
 
   /// 아이디
-  final int id;
+  final String id;
 
   /// 복용 정보 아이디
-  final int medicationInformationId;
+  final String medicationInformationId;
 
-  /// 알림 발송 예약일
+  /// 복용 예정일
   final DateTime reservedAt;
 
   /// 복용일

@@ -9,10 +9,10 @@ class MedicationInformationUpdateInput extends Equatable
     implements IMedicationInformationCreateForm {
   const MedicationInformationUpdateInput({
     required this.id,
-    required this.moringHour,
-    required this.afternoonHour,
-    required this.eveningHour,
-    required this.nightHour,
+    required this.timeOne,
+    required this.timeTwo,
+    required this.timeThree,
+    required this.timeFour,
     required this.push,
     required this.beforePush,
     required this.afterPush,
@@ -23,16 +23,16 @@ class MedicationInformationUpdateInput extends Equatable
   final int id;
 
   @override
-  final int? moringHour;
+  final int? timeOne;
 
   @override
-  final int? afternoonHour;
+  final int? timeTwo;
 
   @override
-  final int? eveningHour;
+  final int? timeThree;
 
   @override
-  final int? nightHour;
+  final int? timeFour;
 
   @override
   final bool push;
@@ -52,10 +52,10 @@ class MedicationInformationUpdateInput extends Equatable
   @override
   List<Object?> get props => [
         id,
-        moringHour,
-        afternoonHour,
-        eveningHour,
-        nightHour,
+        timeOne,
+        timeTwo,
+        timeThree,
+        timeFour,
         push,
         beforePush,
         afterPush,
@@ -72,10 +72,10 @@ class MedicationInformationCreateInput extends Equatable {
   const MedicationInformationCreateInput({
     required this.pillId,
     required this.takeCount,
-    required this.moringHour,
-    required this.afternoonHour,
-    required this.eveningHour,
-    required this.nightHour,
+    required this.timeOne,
+    required this.timeTwo,
+    required this.timeThree,
+    required this.timeFour,
     required this.takeCycle,
     required this.push,
     required this.beforePush,
@@ -84,10 +84,10 @@ class MedicationInformationCreateInput extends Equatable {
 
   final String pillId;
   final double takeCount;
-  final int? moringHour;
-  final int? afternoonHour;
-  final int? eveningHour;
-  final int? nightHour;
+  final int? timeOne;
+  final int? timeTwo;
+  final int? timeThree;
+  final int? timeFour;
   final int takeCycle;
   final bool push;
   final bool beforePush;
@@ -97,10 +97,10 @@ class MedicationInformationCreateInput extends Equatable {
   List<Object?> get props => [
         pillId,
         takeCount,
-        moringHour,
-        afternoonHour,
-        eveningHour,
-        nightHour,
+        timeOne,
+        timeTwo,
+        timeThree,
+        timeFour,
         takeCycle,
         push,
         beforePush,
@@ -113,10 +113,10 @@ class MedicationInformationCreateForm extends Equatable
   const MedicationInformationCreateForm({
     required this.pill,
     this.takeCount,
-    this.moringHour,
-    this.afternoonHour,
-    this.eveningHour,
-    this.nightHour,
+    this.timeOne,
+    this.timeTwo,
+    this.timeThree,
+    this.timeFour,
     this.takeCycle,
     this.push,
     this.beforePush,
@@ -127,13 +127,13 @@ class MedicationInformationCreateForm extends Equatable
   @override
   final double? takeCount;
   @override
-  final int? moringHour;
+  final int? timeOne;
   @override
-  final int? afternoonHour;
+  final int? timeTwo;
   @override
-  final int? eveningHour;
+  final int? timeThree;
   @override
-  final int? nightHour;
+  final int? timeFour;
   @override
   final int? takeCycle;
   @override
@@ -145,10 +145,10 @@ class MedicationInformationCreateForm extends Equatable
 
   MedicationInformationCreateForm copyWith({
     Optional<double> takeCount = const Optional<double>(),
-    Optional<int> moringHour = const Optional<int>(),
-    Optional<int> afternoonHour = const Optional<int>(),
-    Optional<int> eveningHour = const Optional<int>(),
-    Optional<int> nightHour = const Optional<int>(),
+    Optional<int> timeOne = const Optional<int>(),
+    Optional<int> timeTwo = const Optional<int>(),
+    Optional<int> timeThree = const Optional<int>(),
+    Optional<int> timeFour = const Optional<int>(),
     Optional<int> takeCycle = const Optional<int>(),
     Optional<bool> push = const Optional<bool>(),
     Optional<bool> beforePush = const Optional<bool>(),
@@ -157,11 +157,10 @@ class MedicationInformationCreateForm extends Equatable
       MedicationInformationCreateForm(
         pill: pill,
         takeCount: takeCount.isValid ? takeCount.value : this.takeCount,
-        moringHour: moringHour.isValid ? moringHour.value : this.moringHour,
-        afternoonHour:
-            afternoonHour.isValid ? afternoonHour.value : this.afternoonHour,
-        eveningHour: eveningHour.isValid ? eveningHour.value : this.eveningHour,
-        nightHour: nightHour.isValid ? nightHour.value : this.nightHour,
+        timeOne: timeOne.isValid ? timeOne.value : this.timeOne,
+        timeTwo: timeTwo.isValid ? timeTwo.value : this.timeTwo,
+        timeThree: timeThree.isValid ? timeThree.value : this.timeThree,
+        timeFour: timeFour.isValid ? timeFour.value : this.timeFour,
         takeCycle: takeCycle.isValid ? takeCycle.value : this.takeCycle,
         push: push.isValid ? push.value : this.push,
         beforePush: beforePush.isValid ? beforePush.value : this.beforePush,
@@ -175,10 +174,10 @@ class MedicationInformationCreateForm extends Equatable
       MedicationInformationCreateInput(
         pillId: pill.id,
         takeCount: takeCount!,
-        moringHour: moringHour,
-        afternoonHour: afternoonHour,
-        eveningHour: eveningHour,
-        nightHour: nightHour,
+        timeOne: timeOne,
+        timeTwo: timeTwo,
+        timeThree: timeThree,
+        timeFour: timeFour,
         takeCycle: takeCycle!,
         push: push ?? false,
         beforePush: beforePush ?? false,
@@ -189,10 +188,10 @@ class MedicationInformationCreateForm extends Equatable
   List<Object?> get props => [
         pill,
         takeCount,
-        moringHour,
-        afternoonHour,
-        eveningHour,
-        nightHour,
+        timeOne,
+        timeTwo,
+        timeThree,
+        timeFour,
         takeCycle,
         push,
         beforePush,
@@ -203,10 +202,10 @@ class MedicationInformationCreateForm extends Equatable
 abstract class IMedicationInformationCreateForm {
   const IMedicationInformationCreateForm(
     this.takeCount,
-    this.moringHour,
-    this.afternoonHour,
-    this.eveningHour,
-    this.nightHour,
+    this.timeOne,
+    this.timeTwo,
+    this.timeThree,
+    this.timeFour,
     this.takeCycle,
     this.push,
     this.beforePush,
@@ -215,10 +214,10 @@ abstract class IMedicationInformationCreateForm {
 
   final int? takeCycle;
   final double? takeCount;
-  final int? moringHour;
-  final int? afternoonHour;
-  final int? eveningHour;
-  final int? nightHour;
+  final int? timeOne;
+  final int? timeTwo;
+  final int? timeThree;
+  final int? timeFour;
   final bool? push;
   final bool? beforePush;
   final bool? afterPush;

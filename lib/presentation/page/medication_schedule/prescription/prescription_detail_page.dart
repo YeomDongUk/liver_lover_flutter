@@ -105,7 +105,7 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                   const Divider(),
                   const SizedBox(height: 16),
                   SizedBox(
-                    height: 405,
+                    height: 414,
                     child: PageView.builder(
                       controller: pageController,
                       itemCount:
@@ -129,7 +129,10 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                                   height: 161,
                                   child: pill.image == null
                                       ? null
-                                      : Image.memory(pill.image!),
+                                      : Image.memory(
+                                          pill.image!,
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
                               ),
                               Expanded(
@@ -256,17 +259,17 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                                                     Text(
                                                       '${[
                                                         medicationInformation
-                                                                .moringHour ??
-                                                            '-',
+                                                                .timeOne ??
+                                                            '0',
                                                         medicationInformation
-                                                                .afternoonHour ??
-                                                            '-',
+                                                                .timeTwo ??
+                                                            '0',
                                                         medicationInformation
-                                                                .eveningHour ??
-                                                            '-',
+                                                                .timeThree ??
+                                                            '0',
                                                         medicationInformation
-                                                                .nightHour ??
-                                                            '-',
+                                                                .timeFour ??
+                                                            '0',
                                                       ][index]}',
                                                       style: GoogleFonts.lato(
                                                         fontSize: 20,

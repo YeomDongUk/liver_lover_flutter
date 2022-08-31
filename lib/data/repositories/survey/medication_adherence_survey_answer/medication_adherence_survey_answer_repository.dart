@@ -36,7 +36,6 @@ class MedicationAdherenceSurveyAnswerRepositoryImpl
       );
       return Right(surveyAnswerModels.length);
     } catch (e) {
-      Logger().e(e);
       return const Left(QueryFailure());
     }
   }
@@ -66,7 +65,6 @@ class MedicationAdherenceSurveyAnswerRepositoryImpl
             .toList(),
       );
     } catch (e) {
-      Logger().e(e);
       return const Left(QueryFailure());
     }
   }

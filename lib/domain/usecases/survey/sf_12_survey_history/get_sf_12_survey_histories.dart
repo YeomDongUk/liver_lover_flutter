@@ -14,5 +14,5 @@ class GetSF12SurveyHistories extends UseCase<List<SF12SurveyHistory>, void> {
 
   @override
   Future<Either<Failure, List<SF12SurveyHistory>>> call(void params) =>
-      sf12surveyHistoryRepository.getSurveyHistories();
+      sf12surveyHistoryRepository.getSurveyGroupsStream();
 }

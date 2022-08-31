@@ -44,8 +44,6 @@ class PillRepositoryImpl implements PillRepository {
         final pillModels = await pillLocalDataSource.getPills(name);
         return Right(pillModels.map((e) => Pill.fromJson(e.toJson())).toList());
       } catch (e) {
-        Logger().e(e);
-
         return const Left(QueryFailure());
       }
     }

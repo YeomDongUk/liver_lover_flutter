@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 // Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/point_history/point_history_table.dart';
+import 'package:yak/data/datasources/local/dao_mixin.dart';
 
 abstract class ExaminationResultLocalDataSource {
   Future<List<ExaminationResultModel>> getExaminationResults({
@@ -23,6 +24,7 @@ abstract class ExaminationResultLocalDataSource {
 }
 
 class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
+    with DaoMixin
     implements ExaminationResultLocalDataSource {
   ExaminationResultLocalDataSourceImpl(super.attachedDatabase);
 
@@ -55,6 +57,18 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
 
           if (result == null) {
             final resultModel = await into(table).insertReturning(companion);
+            final userPoint = await (select(userPoints)
+                  ..where((tbl) => tbl.userId.equals(userId)))
+                .getSingle();
+
+            await (update(userPoints)
+                  ..where((tbl) => tbl.userId.equals(userId)))
+                .write(
+              UserPointsCompanion(
+                point: Value(userPoint.point + 30),
+                updatedAt: Value(DateTime.now()),
+              ),
+            );
 
             await into(attachedDatabase.pointHistories).insert(
               PointHistoriesCompanion.insert(

@@ -32,15 +32,6 @@ class CreateHospitalVisitSchedulesCubit
     emit(state.copyWith(status: formStatus));
   }
 
-  void updateDoctorOffice(String doctorOffice) {
-    emit(
-      state.copyWith(
-        doctorOffice: DoctorOffice.dirty(doctorOffice),
-      ),
-    );
-    emit(state.copyWith(status: formStatus));
-  }
-
   void updateHospitalName(String hospitalName) {
     emit(
       state.copyWith(
@@ -142,7 +133,6 @@ class CreateHospitalVisitSchedulesCubit
       HospitalVisitSchedulesCompanion.insert(
         userId: '',
         type: state.hospitalVisitType.value!,
-        doctorOffice: state.doctorOffice.value,
         hospitalName: state.hospitalName.value,
         medicalSubject: state.medicalSubject.value,
         doctorName: state.doctorName.value,

@@ -30,23 +30,26 @@ class CommonInputFormField extends StatelessWidget {
   final TextAlign textAlign;
 
   @override
-  Widget build(BuildContext context) => TextFormField(
-        focusNode: focusNode,
-        initialValue: initialValue,
-        onChanged: onChanged,
-        keyboardType: keyboardType,
-        onFieldSubmitted: onFieldSubmitted,
-        textInputAction: TextInputAction.next,
-        inputFormatters: inputFormatters,
-        style: textStyle ??
-            const TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-            ).rixMGoB,
-        decoration: const InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          border: InputBorder.none,
+  Widget build(BuildContext context) => Center(
+        child: TextFormField(
+          focusNode: focusNode,
+          initialValue: initialValue,
+          onChanged: onChanged,
+          keyboardType: keyboardType,
+          onFieldSubmitted: onFieldSubmitted,
+          textInputAction: TextInputAction.next,
+          inputFormatters: inputFormatters,
+          style: textStyle ??
+              const TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ).rixMGoB,
+          decoration: const InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            border: InputBorder.none,
+          ),
+          textAlign: textAlign,
         ),
-        textAlign: textAlign,
       );
 }

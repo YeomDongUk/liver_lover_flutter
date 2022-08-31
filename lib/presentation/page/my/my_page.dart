@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:beamer/beamer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -190,6 +191,11 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                       label: '휴대폰 번호',
                       color: Colors.white,
                       child: CommonInputFormField(
+                        textStyle: GoogleFonts.lato(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
                         focusNode: focusNodes[1],
                         initialValue: state.phone.value,
                         onChanged: (str) => state.phone.value != str
@@ -217,6 +223,11 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                             label: '생년',
                             color: Colors.white,
                             child: CommonInputFormField(
+                              textStyle: GoogleFonts.lato(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
                               focusNode: focusNodes[2],
                               initialValue: '${state.birthYear.value ?? ''}',
                               onChanged: (str) => updateUserCubit
@@ -298,6 +309,11 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                             label: '신장(CM)',
                             color: Colors.white,
                             child: CommonInputFormField(
+                              textStyle: GoogleFonts.lato(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
                               focusNode: focusNodes[3],
                               initialValue: '${state.height.value ?? ''}',
                               onChanged: (str) => updateUserCubit
@@ -323,6 +339,11 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                             label: '체중(KG)',
                             color: Colors.white,
                             child: CommonInputFormField(
+                              textStyle: GoogleFonts.lato(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
                               focusNode: focusNodes[4],
                               initialValue: '${state.weight.value ?? ''}',
                               onChanged: (str) => updateUserCubit

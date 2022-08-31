@@ -10,13 +10,13 @@ class PageBCirculatorState extends Equatable {
   final int? age;
   final int? sex;
   final int? platelet;
-  final int? albumin;
+  final double? albumin;
 
   PageBCirculatorState copyWith({
     int? age,
     int? sex,
     int? platelet,
-    int? albumin,
+    double? albumin,
   }) =>
       PageBCirculatorState(
         age: age ?? this.age,

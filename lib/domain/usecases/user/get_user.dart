@@ -18,13 +18,6 @@ class GetUser implements UseCase<User, String> {
   Future<Either<Failure, User>> call(String params) async {
     final either = await userRepository.getUser(params);
 
-    if (either.isRight()) {
-      final user = either.foldRight(null, (r, previous) => r);
-      if (user != null) {
-        // await hiveDataSource.setUserId(user.id);
-      }
-    }
-
     return either;
   }
 }

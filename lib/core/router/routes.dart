@@ -28,7 +28,6 @@ class Routes {
   static const healthQuestions = Path.healthQuestions;
   static const healthQuestionCreate = Path.healthQuestions + Path.create;
   static const healthQuestionUpdate = Path.healthQuestions + Path.update;
-  static const dringkingHistories = Path.dringkingHistories;
   static const smokingHistories = Path.smokingHistories;
   static const excerciseHistories = Path.excerciseHistories;
   static const graphs = Path.graphs;

@@ -88,8 +88,10 @@ class _MedicationManagementScreenState extends State<MedicationManagementScreen>
                 physics: const NeverScrollableScrollPhysics(),
                 controller: tabController,
                 children: const [
-                  MedicationScheduleGroupsTabView(),
-                  PrescriptionsTabView(),
+                  SizedBox(),
+                  SizedBox(),
+                  // MedicationScheduleGroupsTabView(),
+                  // PrescriptionsTabView(),
                 ],
               ),
             ),

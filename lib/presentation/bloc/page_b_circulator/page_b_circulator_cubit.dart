@@ -49,7 +49,7 @@ class PageBCirculatorCubit extends Cubit<PageBCirculatorState> {
     }
   }
 
-  void updateAlbumin(int? albumin) {
+  void updateAlbumin(double? albumin) {
     if (albumin == null) {
       emit(
         PageBCirculatorState(

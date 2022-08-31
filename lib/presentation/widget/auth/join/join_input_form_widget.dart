@@ -93,6 +93,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                     textStyle: GoogleFonts.lato(
                       fontSize: 20,
                       color: Colors.black,
+                      fontWeight: FontWeight.w600,
                     ),
                     focusNode: focusNodes[1],
                     initialValue: state.phone.value,
@@ -124,6 +125,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                           textStyle: GoogleFonts.lato(
                             fontSize: 20,
                             color: Colors.black,
+                            fontWeight: FontWeight.w600,
                           ),
                           focusNode: focusNodes[2],
                           initialValue: '${state.birthYear.value ?? ''}',
@@ -207,6 +209,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                           textStyle: GoogleFonts.lato(
                             fontSize: 20,
                             color: Colors.black,
+                            fontWeight: FontWeight.w600,
                           ),
                           focusNode: focusNodes[3],
                           initialValue: '${state.height.value ?? ''}',
@@ -236,6 +239,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                           textStyle: GoogleFonts.lato(
                             fontSize: 20,
                             color: Colors.black,
+                            fontWeight: FontWeight.w600,
                           ),
                           focusNode: focusNodes[4],
                           initialValue: '${state.weight.value ?? ''}',

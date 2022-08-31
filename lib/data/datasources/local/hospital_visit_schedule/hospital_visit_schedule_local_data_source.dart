@@ -1,16 +1,13 @@
 // Package imports:
 import 'package:drift/drift.dart';
-import 'package:kiwi/kiwi.dart';
+import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/core/database/table/point_history/point_history_table.dart';
-import 'package:yak/core/local_notification/local_notification.dart';
-import 'package:yak/core/object_box/object_box.dart';
 import 'package:yak/data/datasources/local/dao_mixin.dart';
-import 'package:yak/data/datasources/local/schedule_notification/schedule_notification_local_data_source.dart';
-import 'package:yak/data/models/notification/schedule_notificaiton_model.dart';
+import 'package:yak/data/datasources/local/notification_schedule/notification_schedule_local_data_source.dart';
 
 abstract class HospitalVisitScheduleLocalDataSource {
   Future<HospitalVisitScheduleModel> getHospitalVisitSchedule({
@@ -18,9 +15,8 @@ abstract class HospitalVisitScheduleLocalDataSource {
     required String userId,
   });
 
-  Future<List<HospitalVisitScheduleModel>> getHospitalVisitSchedules({
+  Stream<List<HospitalVisitScheduleModel>> getHospitalVisitSchedulesStream({
     required String userId,
-    required bool visited,
   });
 
   Future<HospitalVisitScheduleModel> createHospitalVisitSchedule({
@@ -48,31 +44,25 @@ abstract class HospitalVisitScheduleLocalDataSource {
 
 class HospitalVisitScheduleLocalDataSourceImpl
     extends DatabaseAccessor<AppDatabase>
-    with ObjectBoxMixin, DaoMixin
+    with DaoMixin
     implements HospitalVisitScheduleLocalDataSource {
   HospitalVisitScheduleLocalDataSourceImpl({
     required AppDatabase attachedDatabase,
-    required this.scheduleNotificationLocalDataSource,
+    required this.notificationScheduleLocalDataSource,
   }) : super(attachedDatabase);
 
-  $HospitalVisitSchedulesTable get table =>
-      attachedDatabase.hospitalVisitSchedules;
-
-  // final LocalNotification localNotification;
-
-  final ScheduleNotificationLocalDataSource scheduleNotificationLocalDataSource;
+  final NotificationScheduleLocalDataSource notificationScheduleLocalDataSource;
 
   @override
-  Future<List<HospitalVisitScheduleModel>> getHospitalVisitSchedules({
+  Stream<List<HospitalVisitScheduleModel>> getHospitalVisitSchedulesStream({
     required String userId,
-    required bool visited,
   }) =>
-      (select(table)
+      (select(hospitalVisitSchedules)
             ..where((h) => h.userId.equals(userId))
             ..orderBy(
               [(h) => OrderingTerm.asc(h.reservedAt)],
             ))
-          .get();
+          .watch();
 
   @override
   Future<HospitalVisitScheduleModel> createHospitalVisitSchedule({
@@ -80,83 +70,74 @@ class HospitalVisitScheduleLocalDataSourceImpl
     required HospitalVisitSchedulesCompanion companion,
   }) =>
       transaction(() async {
-        final hospitalVisitScheduleModel = await into(table).insertReturning(
+        final hospitalVisitScheduleModel =
+            await into(hospitalVisitSchedules).insertReturning(
           companion.copyWith(
             userId: Value(userId),
           ),
         );
+
+        /// 유저 포인트 조회
         final userPoint = await (select(userPoints)
               ..where((tbl) => tbl.userId.equals(userId)))
             .getSingle();
-        await Future.wait([
-          into(attachedDatabase.sF12SurveyHistories).insertReturning(
-            SF12SurveyHistoriesCompanion.insert(
-              hospitalVisitScheduleId: hospitalVisitScheduleModel.id,
-            ),
+
+        /// SF12 설문지 생성
+        await into(attachedDatabase.sF12SurveyHistories).insertReturning(
+          SF12SurveyHistoriesCompanion.insert(
+            hospitalVisitScheduleId: hospitalVisitScheduleModel.id,
           ),
-          into(attachedDatabase.medicationAdherenceSurveyHistories)
-              .insertReturning(
-            MedicationAdherenceSurveyHistoriesCompanion.insert(
-              hospitalVisitScheduleId: hospitalVisitScheduleModel.id,
-            ),
+        );
+
+        /// MADH 설문지 생성
+        await into(attachedDatabase.medicationAdherenceSurveyHistories)
+            .insertReturning(
+          MedicationAdherenceSurveyHistoriesCompanion.insert(
+            hospitalVisitScheduleId: hospitalVisitScheduleModel.id,
           ),
-          (update(userPoints)..where((tbl) => tbl.userId.equals(userId))).write(
-            UserPointsCompanion(
-              point: Value(
-                hospitalVisitScheduleModel.type !=
-                        HospitalVisitScheduleType.outpatient
-                    ? userPoint.point + 30
-                    : 30,
-              ),
-              hospitalVisitScheduleId: hospitalVisitScheduleModel.type !=
+        );
+
+        ///
+        await (update(userPoints)..where((tbl) => tbl.userId.equals(userId)))
+            .write(
+          UserPointsCompanion(
+            point: Value(
+              hospitalVisitScheduleModel.type !=
                       HospitalVisitScheduleType.outpatient
-                  ? const Value.absent()
-                  : Value(hospitalVisitScheduleModel.id),
-              updatedAt: Value(DateTime.now()),
+                  ? userPoint.point + 30
+                  : 30,
             ),
+            hospitalVisitScheduleId: hospitalVisitScheduleModel.type !=
+                    HospitalVisitScheduleType.outpatient
+                ? const Value.absent()
+                : Value(hospitalVisitScheduleModel.id),
+            updatedAt: Value(DateTime.now()),
           ),
-          into(attachedDatabase.pointHistories).insert(
-            PointHistoriesCompanion.insert(
-              userId: userId,
-              forginId: hospitalVisitScheduleModel.id,
-              event: PointHistoryEvent.hospitalVisitScheduleCreate,
-              point: 30,
-            ),
-          ),
-        ]);
+        );
 
-        if (hospitalVisitScheduleModel.push) {
-          final reservedAt = hospitalVisitScheduleModel.reservedAt;
-
-          await Future.wait([
-            if (hospitalVisitScheduleModel.beforePush)
-              scheduleNotificationLocalDataSource.createNotification(
-                scheduleNotificationModel: ScheduleNotificationModel(
-                  userId: userId,
-                  type: 2,
-                  scheduleIds: [
-                    hospitalVisitScheduleModel.id,
-                  ],
-                  beforePush: true,
-                  reservedAt: reservedAt.add(const Duration(days: -1)),
-                ),
-              ),
-            if (hospitalVisitScheduleModel.afterPush)
-              scheduleNotificationLocalDataSource.createNotification(
-                scheduleNotificationModel: ScheduleNotificationModel(
-                  userId: userId,
-                  type: 2,
-                  scheduleIds: [
-                    hospitalVisitScheduleModel.id,
-                  ],
-                  beforePush: true,
-                  reservedAt: reservedAt.add(const Duration(hours: -2)),
-                ),
-              ),
-          ]);
+        /// 등록하는 진료가 외래 진료인 경우 히스토리 전부 삭제
+        if (hospitalVisitScheduleModel.type ==
+            HospitalVisitScheduleType.outpatient) {
+          await (delete(pointHistories)
+                ..where((tbl) => tbl.userId.equals(userId)))
+              .go();
         }
 
-        _initNoti(userId);
+        /// 포인트 히스토리 생성
+        await into(pointHistories).insert(
+          PointHistoriesCompanion.insert(
+            userId: userId,
+            forginId: hospitalVisitScheduleModel.id,
+            event: PointHistoryEvent.hospitalVisitScheduleCreate,
+            point: 30,
+          ),
+        );
+
+        /// 병원 방문 노티 스케쥴 생성
+        await notificationScheduleLocalDataSource
+            .createHospitalVisitScheduleNotification(
+          hospitalVisitScheduleModel: hospitalVisitScheduleModel,
+        );
 
         return hospitalVisitScheduleModel;
       });
@@ -167,13 +148,13 @@ class HospitalVisitScheduleLocalDataSourceImpl
     required String userId,
   }) =>
       transaction(() async {
-        final schedule = await (select(table)
+        final schedule = await (select(hospitalVisitSchedules)
               ..where((tbl) => tbl.id.equals(id) & tbl.userId.equals(userId)))
             .getSingleOrNull();
 
         if (schedule == null) return 0;
 
-        final latestSchedule = await (select(table)
+        final latestSchedule = await (select(hospitalVisitSchedules)
               ..where(
                 (tbl) =>
                     tbl.type
@@ -194,17 +175,53 @@ class HospitalVisitScheduleLocalDataSourceImpl
               updatedAt: Value(DateTime.now()),
             ),
           );
+
+          await (delete(pointHistories)
+                ..where((tbl) => tbl.userId.equals(userId)))
+              .go();
         }
 
-        final count = (delete(table)
+        final count = await (delete(hospitalVisitSchedules)
               ..where((h) => h.id.equals(id) & h.userId.equals(userId)))
             .go();
 
-        await scheduleNotificationLocalDataSource.deleteNotificationById(
-          id: id,
-          type: 2,
-          userId: userId,
-        );
+        if (schedule.beforePush) {
+          final sameReservedAtSchedules = await (select(hospitalVisitSchedules)
+                ..where(
+                  (tbl) =>
+                      tbl.userId.equals(userId) &
+                      tbl.reservedAt.equals(schedule.reservedAt) &
+                      tbl.beforePush.equals(true),
+                ))
+              .get();
+
+          if (sameReservedAtSchedules.isEmpty) {
+            await notificationScheduleLocalDataSource
+                .deleteHospitalVisitScheduleNotification(
+              isBeforePush: true,
+              hospitalVisitScheduleModel: schedule,
+            );
+          }
+        }
+
+        if (schedule.afterPush) {
+          final sameReservedAtSchedules = await (select(hospitalVisitSchedules)
+                ..where(
+                  (tbl) =>
+                      tbl.userId.equals(userId) &
+                      tbl.reservedAt.equals(schedule.reservedAt) &
+                      tbl.afterPush.equals(true),
+                ))
+              .get();
+
+          if (sameReservedAtSchedules.isEmpty) {
+            await notificationScheduleLocalDataSource
+                .deleteHospitalVisitScheduleNotification(
+              isBeforePush: false,
+              hospitalVisitScheduleModel: schedule,
+            );
+          }
+        }
 
         return count;
       });
@@ -216,33 +233,32 @@ class HospitalVisitScheduleLocalDataSourceImpl
     required HospitalVisitSchedulesCompanion companion,
   }) =>
       transaction(() async {
-        await (update(table)
-              ..where((h) => h.id.equals(id))
-              ..where((h) => h.userId.equals(userId)))
-            .write(
+        final hospitalVisitScheduleModels =
+            await (update(hospitalVisitSchedules)
+                  ..where((h) => h.id.equals(id))
+                  ..where((h) => h.userId.equals(userId)))
+                .writeReturning(
           companion.copyWith(updatedAt: Value(DateTime.now())),
         );
 
-        if (companion.visitedAt.value != null) {
-          await scheduleNotificationLocalDataSource.deleteNotificationById(
-            id: id,
-            type: 2,
-            userId: userId,
+        if (companion.visitedAt.value != null &&
+            hospitalVisitScheduleModels.isNotEmpty) {
+          await notificationScheduleLocalDataSource
+              .deleteHospitalVisitScheduleNotification(
+            isBeforePush: true,
+            hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
+          );
+
+          await notificationScheduleLocalDataSource
+              .deleteHospitalVisitScheduleNotification(
+            isBeforePush: false,
+            hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
           );
         }
 
-        return (select(table)..where((h) => h.id.equals(id))).getSingle();
+        return (select(hospitalVisitSchedules)..where((h) => h.id.equals(id)))
+            .getSingle();
       });
-
-  @override
-  Future<HospitalVisitScheduleModel> getHospitalVisitSchedule({
-    required String id,
-    required String userId,
-  }) =>
-      (select(table)
-            ..where((h) => h.id.equals(id))
-            ..where((h) => h.userId.equals(userId)))
-          .getSingle();
 
   @override
   Future<HospitalVisitScheduleModel> toggleHospitalVisitSchedulePush({
@@ -252,7 +268,7 @@ class HospitalVisitScheduleLocalDataSourceImpl
   }) =>
       transaction(() async {
         final push = companion.push.value;
-        await (update(table)
+        await (update(hospitalVisitSchedules)
               ..where((h) => h.id.equals(id) & h.userId.equals(userId)))
             .write(
           companion.copyWith(
@@ -262,56 +278,19 @@ class HospitalVisitScheduleLocalDataSourceImpl
           ),
         );
 
-        final hospitalVisitSchedule =
-            await (select(table)..where((h) => h.id.equals(id))).getSingle();
-
-        if (push) {
-          await Future.wait([
-            if (hospitalVisitSchedule.beforePush)
-              scheduleNotificationLocalDataSource.createNotification(
-                scheduleNotificationModel: ScheduleNotificationModel(
-                  userId: userId,
-                  type: 2,
-                  scheduleIds: [
-                    hospitalVisitSchedule.id,
-                  ],
-                  beforePush: true,
-                  reservedAt: hospitalVisitSchedule.reservedAt
-                      .add(const Duration(days: -1)),
-                ),
-              ),
-            if (hospitalVisitSchedule.afterPush)
-              scheduleNotificationLocalDataSource.createNotification(
-                scheduleNotificationModel: ScheduleNotificationModel(
-                  userId: userId,
-                  type: 2,
-                  scheduleIds: [
-                    hospitalVisitSchedule.id,
-                  ],
-                  beforePush: false,
-                  reservedAt: hospitalVisitSchedule.reservedAt
-                      .add(const Duration(hours: -2)),
-                ),
-              ),
-          ]);
-        } else {
-          await scheduleNotificationLocalDataSource.deleteNotificationById(
-            id: id,
-            type: 2,
-            userId: userId,
-          );
-        }
-
-        _initNoti(userId);
+        final hospitalVisitSchedule = await (select(hospitalVisitSchedules)
+              ..where((h) => h.id.equals(id)))
+            .getSingle();
 
         return hospitalVisitSchedule;
       });
 
-  Future<void> _initNoti(String userId) =>
-      KiwiContainer().resolve<LocalNotification>().createNotifications(
-            scheduleNotificationModels:
-                scheduleNotificationLocalDataSource.getValidNotifications(
-              userId: userId,
-            ),
-          );
+  @override
+  Future<HospitalVisitScheduleModel> getHospitalVisitSchedule({
+    required String id,
+    required String userId,
+  }) =>
+      (select(hospitalVisitSchedules)
+            ..where((h) => h.id.equals(id) & h.userId.equals(userId)))
+          .getSingle();
 }

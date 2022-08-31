@@ -11,12 +11,17 @@ import 'table/exercise_history/exercise_history_table.dart';
 import 'table/health_question/health_question_table.dart';
 import 'table/hospital/hospital_table.dart';
 import 'table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
+import 'table/last_login_user/last_login_user_table.dart';
 import 'table/liver_level_history/liver_level_table.dart';
 import 'table/medication_adherence_survey_history/medication_adherence_survey_answer.dart';
 import 'table/medication_adherence_survey_history/medication_adherence_survey_history.dart';
+import 'table/medication_information/medication_information_table.dart';
+import 'table/medication_schedule/medication_schedule_table.dart';
 import 'table/metabolic_disease/metabolic_disease_table.dart';
+import 'table/notification_schedule/notification_schedule_table.dart';
 import 'table/pill/pill_table.dart';
 import 'table/point_history/point_history_table.dart';
+import 'table/prescription/prescription_table.dart';
 import 'table/sf_12_survey/sf12_survey_answer.dart';
 import 'table/sf_12_survey/sf12_survey_history_table.dart';
 import 'table/smoking_history/smoking_history_table.dart';
@@ -45,6 +50,11 @@ part 'database.g.dart';
     Hospitals,
     MedicationAdherenceSurveyAnswers,
     UserPoints,
+    Prescriptions,
+    MedicationInformations,
+    MedicationSchedules,
+    NotificationSchedules,
+    LastLoginUsers,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -74,6 +84,7 @@ class AppDatabase extends _$AppDatabase {
           //   await into(userPoints).insert(
           //     UserPointsCompanion.insert(userId: userModel.id),
           //   );
+
           //   return userModel;
           // });
 

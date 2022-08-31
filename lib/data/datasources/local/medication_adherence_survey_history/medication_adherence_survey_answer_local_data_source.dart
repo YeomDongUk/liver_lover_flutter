@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 // Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/point_history/point_history_table.dart';
+import 'package:yak/data/datasources/local/dao_mixin.dart';
 
 abstract class MedicationAdherenceSurveyAnswerLocalDataSource {
   Future<List<MedicationAdherenceSurveyAnswerModel>> createSurveyAnswers({
@@ -19,6 +20,7 @@ abstract class MedicationAdherenceSurveyAnswerLocalDataSource {
 
 class MedicationAdherenceSurveyAnswerLocalDataSourceImpl
     extends DatabaseAccessor<AppDatabase>
+    with DaoMixin
     implements MedicationAdherenceSurveyAnswerLocalDataSource {
   MedicationAdherenceSurveyAnswerLocalDataSourceImpl(super.attachedDatabase);
   late final table = attachedDatabase.medicationAdherenceSurveyAnswers;
@@ -61,6 +63,18 @@ class MedicationAdherenceSurveyAnswerLocalDataSourceImpl
               groupedSurvey.read(sf12SurveyTable.done) ?? false;
 
           if (sf12SurveyDone && maSurveyDone) {
+            final userPoint = await (select(userPoints)
+                  ..where((tbl) => tbl.userId.equals(userId)))
+                .getSingle();
+
+            await (update(userPoints)
+                  ..where((tbl) => tbl.userId.equals(userId)))
+                .write(
+              UserPointsCompanion(
+                point: Value(userPoint.point + 30),
+                updatedAt: Value(DateTime.now()),
+              ),
+            );
             await into(attachedDatabase.pointHistories).insert(
               PointHistoriesCompanion.insert(
                 userId: userId,

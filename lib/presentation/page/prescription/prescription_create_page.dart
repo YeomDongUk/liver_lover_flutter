@@ -490,7 +490,7 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  '복용량 (TA/회)',
+                  '복용량 (알약수/회)',
                   style: const TextStyle(
                     fontSize: 13,
                     color: AppColors.gray,
@@ -544,37 +544,36 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                   label: '아침',
                   times: const [7, 8, 9],
                   onSelectTime: (time) => onChanged(
-                    formInput.copyWith(moringHour: Optional<int>.value(time)),
+                    formInput.copyWith(timeOne: Optional<int>.value(time)),
                   ),
-                  selectedTime: formInput.moringHour,
+                  selectedTime: formInput.timeOne,
                 ),
                 const SizedBox(height: 12),
                 buildTakeTime(
                   label: '점심',
                   times: const [11, 12, 13],
                   onSelectTime: (time) => onChanged(
-                    formInput.copyWith(
-                        afternoonHour: Optional<int>.value(time)),
+                    formInput.copyWith(timeTwo: Optional<int>.value(time)),
                   ),
-                  selectedTime: formInput.afternoonHour,
+                  selectedTime: formInput.timeTwo,
                 ),
                 const SizedBox(height: 12),
                 buildTakeTime(
                   label: '저녁',
                   times: const [18, 19, 20],
                   onSelectTime: (time) => onChanged(
-                    formInput.copyWith(eveningHour: Optional<int>.value(time)),
+                    formInput.copyWith(timeThree: Optional<int>.value(time)),
                   ),
-                  selectedTime: formInput.eveningHour,
+                  selectedTime: formInput.timeThree,
                 ),
                 const SizedBox(height: 12),
                 buildTakeTime(
                   label: '취침',
                   times: const [22, 23, 24],
                   onSelectTime: (time) => onChanged(
-                    formInput.copyWith(nightHour: Optional<int>.value(time)),
+                    formInput.copyWith(timeFour: Optional<int>.value(time)),
                   ),
-                  selectedTime: formInput.nightHour,
+                  selectedTime: formInput.timeFour,
                 ),
                 const SizedBox(height: 12),
                 Text(

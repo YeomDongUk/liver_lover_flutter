@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:beamer/beamer.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -89,7 +90,7 @@ class HealthInformationStateScreen extends State<HealthInformationScreen>
                       text: '간 건강백서',
                     ),
                     Tab(
-                      text: 'B 형 간질환 위험도 계산기',
+                      text: 'B형 간염위험도 계산',
                     ),
                   ],
                 ),
@@ -114,6 +115,7 @@ class HealthInformationStateScreen extends State<HealthInformationScreen>
   bool get wantKeepAlive => true;
 }
 
+/// ss
 class LiverDiseaseRiskCalculatorTabView extends StatefulWidget {
   const LiverDiseaseRiskCalculatorTabView({
     super.key,
@@ -510,10 +512,15 @@ class _LiverDiseaseRiskCalculatorTabViewState
                             child: CommonInputFormField(
                               focusNode: focusNodes[8],
                               onChanged: (str) => pageBCirculatorCubit
-                                  .updateAlbumin(int.tryParse(str)),
+                                  .updateAlbumin(double.tryParse(str)),
                               onFieldSubmitted: (str) => FocusScope.of(context)
                                   .requestFocus(focusNodes[9]),
                               textInputAction: TextInputAction.next,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d+\.?\d{0,2}'),
+                                ),
+                              ],
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
                                       signed: true,

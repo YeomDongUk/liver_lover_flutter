@@ -7,15 +7,15 @@ import 'package:yak/core/usecases/usecase.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
 import 'package:yak/domain/repositories/hospital_visit_schedule/hospital_visit_schedule_repository.dart';
 
-class GetHospitalVisitSchedules
-    extends UseCase<List<HospitalVisitSchedule>, bool> {
-  const GetHospitalVisitSchedules(this.hospitalVisitScheduleRepository);
+class GetHospitalVisitSchedulesStream
+    extends UseCase<Stream<List<HospitalVisitSchedule>>, void> {
+  const GetHospitalVisitSchedulesStream(this.hospitalVisitScheduleRepository);
 
   final HospitalVisitScheduleRepository hospitalVisitScheduleRepository;
 
   @override
-  Future<Either<Failure, List<HospitalVisitSchedule>>> call(bool visited) =>
-      hospitalVisitScheduleRepository.getHospitalVisitSchedules(
-        visited: visited,
-      );
+  Future<Either<Failure, Stream<List<HospitalVisitSchedule>>>> call(
+    void param,
+  ) async =>
+      hospitalVisitScheduleRepository.getHospitalVisitSchedulesStream();
 }

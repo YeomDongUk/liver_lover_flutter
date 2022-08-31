@@ -40,7 +40,6 @@ class HospitalVisitScheduleRepositoryImpl
         HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
       );
     } catch (e) {
-      Logger().e(e);
       return const Left(CreateFailure());
     }
   }
@@ -60,26 +59,25 @@ class HospitalVisitScheduleRepositoryImpl
           ? Right(deletedCount)
           : const Left(QueryFailure());
     } catch (e) {
-      Logger().e(e);
       return const Left(QueryFailure());
     }
   }
 
   @override
-  Future<Either<Failure, List<HospitalVisitSchedule>>>
-      getHospitalVisitSchedules({
-    required bool visited,
-  }) async {
+  Either<Failure, Stream<List<HospitalVisitSchedule>>>
+      getHospitalVisitSchedulesStream() {
     try {
-      final hospitalVisitScheduleModels =
-          await hospitalVisitScheduleLocalDataSource.getHospitalVisitSchedules(
+      final hospitalVisitSchedulesStream =
+          hospitalVisitScheduleLocalDataSource.getHospitalVisitSchedulesStream(
         userId: _userId,
-        visited: visited,
       );
+
       return Right(
-        hospitalVisitScheduleModels
-            .map((e) => HospitalVisitSchedule.fromJson(e.toJson()))
-            .toList(),
+        hospitalVisitSchedulesStream.map(
+          (hospitalVisitScheduleModels) => hospitalVisitScheduleModels
+              .map((e) => HospitalVisitSchedule.fromJson(e.toJson()))
+              .toList(),
+        ),
       );
     } catch (e) {
       return const Left(QueryFailure());
@@ -104,24 +102,7 @@ class HospitalVisitScheduleRepositoryImpl
         HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
       );
     } catch (e) {
-      return const Left(QueryFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, HospitalVisitSchedule>> getHospitalVisitSchedule(
-    String id,
-  ) async {
-    try {
-      final hospitalVisitScheduleModel =
-          await hospitalVisitScheduleLocalDataSource.getHospitalVisitSchedule(
-        id: id,
-        userId: _userId,
-      );
-      return Right(
-        HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
-      );
-    } catch (e) {
+      print(e);
       return const Left(QueryFailure());
     }
   }

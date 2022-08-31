@@ -5,7 +5,6 @@ import 'package:dartz/dartz.dart';
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/data/models/medication_schedule/medication_schedule_create_input.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
 
 abstract class MedicationScheduleRepository {
   Future<Either<Failure, List<MedicationSchedule>>>
@@ -21,20 +20,11 @@ abstract class MedicationScheduleRepository {
     required MedicationSchedule medicationSchedule,
   });
 
-  Either<Failure, Stream<Future<List<MedicationSchedulesGroup>>>>
-      getTodayMedicationSchedulesStream();
-
   Future<Either<Failure, bool>> deleteMedicationSchedule(String id);
 
-  Either<Failure, Stream<Future<List<MedicationSchedulesGroup>>>>
-      getMedicationSchedulesGroupsStream({
-    required DateTime date,
-  });
-
-  Future<Either<Failure, List<MedicationSchedule>>>
-      updateMedicationSchedulesPush({
+  Future<Either<Failure, void>> updateMedicationSchedulesPush({
     required bool push,
-    required List<int> medicationScheduleIds,
+    required List<String> medicationScheduleIds,
   });
 
   Either<Failure, void> medicateAll({
@@ -42,8 +32,9 @@ abstract class MedicationScheduleRepository {
   });
 
   Either<Failure, void> medicate({
-    required int scheduleId,
+    required String scheduleId,
   });
 
-  // Future<Either<Failure
+  Either<Failure, Stream<List<MedicationSchedule>>>
+      getMedicationSchedulesStream();
 }

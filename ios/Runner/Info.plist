@@ -50,5 +50,9 @@
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>처방전 정보를 스캔하기 위함</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+	</array>
 </dict>
 </plist>

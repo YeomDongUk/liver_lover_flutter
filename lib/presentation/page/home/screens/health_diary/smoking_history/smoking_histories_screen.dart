@@ -237,15 +237,14 @@ class _SmokingHistoriesScreenState extends State<SmokingHistoriesScreen>
                                 final smokingHistory = state.smokingHistory;
                                 final nowDate =
                                     DateTime(now.year, now.month, now.day);
-                                final isSameDate = yyyyMMddFormat
-                                        .format(calendarState.selectedDate) ==
-                                    yyyyMMddFormat.format(nowDate);
+                                final isAfterDate =
+                                    calendarState.selectedDate.isAfter(nowDate);
 
                                 return RichText(
                                   text: TextSpan(
                                     style: GoogleFonts.lato(),
                                     children: [
-                                      if (!isSameDate || smokingHistory != null)
+                                      if (isAfterDate || smokingHistory != null)
                                         TextSpan(
                                           text:
                                               '${smokingHistory?.amount ?? 0}',

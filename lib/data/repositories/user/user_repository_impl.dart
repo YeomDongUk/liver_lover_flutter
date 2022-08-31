@@ -43,7 +43,6 @@ class UserRepositoryImpl implements UserRepository {
       final userModel = await userLocalDataSource.getUser(pinCode);
       return Right(User.fromJson(userModel.toJson()));
     } catch (e) {
-      Logger().e(e);
       return const Left(QueryFailure());
     }
   }

@@ -273,14 +273,14 @@ packages:
       name: drift
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.1.0"
   drift_dev:
     dependency: "direct dev"
     description:
       name: drift_dev
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.1.0"
   dropdown_button2:
     dependency: "direct main"
     description:
@@ -372,13 +372,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  flat_buffers:
-    dependency: transitive
+  fl_chart:
+    dependency: "direct main"
     description:
-      name: flat_buffers
+      name: fl_chart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "0.55.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -711,27 +711,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  objectbox:
-    dependency: "direct main"
-    description:
-      name: objectbox
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.0"
-  objectbox_flutter_libs:
-    dependency: "direct main"
-    description:
-      name: objectbox_flutter_libs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.0"
-  objectbox_generator:
-    dependency: "direct dev"
-    description:
-      name: objectbox_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.0"
   package_config:
     dependency: transitive
     description:
@@ -1016,7 +995,7 @@ packages:
       name: sqlparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.23.0"
+    version: "0.23.2"
   stack_trace:
     dependency: transitive
     description:
@@ -1045,20 +1024,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  syncfusion_flutter_charts:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_charts
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "20.2.44"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "20.2.44"
   table_calendar:
     dependency: "direct main"
     description:

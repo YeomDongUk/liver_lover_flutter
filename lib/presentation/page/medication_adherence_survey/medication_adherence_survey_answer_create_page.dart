@@ -12,7 +12,6 @@ import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/usecases/survey/medication_adherence_survey_answer/create_medication_adherence_survey_answers.dart';
 import 'package:yak/presentation/bloc/medication_adherence_survey/create/medication_adherence_survey_create_cubit.dart';
-import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/sf_12_survey/survey_question_list_tile.dart';
@@ -105,18 +104,13 @@ class _MedicationAdherenceSurveyAnswerPageSCreatetate
               ElevatedButton(
                 onPressed: state.canSubmit
                     ? () async {
-                        final surveyGroupsCubit =
-                            context.read<SurveyGroupsCubit>();
                         final rowCount =
                             await medicationAdherenceSurveyAnswerCreateCubit
                                 .submit();
-                        if (rowCount == null) return;
 
-                        surveyGroupsCubit.updateMedicationAdherenceSurvey(
-                          medicationAdherenceSurveyId: widget.surveyId,
-                        );
+                        if (rowCount == null || !mounted) return;
 
-                        if (mounted) Beamer.of(context).beamBack();
+                        context.beamBack();
                       }
                     : null,
                 style: ElevatedButton.styleFrom(

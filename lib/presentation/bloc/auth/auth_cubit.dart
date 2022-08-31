@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
@@ -15,6 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.userIdImpl) : super(AuthInitial());
 
   final UserIdImpl userIdImpl;
+
   void updateUser(User user) {
     userIdImpl.value = user.id;
     emit(AuthSuccess(user: user));

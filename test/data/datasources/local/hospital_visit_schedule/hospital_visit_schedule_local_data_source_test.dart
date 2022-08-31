@@ -137,7 +137,7 @@
 //     test('병원 방문 일정 조회', () async {
 //       final hospitalVisitSchedules =
 //           await hospitalVisitScheduleLocalDataSourceImpl
-//               .getHospitalVisitSchedules(
+//               .getHospitalVisitSchedulesStream(
 //         userId: 'test',
 //         visited: false,
 //       );

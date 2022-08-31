@@ -127,18 +127,12 @@ class _SF12SurveyAnswerPageSCreatetate
               ElevatedButton(
                 onPressed: state.canSubmit
                     ? () async {
-                        final beamer = Beamer.of(context);
-                        final surveyGroupsCubit =
-                            context.read<SurveyGroupsCubit>();
                         final rowCount =
                             await sf12SurveyAnswerCreateCubit.submit();
-                        if (rowCount == null) return;
 
-                        surveyGroupsCubit.updateSF12Survey(
-                          sf12SurveyId: widget.surveyId,
-                        );
+                        if (rowCount == null || !mounted) return;
 
-                        beamer.beamBack();
+                        context.beamBack();
                       }
                     : null,
                 style: ElevatedButton.styleFrom(

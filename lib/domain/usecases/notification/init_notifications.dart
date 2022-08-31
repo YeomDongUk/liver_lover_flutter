@@ -22,12 +22,9 @@ class InitNotificaions extends UseCase<void, bool> {
 
     final list = await either.fold(
       (l) => Future(() => <bool>[]),
-      (r) {
-        print(r);
-        return localNotification.createNotifications(
-          scheduleNotificationModels: r,
-        );
-      },
+      (r) => localNotification.createNotifications(
+        notificationScheduleModels: r,
+      ),
     );
 
     return Right(list);

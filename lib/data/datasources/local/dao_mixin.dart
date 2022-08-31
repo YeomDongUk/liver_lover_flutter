@@ -57,4 +57,19 @@ mixin DaoMixin on DatabaseAccessor<AppDatabase> {
 
   /// 유저 포인트 테이블
   late final userPoints = attachedDatabase.userPoints;
+
+  /// 처방전 테이블
+  late final prescriptions = attachedDatabase.prescriptions;
+
+  /// 복약정보 테이블
+  late final medicationInformations = attachedDatabase.medicationInformations;
+
+  /// 복약 일정 테이블
+  late final medicationSchedules = attachedDatabase.medicationSchedules;
+
+  /// 알림 스케쥴 테이블
+  late final notificationSchedules = attachedDatabase.notificationSchedules;
+
+  /// 마지막 로그인 유저 테이블
+  late final lastLoginUsers = attachedDatabase.lastLoginUsers;
 }

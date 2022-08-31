@@ -13,7 +13,7 @@ import 'package:yak/core/error/failure.dart';
 import 'package:yak/domain/entities/survey/sf12/sf12_survey_history.dart';
 
 abstract class SF12SurveyHistoryRepository {
-  Future<Either<Failure, List<SF12SurveyHistory>>> getSurveyHistories();
+  Future<Either<Failure, List<SF12SurveyHistory>>> getSurveyGroupsStream();
   Future<Either<Failure, SF12SurveyHistory>> getSurveyHistory({
     required String scheduleId,
   });

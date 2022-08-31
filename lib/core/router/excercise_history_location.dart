@@ -26,7 +26,6 @@ class ExcerciseHistoryLocation extends BeamLocation<BeamState> {
 
   @override
   List<Pattern> get pathPatterns => [
-        Routes.excerciseHistories,
         Routes.excerciseHistoriesGraphs,
       ];
 }

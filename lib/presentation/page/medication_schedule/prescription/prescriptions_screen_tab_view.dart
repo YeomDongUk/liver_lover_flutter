@@ -15,7 +15,6 @@ import 'package:yak/domain/usecases/prescription/toggle_prescription_notificatio
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/prescription/prescriptions_cubit.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
-import 'package:yak/presentation/widget/common/common_switch.dart';
 import 'package:yak/presentation/widget/common/pill_detail_dialog.dart';
 
 class PrescriptionsTabView extends StatefulWidget {

@@ -40,7 +40,10 @@ class _PillDetailDialogState extends State<PillDetailDialog> {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(6)),
-                child: Image.memory(widget.pill.image!),
+                child: Image.memory(
+                  widget.pill.image!,
+                  fit: BoxFit.cover,
+                ),
               ),
             Padding(
               padding: const EdgeInsets.symmetric(

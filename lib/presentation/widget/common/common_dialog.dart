@@ -12,9 +12,11 @@ class CommonDialog extends StatelessWidget {
     super.key,
     this.child,
     this.padding,
+    this.hideCloseButton = false,
   });
   final Widget? child;
   final EdgeInsets? padding;
+  final bool hideCloseButton;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -31,24 +33,26 @@ class CommonDialog extends StatelessWidget {
                   padding: padding,
                   child: child,
                 ),
-                const SizedBox(height: 16),
-                Material(
-                  color: Colors.white,
-                  shape: const CircleBorder(),
-                  child: InkWell(
-                    onTap: Navigator.of(context).pop,
-                    customBorder: const CircleBorder(),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 36,
-                      height: 36,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                if (!hideCloseButton) ...[
+                  const SizedBox(height: 16),
+                  Material(
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      onTap: Navigator.of(context).pop,
+                      customBorder: const CircleBorder(),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 36,
+                        height: 36,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: SvgPicture.asset('assets/svg/close.svg'),
                       ),
-                      child: SvgPicture.asset('assets/svg/close.svg'),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
     );

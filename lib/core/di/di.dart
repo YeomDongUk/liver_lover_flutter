@@ -12,7 +12,6 @@ import 'package:path_provider/path_provider.dart';
 // Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/local_notification/local_notification.dart';
-import 'package:yak/core/object_box/object_box.dart';
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/drinking_history/drinking_history_local_data_source.dart';
 import 'package:yak/data/datasources/local/examination_result/examination_result_local_data_source.dart';
@@ -23,7 +22,7 @@ import 'package:yak/data/datasources/local/medication_adherence_survey_history/m
 import 'package:yak/data/datasources/local/medication_information/medication_information_local_data_source.dart';
 import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
 import 'package:yak/data/datasources/local/metabolic_disease/metabolic_disease_local_data_source.dart';
-import 'package:yak/data/datasources/local/schedule_notification/schedule_notification_local_data_source.dart';
+import 'package:yak/data/datasources/local/notification_schedule/notification_schedule_local_data_source.dart';
 import 'package:yak/data/datasources/local/pill/pill_local_data_source.dart';
 import 'package:yak/data/datasources/local/point_history/point_history_local_data_source.dart';
 import 'package:yak/data/datasources/local/prescription/prescription_local_data_source.dart';
@@ -82,13 +81,12 @@ import 'package:yak/domain/usecases/health_question/update_health_question.dart'
 import 'package:yak/domain/usecases/health_question/write_health_question.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/create_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/delete_hospital_visit_schedule.dart';
-import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_schedules.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/toggle_hospital_visit_schedule_push.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_all_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_medication.dart';
-import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules_groups.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules.dart';
 
 import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
@@ -106,7 +104,6 @@ import 'package:yak/domain/usecases/smoking_history/get_smoking_histories.dart';
 import 'package:yak/domain/usecases/smoking_history/get_smoking_history_average.dart';
 import 'package:yak/domain/usecases/smoking_history/upsert_smoking_history.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
-import 'package:yak/domain/usecases/survey/get_survey_group_history.dart';
 import 'package:yak/domain/usecases/survey/medication_adherence_survey_answer/create_medication_adherence_survey_answers.dart';
 import 'package:yak/domain/usecases/survey/medication_adherence_survey_answer/get_medication_adherence_survey_answers.dart';
 import 'package:yak/domain/usecases/survey/sf_12_survey_answer/create_sf_12_survey_answers.dart';
@@ -140,9 +137,6 @@ class Di {
           c<LazyDatabase>(),
         ),
       )
-      ..registerSingleton<ObjectBox>(
-        (c) => ObjectBox(),
-      )
 
       /// User
       ..registerInstance<UserId>(
@@ -155,15 +149,16 @@ class Di {
       )
 
       /// ScheduleNotificaiton
-      ..registerSingleton<ScheduleNotificationLocalDataSource>(
-        (c) => ScheduleNotificationLocalDataSourceImpl(
+      ..registerSingleton<NotificationScheduleLocalDataSource>(
+        (c) => NotificationScheduleLocalDataSourceImpl(
+          attachedDatabase: c<AppDatabase>(),
           localNotification: c<LocalNotification>(),
         ),
       )
       ..registerSingleton<ScheduleNotificationRepository>(
         (c) => ScheduleNotificationRepositoryImpl(
           userId: c<UserId>(),
-          notificationLocalDataSource: c<ScheduleNotificationLocalDataSource>(),
+          notificationLocalDataSource: c<NotificationScheduleLocalDataSource>(),
         ),
       )
       ..registerSingleton<InitNotificaions>(
@@ -174,7 +169,7 @@ class Di {
       )
       ..registerSingleton<UserLocalDataSource>(
         (c) => UserLocalDataSourceImpl(
-          c<AppDatabase>(),
+          attachedDatabase: c<AppDatabase>(),
         ),
       )
 
@@ -229,23 +224,21 @@ class Di {
 
       /// Medication
       ..registerSingleton<MedicationInformationLocalDataSource>(
-        (c) => MedicationInformationLocalDataSourceImpl(),
+        (c) => MedicationInformationLocalDataSourceImpl(
+          attachedDatabase: c<AppDatabase>(),
+        ),
       )
       ..registerSingleton<MedicationScheduleLocalDataSource>(
         (c) => MedicationScheduleLocalDataSourceImpl(
-          scheduleNotificationLocalDataSource:
-              c<ScheduleNotificationLocalDataSource>(),
+          attachedDatabase: c<AppDatabase>(),
+          notificationScheduleLocalDataSource:
+              c<NotificationScheduleLocalDataSource>(),
         ),
       )
       ..registerSingleton<MedicationScheduleRepository>(
         (c) => MedicationScheduleRepositoryImpl(
           c<MedicationScheduleLocalDataSource>(),
           c<UserId>(),
-        ),
-      )
-      ..registerSingleton<GetMedicationSchedulesGroups>(
-        (c) => GetMedicationSchedulesGroups(
-          medicationScheduleRepository: c<MedicationScheduleRepository>(),
         ),
       )
       ..registerSingleton<UpdateMedicationScheduleGroupPush>(
@@ -260,6 +253,11 @@ class Di {
       )
       ..registerSingleton<DoAllMedication>(
         (c) => DoAllMedication(
+          medicationScheduleRepository: c<MedicationScheduleRepository>(),
+        ),
+      )
+      ..registerSingleton<GetMedicationSchedules>(
+        (c) => GetMedicationSchedules(
           medicationScheduleRepository: c<MedicationScheduleRepository>(),
         ),
       )
@@ -290,7 +288,9 @@ class Di {
 
       /// Prescription
       ..registerSingleton<PrescriptionLocalDataSource>(
-        (c) => PrescriptionLocalDataSourceImpl(),
+        (c) => PrescriptionLocalDataSourceImpl(
+          attachedDatabase: c<AppDatabase>(),
+        ),
       )
       ..registerSingleton<PrescriptionRepository>(
         (c) => PrescriptionRepositoryImpl(
@@ -318,8 +318,8 @@ class Di {
       ..registerSingleton<HospitalVisitScheduleLocalDataSource>(
         (c) => HospitalVisitScheduleLocalDataSourceImpl(
           attachedDatabase: c<AppDatabase>(),
-          scheduleNotificationLocalDataSource:
-              c<ScheduleNotificationLocalDataSource>(),
+          notificationScheduleLocalDataSource:
+              c<NotificationScheduleLocalDataSource>(),
         ),
       )
       ..registerSingleton<HospitalVisitScheduleRepository>(
@@ -328,13 +328,8 @@ class Di {
           c<UserId>(),
         ),
       )
-      ..registerSingleton<GetHospitalVisitSchedules>(
-        (c) => GetHospitalVisitSchedules(
-          c<HospitalVisitScheduleRepository>(),
-        ),
-      )
-      ..registerSingleton<GetHospitalVisitSchedule>(
-        (c) => GetHospitalVisitSchedule(
+      ..registerSingleton<GetHospitalVisitSchedulesStream>(
+        (c) => GetHospitalVisitSchedulesStream(
           c<HospitalVisitScheduleRepository>(),
         ),
       )
@@ -369,11 +364,6 @@ class Di {
         (c) => SurveyGroupRepositoryImpl(
           surveyGroupLocalDataSource: c<SurveyGroupLocalDataSource>(),
           userId: c<UserId>(),
-        ),
-      )
-      ..registerSingleton<GetSurveyGroupHistory>(
-        (c) => GetSurveyGroupHistory(
-          surveyGroupRepository: c<SurveyGroupRepository>(),
         ),
       )
       ..registerSingleton<GetSurveyGroupHistories>(

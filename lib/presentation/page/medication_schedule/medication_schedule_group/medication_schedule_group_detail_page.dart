@@ -154,7 +154,7 @@ class _MedicationScheduleGroupDetailPageState
                           children: [
                             Container(
                               padding: const EdgeInsets.only(left: 8, right: 8),
-                              height: 281,
+                              height: 283,
                               child: MedicationScheduleInformationListView(
                                 now: now,
                                 state: state,
@@ -324,7 +324,7 @@ class MedicationScheduleInformationListView extends StatelessWidget {
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(16),
-                  width: 180,
+                  width: 182,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(6),
@@ -361,42 +361,69 @@ class MedicationScheduleInformationListView extends StatelessWidget {
                       const SizedBox(height: 12),
                       Stack(
                         children: [
-                          SvgPicture.asset(
-                            'assets/svg/capsule.svg',
-                          ),
-                          SizedBox(
+                          Container(
+                            width: 116,
                             height: 48,
-                            width: 96,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(
+                                color: AppColors.primary,
+                                width: 2,
+                              ),
+                            ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.only(
-                                    left: 4,
-                                  ),
-                                  width: 48,
-                                  child: Text(
-                                    '${medicationInformation.takeCount}',
-                                    style: GoogleFonts.lato(
-                                      fontSize: 25,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w900,
+                                Expanded(
+                                  child: Container(
+                                    height: 48,
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.primary,
+                                      borderRadius: BorderRadius.horizontal(
+                                        left: Radius.circular(100),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.only(
-                                    right: 6,
+                                const Spacer(),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 48,
+                            width: 116,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.only(
+                                      left: 4,
+                                    ),
+                                    child: Text(
+                                      '${medicationInformation.takeCount}',
+                                      style: GoogleFonts.lato(
+                                        fontSize: 25,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
                                   ),
-                                  width: 48,
-                                  child: Text(
-                                    '정',
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: AppColors.gray,
-                                    ).rixMGoM,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.only(
+                                      right: 8,
+                                    ),
+                                    width: 48,
+                                    child: Text(
+                                      '정',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: AppColors.gray,
+                                      ).rixMGoM,
+                                    ),
                                   ),
                                 ),
                               ],

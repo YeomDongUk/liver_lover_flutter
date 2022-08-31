@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 // Project imports:
 import 'package:yak/core/class/d_day_parser.dart';
@@ -17,7 +18,9 @@ import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/common/common_switch.dart';
+import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_delete_check_dialog.dart';
 import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_detail_dialog.dart';
+import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_done_check_dialog.dart';
 
 class HospitalVisitScheduleDetailContainer extends StatelessWidget {
   const HospitalVisitScheduleDetailContainer({
@@ -27,13 +30,14 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
   });
   final EdgeInsets? margin;
   final HospitalVisitSchedule hospitalVisitSchedule;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => showDialog<void>(
         context: context,
         builder: (_) => HospitalVisitScheduleDetailDialog(
-          hospitalVisitSchedule: hospitalVisitSchedule,
+          reservedAt: hospitalVisitSchedule.reservedAt,
         ),
       ),
       child: CommonShadowBox(
@@ -106,17 +110,39 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               child: Row(
                 children: [
-                  SvgPicture.asset(
-                    'assets/svg/logo_${hospitalVisitSchedule.hospitalName == '삼성서울병원' ? 'smc' : 'emc'}.svg',
-                  ),
+                  if (hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ||
+                      hospitalVisitSchedule.hospitalName.contains('노원을지병원'))
+                    SvgPicture.asset(
+                      'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
+                    )
+                  else
+                    Text(
+                      hospitalVisitSchedule.hospitalName,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        color: AppColors.primary,
+                      ).rixMGoEB,
+                    ),
                   const Spacer(),
-                  Text(
-                    '진료예약안내',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.gray,
-                    ).rixMGoB,
-                  ),
+                  if (hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ||
+                      hospitalVisitSchedule.hospitalName.contains('노원을지병원'))
+                    GestureDetector(
+                      onTap: () async {
+                        if (hospitalVisitSchedule.hospitalName
+                            .contains('삼성서울병원')) {
+                          await launchUrlString('tel:1599-3114');
+                        } else {
+                          await launchUrlString('tel:1899-0001');
+                        }
+                      },
+                      child: Text(
+                        '진료예약안내',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColors.gray,
+                        ).rixMGoB,
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -179,29 +205,6 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                       SizedBox(
                         width: 47,
                         child: Text(
-                          '진료실',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                      ),
-                      const SizedBox(width: 9),
-                      Text(
-                        hospitalVisitSchedule.doctorOffice,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Theme.of(context).primaryColor,
-                        ).rixMGoEB,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 47,
-                        child: Text(
                           '담당의사',
                           style: const TextStyle(
                             fontSize: 13,
@@ -233,7 +236,7 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                     SvgPicture.asset('assets/svg/alarm.svg'),
                     const SizedBox(width: 10),
                     Text(
-                      '1일전 알림, 2시간 전 알림',
+                      '1일 전 알림, 2시간 전 알림',
                       style: const TextStyle(
                         fontSize: 13,
                         color: AppColors.gray,
@@ -265,9 +268,24 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                         if (inProgress)
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () => context
-                                  .read<HospitalVisitSchedulesCubit>()
-                                  .visit(hospitalVisitSchedule.id),
+                              onPressed: () async {
+                                final now = DateTime.now();
+                                final canDoneSchedule = !now.isBefore(
+                                      hospitalVisitSchedule.reservedAt,
+                                    ) &&
+                                    hospitalVisitSchedule.visitedAt == null;
+
+                                if (canDoneSchedule) {
+                                  await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) =>
+                                        HospitalVisitScheduleDoneCheckDialog(
+                                      hospitalVisitScheduleId:
+                                          hospitalVisitSchedule.id,
+                                    ),
+                                  );
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size.fromHeight(50),
                                 primary: AppColors.gray,
@@ -288,9 +306,14 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                         if (hospitalVisitSchedule.visitedAt == null)
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () => context
-                                  .read<HospitalVisitSchedulesCubit>()
-                                  .deleteSchedule(hospitalVisitSchedule.id),
+                              onPressed: () => showDialog<void>(
+                                context: context,
+                                builder: (context) =>
+                                    HospitalVisitScheduleDeleteCheckDialog(
+                                  hospitalVisitScheduleId:
+                                      hospitalVisitSchedule.id,
+                                ),
+                              ),
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size.fromHeight(50),
                                 primary: AppColors.gray,

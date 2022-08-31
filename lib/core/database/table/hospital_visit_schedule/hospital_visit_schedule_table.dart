@@ -27,9 +27,6 @@ class HospitalVisitSchedules extends UserReferenceTable {
   /// 의사 이름
   TextColumn get doctorName => text()();
 
-  /// 진료실
-  TextColumn get doctorOffice => text()();
-
   /// 방문 예약일
   DateTimeColumn get reservedAt =>
       dateTime().check(reservedAt.isBiggerThan(currentDate))();

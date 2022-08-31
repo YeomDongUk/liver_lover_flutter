@@ -129,7 +129,7 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
               showDialog<void>(
                 context: context,
                 builder: (_) => HospitalVisitScheduleDetailDialog(
-                  hospitalVisitSchedule: hospitalVisitSchedule,
+                  reservedAt: hospitalVisitSchedule.reservedAt,
                 ),
               );
               return;

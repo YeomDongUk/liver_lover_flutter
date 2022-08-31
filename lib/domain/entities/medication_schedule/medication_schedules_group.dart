@@ -5,14 +5,6 @@ import 'package:collection/collection.dart';
 // Project imports:
 import 'package:yak/domain/entities/medication_information/medication_information.dart';
 
-// Project imports:
-
-// enum MedicationSchedulesGroupStatus {
-//   medicated,
-//   medicatedAll,
-//   none,
-// }
-
 class MedicationSchedulesGroup extends Equatable {
   const MedicationSchedulesGroup({
     required this.reservedAt,
@@ -70,3 +62,35 @@ class MedicationSchedulesGroup extends Equatable {
         push,
       ];
 }
+
+// enum MedicationScheduleGroupStatus {
+//   done('복용완료', AppColors.green),
+//   partial('부분복용', AppColors.orange),
+//   none('미복용', AppColors.magenta);
+
+//   const MedicationScheduleGroupStatus(
+//     this.text,
+//     this.color,
+//   );
+//   final String text;
+//   final Color color;
+// }
+
+// class DailyMedicationSchedule extends Equatable {
+//   const DailyMedicationSchedule({
+//     required this.date,
+//     required this.status,
+//   });
+
+//   final DateTime date;
+//   final MedicationScheduleGroupStatus status;
+//   final DateTime morningMedicatedAt;
+//   final DateTime morningMedicatedAt;
+//   final DateTime morningMedicatedAt;
+
+//   @override
+//   List<Object?> get props => [
+//         date,
+//         status,
+//       ];
+// }

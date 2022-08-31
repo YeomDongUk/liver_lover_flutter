@@ -23,17 +23,3 @@ class HospitalVisitSchedulesLoadSuccess extends HospitalVisitSchedulesState {
 class HospitalVisitSchedulesLoadFailure extends HospitalVisitSchedulesState {
   const HospitalVisitSchedulesLoadFailure();
 }
-
-class HospitalVisitSchedulesScheduleAdded extends HospitalVisitSchedulesState {
-  const HospitalVisitSchedulesScheduleAdded({super.hospitalVisitSchedules});
-}
-
-class HospitalVisitSchedulesScheduleUpdated
-    extends HospitalVisitSchedulesState {
-  const HospitalVisitSchedulesScheduleUpdated({super.hospitalVisitSchedules});
-}
-
-class HospitalVisitSchedulesScheduleDeleted
-    extends HospitalVisitSchedulesState {
-  const HospitalVisitSchedulesScheduleDeleted({super.hospitalVisitSchedules});
-}

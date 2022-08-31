@@ -17,8 +17,6 @@ import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/create_hospital_visit_schedule.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/create/create_hospital_visit_schedules_cubit.dart';
-import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
-import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/common/common_input_date_field.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
@@ -51,19 +49,21 @@ class _CreateHospitalVisitSchedulePageState
       4,
       (index) => FocusNode(
         debugLabel: '${Routes.hospitalVisitScheduleCreate}/${[
-          '병원 이름',
+          '병원',
+          '예약일시',
           '진료과목',
-          '진료실',
           '담당의사'
         ][index]}',
       ),
     );
+
     super.initState();
   }
 
   @override
   void dispose() {
     createHospitalVisitSchedulesCubit.close();
+
     for (final element in focusNodes) {
       element.dispose();
     }
@@ -199,64 +199,11 @@ class _CreateHospitalVisitSchedulePageState
                 ),
               ),
               const SizedBox(height: 16),
-              Text(
-                '병원',
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: AppColors.gray,
-                ).rixMGoB,
-              ),
-              const SizedBox(height: 12),
-              BlocBuilder<CreateHospitalVisitSchedulesCubit,
-                  CreateHospitalVisitSchedulesState>(
-                bloc: createHospitalVisitSchedulesCubit,
-                buildWhen: (previous, current) =>
-                    previous.hospitalName.value != current.hospitalName.value,
-                builder: (context, state) => SizedBox(
-                  height: 48,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<String>(
-                      value: state.hospitalName.value.isEmpty
-                          ? null
-                          : state.hospitalName.value,
-                      onChanged: (value) => value == null
-                          ? null
-                          : createHospitalVisitSchedulesCubit
-                              .updateHospitalName(value),
-                      icon: SvgPicture.asset('assets/svg/down.svg'),
-                      buttonPadding: const EdgeInsets.only(
-                        left: 10,
-                        right: 12,
-                      ),
-                      buttonElevation: 0,
-                      dropdownElevation: 0,
-                      buttonDecoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.lightGray,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      dropdownDecoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.lightGray,
-                        ),
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      items: [
-                        DropdownMenuItem<String>(
-                          value: '노원을지대학교병원',
-                          child: SvgPicture.asset('assets/svg/logo_emc.svg'),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: '삼성서울병원',
-                          child: SvgPicture.asset('assets/svg/logo_smc.svg'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              HospitalVisitScheduleTextField(
+                label: '병원',
+                onChanged: createHospitalVisitSchedulesCubit.updateHospitalName,
+                focusNode: focusNodes[0],
+                onFieldSubmitted: (str) => openDateTimePicker(),
               ),
               const SizedBox(height: 16),
               BlocBuilder<CreateHospitalVisitSchedulesCubit,
@@ -275,13 +222,6 @@ class _CreateHospitalVisitSchedulePageState
                 label: '진료과목',
                 onChanged:
                     createHospitalVisitSchedulesCubit.updateMedicalSubject,
-                focusNode: focusNodes[1],
-                nextFocusNode: focusNodes[2],
-              ),
-              const SizedBox(height: 16),
-              HospitalVisitScheduleTextField(
-                label: '진료실',
-                onChanged: createHospitalVisitSchedulesCubit.updateDoctorOffice,
                 focusNode: focusNodes[2],
                 nextFocusNode: focusNodes[3],
               ),
@@ -362,24 +302,16 @@ class _CreateHospitalVisitSchedulePageState
               const SizedBox(height: 24),
               BlocBuilder<CurrentTimeCubit, DateTime>(
                 builder: (context, now) => ElevatedButton(
-                  onPressed: createHospitalVisitSchedulesCubit
-                              .formStatus.index ==
-                          1
-                      ? () => createHospitalVisitSchedulesCubit.submit().then(
-                            (hospitalVisitSchedule) {
-                              if (hospitalVisitSchedule == null) return;
-                              context
-                                  .read<HospitalVisitSchedulesCubit>()
-                                  .onAddSchedule(hospitalVisitSchedule);
-
-                              context.read<SurveyGroupsCubit>().loadSurveyGroup(
-                                    hospitalVisitscheduleId:
-                                        hospitalVisitSchedule.id,
-                                  );
-                              context.popToNamed('/');
-                            },
-                          )
-                      : null,
+                  onPressed:
+                      createHospitalVisitSchedulesCubit.formStatus.index == 1
+                          ? () =>
+                              createHospitalVisitSchedulesCubit.submit().then(
+                                (hospitalVisitSchedule) {
+                                  if (hospitalVisitSchedule == null) return;
+                                  context.popToNamed('/');
+                                },
+                              )
+                          : null,
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size.fromHeight(60),
                     shape: RoundedRectangleBorder(

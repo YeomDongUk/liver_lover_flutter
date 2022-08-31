@@ -7,7 +7,7 @@ import 'package:yak/core/usecases/usecase.dart';
 import 'package:yak/domain/entities/survey/survey_group.dart';
 import 'package:yak/domain/repositories/survey/survey_group_repository.dart';
 
-class GetSurveyGroupHistories extends UseCase<List<SurveyGroup>, void> {
+class GetSurveyGroupHistories extends UseCase<Stream<List<SurveyGroup>>, void> {
   const GetSurveyGroupHistories({
     required this.surveyGroupRepository,
   });
@@ -15,6 +15,6 @@ class GetSurveyGroupHistories extends UseCase<List<SurveyGroup>, void> {
   final SurveyGroupRepository surveyGroupRepository;
 
   @override
-  Future<Either<Failure, List<SurveyGroup>>> call(void params) =>
-      surveyGroupRepository.getSurveyHistories();
+  Future<Either<Failure, Stream<List<SurveyGroup>>>> call(void params) async =>
+      surveyGroupRepository.getSurveyGroupsStream();
 }

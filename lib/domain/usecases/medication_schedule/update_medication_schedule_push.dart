@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 // Project imports:
 import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/usecases/usecase.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
 import 'package:yak/domain/repositories/medication_schedule/medication_schedule_repository.dart';
 
 class UpdateMedicationScheduleGroupPushParam {
@@ -13,12 +12,12 @@ class UpdateMedicationScheduleGroupPushParam {
     required this.push,
   });
 
-  final List<int> ids;
+  final List<String> ids;
   final bool push;
 }
 
-class UpdateMedicationScheduleGroupPush extends UseCase<
-    List<MedicationSchedule>, UpdateMedicationScheduleGroupPushParam> {
+class UpdateMedicationScheduleGroupPush
+    extends UseCase<void, UpdateMedicationScheduleGroupPushParam> {
   const UpdateMedicationScheduleGroupPush({
     required this.medicationScheduleRepository,
   });
@@ -26,7 +25,7 @@ class UpdateMedicationScheduleGroupPush extends UseCase<
   final MedicationScheduleRepository medicationScheduleRepository;
 
   @override
-  Future<Either<Failure, List<MedicationSchedule>>> call(
+  Future<Either<Failure, void>> call(
     UpdateMedicationScheduleGroupPushParam pram,
   ) =>
       medicationScheduleRepository.updateMedicationSchedulesPush(

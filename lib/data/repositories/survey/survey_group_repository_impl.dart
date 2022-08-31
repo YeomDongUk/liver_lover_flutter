@@ -22,54 +22,29 @@ class SurveyGroupRepositoryImpl implements SurveyGroupRepository {
   String get _userId => userId.value;
 
   @override
-  Future<Either<Failure, List<SurveyGroup>>> getSurveyHistories() async {
+  Either<Failure, Stream<List<SurveyGroup>>> getSurveyGroupsStream() {
     try {
-      final surveyGroups =
-          await surveyGroupLocalDataSource.getSurveyGroups(userId: _userId);
+      final surveyGroupsStream =
+          surveyGroupLocalDataSource.getSurveyGroupsStream(userId: _userId);
 
       return Right(
-        surveyGroups
-            .map(
-              (surveyGroup) => SurveyGroup(
-                reseverdAt: surveyGroup.reseverdAt,
-                visitedAt: surveyGroup.visitedAt,
-                medicationAdherenceSurveyHistory:
-                    MedicationAdherenceSurveyHistory.fromJson(
-                  surveyGroup.medicationAdherenceSurveyHistoryModel.toJson(),
+        surveyGroupsStream.map(
+          (surveyGroupModels) => surveyGroupModels
+              .map(
+                (surveyGroupModel) => SurveyGroup(
+                  reseverdAt: surveyGroupModel.reseverdAt,
+                  visitedAt: surveyGroupModel.visitedAt,
+                  medicationAdherenceSurveyHistory:
+                      MedicationAdherenceSurveyHistory.fromJson(
+                    surveyGroupModel.medicationAdherenceSurveyHistoryModel
+                        .toJson(),
+                  ),
+                  sf12surveyHistory: SF12SurveyHistory.fromJson(
+                    surveyGroupModel.sf12surveyHistoryModel.toJson(),
+                  ),
                 ),
-                sf12surveyHistory: SF12SurveyHistory.fromJson(
-                  surveyGroup.sf12surveyHistoryModel.toJson(),
-                ),
-              ),
-            )
-            .toList(),
-      );
-    } catch (e) {
-      return const Left(QueryFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, SurveyGroup>> getSurveyHistory({
-    required String scheduleId,
-  }) async {
-    try {
-      final surveyGroup = await surveyGroupLocalDataSource.getSurveyGroup(
-        hospitalVisitScheduleId: scheduleId,
-        userId: _userId,
-      );
-
-      return Right(
-        SurveyGroup(
-          reseverdAt: surveyGroup.reseverdAt,
-          visitedAt: surveyGroup.visitedAt,
-          medicationAdherenceSurveyHistory:
-              MedicationAdherenceSurveyHistory.fromJson(
-            surveyGroup.medicationAdherenceSurveyHistoryModel.toJson(),
-          ),
-          sf12surveyHistory: SF12SurveyHistory.fromJson(
-            surveyGroup.sf12surveyHistoryModel.toJson(),
-          ),
+              )
+              .toList(),
         ),
       );
     } catch (e) {

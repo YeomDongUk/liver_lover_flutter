@@ -217,8 +217,17 @@ class _HealthQuestionPageState extends State<HealthQuestionPage> {
                                       const SizedBox(width: 8),
                                       Expanded(
                                         child: ElevatedButton(
-                                          onPressed: () => context.beamToNamed(
-                                            '${Routes.healthQuestions}/${healthQuestion.id}/update',
+                                          onPressed: () => context
+                                              .read<HealthQuestionsCubit>()
+                                              .deleteHealthQuestion
+                                              .call(widget.id)
+                                              .then(
+                                            (value) {
+                                              context
+                                                  .read<HealthQuestionsCubit>()
+                                                  .onDelete(widget.id);
+                                              context.beamBack();
+                                            },
                                           ),
                                           style: ElevatedButton.styleFrom(
                                             primary: AppColors.gray,

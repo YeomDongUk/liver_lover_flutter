@@ -232,15 +232,15 @@ class _DrinkingHistoriesScreenState extends State<DrinkingHistoriesScreen>
                                 final drinkingHistory = state.drinkingHistory;
                                 final nowDate =
                                     DateTime(now.year, now.month, now.day);
-                                final isSameDate = yyyyMMddFormat
-                                        .format(calendarState.selectedDate) ==
-                                    yyyyMMddFormat.format(nowDate);
+
+                                final isAfterDate =
+                                    calendarState.selectedDate.isAfter(nowDate);
 
                                 return RichText(
                                   text: TextSpan(
                                     style: GoogleFonts.lato(),
                                     children: [
-                                      if (!isSameDate ||
+                                      if (isAfterDate ||
                                           drinkingHistory != null)
                                         TextSpan(
                                           text:

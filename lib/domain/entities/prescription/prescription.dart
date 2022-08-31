@@ -16,7 +16,7 @@ class Prescription extends Equatable {
   });
 
   factory Prescription.fromJson(Map<String, dynamic> json) => Prescription(
-        id: json['id'] as int,
+        id: json['id'] as String,
         doctorName: json['doctorName'] as String,
         medicationInformations: json['medicationInformations'] == null
             ? null
@@ -35,7 +35,7 @@ class Prescription extends Equatable {
         ),
       );
 
-  final int id;
+  final String id;
   final String doctorName;
   final List<MedicationInformation>? medicationInformations;
   final DateTime medicationStartAt;

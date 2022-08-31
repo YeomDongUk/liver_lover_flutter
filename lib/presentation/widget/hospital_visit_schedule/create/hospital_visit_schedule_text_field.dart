@@ -14,6 +14,7 @@ class HospitalVisitScheduleTextField extends StatelessWidget {
     required this.focusNode,
     required this.onChanged,
     this.nextFocusNode,
+    this.onFieldSubmitted,
     this.initialValue,
   });
 
@@ -21,6 +22,7 @@ class HospitalVisitScheduleTextField extends StatelessWidget {
   final String? initialValue;
   final FocusNode focusNode;
   final FocusNode? nextFocusNode;
+  final void Function(String)? onFieldSubmitted;
   final void Function(String) onChanged;
 
   @override
@@ -45,8 +47,8 @@ class HospitalVisitScheduleTextField extends StatelessWidget {
               focusNode: focusNode,
               onChanged: onChanged,
               textInputAction: TextInputAction.next,
-              onFieldSubmitted: (str) =>
-                  FocusScope.of(context).requestFocus(nextFocusNode),
+              onFieldSubmitted: onFieldSubmitted ??
+                  (str) => FocusScope.of(context).requestFocus(nextFocusNode),
             ),
           ),
         ),

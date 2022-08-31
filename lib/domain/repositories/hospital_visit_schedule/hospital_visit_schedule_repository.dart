@@ -7,14 +7,8 @@ import 'package:yak/core/error/failure.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
 
 abstract class HospitalVisitScheduleRepository {
-  Future<Either<Failure, HospitalVisitSchedule>> getHospitalVisitSchedule(
-    String id,
-  );
-
-  Future<Either<Failure, List<HospitalVisitSchedule>>>
-      getHospitalVisitSchedules({
-    required bool visited,
-  });
+  Either<Failure, Stream<List<HospitalVisitSchedule>>>
+      getHospitalVisitSchedulesStream();
 
   Future<Either<Failure, HospitalVisitSchedule>> createHospitalVisitSchedule(
     HospitalVisitSchedulesCompanion companion,

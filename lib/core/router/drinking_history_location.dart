@@ -26,7 +26,6 @@ class DrinkingHistoryLocation extends BeamLocation<BeamState> {
 
   @override
   List<Pattern> get pathPatterns => [
-        Routes.dringkingHistories,
         Routes.dringkingHistoriesGraphs,
       ];
 }

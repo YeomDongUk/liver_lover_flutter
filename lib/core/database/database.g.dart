@@ -952,9 +952,6 @@ class HospitalVisitScheduleModel extends DataClass
   /// 의사 이름
   final String doctorName;
 
-  /// 진료실
-  final String doctorOffice;
-
   /// 방문 예약일
   final DateTime reservedAt;
 
@@ -978,7 +975,6 @@ class HospitalVisitScheduleModel extends DataClass
       required this.hospitalName,
       required this.medicalSubject,
       required this.doctorName,
-      required this.doctorOffice,
       required this.reservedAt,
       this.visitedAt,
       required this.push,
@@ -998,7 +994,6 @@ class HospitalVisitScheduleModel extends DataClass
     map['hospital_name'] = Variable<String>(hospitalName);
     map['medical_subject'] = Variable<String>(medicalSubject);
     map['doctor_name'] = Variable<String>(doctorName);
-    map['doctor_office'] = Variable<String>(doctorOffice);
     map['reserved_at'] = Variable<DateTime>(reservedAt);
     if (!nullToAbsent || visitedAt != null) {
       map['visited_at'] = Variable<DateTime>(visitedAt);
@@ -1019,7 +1014,6 @@ class HospitalVisitScheduleModel extends DataClass
       hospitalName: Value(hospitalName),
       medicalSubject: Value(medicalSubject),
       doctorName: Value(doctorName),
-      doctorOffice: Value(doctorOffice),
       reservedAt: Value(reservedAt),
       visitedAt: visitedAt == null && nullToAbsent
           ? const Value.absent()
@@ -1042,7 +1036,6 @@ class HospitalVisitScheduleModel extends DataClass
       hospitalName: serializer.fromJson<String>(json['hospitalName']),
       medicalSubject: serializer.fromJson<String>(json['medicalSubject']),
       doctorName: serializer.fromJson<String>(json['doctorName']),
-      doctorOffice: serializer.fromJson<String>(json['doctorOffice']),
       reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
       visitedAt: serializer.fromJson<DateTime?>(json['visitedAt']),
       push: serializer.fromJson<bool>(json['push']),
@@ -1062,7 +1055,6 @@ class HospitalVisitScheduleModel extends DataClass
       'hospitalName': serializer.toJson<String>(hospitalName),
       'medicalSubject': serializer.toJson<String>(medicalSubject),
       'doctorName': serializer.toJson<String>(doctorName),
-      'doctorOffice': serializer.toJson<String>(doctorOffice),
       'reservedAt': serializer.toJson<DateTime>(reservedAt),
       'visitedAt': serializer.toJson<DateTime?>(visitedAt),
       'push': serializer.toJson<bool>(push),
@@ -1080,7 +1072,6 @@ class HospitalVisitScheduleModel extends DataClass
           String? hospitalName,
           String? medicalSubject,
           String? doctorName,
-          String? doctorOffice,
           DateTime? reservedAt,
           Value<DateTime?> visitedAt = const Value.absent(),
           bool? push,
@@ -1095,7 +1086,6 @@ class HospitalVisitScheduleModel extends DataClass
         hospitalName: hospitalName ?? this.hospitalName,
         medicalSubject: medicalSubject ?? this.medicalSubject,
         doctorName: doctorName ?? this.doctorName,
-        doctorOffice: doctorOffice ?? this.doctorOffice,
         reservedAt: reservedAt ?? this.reservedAt,
         visitedAt: visitedAt.present ? visitedAt.value : this.visitedAt,
         push: push ?? this.push,
@@ -1113,7 +1103,6 @@ class HospitalVisitScheduleModel extends DataClass
           ..write('hospitalName: $hospitalName, ')
           ..write('medicalSubject: $medicalSubject, ')
           ..write('doctorName: $doctorName, ')
-          ..write('doctorOffice: $doctorOffice, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('visitedAt: $visitedAt, ')
           ..write('push: $push, ')
@@ -1133,7 +1122,6 @@ class HospitalVisitScheduleModel extends DataClass
       hospitalName,
       medicalSubject,
       doctorName,
-      doctorOffice,
       reservedAt,
       visitedAt,
       push,
@@ -1151,7 +1139,6 @@ class HospitalVisitScheduleModel extends DataClass
           other.hospitalName == this.hospitalName &&
           other.medicalSubject == this.medicalSubject &&
           other.doctorName == this.doctorName &&
-          other.doctorOffice == this.doctorOffice &&
           other.reservedAt == this.reservedAt &&
           other.visitedAt == this.visitedAt &&
           other.push == this.push &&
@@ -1169,7 +1156,6 @@ class HospitalVisitSchedulesCompanion
   final Value<String> hospitalName;
   final Value<String> medicalSubject;
   final Value<String> doctorName;
-  final Value<String> doctorOffice;
   final Value<DateTime> reservedAt;
   final Value<DateTime?> visitedAt;
   final Value<bool> push;
@@ -1184,7 +1170,6 @@ class HospitalVisitSchedulesCompanion
     this.hospitalName = const Value.absent(),
     this.medicalSubject = const Value.absent(),
     this.doctorName = const Value.absent(),
-    this.doctorOffice = const Value.absent(),
     this.reservedAt = const Value.absent(),
     this.visitedAt = const Value.absent(),
     this.push = const Value.absent(),
@@ -1200,7 +1185,6 @@ class HospitalVisitSchedulesCompanion
     required String hospitalName,
     required String medicalSubject,
     required String doctorName,
-    required String doctorOffice,
     required DateTime reservedAt,
     this.visitedAt = const Value.absent(),
     this.push = const Value.absent(),
@@ -1211,7 +1195,6 @@ class HospitalVisitSchedulesCompanion
         hospitalName = Value(hospitalName),
         medicalSubject = Value(medicalSubject),
         doctorName = Value(doctorName),
-        doctorOffice = Value(doctorOffice),
         reservedAt = Value(reservedAt);
   static Insertable<HospitalVisitScheduleModel> custom({
     Expression<String>? userId,
@@ -1222,7 +1205,6 @@ class HospitalVisitSchedulesCompanion
     Expression<String>? hospitalName,
     Expression<String>? medicalSubject,
     Expression<String>? doctorName,
-    Expression<String>? doctorOffice,
     Expression<DateTime>? reservedAt,
     Expression<DateTime>? visitedAt,
     Expression<bool>? push,
@@ -1238,7 +1220,6 @@ class HospitalVisitSchedulesCompanion
       if (hospitalName != null) 'hospital_name': hospitalName,
       if (medicalSubject != null) 'medical_subject': medicalSubject,
       if (doctorName != null) 'doctor_name': doctorName,
-      if (doctorOffice != null) 'doctor_office': doctorOffice,
       if (reservedAt != null) 'reserved_at': reservedAt,
       if (visitedAt != null) 'visited_at': visitedAt,
       if (push != null) 'push': push,
@@ -1256,7 +1237,6 @@ class HospitalVisitSchedulesCompanion
       Value<String>? hospitalName,
       Value<String>? medicalSubject,
       Value<String>? doctorName,
-      Value<String>? doctorOffice,
       Value<DateTime>? reservedAt,
       Value<DateTime?>? visitedAt,
       Value<bool>? push,
@@ -1271,7 +1251,6 @@ class HospitalVisitSchedulesCompanion
       hospitalName: hospitalName ?? this.hospitalName,
       medicalSubject: medicalSubject ?? this.medicalSubject,
       doctorName: doctorName ?? this.doctorName,
-      doctorOffice: doctorOffice ?? this.doctorOffice,
       reservedAt: reservedAt ?? this.reservedAt,
       visitedAt: visitedAt ?? this.visitedAt,
       push: push ?? this.push,
@@ -1308,9 +1287,6 @@ class HospitalVisitSchedulesCompanion
     if (doctorName.present) {
       map['doctor_name'] = Variable<String>(doctorName.value);
     }
-    if (doctorOffice.present) {
-      map['doctor_office'] = Variable<String>(doctorOffice.value);
-    }
     if (reservedAt.present) {
       map['reserved_at'] = Variable<DateTime>(reservedAt.value);
     }
@@ -1340,7 +1316,6 @@ class HospitalVisitSchedulesCompanion
           ..write('hospitalName: $hospitalName, ')
           ..write('medicalSubject: $medicalSubject, ')
           ..write('doctorName: $doctorName, ')
-          ..write('doctorOffice: $doctorOffice, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('visitedAt: $visitedAt, ')
           ..write('push: $push, ')
@@ -1409,12 +1384,6 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
   late final GeneratedColumn<String> doctorName = GeneratedColumn<String>(
       'doctor_name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _doctorOfficeMeta =
-      const VerificationMeta('doctorOffice');
-  @override
-  late final GeneratedColumn<String> doctorOffice = GeneratedColumn<String>(
-      'doctor_office', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
   @override
   late final GeneratedColumn<DateTime> reservedAt = GeneratedColumn<DateTime>(
@@ -1463,7 +1432,6 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
         hospitalName,
         medicalSubject,
         doctorName,
-        doctorOffice,
         reservedAt,
         visitedAt,
         push,
@@ -1522,14 +1490,6 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
     } else if (isInserting) {
       context.missing(_doctorNameMeta);
     }
-    if (data.containsKey('doctor_office')) {
-      context.handle(
-          _doctorOfficeMeta,
-          doctorOffice.isAcceptableOrUnknown(
-              data['doctor_office']!, _doctorOfficeMeta));
-    } else if (isInserting) {
-      context.missing(_doctorOfficeMeta);
-    }
     if (data.containsKey('reserved_at')) {
       context.handle(
           _reservedAtMeta,
@@ -1587,8 +1547,6 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
           DriftSqlType.string, data['${effectivePrefix}medical_subject'])!,
       doctorName: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}doctor_name'])!,
-      doctorOffice: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}doctor_office'])!,
       reservedAt: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}reserved_at'])!,
       visitedAt: attachedDatabase.options.types
@@ -7025,6 +6983,2173 @@ class $UserPointsTable extends UserPoints
   }
 }
 
+class PrescriptionModel extends DataClass
+    implements Insertable<PrescriptionModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+
+  /// 의사 이름
+  final String doctorName;
+
+  /// 처방일
+  final DateTime prescriptedAt;
+
+  /// 복약 시작일
+  final DateTime medicatedAt;
+
+  /// 복약 기간
+  final int duration;
+  const PrescriptionModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.doctorName,
+      required this.prescriptedAt,
+      required this.medicatedAt,
+      required this.duration});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['doctor_name'] = Variable<String>(doctorName);
+    map['prescripted_at'] = Variable<DateTime>(prescriptedAt);
+    map['medicated_at'] = Variable<DateTime>(medicatedAt);
+    map['duration'] = Variable<int>(duration);
+    return map;
+  }
+
+  PrescriptionsCompanion toCompanion(bool nullToAbsent) {
+    return PrescriptionsCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      doctorName: Value(doctorName),
+      prescriptedAt: Value(prescriptedAt),
+      medicatedAt: Value(medicatedAt),
+      duration: Value(duration),
+    );
+  }
+
+  factory PrescriptionModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PrescriptionModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      doctorName: serializer.fromJson<String>(json['doctorName']),
+      prescriptedAt: serializer.fromJson<DateTime>(json['prescriptedAt']),
+      medicatedAt: serializer.fromJson<DateTime>(json['medicatedAt']),
+      duration: serializer.fromJson<int>(json['duration']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'doctorName': serializer.toJson<String>(doctorName),
+      'prescriptedAt': serializer.toJson<DateTime>(prescriptedAt),
+      'medicatedAt': serializer.toJson<DateTime>(medicatedAt),
+      'duration': serializer.toJson<int>(duration),
+    };
+  }
+
+  PrescriptionModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? doctorName,
+          DateTime? prescriptedAt,
+          DateTime? medicatedAt,
+          int? duration}) =>
+      PrescriptionModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        doctorName: doctorName ?? this.doctorName,
+        prescriptedAt: prescriptedAt ?? this.prescriptedAt,
+        medicatedAt: medicatedAt ?? this.medicatedAt,
+        duration: duration ?? this.duration,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('doctorName: $doctorName, ')
+          ..write('prescriptedAt: $prescriptedAt, ')
+          ..write('medicatedAt: $medicatedAt, ')
+          ..write('duration: $duration')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(userId, id, createdAt, updatedAt, doctorName,
+      prescriptedAt, medicatedAt, duration);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PrescriptionModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.doctorName == this.doctorName &&
+          other.prescriptedAt == this.prescriptedAt &&
+          other.medicatedAt == this.medicatedAt &&
+          other.duration == this.duration);
+}
+
+class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> doctorName;
+  final Value<DateTime> prescriptedAt;
+  final Value<DateTime> medicatedAt;
+  final Value<int> duration;
+  const PrescriptionsCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.doctorName = const Value.absent(),
+    this.prescriptedAt = const Value.absent(),
+    this.medicatedAt = const Value.absent(),
+    this.duration = const Value.absent(),
+  });
+  PrescriptionsCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required String doctorName,
+    required DateTime prescriptedAt,
+    required DateTime medicatedAt,
+    required int duration,
+  })  : userId = Value(userId),
+        doctorName = Value(doctorName),
+        prescriptedAt = Value(prescriptedAt),
+        medicatedAt = Value(medicatedAt),
+        duration = Value(duration);
+  static Insertable<PrescriptionModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? doctorName,
+    Expression<DateTime>? prescriptedAt,
+    Expression<DateTime>? medicatedAt,
+    Expression<int>? duration,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (doctorName != null) 'doctor_name': doctorName,
+      if (prescriptedAt != null) 'prescripted_at': prescriptedAt,
+      if (medicatedAt != null) 'medicated_at': medicatedAt,
+      if (duration != null) 'duration': duration,
+    });
+  }
+
+  PrescriptionsCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? doctorName,
+      Value<DateTime>? prescriptedAt,
+      Value<DateTime>? medicatedAt,
+      Value<int>? duration}) {
+    return PrescriptionsCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      doctorName: doctorName ?? this.doctorName,
+      prescriptedAt: prescriptedAt ?? this.prescriptedAt,
+      medicatedAt: medicatedAt ?? this.medicatedAt,
+      duration: duration ?? this.duration,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (doctorName.present) {
+      map['doctor_name'] = Variable<String>(doctorName.value);
+    }
+    if (prescriptedAt.present) {
+      map['prescripted_at'] = Variable<DateTime>(prescriptedAt.value);
+    }
+    if (medicatedAt.present) {
+      map['medicated_at'] = Variable<DateTime>(medicatedAt.value);
+    }
+    if (duration.present) {
+      map['duration'] = Variable<int>(duration.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PrescriptionsCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('doctorName: $doctorName, ')
+          ..write('prescriptedAt: $prescriptedAt, ')
+          ..write('medicatedAt: $medicatedAt, ')
+          ..write('duration: $duration')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PrescriptionsTable extends Prescriptions
+    with TableInfo<$PrescriptionsTable, PrescriptionModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PrescriptionsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _doctorNameMeta = const VerificationMeta('doctorName');
+  @override
+  late final GeneratedColumn<String> doctorName = GeneratedColumn<String>(
+      'doctor_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  final VerificationMeta _prescriptedAtMeta =
+      const VerificationMeta('prescriptedAt');
+  @override
+  late final GeneratedColumn<DateTime> prescriptedAt =
+      GeneratedColumn<DateTime>('prescripted_at', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  final VerificationMeta _medicatedAtMeta =
+      const VerificationMeta('medicatedAt');
+  @override
+  late final GeneratedColumn<DateTime> medicatedAt = GeneratedColumn<DateTime>(
+      'medicated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  final VerificationMeta _durationMeta = const VerificationMeta('duration');
+  @override
+  late final GeneratedColumn<int> duration = GeneratedColumn<int>(
+      'duration', aliasedName, false,
+      check: () => duration.isBiggerOrEqual(const Constant(0)),
+      type: DriftSqlType.int,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        userId,
+        id,
+        createdAt,
+        updatedAt,
+        doctorName,
+        prescriptedAt,
+        medicatedAt,
+        duration
+      ];
+  @override
+  String get aliasedName => _alias ?? 'prescriptions';
+  @override
+  String get actualTableName => 'prescriptions';
+  @override
+  VerificationContext validateIntegrity(Insertable<PrescriptionModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('doctor_name')) {
+      context.handle(
+          _doctorNameMeta,
+          doctorName.isAcceptableOrUnknown(
+              data['doctor_name']!, _doctorNameMeta));
+    } else if (isInserting) {
+      context.missing(_doctorNameMeta);
+    }
+    if (data.containsKey('prescripted_at')) {
+      context.handle(
+          _prescriptedAtMeta,
+          prescriptedAt.isAcceptableOrUnknown(
+              data['prescripted_at']!, _prescriptedAtMeta));
+    } else if (isInserting) {
+      context.missing(_prescriptedAtMeta);
+    }
+    if (data.containsKey('medicated_at')) {
+      context.handle(
+          _medicatedAtMeta,
+          medicatedAt.isAcceptableOrUnknown(
+              data['medicated_at']!, _medicatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_medicatedAtMeta);
+    }
+    if (data.containsKey('duration')) {
+      context.handle(_durationMeta,
+          duration.isAcceptableOrUnknown(data['duration']!, _durationMeta));
+    } else if (isInserting) {
+      context.missing(_durationMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PrescriptionModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PrescriptionModel(
+      userId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      doctorName: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}doctor_name'])!,
+      prescriptedAt: attachedDatabase.options.types.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}prescripted_at'])!,
+      medicatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}medicated_at'])!,
+      duration: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}duration'])!,
+    );
+  }
+
+  @override
+  $PrescriptionsTable createAlias(String alias) {
+    return $PrescriptionsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicationInformationModel extends DataClass
+    implements Insertable<MedicationInformationModel> {
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final String prescriptionId;
+  final String pillId;
+
+  /// 첫번째 복용 시간
+  final int? timeOne;
+
+  /// 두번째 복용 시간
+  final int? timeTwo;
+
+  /// 세번째 복용 시간
+  final int? timeThree;
+
+  /// 복용량
+  final int takeCount;
+
+  /// 복용주기
+  final int takeCycle;
+
+  /// 알림 사용
+  final bool push;
+
+  /// 30분 전 알림
+  final bool beforePush;
+
+  /// 30분 후 알림
+  final bool afterPush;
+  const MedicationInformationModel(
+      {required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.prescriptionId,
+      required this.pillId,
+      this.timeOne,
+      this.timeTwo,
+      this.timeThree,
+      required this.takeCount,
+      required this.takeCycle,
+      required this.push,
+      required this.beforePush,
+      required this.afterPush});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['prescription_id'] = Variable<String>(prescriptionId);
+    map['pill_id'] = Variable<String>(pillId);
+    if (!nullToAbsent || timeOne != null) {
+      map['time_one'] = Variable<int>(timeOne);
+    }
+    if (!nullToAbsent || timeTwo != null) {
+      map['time_two'] = Variable<int>(timeTwo);
+    }
+    if (!nullToAbsent || timeThree != null) {
+      map['time_three'] = Variable<int>(timeThree);
+    }
+    map['take_count'] = Variable<int>(takeCount);
+    map['take_cycle'] = Variable<int>(takeCycle);
+    map['push'] = Variable<bool>(push);
+    map['before_push'] = Variable<bool>(beforePush);
+    map['after_push'] = Variable<bool>(afterPush);
+    return map;
+  }
+
+  MedicationInformationsCompanion toCompanion(bool nullToAbsent) {
+    return MedicationInformationsCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      prescriptionId: Value(prescriptionId),
+      pillId: Value(pillId),
+      timeOne: timeOne == null && nullToAbsent
+          ? const Value.absent()
+          : Value(timeOne),
+      timeTwo: timeTwo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(timeTwo),
+      timeThree: timeThree == null && nullToAbsent
+          ? const Value.absent()
+          : Value(timeThree),
+      takeCount: Value(takeCount),
+      takeCycle: Value(takeCycle),
+      push: Value(push),
+      beforePush: Value(beforePush),
+      afterPush: Value(afterPush),
+    );
+  }
+
+  factory MedicationInformationModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationInformationModel(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      prescriptionId: serializer.fromJson<String>(json['prescriptionId']),
+      pillId: serializer.fromJson<String>(json['pillId']),
+      timeOne: serializer.fromJson<int?>(json['timeOne']),
+      timeTwo: serializer.fromJson<int?>(json['timeTwo']),
+      timeThree: serializer.fromJson<int?>(json['timeThree']),
+      takeCount: serializer.fromJson<int>(json['takeCount']),
+      takeCycle: serializer.fromJson<int>(json['takeCycle']),
+      push: serializer.fromJson<bool>(json['push']),
+      beforePush: serializer.fromJson<bool>(json['beforePush']),
+      afterPush: serializer.fromJson<bool>(json['afterPush']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'prescriptionId': serializer.toJson<String>(prescriptionId),
+      'pillId': serializer.toJson<String>(pillId),
+      'timeOne': serializer.toJson<int?>(timeOne),
+      'timeTwo': serializer.toJson<int?>(timeTwo),
+      'timeThree': serializer.toJson<int?>(timeThree),
+      'takeCount': serializer.toJson<int>(takeCount),
+      'takeCycle': serializer.toJson<int>(takeCycle),
+      'push': serializer.toJson<bool>(push),
+      'beforePush': serializer.toJson<bool>(beforePush),
+      'afterPush': serializer.toJson<bool>(afterPush),
+    };
+  }
+
+  MedicationInformationModel copyWith(
+          {String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? prescriptionId,
+          String? pillId,
+          Value<int?> timeOne = const Value.absent(),
+          Value<int?> timeTwo = const Value.absent(),
+          Value<int?> timeThree = const Value.absent(),
+          int? takeCount,
+          int? takeCycle,
+          bool? push,
+          bool? beforePush,
+          bool? afterPush}) =>
+      MedicationInformationModel(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        prescriptionId: prescriptionId ?? this.prescriptionId,
+        pillId: pillId ?? this.pillId,
+        timeOne: timeOne.present ? timeOne.value : this.timeOne,
+        timeTwo: timeTwo.present ? timeTwo.value : this.timeTwo,
+        timeThree: timeThree.present ? timeThree.value : this.timeThree,
+        takeCount: takeCount ?? this.takeCount,
+        takeCycle: takeCycle ?? this.takeCycle,
+        push: push ?? this.push,
+        beforePush: beforePush ?? this.beforePush,
+        afterPush: afterPush ?? this.afterPush,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('MedicationInformationModel(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('pillId: $pillId, ')
+          ..write('timeOne: $timeOne, ')
+          ..write('timeTwo: $timeTwo, ')
+          ..write('timeThree: $timeThree, ')
+          ..write('takeCount: $takeCount, ')
+          ..write('takeCycle: $takeCycle, ')
+          ..write('push: $push, ')
+          ..write('beforePush: $beforePush, ')
+          ..write('afterPush: $afterPush')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      createdAt,
+      updatedAt,
+      prescriptionId,
+      pillId,
+      timeOne,
+      timeTwo,
+      timeThree,
+      takeCount,
+      takeCycle,
+      push,
+      beforePush,
+      afterPush);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationInformationModel &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.prescriptionId == this.prescriptionId &&
+          other.pillId == this.pillId &&
+          other.timeOne == this.timeOne &&
+          other.timeTwo == this.timeTwo &&
+          other.timeThree == this.timeThree &&
+          other.takeCount == this.takeCount &&
+          other.takeCycle == this.takeCycle &&
+          other.push == this.push &&
+          other.beforePush == this.beforePush &&
+          other.afterPush == this.afterPush);
+}
+
+class MedicationInformationsCompanion
+    extends UpdateCompanion<MedicationInformationModel> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> prescriptionId;
+  final Value<String> pillId;
+  final Value<int?> timeOne;
+  final Value<int?> timeTwo;
+  final Value<int?> timeThree;
+  final Value<int> takeCount;
+  final Value<int> takeCycle;
+  final Value<bool> push;
+  final Value<bool> beforePush;
+  final Value<bool> afterPush;
+  const MedicationInformationsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.prescriptionId = const Value.absent(),
+    this.pillId = const Value.absent(),
+    this.timeOne = const Value.absent(),
+    this.timeTwo = const Value.absent(),
+    this.timeThree = const Value.absent(),
+    this.takeCount = const Value.absent(),
+    this.takeCycle = const Value.absent(),
+    this.push = const Value.absent(),
+    this.beforePush = const Value.absent(),
+    this.afterPush = const Value.absent(),
+  });
+  MedicationInformationsCompanion.insert({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required String prescriptionId,
+    required String pillId,
+    this.timeOne = const Value.absent(),
+    this.timeTwo = const Value.absent(),
+    this.timeThree = const Value.absent(),
+    required int takeCount,
+    required int takeCycle,
+    this.push = const Value.absent(),
+    this.beforePush = const Value.absent(),
+    this.afterPush = const Value.absent(),
+  })  : prescriptionId = Value(prescriptionId),
+        pillId = Value(pillId),
+        takeCount = Value(takeCount),
+        takeCycle = Value(takeCycle);
+  static Insertable<MedicationInformationModel> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? prescriptionId,
+    Expression<String>? pillId,
+    Expression<int>? timeOne,
+    Expression<int>? timeTwo,
+    Expression<int>? timeThree,
+    Expression<int>? takeCount,
+    Expression<int>? takeCycle,
+    Expression<bool>? push,
+    Expression<bool>? beforePush,
+    Expression<bool>? afterPush,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (prescriptionId != null) 'prescription_id': prescriptionId,
+      if (pillId != null) 'pill_id': pillId,
+      if (timeOne != null) 'time_one': timeOne,
+      if (timeTwo != null) 'time_two': timeTwo,
+      if (timeThree != null) 'time_three': timeThree,
+      if (takeCount != null) 'take_count': takeCount,
+      if (takeCycle != null) 'take_cycle': takeCycle,
+      if (push != null) 'push': push,
+      if (beforePush != null) 'before_push': beforePush,
+      if (afterPush != null) 'after_push': afterPush,
+    });
+  }
+
+  MedicationInformationsCompanion copyWith(
+      {Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? prescriptionId,
+      Value<String>? pillId,
+      Value<int?>? timeOne,
+      Value<int?>? timeTwo,
+      Value<int?>? timeThree,
+      Value<int>? takeCount,
+      Value<int>? takeCycle,
+      Value<bool>? push,
+      Value<bool>? beforePush,
+      Value<bool>? afterPush}) {
+    return MedicationInformationsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      prescriptionId: prescriptionId ?? this.prescriptionId,
+      pillId: pillId ?? this.pillId,
+      timeOne: timeOne ?? this.timeOne,
+      timeTwo: timeTwo ?? this.timeTwo,
+      timeThree: timeThree ?? this.timeThree,
+      takeCount: takeCount ?? this.takeCount,
+      takeCycle: takeCycle ?? this.takeCycle,
+      push: push ?? this.push,
+      beforePush: beforePush ?? this.beforePush,
+      afterPush: afterPush ?? this.afterPush,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (prescriptionId.present) {
+      map['prescription_id'] = Variable<String>(prescriptionId.value);
+    }
+    if (pillId.present) {
+      map['pill_id'] = Variable<String>(pillId.value);
+    }
+    if (timeOne.present) {
+      map['time_one'] = Variable<int>(timeOne.value);
+    }
+    if (timeTwo.present) {
+      map['time_two'] = Variable<int>(timeTwo.value);
+    }
+    if (timeThree.present) {
+      map['time_three'] = Variable<int>(timeThree.value);
+    }
+    if (takeCount.present) {
+      map['take_count'] = Variable<int>(takeCount.value);
+    }
+    if (takeCycle.present) {
+      map['take_cycle'] = Variable<int>(takeCycle.value);
+    }
+    if (push.present) {
+      map['push'] = Variable<bool>(push.value);
+    }
+    if (beforePush.present) {
+      map['before_push'] = Variable<bool>(beforePush.value);
+    }
+    if (afterPush.present) {
+      map['after_push'] = Variable<bool>(afterPush.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationInformationsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('prescriptionId: $prescriptionId, ')
+          ..write('pillId: $pillId, ')
+          ..write('timeOne: $timeOne, ')
+          ..write('timeTwo: $timeTwo, ')
+          ..write('timeThree: $timeThree, ')
+          ..write('takeCount: $takeCount, ')
+          ..write('takeCycle: $takeCycle, ')
+          ..write('push: $push, ')
+          ..write('beforePush: $beforePush, ')
+          ..write('afterPush: $afterPush')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicationInformationsTable extends MedicationInformations
+    with TableInfo<$MedicationInformationsTable, MedicationInformationModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationInformationsTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _prescriptionIdMeta =
+      const VerificationMeta('prescriptionId');
+  @override
+  late final GeneratedColumn<String> prescriptionId = GeneratedColumn<String>(
+      'prescription_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES prescriptions (id)');
+  final VerificationMeta _pillIdMeta = const VerificationMeta('pillId');
+  @override
+  late final GeneratedColumn<String> pillId = GeneratedColumn<String>(
+      'pill_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES pills (id)');
+  final VerificationMeta _timeOneMeta = const VerificationMeta('timeOne');
+  @override
+  late final GeneratedColumn<int> timeOne = GeneratedColumn<int>(
+      'time_one', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  final VerificationMeta _timeTwoMeta = const VerificationMeta('timeTwo');
+  @override
+  late final GeneratedColumn<int> timeTwo = GeneratedColumn<int>(
+      'time_two', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  final VerificationMeta _timeThreeMeta = const VerificationMeta('timeThree');
+  @override
+  late final GeneratedColumn<int> timeThree = GeneratedColumn<int>(
+      'time_three', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  final VerificationMeta _takeCountMeta = const VerificationMeta('takeCount');
+  @override
+  late final GeneratedColumn<int> takeCount = GeneratedColumn<int>(
+      'take_count', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _takeCycleMeta = const VerificationMeta('takeCycle');
+  @override
+  late final GeneratedColumn<int> takeCycle = GeneratedColumn<int>(
+      'take_cycle', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _pushMeta = const VerificationMeta('push');
+  @override
+  late final GeneratedColumn<bool> push = GeneratedColumn<bool>(
+      'push', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (push IN (0, 1))',
+      defaultValue: const Constant(false));
+  final VerificationMeta _beforePushMeta = const VerificationMeta('beforePush');
+  @override
+  late final GeneratedColumn<bool> beforePush = GeneratedColumn<bool>(
+      'before_push', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (before_push IN (0, 1))',
+      defaultValue: const Constant(false));
+  final VerificationMeta _afterPushMeta = const VerificationMeta('afterPush');
+  @override
+  late final GeneratedColumn<bool> afterPush = GeneratedColumn<bool>(
+      'after_push', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (after_push IN (0, 1))',
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        createdAt,
+        updatedAt,
+        prescriptionId,
+        pillId,
+        timeOne,
+        timeTwo,
+        timeThree,
+        takeCount,
+        takeCycle,
+        push,
+        beforePush,
+        afterPush
+      ];
+  @override
+  String get aliasedName => _alias ?? 'medication_informations';
+  @override
+  String get actualTableName => 'medication_informations';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<MedicationInformationModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('prescription_id')) {
+      context.handle(
+          _prescriptionIdMeta,
+          prescriptionId.isAcceptableOrUnknown(
+              data['prescription_id']!, _prescriptionIdMeta));
+    } else if (isInserting) {
+      context.missing(_prescriptionIdMeta);
+    }
+    if (data.containsKey('pill_id')) {
+      context.handle(_pillIdMeta,
+          pillId.isAcceptableOrUnknown(data['pill_id']!, _pillIdMeta));
+    } else if (isInserting) {
+      context.missing(_pillIdMeta);
+    }
+    if (data.containsKey('time_one')) {
+      context.handle(_timeOneMeta,
+          timeOne.isAcceptableOrUnknown(data['time_one']!, _timeOneMeta));
+    }
+    if (data.containsKey('time_two')) {
+      context.handle(_timeTwoMeta,
+          timeTwo.isAcceptableOrUnknown(data['time_two']!, _timeTwoMeta));
+    }
+    if (data.containsKey('time_three')) {
+      context.handle(_timeThreeMeta,
+          timeThree.isAcceptableOrUnknown(data['time_three']!, _timeThreeMeta));
+    }
+    if (data.containsKey('take_count')) {
+      context.handle(_takeCountMeta,
+          takeCount.isAcceptableOrUnknown(data['take_count']!, _takeCountMeta));
+    } else if (isInserting) {
+      context.missing(_takeCountMeta);
+    }
+    if (data.containsKey('take_cycle')) {
+      context.handle(_takeCycleMeta,
+          takeCycle.isAcceptableOrUnknown(data['take_cycle']!, _takeCycleMeta));
+    } else if (isInserting) {
+      context.missing(_takeCycleMeta);
+    }
+    if (data.containsKey('push')) {
+      context.handle(
+          _pushMeta, push.isAcceptableOrUnknown(data['push']!, _pushMeta));
+    }
+    if (data.containsKey('before_push')) {
+      context.handle(
+          _beforePushMeta,
+          beforePush.isAcceptableOrUnknown(
+              data['before_push']!, _beforePushMeta));
+    }
+    if (data.containsKey('after_push')) {
+      context.handle(_afterPushMeta,
+          afterPush.isAcceptableOrUnknown(data['after_push']!, _afterPushMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {prescriptionId, pillId},
+      ];
+  @override
+  MedicationInformationModel map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicationInformationModel(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      prescriptionId: attachedDatabase.options.types.read(
+          DriftSqlType.string, data['${effectivePrefix}prescription_id'])!,
+      pillId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}pill_id'])!,
+      timeOne: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}time_one']),
+      timeTwo: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}time_two']),
+      timeThree: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}time_three']),
+      takeCount: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}take_count'])!,
+      takeCycle: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}take_cycle'])!,
+      push: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}push'])!,
+      beforePush: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}before_push'])!,
+      afterPush: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}after_push'])!,
+    );
+  }
+
+  @override
+  $MedicationInformationsTable createAlias(String alias) {
+    return $MedicationInformationsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicationScheduleModel extends DataClass
+    implements Insertable<MedicationScheduleModel> {
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  final String medicationInformationId;
+
+  /// 복용 예정일
+  final DateTime reservedAt;
+
+  /// 실제 복용일
+  final DateTime? medicatedAt;
+
+  /// 알림 사용
+  final bool push;
+
+  /// 30분 전 알림
+  final bool beforePush;
+
+  /// 30분 후 알림
+  final bool afterPush;
+  const MedicationScheduleModel(
+      {required this.id,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.medicationInformationId,
+      required this.reservedAt,
+      this.medicatedAt,
+      required this.push,
+      required this.beforePush,
+      required this.afterPush});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['medication_information_id'] =
+        Variable<String>(medicationInformationId);
+    map['reserved_at'] = Variable<DateTime>(reservedAt);
+    if (!nullToAbsent || medicatedAt != null) {
+      map['medicated_at'] = Variable<DateTime>(medicatedAt);
+    }
+    map['push'] = Variable<bool>(push);
+    map['before_push'] = Variable<bool>(beforePush);
+    map['after_push'] = Variable<bool>(afterPush);
+    return map;
+  }
+
+  MedicationSchedulesCompanion toCompanion(bool nullToAbsent) {
+    return MedicationSchedulesCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      medicationInformationId: Value(medicationInformationId),
+      reservedAt: Value(reservedAt),
+      medicatedAt: medicatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(medicatedAt),
+      push: Value(push),
+      beforePush: Value(beforePush),
+      afterPush: Value(afterPush),
+    );
+  }
+
+  factory MedicationScheduleModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationScheduleModel(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      medicationInformationId:
+          serializer.fromJson<String>(json['medicationInformationId']),
+      reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
+      medicatedAt: serializer.fromJson<DateTime?>(json['medicatedAt']),
+      push: serializer.fromJson<bool>(json['push']),
+      beforePush: serializer.fromJson<bool>(json['beforePush']),
+      afterPush: serializer.fromJson<bool>(json['afterPush']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'medicationInformationId':
+          serializer.toJson<String>(medicationInformationId),
+      'reservedAt': serializer.toJson<DateTime>(reservedAt),
+      'medicatedAt': serializer.toJson<DateTime?>(medicatedAt),
+      'push': serializer.toJson<bool>(push),
+      'beforePush': serializer.toJson<bool>(beforePush),
+      'afterPush': serializer.toJson<bool>(afterPush),
+    };
+  }
+
+  MedicationScheduleModel copyWith(
+          {String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt,
+          String? medicationInformationId,
+          DateTime? reservedAt,
+          Value<DateTime?> medicatedAt = const Value.absent(),
+          bool? push,
+          bool? beforePush,
+          bool? afterPush}) =>
+      MedicationScheduleModel(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        medicationInformationId:
+            medicationInformationId ?? this.medicationInformationId,
+        reservedAt: reservedAt ?? this.reservedAt,
+        medicatedAt: medicatedAt.present ? medicatedAt.value : this.medicatedAt,
+        push: push ?? this.push,
+        beforePush: beforePush ?? this.beforePush,
+        afterPush: afterPush ?? this.afterPush,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('MedicationScheduleModel(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('medicationInformationId: $medicationInformationId, ')
+          ..write('reservedAt: $reservedAt, ')
+          ..write('medicatedAt: $medicatedAt, ')
+          ..write('push: $push, ')
+          ..write('beforePush: $beforePush, ')
+          ..write('afterPush: $afterPush')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      createdAt,
+      updatedAt,
+      medicationInformationId,
+      reservedAt,
+      medicatedAt,
+      push,
+      beforePush,
+      afterPush);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationScheduleModel &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.medicationInformationId == this.medicationInformationId &&
+          other.reservedAt == this.reservedAt &&
+          other.medicatedAt == this.medicatedAt &&
+          other.push == this.push &&
+          other.beforePush == this.beforePush &&
+          other.afterPush == this.afterPush);
+}
+
+class MedicationSchedulesCompanion
+    extends UpdateCompanion<MedicationScheduleModel> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<String> medicationInformationId;
+  final Value<DateTime> reservedAt;
+  final Value<DateTime?> medicatedAt;
+  final Value<bool> push;
+  final Value<bool> beforePush;
+  final Value<bool> afterPush;
+  const MedicationSchedulesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.medicationInformationId = const Value.absent(),
+    this.reservedAt = const Value.absent(),
+    this.medicatedAt = const Value.absent(),
+    this.push = const Value.absent(),
+    this.beforePush = const Value.absent(),
+    this.afterPush = const Value.absent(),
+  });
+  MedicationSchedulesCompanion.insert({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    required String medicationInformationId,
+    required DateTime reservedAt,
+    this.medicatedAt = const Value.absent(),
+    this.push = const Value.absent(),
+    this.beforePush = const Value.absent(),
+    this.afterPush = const Value.absent(),
+  })  : medicationInformationId = Value(medicationInformationId),
+        reservedAt = Value(reservedAt);
+  static Insertable<MedicationScheduleModel> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<String>? medicationInformationId,
+    Expression<DateTime>? reservedAt,
+    Expression<DateTime>? medicatedAt,
+    Expression<bool>? push,
+    Expression<bool>? beforePush,
+    Expression<bool>? afterPush,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (medicationInformationId != null)
+        'medication_information_id': medicationInformationId,
+      if (reservedAt != null) 'reserved_at': reservedAt,
+      if (medicatedAt != null) 'medicated_at': medicatedAt,
+      if (push != null) 'push': push,
+      if (beforePush != null) 'before_push': beforePush,
+      if (afterPush != null) 'after_push': afterPush,
+    });
+  }
+
+  MedicationSchedulesCompanion copyWith(
+      {Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt,
+      Value<String>? medicationInformationId,
+      Value<DateTime>? reservedAt,
+      Value<DateTime?>? medicatedAt,
+      Value<bool>? push,
+      Value<bool>? beforePush,
+      Value<bool>? afterPush}) {
+    return MedicationSchedulesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      medicationInformationId:
+          medicationInformationId ?? this.medicationInformationId,
+      reservedAt: reservedAt ?? this.reservedAt,
+      medicatedAt: medicatedAt ?? this.medicatedAt,
+      push: push ?? this.push,
+      beforePush: beforePush ?? this.beforePush,
+      afterPush: afterPush ?? this.afterPush,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (medicationInformationId.present) {
+      map['medication_information_id'] =
+          Variable<String>(medicationInformationId.value);
+    }
+    if (reservedAt.present) {
+      map['reserved_at'] = Variable<DateTime>(reservedAt.value);
+    }
+    if (medicatedAt.present) {
+      map['medicated_at'] = Variable<DateTime>(medicatedAt.value);
+    }
+    if (push.present) {
+      map['push'] = Variable<bool>(push.value);
+    }
+    if (beforePush.present) {
+      map['before_push'] = Variable<bool>(beforePush.value);
+    }
+    if (afterPush.present) {
+      map['after_push'] = Variable<bool>(afterPush.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationSchedulesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('medicationInformationId: $medicationInformationId, ')
+          ..write('reservedAt: $reservedAt, ')
+          ..write('medicatedAt: $medicatedAt, ')
+          ..write('push: $push, ')
+          ..write('beforePush: $beforePush, ')
+          ..write('afterPush: $afterPush')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicationSchedulesTable extends MedicationSchedules
+    with TableInfo<$MedicationSchedulesTable, MedicationScheduleModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationSchedulesTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _medicationInformationIdMeta =
+      const VerificationMeta('medicationInformationId');
+  @override
+  late final GeneratedColumn<String> medicationInformationId =
+      GeneratedColumn<String>('medication_information_id', aliasedName, false,
+          type: DriftSqlType.string,
+          requiredDuringInsert: true,
+          defaultConstraints: 'REFERENCES medication_informations (id)');
+  final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
+  @override
+  late final GeneratedColumn<DateTime> reservedAt = GeneratedColumn<DateTime>(
+      'reserved_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  final VerificationMeta _medicatedAtMeta =
+      const VerificationMeta('medicatedAt');
+  @override
+  late final GeneratedColumn<DateTime> medicatedAt = GeneratedColumn<DateTime>(
+      'medicated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  final VerificationMeta _pushMeta = const VerificationMeta('push');
+  @override
+  late final GeneratedColumn<bool> push = GeneratedColumn<bool>(
+      'push', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (push IN (0, 1))',
+      defaultValue: const Constant(false));
+  final VerificationMeta _beforePushMeta = const VerificationMeta('beforePush');
+  @override
+  late final GeneratedColumn<bool> beforePush = GeneratedColumn<bool>(
+      'before_push', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (before_push IN (0, 1))',
+      defaultValue: const Constant(false));
+  final VerificationMeta _afterPushMeta = const VerificationMeta('afterPush');
+  @override
+  late final GeneratedColumn<bool> afterPush = GeneratedColumn<bool>(
+      'after_push', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (after_push IN (0, 1))',
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        createdAt,
+        updatedAt,
+        medicationInformationId,
+        reservedAt,
+        medicatedAt,
+        push,
+        beforePush,
+        afterPush
+      ];
+  @override
+  String get aliasedName => _alias ?? 'medication_schedules';
+  @override
+  String get actualTableName => 'medication_schedules';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<MedicationScheduleModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    if (data.containsKey('medication_information_id')) {
+      context.handle(
+          _medicationInformationIdMeta,
+          medicationInformationId.isAcceptableOrUnknown(
+              data['medication_information_id']!,
+              _medicationInformationIdMeta));
+    } else if (isInserting) {
+      context.missing(_medicationInformationIdMeta);
+    }
+    if (data.containsKey('reserved_at')) {
+      context.handle(
+          _reservedAtMeta,
+          reservedAt.isAcceptableOrUnknown(
+              data['reserved_at']!, _reservedAtMeta));
+    } else if (isInserting) {
+      context.missing(_reservedAtMeta);
+    }
+    if (data.containsKey('medicated_at')) {
+      context.handle(
+          _medicatedAtMeta,
+          medicatedAt.isAcceptableOrUnknown(
+              data['medicated_at']!, _medicatedAtMeta));
+    }
+    if (data.containsKey('push')) {
+      context.handle(
+          _pushMeta, push.isAcceptableOrUnknown(data['push']!, _pushMeta));
+    }
+    if (data.containsKey('before_push')) {
+      context.handle(
+          _beforePushMeta,
+          beforePush.isAcceptableOrUnknown(
+              data['before_push']!, _beforePushMeta));
+    }
+    if (data.containsKey('after_push')) {
+      context.handle(_afterPushMeta,
+          afterPush.isAcceptableOrUnknown(data['after_push']!, _afterPushMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {medicationInformationId, reservedAt},
+      ];
+  @override
+  MedicationScheduleModel map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicationScheduleModel(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      medicationInformationId: attachedDatabase.options.types.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}medication_information_id'])!,
+      reservedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}reserved_at'])!,
+      medicatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}medicated_at']),
+      push: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}push'])!,
+      beforePush: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}before_push'])!,
+      afterPush: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}after_push'])!,
+    );
+  }
+
+  @override
+  $MedicationSchedulesTable createAlias(String alias) {
+    return $MedicationSchedulesTable(attachedDatabase, alias);
+  }
+}
+
+class NotificationScheduleModel extends DataClass
+    implements Insertable<NotificationScheduleModel> {
+  /// 아이디
+  final int id;
+
+  /// 유저 아이디
+  final String userId;
+
+  /// 0: 복약일정, 1: 병원방문 일정
+  final int type;
+
+  /// 이전 알림인지
+  final bool isBeforePush;
+
+  /// 알림 예정일
+  final DateTime reservedAt;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  const NotificationScheduleModel(
+      {required this.id,
+      required this.userId,
+      required this.type,
+      required this.isBeforePush,
+      required this.reservedAt,
+      required this.createdAt,
+      required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['user_id'] = Variable<String>(userId);
+    map['type'] = Variable<int>(type);
+    map['is_before_push'] = Variable<bool>(isBeforePush);
+    map['reserved_at'] = Variable<DateTime>(reservedAt);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  NotificationSchedulesCompanion toCompanion(bool nullToAbsent) {
+    return NotificationSchedulesCompanion(
+      id: Value(id),
+      userId: Value(userId),
+      type: Value(type),
+      isBeforePush: Value(isBeforePush),
+      reservedAt: Value(reservedAt),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory NotificationScheduleModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NotificationScheduleModel(
+      id: serializer.fromJson<int>(json['id']),
+      userId: serializer.fromJson<String>(json['userId']),
+      type: serializer.fromJson<int>(json['type']),
+      isBeforePush: serializer.fromJson<bool>(json['isBeforePush']),
+      reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userId': serializer.toJson<String>(userId),
+      'type': serializer.toJson<int>(type),
+      'isBeforePush': serializer.toJson<bool>(isBeforePush),
+      'reservedAt': serializer.toJson<DateTime>(reservedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  NotificationScheduleModel copyWith(
+          {int? id,
+          String? userId,
+          int? type,
+          bool? isBeforePush,
+          DateTime? reservedAt,
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
+      NotificationScheduleModel(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        type: type ?? this.type,
+        isBeforePush: isBeforePush ?? this.isBeforePush,
+        reservedAt: reservedAt ?? this.reservedAt,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NotificationScheduleModel(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('type: $type, ')
+          ..write('isBeforePush: $isBeforePush, ')
+          ..write('reservedAt: $reservedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, userId, type, isBeforePush, reservedAt, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NotificationScheduleModel &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.type == this.type &&
+          other.isBeforePush == this.isBeforePush &&
+          other.reservedAt == this.reservedAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class NotificationSchedulesCompanion
+    extends UpdateCompanion<NotificationScheduleModel> {
+  final Value<int> id;
+  final Value<String> userId;
+  final Value<int> type;
+  final Value<bool> isBeforePush;
+  final Value<DateTime> reservedAt;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const NotificationSchedulesCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.isBeforePush = const Value.absent(),
+    this.reservedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  NotificationSchedulesCompanion.insert({
+    this.id = const Value.absent(),
+    required String userId,
+    required int type,
+    required bool isBeforePush,
+    required DateTime reservedAt,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  })  : userId = Value(userId),
+        type = Value(type),
+        isBeforePush = Value(isBeforePush),
+        reservedAt = Value(reservedAt);
+  static Insertable<NotificationScheduleModel> custom({
+    Expression<int>? id,
+    Expression<String>? userId,
+    Expression<int>? type,
+    Expression<bool>? isBeforePush,
+    Expression<DateTime>? reservedAt,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (type != null) 'type': type,
+      if (isBeforePush != null) 'is_before_push': isBeforePush,
+      if (reservedAt != null) 'reserved_at': reservedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  NotificationSchedulesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? userId,
+      Value<int>? type,
+      Value<bool>? isBeforePush,
+      Value<DateTime>? reservedAt,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt}) {
+    return NotificationSchedulesCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      type: type ?? this.type,
+      isBeforePush: isBeforePush ?? this.isBeforePush,
+      reservedAt: reservedAt ?? this.reservedAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<int>(type.value);
+    }
+    if (isBeforePush.present) {
+      map['is_before_push'] = Variable<bool>(isBeforePush.value);
+    }
+    if (reservedAt.present) {
+      map['reserved_at'] = Variable<DateTime>(reservedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotificationSchedulesCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('type: $type, ')
+          ..write('isBeforePush: $isBeforePush, ')
+          ..write('reservedAt: $reservedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $NotificationSchedulesTable extends NotificationSchedules
+    with TableInfo<$NotificationSchedulesTable, NotificationScheduleModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotificationSchedulesTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<int> type = GeneratedColumn<int>(
+      'type', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  final VerificationMeta _isBeforePushMeta =
+      const VerificationMeta('isBeforePush');
+  @override
+  late final GeneratedColumn<bool> isBeforePush = GeneratedColumn<bool>(
+      'is_before_push', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: 'CHECK (is_before_push IN (0, 1))');
+  final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
+  @override
+  late final GeneratedColumn<DateTime> reservedAt = GeneratedColumn<DateTime>(
+      'reserved_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, userId, type, isBeforePush, reservedAt, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? 'notification_schedules';
+  @override
+  String get actualTableName => 'notification_schedules';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<NotificationScheduleModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('is_before_push')) {
+      context.handle(
+          _isBeforePushMeta,
+          isBeforePush.isAcceptableOrUnknown(
+              data['is_before_push']!, _isBeforePushMeta));
+    } else if (isInserting) {
+      context.missing(_isBeforePushMeta);
+    }
+    if (data.containsKey('reserved_at')) {
+      context.handle(
+          _reservedAtMeta,
+          reservedAt.isAcceptableOrUnknown(
+              data['reserved_at']!, _reservedAtMeta));
+    } else if (isInserting) {
+      context.missing(_reservedAtMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, type, isBeforePush, reservedAt},
+      ];
+  @override
+  NotificationScheduleModel map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NotificationScheduleModel(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      type: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
+      isBeforePush: attachedDatabase.options.types
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_before_push'])!,
+      reservedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}reserved_at'])!,
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $NotificationSchedulesTable createAlias(String alias) {
+    return $NotificationSchedulesTable(attachedDatabase, alias);
+  }
+}
+
+class LastLoginUserModel extends DataClass
+    implements Insertable<LastLoginUserModel> {
+  /// 유저 아이디
+  final String userId;
+
+  /// 아이디
+  final String id;
+
+  /// 생성일
+  final DateTime createdAt;
+
+  /// 수정일
+  final DateTime updatedAt;
+  const LastLoginUserModel(
+      {required this.userId,
+      required this.id,
+      required this.createdAt,
+      required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  LastLoginUsersCompanion toCompanion(bool nullToAbsent) {
+    return LastLoginUsersCompanion(
+      userId: Value(userId),
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory LastLoginUserModel.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LastLoginUserModel(
+      userId: serializer.fromJson<String>(json['userId']),
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  LastLoginUserModel copyWith(
+          {String? userId,
+          String? id,
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
+      LastLoginUserModel(
+        userId: userId ?? this.userId,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('LastLoginUserModel(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(userId, id, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LastLoginUserModel &&
+          other.userId == this.userId &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class LastLoginUsersCompanion extends UpdateCompanion<LastLoginUserModel> {
+  final Value<String> userId;
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const LastLoginUsersCompanion({
+    this.userId = const Value.absent(),
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  LastLoginUsersCompanion.insert({
+    required String userId,
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : userId = Value(userId);
+  static Insertable<LastLoginUserModel> custom({
+    Expression<String>? userId,
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  LastLoginUsersCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? id,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt}) {
+    return LastLoginUsersCompanion(
+      userId: userId ?? this.userId,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LastLoginUsersCompanion(')
+          ..write('userId: $userId, ')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $LastLoginUsersTable extends LastLoginUsers
+    with TableInfo<$LastLoginUsersTable, LastLoginUserModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LastLoginUsersTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES users (id)');
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: newCuid);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  @override
+  List<GeneratedColumn> get $columns => [userId, id, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? 'last_login_users';
+  @override
+  String get actualTableName => 'last_login_users';
+  @override
+  VerificationContext validateIntegrity(Insertable<LastLoginUserModel> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LastLoginUserModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LastLoginUserModel(
+      userId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      createdAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $LastLoginUsersTable createAlias(String alias) {
+    return $LastLoginUsersTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $UsersTable users = $UsersTable(this);
@@ -7058,6 +9183,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       medicationAdherenceSurveyAnswers =
       $MedicationAdherenceSurveyAnswersTable(this);
   late final $UserPointsTable userPoints = $UserPointsTable(this);
+  late final $PrescriptionsTable prescriptions = $PrescriptionsTable(this);
+  late final $MedicationInformationsTable medicationInformations =
+      $MedicationInformationsTable(this);
+  late final $MedicationSchedulesTable medicationSchedules =
+      $MedicationSchedulesTable(this);
+  late final $NotificationSchedulesTable notificationSchedules =
+      $NotificationSchedulesTable(this);
+  late final $LastLoginUsersTable lastLoginUsers = $LastLoginUsersTable(this);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7079,6 +9212,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         excerciseHistories,
         hospitals,
         medicationAdherenceSurveyAnswers,
-        userPoints
+        userPoints,
+        prescriptions,
+        medicationInformations,
+        medicationSchedules,
+        notificationSchedules,
+        lastLoginUsers
       ];
 }

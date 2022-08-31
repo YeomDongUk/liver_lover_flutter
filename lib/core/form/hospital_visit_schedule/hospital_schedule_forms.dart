@@ -31,19 +31,6 @@ class HospitalName extends FormzInput<String, HospitalNameValidationError> {
       value.trim().isEmpty ? HospitalNameValidationError.empty : null;
 }
 
-enum DoctorOfficeValidationError {
-  empty,
-}
-
-class DoctorOffice extends FormzInput<String, DoctorOfficeValidationError> {
-  const DoctorOffice.pure() : super.pure('');
-  const DoctorOffice.dirty(super.value) : super.dirty();
-
-  @override
-  DoctorOfficeValidationError? validator(String value) =>
-      value.trim().isEmpty ? DoctorOfficeValidationError.empty : null;
-}
-
 enum MedicalSubjectValidationError {
   empty,
 }

@@ -26,7 +26,6 @@ class SmokingHistoryLocation extends BeamLocation<BeamState> {
 
   @override
   List<Pattern> get pathPatterns => [
-        Routes.smokingHistories,
         Routes.smokingHistoriesGraphs,
       ];
 }
