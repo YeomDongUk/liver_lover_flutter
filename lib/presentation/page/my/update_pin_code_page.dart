@@ -146,7 +146,7 @@ class _UpdatePinCodePageState extends State<UpdatePinCodePage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
                     fixedSize: const Size.fromHeight(70),
                     textStyle: const TextStyle(
                       fontSize: 20,

@@ -153,7 +153,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                                 onPressed: () => joinCubit.updateSex(0),
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,
-                                  primary: state.sex.value == 0
+                                  backgroundColor: state.sex.value == 0
                                       ? Theme.of(context).primaryColor
                                       : Colors.white,
                                   elevation: 0,
@@ -175,7 +175,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                                 onPressed: () => joinCubit.updateSex(1),
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,
-                                  primary: state.sex.value == 1
+                                  backgroundColor: state.sex.value == 1
                                       ? Theme.of(context).primaryColor
                                       : Colors.white,
                                   elevation: 0,
@@ -265,7 +265,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
               fixedSize: const Size.fromHeight(70),
               textStyle: const TextStyle(
                 fontSize: 20,

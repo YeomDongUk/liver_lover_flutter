@@ -23,7 +23,7 @@ class PointHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
     implements PointHistoryLocalDataSource {
   PointHistoryLocalDataSourceImpl(super.attachedDatabase);
   StreamSubscription? _subscription;
-  late final table = attachedDatabase.pointHistories;
+  late final table = pointHistories;
 
   @override
   void initSubscription({required String userId}) {

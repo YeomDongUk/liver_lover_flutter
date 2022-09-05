@@ -10,31 +10,31 @@ class ExaminationResults extends UserReferenceTable {
   DateTimeColumn get date => dateTime()();
 
   /// 혈소판
-  IntColumn get platelet => integer().nullable()();
+  TextColumn get platelet => text().nullable()();
 
   /// 간효소
-  IntColumn get ast => integer().nullable()();
+  TextColumn get ast => text().nullable()();
 
   /// 간효소
-  IntColumn get alt => integer().nullable()();
+  TextColumn get alt => text().nullable()();
 
   /// 간효소
-  IntColumn get ggt => integer().nullable()();
+  TextColumn get ggt => text().nullable()();
 
   /// 빌리루빈
-  IntColumn get bilirubin => integer().nullable()();
+  TextColumn get bilirubin => text().nullable()();
 
   /// 알부민
-  IntColumn get albumin => integer().nullable()();
+  TextColumn get albumin => text().nullable()();
 
   /// 알파태아단백질
-  IntColumn get afp => integer().nullable()();
+  TextColumn get afp => text().nullable()();
 
-  /// 알부민
-  IntColumn get hbvDna => integer().nullable()();
+  /// hbvDna
+  TextColumn get hbvDna => text().nullable()();
 
-  /// 알부민
-  IntColumn get hcvRna => integer().nullable()();
+  /// hcvRna
+  TextColumn get hcvRna => text().nullable()();
 
   /// 양성종양(혈관종, 낭종 등)
   TextColumn get benignTumor => text().nullable()();

@@ -87,7 +87,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                               Expanded(
                                 child: ValueColumn(
                                   label: 'AST',
-                                  value: examinationResult?.ast?.toInt(),
+                                  value: examinationResult?.ast,
                                   unitText: 'IU/mL',
                                 ),
                               ),
@@ -95,7 +95,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                               Expanded(
                                 child: ValueColumn(
                                   label: 'ALT',
-                                  value: examinationResult?.alt?.toInt(),
+                                  value: examinationResult?.alt,
                                   unitText: 'IU/mL',
                                 ),
                               ),
@@ -103,7 +103,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                               Expanded(
                                 child: ValueColumn(
                                   label: 'GGT',
-                                  value: examinationResult?.ggt?.toInt(),
+                                  value: examinationResult?.ggt,
                                   unitText: 'IU/mL',
                                 ),
                               ),
@@ -134,7 +134,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                               Expanded(
                                 child: ValueColumn(
                                   label: 'HBV',
-                                  value: examinationResult?.hbvDna?.toInt(),
+                                  value: examinationResult?.hbvDna,
                                   unitText: 'IU/mL',
                                 ),
                               ),
@@ -142,7 +142,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                               Expanded(
                                 child: ValueColumn(
                                   label: 'HCV',
-                                  value: examinationResult?.hcvRna?.toInt(),
+                                  value: examinationResult?.hcvRna,
                                   unitText: 'IU/mL',
                                 ),
                               ),
@@ -170,7 +170,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                         Expanded(
                           child: ValueColumn(
                             label: 'Bilirubin',
-                            value: examinationResult?.bilirubin?.toInt(),
+                            value: examinationResult?.bilirubin,
                             unitText: 'mg/dL',
                           ),
                         ),
@@ -195,7 +195,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                         Expanded(
                           child: ValueColumn(
                             label: 'Albumin',
-                            value: examinationResult?.albumin?.toInt(),
+                            value: examinationResult?.albumin,
                             unitText: 'mg/dL',
                           ),
                         ),
@@ -220,7 +220,7 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
                         Expanded(
                           child: ValueColumn(
                             label: 'AFP',
-                            value: examinationResult?.afp?.toInt(),
+                            value: examinationResult?.afp,
                             unitText: 'mg/dL',
                           ),
                         ),

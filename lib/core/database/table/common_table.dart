@@ -11,12 +11,10 @@ abstract class CommonTable extends Table {
   TextColumn get id => text().clientDefault(newCuid)();
 
   /// 생성일
-  DateTimeColumn get createdAt =>
-      dateTime().withDefault(Constant(DateTime.now()))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   /// 수정일
-  DateTimeColumn get updatedAt =>
-      dateTime().withDefault(Constant(DateTime.now()))();
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 
   @override
   Set<Column>? get primaryKey => {

@@ -3,6 +3,7 @@
 // Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
+import 'package:logger/logger.dart';
 
 // Project imports:
 import 'table/drinking_history/drinking_history_table.dart';
@@ -59,16 +60,24 @@ part 'database.g.dart';
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
+  AppDatabase.connect(super.c) : super.connect();
 
   @override
-  int get schemaVersion => 0;
+  int get schemaVersion => 2;
+
+  // this is the new constructor
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) async {
+          Logger().d('onCreate');
           await m.createAll();
 
           // await transaction(() async {
+          //   final userModels = await select(users).get();
+
+          //   if (userModels.isNotEmpty) return null;
+
           //   final userModel = await into(users).insertReturning(
           //     UsersCompanion.insert(
           //       id: const Value('test'),
@@ -84,125 +93,47 @@ class AppDatabase extends _$AppDatabase {
           //   await into(userPoints).insert(
           //     UserPointsCompanion.insert(userId: userModel.id),
           //   );
-
-          //   return userModel;
-          // });
-
-          // await batch(
-          //   (batch) => batch.insertAll(
-          //     pills,
-          //     List.generate(
-          //       5,
-          //       (index) => PillsCompanion.insert(
-          //         id: Value('$index'),
-          //         name: '테스트 $index 약품',
-          //         entpName: '우리집',
-          //         // effect: '이거짱임1',
-          //         // useage: '진짜좋음',
-          //         // material: '',
-          //       ),
-          //     ),
-          //   ),
-          // );
-          // await batch((batch) {
-          //   // final pillsCompanions = List.generate(
-          //   //   5,
-          //   //   (index) => PillsCompanion.insert(
-          //   //     id: Value('$index'),
-          //   //     name: '테스트 $index 약품',
-          //   //     entpName: '우리집',
-          //   //     imageUrl: '',
-          //   //     effect: '이거짱임1',
-          //   //     useage: '진짜좋음',
-          //   //     material: '',
-          //   //   ),
-          //   // );
-
-          //   // batch
-          //   //   ..insertAll(
-          //   //     pills,
-          //   //     pillsCompanions,
-          //   //   );
-          //   // ..insertAll(
-          //   //   hospitalVisitSchedules,
-          //   //   List.generate(
-          //   //     10,
-          //   //     (index) => HospitalVisitSchedulesCompanion(
-          //   //       id: Value('$index'),
-          //   //       userId: const Value('test'),
-          //   //       hospitalName: const Value('테스트 병원'),
-          //   //       medicalSubject: const Value('테스트 진료과목'),
-          //   //       doctorName: const Value('테스트 의사'),
-          //   //       reservedAt:
-          //   //           Value(DateTime.now().add(Duration(days: index))),
-          //   //     ),
-          //   //   ),
-          //   // );
-          //   //   ..insert(
-          //   //     prescriptions,
-          //   //     PrescriptionsCompanion.insert(
-          //   //       id: const Value('0'),
-          //   //       userId: user.id,
-          //   //       doctorName: '테스트 의사',
-          //   //       prescribedAt: DateTime.now(),
-          //   //       medicationStartAt: DateTime(2022, 7, 2),
-          //   //       medicationEndAt: DateTime(2022, 7, 12),
-          //   //     ),
-          //   //   )
-          //   //   ..insertAll(
-          //   //     medicationSchedules,
-          //   //     List.generate(
-          //   //       11,
-          //   //       (index) => MedicationSchedulesCompanion.insert(
-          //   //         prescriptionId: '0',
-          //   //         type: MedicationScheduleType.values[index % 3],
-          //   //         reservedAt: DateTime(2022, 7, 1, 13).add(
-          //   //           Duration(days: index),
-          //   //         ),
-          //   //       ),
-          //   //     ),
-          //   //   );
-
-          //   // batch.insertAll(
-          //   //   medicationSchedules,
-          //   //   List.generate(
-          //   //     5,
-          //   //     (index) => MedicationSchedulesCompanion.insert(
-          //   //       userId: userId,
-          //   //       prescriptionId: prescriptionId,
-          //   //       type: type,
-          //   //       reservedAt: reservedAt,
-          //   //     ),
-          //   //   ),
-          //   // );
-
-          //   // for (var i = 0; i < 100; i++) {
-          //   //   batch.insert(
-          //   //     medicationSchedules,
-          //   //     MedicationSchedulesCompanion.insert(
-          //   //       userId: user.id,
-          //   //       doctorName: '테스트 닥터 $i',
-          //   //       pillId: pillsCompanions[i % 5].id.value,
-          //   //       count: 2,
-          //   //       prescribedAt: DateTime.now().add(Duration(days: i)),
-          //   //       medicatedAt: DateTime.now().add(
-          //   //         Duration(days: i ~/ 5),
-          //   //       ),
-          //   //     ),
-          //   //   );
-          //   // }
           // });
         },
-        // onUpgrade: (m, from, to) async {
-        //   try {
-        //     await m.deleteTable('alarms');
-        //     await m.deleteTable('excercises');
-        //     await m.deleteTable('users');
+        onUpgrade: (m, from, to) async {
+          try {
+            Logger().d('onUpgrade');
 
-        //     await m.createAll();
-        //   } catch (e) {
-        //     print(e);
-        //   }
-        // },
+            await m.deleteTable(userPoints.actualTableName);
+
+            await m.deleteTable(sF12SurveyAnswers.actualTableName);
+            await m.deleteTable(sF12SurveyHistories.actualTableName);
+            await m
+                .deleteTable(medicationAdherenceSurveyAnswers.actualTableName);
+            await m.deleteTable(
+              medicationAdherenceSurveyHistories.actualTableName,
+            );
+
+            await m.deleteTable(medicationSchedules.actualTableName);
+            await m.deleteTable(medicationInformations.actualTableName);
+            await m.deleteTable(prescriptions.actualTableName);
+            await m.deleteTable(pills.actualTableName);
+
+            await m.deleteTable(hospitalVisitSchedules.actualTableName);
+            await m.deleteTable(liverLevelHistories.actualTableName);
+            await m.deleteTable(metabolicDiseases.actualTableName);
+            await m.deleteTable(examinationResults.actualTableName);
+            await m.deleteTable(healthQuestions.actualTableName);
+            await m.deleteTable(drinkingHistories.actualTableName);
+            await m.deleteTable(smokingHistories.actualTableName);
+            await m.deleteTable(excerciseHistories.actualTableName);
+            await m.deleteTable(hospitals.actualTableName);
+
+            await m.deleteTable(notificationSchedules.actualTableName);
+
+            await m.deleteTable(lastLoginUsers.actualTableName);
+            await m.deleteTable(pointHistories.actualTableName);
+            await m.deleteTable(users.actualTableName);
+
+            await m.createAll();
+          } catch (e) {
+            Logger().e(e);
+          }
+        },
       );
 }

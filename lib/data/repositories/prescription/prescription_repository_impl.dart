@@ -6,7 +6,7 @@ import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/prescription/prescription_local_data_source.dart';
 import 'package:yak/data/models/prescription/prescription_create_input.dart';
-import 'package:yak/data/models/prescription/prescription_notification_update_input.dart';
+import 'package:yak/data/models/prescription/prescription_update_input.dart';
 import 'package:yak/domain/entities/prescription/prescription.dart';
 import 'package:yak/domain/repositories/prescription/prescription_repository.dart';
 
@@ -25,16 +25,17 @@ class PrescriptionRepositoryImpl implements PrescriptionRepository {
   Future<Either<Failure, Prescription>> createPrescription({
     required PrescriptionCreateInput createInput,
   }) async {
-    try {
-      final prescriptionModel =
-          await prescriptionLocalDataSource.createPrescription(
-        userId: _userId,
-        createInput: createInput,
-      );
-      return Right(Prescription.fromJson(prescriptionModel.toJson()));
-    } catch (e) {
-      return const Left(QueryFailure());
-    }
+    // try {
+    final prescriptionModel =
+        await prescriptionLocalDataSource.createPrescription(
+      userId: _userId,
+      createInput: createInput,
+    );
+    return Right(Prescription.fromJson(prescriptionModel.toJson()));
+    // } catch (e) {
+    //   Logger().e(e);
+    //   return const Left(QueryFailure());
+    // }
   }
 
   @override
@@ -78,30 +79,24 @@ class PrescriptionRepositoryImpl implements PrescriptionRepository {
   // }
 
   @override
-  Future<Either<Failure, Prescription>> updatePrescription({
-    required PrescriptionCreateInput createInput,
-  }) {
-    throw UnimplementedError();
+  Future<Either<Failure, void>> updatePrescription({
+    required PrescriptionUpdateInput updateInput,
+  }) async {
+    try {
+      await prescriptionLocalDataSource.updatePrescription(
+        userId: userId.value,
+        updateInput: updateInput,
+      );
+      return const Right(null);
+    } catch (e) {
+      return const Left(QueryFailure());
+    }
   }
 
   @override
-  Either<Failure, Stream<Future<List<Prescription>>>> getPrescriptions() =>
-      Right(
+  Either<Failure, Stream<List<Prescription>>> getPrescriptions() => Right(
         prescriptionLocalDataSource.getPrescriptions(
           userId: userId.value,
-        ),
-      );
-
-  @override
-  Future<Either<Failure, void>> togglePrescriptionNotification({
-    required PrescriptionNotificationUpdateInput
-        prescriptionNotificationUpdateInput,
-  }) async =>
-      Right(
-        prescriptionLocalDataSource.togglePrescriptionNotificaiton(
-          userId: userId.value,
-          prescriptionNotificationUpdateInput:
-              prescriptionNotificationUpdateInput,
         ),
       );
 }

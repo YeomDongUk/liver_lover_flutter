@@ -11,12 +11,14 @@ import 'package:beamer/beamer.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 // Project imports:
 import 'package:yak/core/class/circulator_result.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
+import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/bloc/fibrosis_circulator/fibrosis_circulator_cubit.dart';
 import 'package:yak/presentation/bloc/page_b_circulator/page_b_circulator_cubit.dart';
@@ -178,16 +180,17 @@ class _LiverDiseaseRiskCalculatorTabViewState
                   children: [
                     Row(
                       children: [
-                        Text(
-                          '나이',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
                         SizedBox(
-                          width: 190,
+                          width: 120,
+                          child: Text(
+                            '나이',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
+                        ),
+                        Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[0],
@@ -210,16 +213,17 @@ class _LiverDiseaseRiskCalculatorTabViewState
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Text(
-                          'AST (U/L)',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
                         SizedBox(
-                          width: 190,
+                          width: 120,
+                          child: Text(
+                            'AST (U/L)',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
+                        ),
+                        Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[1],
@@ -242,16 +246,17 @@ class _LiverDiseaseRiskCalculatorTabViewState
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Text(
-                          'ALT(U/L)',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
                         SizedBox(
-                          width: 190,
+                          width: 120,
+                          child: Text(
+                            'ALT(U/L)',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
+                        ),
+                        Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[2],
@@ -274,16 +279,59 @@ class _LiverDiseaseRiskCalculatorTabViewState
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Text(
-                          '혈소판(10  /L)',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
                         SizedBox(
-                          width: 190,
+                          width: 120,
+                          child: RichText(
+                            text: TextSpan(
+                              style: GoogleFonts.lato(
+                                fontSize: 13,
+                                color: AppColors.gray,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '혈소판(',
+                                  style: const TextStyle().rixMGoB,
+                                ),
+                                const TextSpan(
+                                  text: '10',
+                                ),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.top,
+                                  child: Transform.translate(
+                                    offset: const Offset(0, 2),
+                                    child: const Text(
+                                      '3',
+                                      style: TextStyle(
+                                        fontSize: 6,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: '/mm',
+                                ),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.top,
+                                  child: Transform.translate(
+                                    offset: const Offset(0, 2),
+                                    child: const Text(
+                                      '2',
+                                      style: TextStyle(
+                                        fontSize: 6,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ')',
+                                  style: const TextStyle().rixMGoB,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[3],
@@ -365,16 +413,17 @@ class _LiverDiseaseRiskCalculatorTabViewState
                   children: [
                     Row(
                       children: [
-                        Text(
-                          '나이',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
                         SizedBox(
-                          width: 190,
+                          width: 120,
+                          child: Text(
+                            '나이',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
+                        ),
+                        Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[5],
@@ -397,63 +446,79 @@ class _LiverDiseaseRiskCalculatorTabViewState
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Text(
-                          '성별',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
+                        SizedBox(
+                          width: 120,
+                          child: Text(
+                            '성별',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
                         ),
                         const Spacer(),
                         SizedBox(
-                          width: 190,
-                          height: 48,
-                          child: DropdownButtonHideUnderline(
+                          width: 120,
+                          child: JoinContainer(
+                            color: Colors.white,
                             child: BlocBuilder<PageBCirculatorCubit,
                                 PageBCirculatorState>(
                               buildWhen: (previous, current) =>
                                   previous.sex != current.sex,
                               bloc: pageBCirculatorCubit,
-                              builder: (context, state) => DropdownButton2<int>(
-                                icon: SvgPicture.asset('assets/svg/down.svg'),
-                                buttonPadding: const EdgeInsets.only(
-                                  left: 10,
-                                  right: 12,
-                                ),
-                                buttonElevation: 0,
-                                dropdownElevation: 0,
-                                value: pageBCirculatorCubit.state.sex,
-                                onChanged: pageBCirculatorCubit.updateSex,
-                                buttonDecoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.lightGray,
-                                  ),
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
-                                dropdownDecoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.lightGray,
-                                  ),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
-                                items: [
-                                  DropdownMenuItem(
-                                    value: 0,
-                                    child: Text(
-                                      '남성',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ).rixMGoB,
+                              builder: (context, state) => Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () =>
+                                          pageBCirculatorCubit.updateSex(0),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: state.sex == 0
+                                            ? Theme.of(context).primaryColor
+                                            : Colors.white,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        '남',
+                                        style: TextStyle(
+                                          color: state.sex == 0
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 20,
+                                        ).rixMGoB,
+                                      ),
                                     ),
                                   ),
-                                  DropdownMenuItem(
-                                    value: 1,
-                                    child: Text(
-                                      '여성',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ).rixMGoB,
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () =>
+                                          pageBCirculatorCubit.updateSex(1),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: state.sex == 1
+                                            ? Theme.of(context).primaryColor
+                                            : Colors.white,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        '여',
+                                        style: TextStyle(
+                                          color: state.sex == 1
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 20,
+                                        ).rixMGoB,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -466,16 +531,59 @@ class _LiverDiseaseRiskCalculatorTabViewState
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Text(
-                          '혈소판',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
                         SizedBox(
-                          width: 190,
+                          width: 120,
+                          child: RichText(
+                            text: TextSpan(
+                              style: GoogleFonts.lato(
+                                fontSize: 13,
+                                color: AppColors.gray,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '혈소판(',
+                                  style: const TextStyle().rixMGoB,
+                                ),
+                                const TextSpan(
+                                  text: '10',
+                                ),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.top,
+                                  child: Transform.translate(
+                                    offset: const Offset(0, 2),
+                                    child: const Text(
+                                      '3',
+                                      style: TextStyle(
+                                        fontSize: 6,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: '/mm',
+                                ),
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.top,
+                                  child: Transform.translate(
+                                    offset: const Offset(0, 2),
+                                    child: const Text(
+                                      '2',
+                                      style: TextStyle(
+                                        fontSize: 6,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ')',
+                                  style: const TextStyle().rixMGoB,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[7],
@@ -498,16 +606,17 @@ class _LiverDiseaseRiskCalculatorTabViewState
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        Text(
-                          '알부민',
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.gray,
-                          ).rixMGoB,
-                        ),
-                        const Spacer(),
                         SizedBox(
-                          width: 190,
+                          width: 120,
+                          child: Text(
+                            '알부민(g/dL)',
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.gray,
+                            ).rixMGoB,
+                          ),
+                        ),
+                        Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[8],
@@ -517,9 +626,7 @@ class _LiverDiseaseRiskCalculatorTabViewState
                                   .requestFocus(focusNodes[9]),
                               textInputAction: TextInputAction.next,
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                  RegExp(r'^\d+\.?\d{0,2}'),
-                                ),
+                                doubleTextInputFormatter,
                               ],
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
@@ -635,6 +742,7 @@ class LiverHealthWhitePaperTabViewState
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       CommonShadowBox(
+        color: null,
         boxDecoration: BoxDecoration(
           color: AppColors.blueGrayLight.withOpacity(0.3),
         ),
@@ -972,6 +1080,7 @@ class LiverHealthWhitePaperTabViewState
                 ],
               ),
               ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   const _InformationBox(
                     label: '지표로 알아보는 간건강',

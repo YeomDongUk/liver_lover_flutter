@@ -16,16 +16,11 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 // Project imports:
 import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/core/router/routes.dart';
-import 'package:yak/core/static/functions.dart';
 import 'package:yak/core/static/icon.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/core/user/user_id.dart';
-import 'package:yak/data/datasources/local/hospital_visit_schedule/hospital_visit_schedule_local_data_source.dart';
-import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
-import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
 import 'package:yak/presentation/bloc/health_questions/health_questions_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/medication_schdules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
@@ -49,7 +44,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final PageController _pageController;
   late final HospitalVisitSchedulesCubit _hospitalVisitSchedulesCubit;
-  late final MedicationSchedulesCubit _medicationSchedulesCubit;
   late final SurveyGroupsCubit _surveyGroupsCubit;
   late final MetabolicDiseaseCubit _metabolicDiseaseCubit;
   late final ItemScrollController _itemcrollController;
@@ -63,7 +57,7 @@ class _HomePageState extends State<HomePage> {
     _pageController = PageController(initialPage: 5);
 
     _hospitalVisitSchedulesCubit = context.read<HospitalVisitSchedulesCubit>();
-    _medicationSchedulesCubit = context.read<MedicationSchedulesCubit>();
+    // _medicationSchedulesCubit = context.read<MedicationSchedulesCubit>();
 
     _surveyGroupsCubit = context.read<SurveyGroupsCubit>()..loadSurveyGroups();
     _metabolicDiseaseCubit = context.read<MetabolicDiseaseCubit>()
@@ -75,18 +69,15 @@ class _HomePageState extends State<HomePage> {
 
     _localNotification.requestPermission();
 
-    Future.wait([
-      _hospitalVisitSchedulesCubit.loadSchedules(),
-      _medicationSchedulesCubit.loadSchedules()
-    ]).then((value) {
+    _hospitalVisitSchedulesCubit.loadSchedules().then((value) {
       _notificationSubscription =
           _localNotification.receiveStream().listen((event) {
-        if (event.channelKey == 'hospital_visit') {
-          final reservedAt = DateTime.fromMillisecondsSinceEpoch(
-            int.parse(event.payload!['reservedAt']!),
-          );
-          final userId = event.payload!['userId']!;
+        final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+          int.parse(event.payload!['reservedAt']!),
+        );
+        final userId = event.payload!['userId']!;
 
+        if (event.channelKey == 'hospital_visit') {
           if (KiwiContainer().resolve<UserId>().value != userId) return;
 
           showDialog<void>(
@@ -101,17 +92,12 @@ class _HomePageState extends State<HomePage> {
             int.parse(event.payload!['reservedAt']!),
           );
 
-          KiwiContainer()
-              .resolve<MedicationScheduleLocalDataSource>()
-              .getMedicationGroup(reservedAt: reservedAt)
-              .then(
-                (value) => showDialog<void>(
-                  context: context,
-                  builder: (_) => MedicationScheduleCheckDialog(
-                    medicationSchedulesGroup: value,
-                  ),
-                ),
-              );
+          showDialog<void>(
+            context: context,
+            builder: (_) => MedicationScheduleCheckDialog(
+              reservedAt: reservedAt,
+            ),
+          );
         }
       });
     });
@@ -122,7 +108,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _hospitalVisitSchedulesCubit.onLogout();
-    _medicationSchedulesCubit.onLogout();
     _surveyGroupsCubit.onLogout();
     _metabolicDiseaseCubit.onLogout();
     _healthQuestionsCubit.onLogout();
@@ -135,6 +120,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // _localNotification.getScheduledNotifications().then(
+    //       (value) =>
+    //           debugPrint(value.map((e) => e.content?.body).join('\n---\n')),
+    //     );
     return Scaffold(
       body: MultiProvider(
         providers: [
@@ -169,9 +158,7 @@ class _HomePageState extends State<HomePage> {
         spaceBetweenChildren: 8,
         children: [
           SpeedDialChild(
-            // () => context.beamToNamed('/prescriptions/create'),
-
-            onTap: showInProgressToast,
+            onTap: () => context.beamToNamed('/prescriptions/create'),
             backgroundColor: Colors.white,
             child: Icon(
               IconDatas.scan,

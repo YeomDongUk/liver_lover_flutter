@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
@@ -135,6 +136,12 @@ final yyyyMMFormat = DateFormat('yyyy.MM');
 final mmDDFormat = DateFormat('MM.dd');
 final hhmmFormat = DateFormat('HH:mm');
 final numberForamt = NumberFormat('###,###,###,###.###');
+
+FilteringTextInputFormatter get doubleTextInputFormatter =>
+    FilteringTextInputFormatter.allow(
+      RegExp(r'^\d+\.?\d{0,2}'),
+    );
+
 const medicationAdherenceSurveyQuestions = [
   MedicationAdherenceSurveyQuestion(
     id: 0,

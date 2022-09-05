@@ -1,7 +1,5 @@
 // Flutter imports:
-// ignore_for_file: lines_longer_than_80_chars
-
-// Flutter imports:
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -86,30 +84,28 @@ class _ExcerciseHistoriesScreenState extends State<ExcerciseHistoriesScreen>
     super.dispose();
   }
 
-  void openCreateHistoryDialog() {
-    showDialog<void>(
-      context: context,
-      builder: (_) => CreateExcerciseHistoryDialog(
-        date: calendarCubit.state.selectedDate,
-        onCreate: (excerciseHistory) {
-          excerciseHistoryCubit.updateExcerciseHistory(
-            excerciseHistory,
-          );
+  void openCreateHistoryDialog() => showDialog<void>(
+        context: context,
+        builder: (_) => CreateExcerciseHistoryDialog(
+          date: calendarCubit.state.selectedDate,
+          onCreate: (excerciseHistory) {
+            excerciseHistoryCubit.updateExcerciseHistory(
+              excerciseHistory,
+            );
 
-          excerciseHistoriesCubit.load(
-            BetweenDateTime(
-              start: calendarCubit.state.focusDate,
-              end: calendarCubit.state.focusDate.add(
-                const Duration(
-                  days: 6,
+            excerciseHistoriesCubit.load(
+              BetweenDateTime(
+                start: calendarCubit.state.focusDate,
+                end: calendarCubit.state.focusDate.add(
+                  const Duration(
+                    days: 6,
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+            );
+          },
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -265,9 +261,8 @@ class _ExcerciseHistoriesScreenState extends State<ExcerciseHistoriesScreen>
                                 final excerciseHistory = state.excerciseHistory;
                                 final nowDate =
                                     DateTime(now.year, now.month, now.day);
-                              final isAfterDate =
+                                final isAfterDate =
                                     calendarState.selectedDate.isAfter(nowDate);
-
 
                                 return RichText(
                                   text: TextSpan(
@@ -283,6 +278,8 @@ class _ExcerciseHistoriesScreenState extends State<ExcerciseHistoriesScreen>
                                             color: AppColors.blueGrayDark,
                                             fontWeight: FontWeight.bold,
                                           ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = openCreateHistoryDialog,
                                         )
                                       else
                                         WidgetSpan(
@@ -355,6 +352,8 @@ class _ExcerciseHistoriesScreenState extends State<ExcerciseHistoriesScreen>
                                         color: AppColors.blueGrayDark,
                                         fontWeight: FontWeight.bold,
                                       ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = openCreateHistoryDialog,
                                     )
                                   else
                                     WidgetSpan(

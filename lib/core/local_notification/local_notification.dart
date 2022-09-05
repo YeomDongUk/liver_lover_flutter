@@ -8,6 +8,7 @@ import 'package:collection/collection.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/user/user_id.dart';
 
@@ -23,12 +24,8 @@ abstract class LocalNotification {
     required NotificationScheduleModel notificationScheduleModel,
   });
 
-  Future<List<bool>> createNotifications({
-    required List<NotificationScheduleModel> notificationScheduleModels,
-  });
-
   Future<void> cancel({
-    required int scheduleNotificationId,
+    required int notificationScheduleId,
   });
 
   Future<void> cancelAll();
@@ -123,6 +120,11 @@ class LocalNotificationImpl implements LocalNotification {
           ),
         );
     } else {
+      if (_scheduledNotificationModels!.isEmpty) {
+        _scheduledNotificationModels =
+            await AwesomeNotifications().listScheduledNotifications();
+      }
+
       return _scheduledNotificationModels!
         ..removeWhere(
           (notificationModel) => _scheduleToDateTime(
@@ -143,22 +145,15 @@ class LocalNotificationImpl implements LocalNotification {
   Stream<ReceivedAction> receiveStream() => AwesomeNotifications().actionStream;
 
   @override
-  Future<List<bool>> createNotifications({
-    required List<NotificationScheduleModel> notificationScheduleModels,
-  }) async {
-    return <bool>[];
-  }
-
-  @override
   Future<void> cancel({
-    required int scheduleNotificationId,
+    required int notificationScheduleId,
   }) async {
     final scheduledNotifications = await getScheduledNotifications();
 
-    await AwesomeNotifications().cancelSchedule(scheduleNotificationId);
+    await AwesomeNotifications().cancelSchedule(notificationScheduleId);
 
     return scheduledNotifications.removeWhere(
-      (element) => element.content!.id == scheduleNotificationId,
+      (element) => element.content!.id == notificationScheduleId,
     );
   }
 
@@ -189,17 +184,17 @@ class LocalNotificationImpl implements LocalNotification {
     if (notificationScheduleModel.type == 0) {
       channelKey = medicationChannelKey;
       title =
-          '복약시간 30분 ${notificationScheduleModel.isBeforePush ? '전' : '후'} 알림';
+          '복약시간 ${notificationScheduleModel.pushType == PushType.onTime ? '' : notificationScheduleModel.pushType == PushType.before ? '30분 전' : '30분  후'} 알림';
 
       body =
-          '[${hhmmFormat.format(notificationScheduleModel.reservedAt)}] ${notificationScheduleModel.isBeforePush ? '복약시간이 다가옵니다.\n지금 약을 준비해 주세요.' : '복약시간이 지났습니다.\n더 늦지 않게 약을 복용하세요!'}';
+          '[${hhmmFormat.format(notificationScheduleModel.reservedAt)}] ${notificationScheduleModel.pushType == PushType.onTime ? '복약시간입니다. 약을 복용해주세요!' : notificationScheduleModel.pushType == PushType.before ? '복약시간이 다가옵니다.\n지금 약을 준비해 주세요.' : '복약시간이 지났습니다.\n더 늦지 않게 약을 복용하세요!'}';
     } else {
       channelKey = hospitalVisitChannelKey;
       title =
-          '병원방문 ${notificationScheduleModel.isBeforePush ? '하루' : '2시간'}전 알림';
+          '병원방문 ${notificationScheduleModel.pushType == PushType.onTime ? '' : notificationScheduleModel.pushType == PushType.before ? '하루 전' : '2시간 전'} 알림';
 
       body =
-          '''[${hhmmFormat.format(notificationScheduleModel.reservedAt)}] 병원 방문 ${notificationScheduleModel.isBeforePush ? '하루' : '2시간'} 전 입니다.\n늦지 않게 준비해 주세요.''';
+          '''[${hhmmFormat.format(notificationScheduleModel.reservedAt)}] 병원 방문 ${notificationScheduleModel.pushType == PushType.onTime ? '시간입니다.' : notificationScheduleModel.pushType == PushType.before ? '하루 전 입니다.\n늦지 않게 준비해 주세요.' : '2시간 전 입니다.\n늦지 않게 준비해 주세요.'}''';
     }
 
     if (id != null && scheduledNotificaitons.length >= 64) {
@@ -221,7 +216,7 @@ class LocalNotificationImpl implements LocalNotification {
       payload: {
         'userId': notificationScheduleModel.userId,
         'reservedAt': '${date.millisecondsSinceEpoch}',
-        'isBeforePush': '${notificationScheduleModel.isBeforePush}',
+        'pushType': '${notificationScheduleModel.pushType.index}',
       },
     );
 
@@ -270,17 +265,18 @@ class LocalNotificationImpl implements LocalNotification {
   }) async {
     final scheduledNotifications = await getScheduledNotifications();
 
-    await createNotifications(
-      notificationScheduleModels: notificationScheduleModels
-        ..removeWhere(
-          (element) => scheduledNotifications
-              .map(
-                (e) => e.content!.id,
-              )
-              .contains(element.id),
-        ),
+    await Future.wait(
+      (notificationScheduleModels
+            ..removeWhere(
+              (element) => scheduledNotifications
+                  .map(
+                    (e) => e.content!.id,
+                  )
+                  .contains(element.id),
+            ))
+          .map(
+        (e) => createNotification(notificationScheduleModel: e),
+      ),
     );
-
-    return;
   }
 }

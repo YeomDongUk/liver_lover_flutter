@@ -16,7 +16,7 @@ class ValueColumn extends StatelessWidget {
     required this.unitText,
   });
   final String label;
-  final int? value;
+  final num? value;
   final String unitText;
   @override
   Widget build(BuildContext context) {
@@ -36,6 +36,7 @@ class ValueColumn extends StatelessWidget {
           style: GoogleFonts.lato(
             fontSize: 35,
             color: AppColors.primary,
+            fontWeight: FontWeight.w900,
           ),
         ),
         const SizedBox(height: 4),

@@ -73,10 +73,11 @@ class _UpdateHealthQuestionPageState extends State<UpdateHealthQuestionPage> {
                     onTap: focusNode.requestFocus,
                     child: CommonShadowBox(
                       padding: const EdgeInsets.all(24),
-                      child: TextField(
+                      child: TextFormField(
                         autofocus: true,
                         focusNode: focusNode,
                         onChanged: writeHealthQuestionCubit.updateQuestion,
+                        initialValue: widget.healthQuestion.qusetion,
                         maxLines: null,
                         decoration: const InputDecoration(
                           contentPadding: EdgeInsets.zero,

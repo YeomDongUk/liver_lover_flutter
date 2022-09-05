@@ -36,7 +36,6 @@ import 'package:yak/domain/usecases/hospital_visit_schedule/get_hospital_visit_s
 import 'package:yak/domain/usecases/hospital_visit_schedule/toggle_hospital_visit_schedule_push.dart';
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/medication_information/get_medication_informations.dart';
-import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules.dart';
 import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
 import 'package:yak/domain/usecases/survey/get_survey_group_histories.dart';
 import 'package:yak/domain/usecases/user_point/get_user_point.dart';
@@ -46,13 +45,13 @@ import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/health_questions/health_questions_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/medication_informations/medication_informations_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/medication_schdules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
 import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Di.setup(false);
   await KiwiContainer().resolve<LocalNotification>().initialize();
   // await Hive.initFlutter();
@@ -154,12 +153,12 @@ class YackApp extends StatelessWidget {
                 KiwiContainer().resolve<DeleteHealthQuestion>(),
           ),
         ),
-        BlocProvider<MedicationSchedulesCubit>(
-          create: (context) => MedicationSchedulesCubit(
-            getMedicationSchedules:
-                KiwiContainer().resolve<GetMedicationSchedules>(),
-          ),
-        ),
+        // BlocProvider<MedicationSchedulesCubit>(
+        //   create: (context) => MedicationSchedulesCubit(
+        //     getMedicationSchedules:
+        //         KiwiContainer().resolve<GetMedicationSchedules>(),
+        //   ),
+        // ),
         BlocProvider<MedicationInformationsCubit>(
           create: (context) => MedicationInformationsCubit(
             getMedicationInformations:
@@ -210,7 +209,7 @@ class YackApp extends StatelessWidget {
               shape: const RoundedRectangleBorder(),
               elevation: 0,
               shadowColor: Colors.transparent,
-              primary: AppColors.primary,
+              backgroundColor: AppColors.primary,
               fixedSize: const Size.fromHeight(70),
               textStyle: const TextStyle(
                 color: Colors.white,

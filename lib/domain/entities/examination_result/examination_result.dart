@@ -23,19 +23,15 @@ class ExaminationResult extends Equatable {
   factory ExaminationResult.fromJson(Map<String, dynamic> json) =>
       ExaminationResult(
         id: json['id'] as String,
-        platelet:
-            json['platelet'] == null ? null : (json['platelet'] as int) / 1000,
-        ast: json['ast'] == null ? null : (json['ast'] as int) / 1000,
-        alt: json['alt'] == null ? null : (json['alt'] as int) / 1000,
-        ggt: json['ggt'] == null ? null : (json['ggt'] as int) / 1000,
-        bilirubin: json['bilirubin'] == null
-            ? null
-            : (json['bilirubin'] as int) / 1000,
-        albumin:
-            json['albumin'] == null ? null : (json['albumin'] as int) / 1000,
-        afp: json['afp'] == null ? null : (json['afp'] as int) / 1000,
-        hbvDna: json['hbvDna'] == null ? null : (json['hbvDna'] as int) / 1000,
-        hcvRna: json['hcvRna'] == null ? null : (json['hcvRna'] as int) / 1000,
+        platelet: double.tryParse(json['platelet'] as String? ?? ''),
+        ast: double.tryParse(json['ast'] as String? ?? ''),
+        alt: double.tryParse(json['alt'] as String? ?? ''),
+        ggt: double.tryParse(json['ggt'] as String? ?? ''),
+        bilirubin: double.tryParse(json['bilirubin'] as String? ?? ''),
+        albumin: double.tryParse(json['albumin'] as String? ?? ''),
+        afp: double.tryParse(json['afp'] as String? ?? ''),
+        hbvDna: double.tryParse(json['hbvDna'] as String? ?? ''),
+        hcvRna: double.tryParse(json['hcvRna'] as String? ?? ''),
         benignTumor: json['benignTumor'] as String?,
         dangerousNodule: json['dangerousNodule'] as String?,
         date: DateTime.fromMillisecondsSinceEpoch(json['date'] as int),

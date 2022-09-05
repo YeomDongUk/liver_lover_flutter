@@ -16,9 +16,6 @@ class MedicationSchedules extends CommonTable {
   /// 실제 복용일
   DateTimeColumn get medicatedAt => dateTime().nullable()();
 
-  /// 알림 사용
-  BoolColumn get push => boolean().withDefault(const Constant(false))();
-
   /// 30분 전 알림
   BoolColumn get beforePush => boolean().withDefault(const Constant(false))();
 

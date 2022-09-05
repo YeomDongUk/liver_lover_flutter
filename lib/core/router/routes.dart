@@ -37,6 +37,9 @@ class Routes {
   static const medicationSchedules = Path.medicationSchedules;
   static const medicationSchedulesCreate =
       Path.medicationSchedules + Path.create;
+
+  static const medicationSchedulesCalendar =
+      Path.medicationSchedules + Path.calendar;
 }
 
 class Path {

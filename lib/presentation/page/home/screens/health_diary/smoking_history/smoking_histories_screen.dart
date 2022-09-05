@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -73,6 +74,29 @@ class _SmokingHistoriesScreenState extends State<SmokingHistoriesScreen>
 
     super.initState();
   }
+
+  void onTap() => showDialog<void>(
+        context: context,
+        builder: (_) => CreateSmokingHistoryDialog(
+          date: calendarCubit.state.selectedDate,
+          onCreate: (smokingHistory) {
+            smokingHistoryCubit.updateSmokingHistory(
+              smokingHistory,
+            );
+
+            smokingHistoriesCubit.load(
+              BetweenDateTime(
+                start: calendarCubit.state.focusDate,
+                end: calendarCubit.state.focusDate.add(
+                  const Duration(
+                    days: 6,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      );
 
   @override
   void dispose() {
@@ -253,6 +277,8 @@ class _SmokingHistoriesScreenState extends State<SmokingHistoriesScreen>
                                             color: AppColors.blueGrayDark,
                                             fontWeight: FontWeight.bold,
                                           ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = onTap,
                                         )
                                       else
                                         WidgetSpan(
@@ -260,34 +286,7 @@ class _SmokingHistoriesScreenState extends State<SmokingHistoriesScreen>
                                             padding:
                                                 const EdgeInsets.only(left: 8),
                                             child: GestureDetector(
-                                              onTap: () => showDialog<void>(
-                                                context: context,
-                                                builder: (_) =>
-                                                    CreateSmokingHistoryDialog(
-                                                  date: calendarCubit
-                                                      .state.selectedDate,
-                                                  onCreate: (smokingHistory) {
-                                                    smokingHistoryCubit
-                                                        .updateSmokingHistory(
-                                                      smokingHistory,
-                                                    );
-
-                                                    smokingHistoriesCubit.load(
-                                                      BetweenDateTime(
-                                                        start: calendarCubit
-                                                            .state.focusDate,
-                                                        end: calendarCubit
-                                                            .state.focusDate
-                                                            .add(
-                                                          const Duration(
-                                                            days: 6,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
+                                              onTap: onTap,
                                               child: SvgPicture.asset(
                                                 'assets/svg/add.svg',
                                               ),

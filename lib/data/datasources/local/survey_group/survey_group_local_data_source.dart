@@ -7,8 +7,9 @@ import 'package:yak/data/datasources/local/dao_mixin.dart';
 import 'package:yak/data/models/survey_group/survey_group_model.dart';
 
 abstract class SurveyGroupLocalDataSource {
-  Stream<List<SurveyGroupModel>> getSurveyGroupsStream(
-      {required String userId});
+  Stream<List<SurveyGroupModel>> getSurveyGroupsStream({
+    required String userId,
+  });
 }
 
 class SurveyGroupLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>

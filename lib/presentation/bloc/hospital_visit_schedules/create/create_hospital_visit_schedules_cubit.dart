@@ -24,15 +24,19 @@ class CreateHospitalVisitSchedulesCubit
   void udpateHospitalVisitScheduleType(
     HospitalVisitScheduleType hospitalVisitScheduleType,
   ) {
+    if (state.hospitalVisitType.value == hospitalVisitScheduleType) return;
+
     emit(
       state.copyWith(
         hospitalVisitType: HospitalVisitType.dirty(hospitalVisitScheduleType),
+        hospitalName: const HospitalName.pure(),
       ),
     );
     emit(state.copyWith(status: formStatus));
   }
 
   void updateHospitalName(String hospitalName) {
+    print(hospitalName);
     emit(
       state.copyWith(
         hospitalName: HospitalName.dirty(hospitalName),

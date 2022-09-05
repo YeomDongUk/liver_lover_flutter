@@ -8,11 +8,11 @@ import 'package:yak/domain/repositories/medication_schedule/medication_schedule_
 
 class UpdateMedicationScheduleGroupPushParam {
   const UpdateMedicationScheduleGroupPushParam({
-    required this.ids,
+    required this.reservedAt,
     required this.push,
   });
 
-  final List<String> ids;
+  final DateTime reservedAt;
   final bool push;
 }
 
@@ -26,10 +26,10 @@ class UpdateMedicationScheduleGroupPush
 
   @override
   Future<Either<Failure, void>> call(
-    UpdateMedicationScheduleGroupPushParam pram,
+    UpdateMedicationScheduleGroupPushParam param,
   ) =>
       medicationScheduleRepository.updateMedicationSchedulesPush(
-        push: pram.push,
-        medicationScheduleIds: pram.ids,
+        push: param.push,
+        reservedAt: param.reservedAt,
       );
 }

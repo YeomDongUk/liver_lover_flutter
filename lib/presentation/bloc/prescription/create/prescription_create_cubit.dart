@@ -16,8 +16,9 @@ import 'package:yak/domain/usecases/prescription/create_prescriotion.dart';
 part 'prescription_create_state.dart';
 
 class PrescriptionCrateCubit extends Cubit<PrescriptionCrateState> {
-  PrescriptionCrateCubit({required this.createPrescription})
-      : super(const PrescriptionCrateState());
+  PrescriptionCrateCubit({
+    required this.createPrescription,
+  }) : super(const PrescriptionCrateState());
 
   final CreatePrescription createPrescription;
 
@@ -28,9 +29,14 @@ class PrescriptionCrateCubit extends Cubit<PrescriptionCrateState> {
   void updateDoctorName(String doctorName) =>
       emit(state.copyWith(doctorName: Name.dirty(doctorName)));
 
-  void updateMedicatedAt(DateTime? medicatedAt) => medicatedAt == null
-      ? null
-      : emit(state.copyWith(medicatedAt: DateInput.dirty(medicatedAt)));
+  void updateMedicatedAt(DateTime? medicationStartAt) =>
+      medicationStartAt == null
+          ? null
+          : emit(
+              state.copyWith(
+                medicationStartAt: DateInput.dirty(medicationStartAt),
+              ),
+            );
 
   void updateDuration(int? duration) => emit(
         state.copyWith(
@@ -76,12 +82,10 @@ class PrescriptionCrateCubit extends Cubit<PrescriptionCrateState> {
           List<MedicationInformationCreateForm>.from(
             state.medicationInformationCreateFormInput.value,
           )..[index] = medicationInformationCreateForm.copyWith(
-              afterPush: medicationInformationCreateForm.push == true
-                  ? const Optional()
-                  : const Optional.value(false),
-              beforePush: medicationInformationCreateForm.push == true
-                  ? const Optional()
-                  : const Optional.value(false),
+              afterPush:
+                  Optional.value(medicationInformationCreateForm.afterPush),
+              beforePush:
+                  Optional.value(medicationInformationCreateForm.beforePush),
             ),
         ),
       ),
@@ -106,11 +110,11 @@ class PrescriptionCrateCubit extends Cubit<PrescriptionCrateState> {
       ),
     );
 
-    await createPrescription.call(
+    final either = await createPrescription.call(
       PrescriptionCreateInput(
         prescriptedAt: state.prescriptedAt.value!,
         doctorName: state.doctorName.value,
-        medicatedAt: state.medicatedAt.value!,
+        medicationStartAt: state.medicationStartAt.value!,
         duration: state.duration.value!,
         medicationInformationCreateInputs: state
             .medicationInformationCreateFormInput.value
@@ -120,8 +124,9 @@ class PrescriptionCrateCubit extends Cubit<PrescriptionCrateState> {
     );
 
     emit(
-      state.copyWith(
-        status: FormzStatus.submissionSuccess,
+      either.fold(
+        (l) => state.copyWith(status: FormzStatus.submissionFailure),
+        (r) => state.copyWith(status: FormzStatus.submissionSuccess),
       ),
     );
   }

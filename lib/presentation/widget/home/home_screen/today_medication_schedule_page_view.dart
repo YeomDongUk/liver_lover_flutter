@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:kiwi/kiwi.dart';
 
 // Project imports:
 import 'package:yak/core/router/routes.dart';
@@ -14,11 +15,11 @@ import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/functions.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
-import 'package:yak/domain/entities/medication_information/medication_information.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
+import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_groups_stream.dart';
+import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
-import 'package:yak/presentation/bloc/medication_informations/medication_informations_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/medication_schdules_cubit.dart';
+import 'package:yak/presentation/bloc/medication_schedules/groups/medication_schedules_groups_cubit.dart';
 import 'package:yak/presentation/widget/common/pageview_indicator.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_container.dart';
 import 'package:yak/presentation/widget/home/home_screen/home_label.dart';
@@ -36,14 +37,23 @@ class _TodayMedicationSchedulePageViewState
     extends State<TodayMedicationSchedulePageView> {
   late final PageController pageController;
   DateTime date = DateTime.now();
+  late final MedicationScheduleGroupsCubit medicationScheduleGroupsCubit;
+
   @override
   void initState() {
+    medicationScheduleGroupsCubit = MedicationScheduleGroupsCubit(
+      getMedicationScheduleGroupsStream:
+          KiwiContainer().resolve<GetMedicationScheduleGroupsStream>(),
+      updateMedicationScheduleGroupPush:
+          KiwiContainer().resolve<UpdateMedicationScheduleGroupPush>(),
+    )..load(date);
     pageController = PageController();
     super.initState();
   }
 
   @override
   void dispose() {
+    medicationScheduleGroupsCubit.close();
     pageController.dispose();
     super.dispose();
   }
@@ -57,21 +67,15 @@ class _TodayMedicationSchedulePageViewState
 
         if (prevDate != nowDate) {
           date = nowDate;
+          medicationScheduleGroupsCubit.load(date);
         }
 
         return prevDate != nowDate;
       },
-      builder: (context, now) =>
-          BlocBuilder<MedicationSchedulesCubit, MedicationSchedulesState>(
+      builder: (context, now) => BlocBuilder<MedicationScheduleGroupsCubit,
+          MedicationScheduleGroupsState>(
+        bloc: medicationScheduleGroupsCubit,
         builder: (context, state) {
-          final dates = state.medicationSchedulesMap.keys
-              .where(
-                (reservedAt) =>
-                    date.isAfter(reservedAt) &&
-                    !date.add(const Duration(days: 1)).isAfter(reservedAt),
-              )
-              .toList();
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -84,7 +88,7 @@ class _TodayMedicationSchedulePageViewState
               ),
               SizedBox(
                 height: 108,
-                child: dates.isEmpty
+                child: state.medicationScheduleGroups.isEmpty
                     ? Center(
                         child: HomeContainer(
                           height: 88,
@@ -95,7 +99,8 @@ class _TodayMedicationSchedulePageViewState
                             borderRadius: BorderRadius.circular(6),
                             child: InkWell(
                               onTap: () => context.beamToNamed(
-                                  Routes.medicationSchedulesCreate),
+                                Routes.medicationSchedulesCreate,
+                              ),
                               borderRadius: BorderRadius.circular(6),
                               child: Padding(
                                 padding:
@@ -139,59 +144,23 @@ class _TodayMedicationSchedulePageViewState
                       )
                     : PageView.builder(
                         controller: pageController,
-                        itemCount: dates.length,
-                        itemBuilder: (context, index) {
-                          final reservedAt = dates.elementAt(index);
-
-                          final medicationInformations = state
-                              .medicationSchedulesMap[reservedAt]!
-                              .map(
-                                (medicationSchedule) =>
-                                    medicationSchedule.medicationInformationId,
-                              )
-                              .map(
-                                (medicationInformationId) => context
-                                    .read<MedicationInformationsCubit>()
-                                    .state
-                                    .informations
-                                    .firstWhere(
-                                      (element) =>
-                                          element.id == medicationInformationId,
-                                    ),
-                              )
-                              .map(
-                                (e) => e.copyWith(
-                                  medicationSchedules:
-                                      state.medicationSchedulesMap[reservedAt],
-                                ),
-                              )
-                              .toList();
-                          return Center(
-                            child: MedicationScheduleOverviewContainer(
-                              medicationSchedulesGroup:
-                                  MedicationSchedulesGroup(
-                                medicationInformations: medicationInformations,
-                                reservedAt: reservedAt,
-                                push: medicationInformations.any(
-                                  (element) => element.medicationSchedules.any(
-                                    (element) =>
-                                        element.afterPush || element.beforePush,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                        itemCount: state.medicationScheduleGroups.length,
+                        itemBuilder: (context, index) => Center(
+                          child: MedicationScheduleOverviewContainer(
+                            medicationScheduleGroup:
+                                state.medicationScheduleGroups.elementAt(index),
+                          ),
+                        ),
                       ),
               ),
               const SizedBox(height: 6),
-              if (dates.isEmpty)
+              if (state.medicationScheduleGroups.isEmpty)
                 const SizedBox.shrink()
               else
                 Center(
                   child: PageviewIndicator(
                     pageController: pageController,
-                    pageCoount: dates.length,
+                    pageCoount: state.medicationScheduleGroups.length,
                   ),
                 )
             ],
@@ -205,10 +174,10 @@ class _TodayMedicationSchedulePageViewState
 class MedicationScheduleOverviewContainer extends StatelessWidget {
   const MedicationScheduleOverviewContainer({
     super.key,
-    required this.medicationSchedulesGroup,
+    required this.medicationScheduleGroup,
   });
 
-  final MedicationSchedulesGroup medicationSchedulesGroup;
+  final MedicationScheduleGroup medicationScheduleGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +193,7 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
           onTap: () => showDialog<void>(
             context: context,
             builder: (_) => MedicationScheduleCheckDialog(
-              medicationSchedulesGroup: medicationSchedulesGroup,
+              reservedAt: medicationScheduleGroup.reservedAt,
             ),
           ),
           child: Container(
@@ -236,16 +205,15 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
             ),
             child: BlocBuilder<CurrentTimeCubit, DateTime>(
               builder: (context, now) {
-                final diff =
-                    now.difference(medicationSchedulesGroup.reservedAt);
+                final diff = now.difference(medicationScheduleGroup.reservedAt);
                 return Row(
                   children: [
                     SvgPicture.asset(
                       'assets/svg/pill.svg',
-                      color: medicationSchedulesGroup.isAllMedicated
+                      color: medicationScheduleGroup.isAllMedicated
                           ? null
                           : now.isAfter(
-                              medicationSchedulesGroup.reservedAt,
+                              medicationScheduleGroup.reservedAt,
                             )
                               ? AppColors.magenta
                               : AppColors.gray,
@@ -259,11 +227,11 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
                             children: [
                               Text(
                                 DateFormat('HH:mm').format(
-                                  medicationSchedulesGroup.reservedAt,
+                                  medicationScheduleGroup.reservedAt,
                                 ),
                                 style: GoogleFonts.lato(
                                   fontSize: 28,
-                                  color: medicationSchedulesGroup.isAllMedicated
+                                  color: medicationScheduleGroup.isAllMedicated
                                       ? AppColors.blueGrayLight
                                       : Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w900,
@@ -271,14 +239,14 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
                               ),
                               const SizedBox(width: 9),
                               Text(
-                                medicationSchedulesGroup.isAllMedicated
+                                medicationScheduleGroup.isAllMedicated
                                     ? hhmmFormat.format(
-                                        medicationSchedulesGroup.medicatedAt!,
+                                        medicationScheduleGroup.medicatedAt!,
                                       )
                                     : '${diff.isNegative ? '-' : '+'}${formatDuration(diff)}',
                                 style: GoogleFonts.lato(
                                   fontSize: 20,
-                                  color: medicationSchedulesGroup.isAllMedicated
+                                  color: medicationScheduleGroup.isAllMedicated
                                       ? AppColors.primary
                                       : AppColors.magenta,
                                   fontWeight: FontWeight.w700,
@@ -287,10 +255,10 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            medicationSchedulesGroup.isAllMedicated
+                            medicationScheduleGroup.isAllMedicated
                                 ? '복용을 완료했습니다.'
                                 : now.isAfter(
-                                    medicationSchedulesGroup.reservedAt,
+                                    medicationScheduleGroup.reservedAt,
                                   )
                                     ? '복약시간이 지났습니다.'
                                     : '복약시간이 다가옵니다.',
@@ -304,10 +272,10 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
                     ),
                     SvgPicture.asset(
                       'assets/svg/check.svg',
-                      color: medicationSchedulesGroup.isAllMedicated
+                      color: medicationScheduleGroup.isAllMedicated
                           ? AppColors.primary
                           : now.isAfter(
-                              medicationSchedulesGroup.reservedAt,
+                              medicationScheduleGroup.reservedAt,
                             )
                               ? AppColors.magenta
                               : AppColors.gray,

@@ -111,7 +111,7 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
               child: Row(
                 children: [
                   if (hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ||
-                      hospitalVisitSchedule.hospitalName.contains('노원을지병원'))
+                      hospitalVisitSchedule.hospitalName.contains('노원을지대학교병원'))
                     SvgPicture.asset(
                       'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
                     )
@@ -125,7 +125,7 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                     ),
                   const Spacer(),
                   if (hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ||
-                      hospitalVisitSchedule.hospitalName.contains('노원을지병원'))
+                      hospitalVisitSchedule.hospitalName.contains('노원을지대학교병원'))
                     GestureDetector(
                       onTap: () async {
                         if (hospitalVisitSchedule.hospitalName
@@ -288,7 +288,7 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                               },
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size.fromHeight(50),
-                                primary: AppColors.gray,
+                                backgroundColor: AppColors.gray,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6),
                                 ),
@@ -300,7 +300,7 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                               child: const Text('진료 완료'),
                             ),
                           ),
-                        if (hospitalVisitSchedule.visitedAt == null ||
+                        if (hospitalVisitSchedule.visitedAt == null &&
                             inProgress)
                           const SizedBox(width: 8),
                         if (hospitalVisitSchedule.visitedAt == null)
@@ -316,7 +316,7 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                               ),
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size.fromHeight(50),
-                                primary: AppColors.gray,
+                                backgroundColor: AppColors.gray,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6),
                                 ),

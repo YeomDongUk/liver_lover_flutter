@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 // Project imports:
 import 'package:yak/core/static/color.dart';
+import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/presentation/widget/auth/join/join_container.dart';
 import 'package:yak/presentation/widget/common/common_dialog.dart';
@@ -75,12 +76,13 @@ class _UpsertNumberExaminationResultDialogState
                   Expanded(
                     child: TextField(
                       controller: textEditingController,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                        signed: true,
+                      ),
                       textInputAction: TextInputAction.next,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^(\d+)?\.?\d{0,1}'),
-                        ),
+                        doubleTextInputFormatter,
                       ],
                       style: const TextStyle(
                         fontSize: 20,
@@ -93,13 +95,56 @@ class _UpsertNumberExaminationResultDialogState
                       ),
                     ),
                   ),
-                  Text(
-                    widget.unitText,
-                    style: GoogleFonts.lato(
-                      fontSize: 13,
-                      color: AppColors.gray,
+                  if (widget.unitText == '/mm')
+                    RichText(
+                      text: TextSpan(
+                        style: GoogleFonts.lato(
+                          fontSize: 13,
+                          color: AppColors.gray,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        children: [
+                          const TextSpan(
+                            text: '10',
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.top,
+                            child: Transform.translate(
+                              offset: const Offset(0, 2),
+                              child: const Text(
+                                '3',
+                                style: TextStyle(
+                                  fontSize: 6,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const TextSpan(
+                            text: '/mm',
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.top,
+                            child: Transform.translate(
+                              offset: const Offset(0, 2),
+                              child: const Text(
+                                '2',
+                                style: TextStyle(
+                                  fontSize: 6,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Text(
+                      widget.unitText,
+                      style: GoogleFonts.lato(
+                        fontSize: 13,
+                        color: AppColors.gray,
+                      ),
                     ),
-                  ),
                   const SizedBox(width: 12),
                 ],
               ),

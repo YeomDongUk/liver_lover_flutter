@@ -1,24 +1,24 @@
-// part of 'medication_schedules_groups_cubit.dart';
+part of 'medication_schedules_groups_cubit.dart';
 
-// enum MedicationSchedulesGroupsStatus {
-//   initial,
-//   loadInProgress,
-//   loadSuccess,
-//   loadFailure,
-// }
+enum MedicationScheduleGroupsStatus {
+  initial,
+  loadInProgress,
+  loadSuccess,
+  loadFailure,
+}
 
-// class MedicationSchedulesGroupsState extends Equatable {
-//   const MedicationSchedulesGroupsState({
-//     this.status = MedicationSchedulesGroupsStatus.initial,
-//     this.medicationSchedulesGroups = const [],
-//   });
+class MedicationScheduleGroupsState extends Equatable {
+  const MedicationScheduleGroupsState({
+    this.status = MedicationScheduleGroupsStatus.initial,
+    this.medicationScheduleGroups = const [],
+  });
 
-//   final MedicationSchedulesGroupsStatus status;
-//   final List<MedicationSchedulesGroup> medicationSchedulesGroups;
+  final MedicationScheduleGroupsStatus status;
+  final List<MedicationScheduleGroup> medicationScheduleGroups;
 
-//   @override
-//   List<Object> get props => [
-//         status,
-//         medicationSchedulesGroups,
-//       ];
-// }
+  @override
+  List<Object> get props => [
+        status,
+        medicationScheduleGroups,
+      ];
+}

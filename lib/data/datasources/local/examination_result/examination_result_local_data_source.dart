@@ -57,6 +57,7 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
 
           if (result == null) {
             final resultModel = await into(table).insertReturning(companion);
+
             final userPoint = await (select(userPoints)
                   ..where((tbl) => tbl.userId.equals(userId)))
                 .getSingle();
@@ -70,19 +71,25 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
               ),
             );
 
-            await into(attachedDatabase.pointHistories).insert(
+            await into(pointHistories).insert(
               PointHistoriesCompanion.insert(
                 userId: userId,
                 event: PointHistoryEvent.examinationResultCreate,
                 point: 30,
                 forginId: resultModel.id,
+                createdAt: Value(DateTime.now()),
+                updatedAt: Value(DateTime.now()),
               ),
             );
 
             return resultModel;
           } else {
             await (update(table)..where((tbl) => tbl.id.equals(result.id)))
-                .write(companion);
+                .writeReturning(
+              companion.copyWith(
+                updatedAt: Value(DateTime.now()),
+              ),
+            );
 
             return (select(table)
                   ..where((tbl) => tbl.date.equals(companion.date.value)))

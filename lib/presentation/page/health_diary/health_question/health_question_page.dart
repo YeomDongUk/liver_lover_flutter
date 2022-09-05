@@ -201,7 +201,7 @@ class _HealthQuestionPageState extends State<HealthQuestionPage> {
                                             );
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            primary: AppColors.gray,
+                                            backgroundColor: AppColors.gray,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(6),
@@ -230,7 +230,7 @@ class _HealthQuestionPageState extends State<HealthQuestionPage> {
                                             },
                                           ),
                                           style: ElevatedButton.styleFrom(
-                                            primary: AppColors.gray,
+                                            backgroundColor: AppColors.gray,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(6),

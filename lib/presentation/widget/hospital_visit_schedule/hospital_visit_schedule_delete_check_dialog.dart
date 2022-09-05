@@ -55,7 +55,7 @@ class HospitalVisitScheduleDeleteCheckDialog extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
                       style: ElevatedButton.styleFrom(
-                        primary: AppColors.gray,
+                        backgroundColor: AppColors.gray,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),
                         ),

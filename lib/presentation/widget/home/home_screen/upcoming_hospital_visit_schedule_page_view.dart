@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -183,6 +184,7 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                           fontSize: 28,
                           color: AppColors.primary,
                           height: 1,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ],
@@ -191,14 +193,17 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                 const SizedBox(width: 23),
                 Expanded(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      if (hospitalVisitSchedule.hospitalName
+                              .contains('삼성서울병원') ||
+                          hospitalVisitSchedule.hospitalName
+                              .contains('노원을지대학교병원'))
+                        SvgPicture.asset(
+                          'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
+                        ),
+                      const SizedBox(height: 15),
                       Text(
                         hospitalVisitSchedule.hospitalName,
                         style: const TextStyle(
@@ -207,7 +212,7 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                         ).rixMGoB,
                       ),
                       const SizedBox(
-                        height: 6,
+                        height: 7,
                       ),
                       RichText(
                         maxLines: 1,
@@ -235,6 +240,16 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.bottomRight,
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: SvgPicture.asset(
+                    'assets/svg/check.svg',
+                    color: hospitalVisitSchedule.visitedAt == null
+                        ? null
+                        : AppColors.primary,
                   ),
                 ),
               ],

@@ -144,7 +144,7 @@ class _HospitalVisitScheduleCalendarPageState
                             ? null
                             : hospitalVisitSchedule,
                   ),
-                  fisrtDateOfMonth: DateTime(
+                  firstDateOfMonth: DateTime(
                     firstDay.year,
                     firstDay.month + index,
                   ),

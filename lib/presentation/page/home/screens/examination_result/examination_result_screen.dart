@@ -319,34 +319,34 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: state.examinationResult
-                                                  ?.platelet ==
-                                              null
-                                          ? GestureDetector(
-                                              onTap: () => showDialog<void>(
-                                                context: context,
-                                                builder: (_) =>
-                                                    UpsertNumberExaminationResultDialog(
-                                                  text: '혈소판',
-                                                  unitText: '/mm',
-                                                  onSaved: onSavePlatelet,
+                                      child: GestureDetector(
+                                        onTap: () => showDialog<void>(
+                                          context: context,
+                                          builder: (_) =>
+                                              UpsertNumberExaminationResultDialog(
+                                            text: '혈소판',
+                                            unitText: '/mm',
+                                            onSaved: onSavePlatelet,
+                                          ),
+                                        ),
+                                        child: state.examinationResult
+                                                    ?.platelet ==
+                                                null
+                                            ? SvgPicture.asset(
+                                                'assets/svg/add.svg',
+                                              )
+                                            : Text(
+                                                numberForamt.format(
+                                                  state.examinationResult!
+                                                      .platelet,
+                                                ),
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColors.blueGrayDark,
                                                 ),
                                               ),
-                                              child: SvgPicture.asset(
-                                                'assets/svg/add.svg',
-                                              ),
-                                            )
-                                          : Text(
-                                              numberForamt.format(
-                                                state.examinationResult!
-                                                    .platelet,
-                                              ),
-                                              style: GoogleFonts.lato(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.blueGrayDark,
-                                              ),
-                                            ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -359,7 +359,7 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                       ),
                                       children: [
                                         const TextSpan(
-                                          text: '/mm',
+                                          text: 'X10',
                                         ),
                                         WidgetSpan(
                                           alignment: PlaceholderAlignment.top,
@@ -367,6 +367,21 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                             offset: const Offset(0, 2),
                                             child: const Text(
                                               '3',
+                                              style: TextStyle(
+                                                fontSize: 6,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const TextSpan(
+                                          text: '/mm',
+                                        ),
+                                        WidgetSpan(
+                                          alignment: PlaceholderAlignment.top,
+                                          child: Transform.translate(
+                                            offset: const Offset(0, 2),
+                                            child: const Text(
+                                              '2',
                                               style: TextStyle(
                                                 fontSize: 6,
                                               ),
@@ -394,32 +409,32 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: state.examinationResult?.ast ==
-                                              null
-                                          ? GestureDetector(
-                                              onTap: () => showDialog<void>(
-                                                context: context,
-                                                builder: (_) =>
-                                                    UpsertNumberExaminationResultDialog(
-                                                  text: '간효소(AST)',
-                                                  unitText: 'IU/L',
-                                                  onSaved: onSaveAst,
+                                      child: GestureDetector(
+                                        onTap: () => showDialog<void>(
+                                          context: context,
+                                          builder: (_) =>
+                                              UpsertNumberExaminationResultDialog(
+                                            text: '간효소(AST)',
+                                            unitText: 'IU/L',
+                                            onSaved: onSaveAst,
+                                          ),
+                                        ),
+                                        child: state.examinationResult?.ast ==
+                                                null
+                                            ? SvgPicture.asset(
+                                                'assets/svg/add.svg',
+                                              )
+                                            : Text(
+                                                numberForamt.format(
+                                                  state.examinationResult!.ast,
+                                                ),
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColors.blueGrayDark,
                                                 ),
                                               ),
-                                              child: SvgPicture.asset(
-                                                'assets/svg/add.svg',
-                                              ),
-                                            )
-                                          : Text(
-                                              numberForamt.format(
-                                                state.examinationResult!.ast,
-                                              ),
-                                              style: GoogleFonts.lato(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.blueGrayDark,
-                                              ),
-                                            ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -451,32 +466,32 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: state.examinationResult?.alt ==
-                                              null
-                                          ? GestureDetector(
-                                              onTap: () => showDialog<void>(
-                                                context: context,
-                                                builder: (_) =>
-                                                    UpsertNumberExaminationResultDialog(
-                                                  text: '간효소(AST)',
-                                                  unitText: 'IU/L',
-                                                  onSaved: onSaveAlt,
+                                      child: GestureDetector(
+                                        onTap: () => showDialog<void>(
+                                          context: context,
+                                          builder: (_) =>
+                                              UpsertNumberExaminationResultDialog(
+                                            text: '간효소(AST)',
+                                            unitText: 'IU/L',
+                                            onSaved: onSaveAlt,
+                                          ),
+                                        ),
+                                        child: state.examinationResult?.alt ==
+                                                null
+                                            ? SvgPicture.asset(
+                                                'assets/svg/add.svg',
+                                              )
+                                            : Text(
+                                                numberForamt.format(
+                                                  state.examinationResult!.alt,
+                                                ),
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColors.blueGrayDark,
                                                 ),
                                               ),
-                                              child: SvgPicture.asset(
-                                                'assets/svg/add.svg',
-                                              ),
-                                            )
-                                          : Text(
-                                              numberForamt.format(
-                                                state.examinationResult!.alt,
-                                              ),
-                                              style: GoogleFonts.lato(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.blueGrayDark,
-                                              ),
-                                            ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -506,32 +521,32 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: state.examinationResult?.ggt ==
-                                              null
-                                          ? GestureDetector(
-                                              onTap: () => showDialog<void>(
-                                                context: context,
-                                                builder: (_) =>
-                                                    UpsertNumberExaminationResultDialog(
-                                                  text: '간효소(GGT)',
-                                                  unitText: 'IU/L',
-                                                  onSaved: onSaveGgt,
+                                      child: GestureDetector(
+                                        onTap: () => showDialog<void>(
+                                          context: context,
+                                          builder: (_) =>
+                                              UpsertNumberExaminationResultDialog(
+                                            text: '간효소(GGT)',
+                                            unitText: 'IU/L',
+                                            onSaved: onSaveGgt,
+                                          ),
+                                        ),
+                                        child: state.examinationResult?.ggt ==
+                                                null
+                                            ? SvgPicture.asset(
+                                                'assets/svg/add.svg',
+                                              )
+                                            : Text(
+                                                numberForamt.format(
+                                                  state.examinationResult!.ggt,
+                                                ),
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColors.blueGrayDark,
                                                 ),
                                               ),
-                                              child: SvgPicture.asset(
-                                                'assets/svg/add.svg',
-                                              ),
-                                            )
-                                          : Text(
-                                              numberForamt.format(
-                                                state.examinationResult!.ggt,
-                                              ),
-                                              style: GoogleFonts.lato(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.blueGrayDark,
-                                              ),
-                                            ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -563,34 +578,34 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: state.examinationResult
-                                                  ?.bilirubin ==
-                                              null
-                                          ? GestureDetector(
-                                              onTap: () => showDialog<void>(
-                                                context: context,
-                                                builder: (_) =>
-                                                    UpsertNumberExaminationResultDialog(
-                                                  text: '빌리루빈',
-                                                  unitText: 'mg/dL',
-                                                  onSaved: onSaveBilirubin,
+                                      child: GestureDetector(
+                                        onTap: () => showDialog<void>(
+                                          context: context,
+                                          builder: (_) =>
+                                              UpsertNumberExaminationResultDialog(
+                                            text: '빌리루빈',
+                                            unitText: 'mg/dL',
+                                            onSaved: onSaveBilirubin,
+                                          ),
+                                        ),
+                                        child: state.examinationResult
+                                                    ?.bilirubin ==
+                                                null
+                                            ? SvgPicture.asset(
+                                                'assets/svg/add.svg',
+                                              )
+                                            : Text(
+                                                numberForamt.format(
+                                                  state.examinationResult!
+                                                      .bilirubin,
+                                                ),
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColors.blueGrayDark,
                                                 ),
                                               ),
-                                              child: SvgPicture.asset(
-                                                'assets/svg/add.svg',
-                                              ),
-                                            )
-                                          : Text(
-                                              numberForamt.format(
-                                                state.examinationResult!
-                                                    .bilirubin,
-                                              ),
-                                              style: GoogleFonts.lato(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.blueGrayDark,
-                                              ),
-                                            ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -621,33 +636,34 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.centerRight,
-                                      child: state.examinationResult?.albumin ==
-                                              null
-                                          ? GestureDetector(
-                                              onTap: () => showDialog<void>(
-                                                context: context,
-                                                builder: (_) =>
-                                                    UpsertNumberExaminationResultDialog(
-                                                  text: '알부민',
-                                                  unitText: 'g/dL',
-                                                  onSaved: onSaveAlbumin,
+                                      child: GestureDetector(
+                                        onTap: () => showDialog<void>(
+                                          context: context,
+                                          builder: (_) =>
+                                              UpsertNumberExaminationResultDialog(
+                                            text: '알부민',
+                                            unitText: 'g/dL',
+                                            onSaved: onSaveAlbumin,
+                                          ),
+                                        ),
+                                        child: state.examinationResult
+                                                    ?.albumin ==
+                                                null
+                                            ? SvgPicture.asset(
+                                                'assets/svg/add.svg',
+                                              )
+                                            : Text(
+                                                numberForamt.format(
+                                                  state.examinationResult!
+                                                      .albumin,
+                                                ),
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColors.blueGrayDark,
                                                 ),
                                               ),
-                                              child: SvgPicture.asset(
-                                                'assets/svg/add.svg',
-                                              ),
-                                            )
-                                          : Text(
-                                              numberForamt.format(
-                                                state
-                                                    .examinationResult!.albumin,
-                                              ),
-                                              style: GoogleFonts.lato(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.blueGrayDark,
-                                              ),
-                                            ),
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),

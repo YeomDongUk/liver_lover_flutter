@@ -321,14 +321,14 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserModel> {
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -792,14 +792,14 @@ class $PillsTable extends Pills with TableInfo<$PillsTable, PillModel> {
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _entpNameMeta = const VerificationMeta('entpName');
   @override
   late final GeneratedColumn<String> entpName = GeneratedColumn<String>(
@@ -1352,14 +1352,14 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
   late final GeneratedColumnWithTypeConverter<HospitalVisitScheduleType, int>
@@ -1834,14 +1834,14 @@ class $LiverLevelHistoriesTable extends LiverLevelHistories
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -2204,14 +2204,14 @@ class $PointHistoriesTable extends PointHistories
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _eventMeta = const VerificationMeta('event');
   @override
   late final GeneratedColumnWithTypeConverter<PointHistoryEvent, int> event =
@@ -2540,14 +2540,14 @@ class $SF12SurveyHistoriesTable extends SF12SurveyHistories
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   @override
   List<GeneratedColumn> get $columns =>
       [hospitalVisitScheduleId, done, id, createdAt, updatedAt];
@@ -2853,14 +2853,14 @@ class $MedicationAdherenceSurveyHistoriesTable
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   @override
   List<GeneratedColumn> get $columns =>
       [hospitalVisitScheduleId, done, id, createdAt, updatedAt];
@@ -3164,14 +3164,14 @@ class $SF12SurveyAnswersTable extends SF12SurveyAnswers
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _sf12SurveyHistoryIdMeta =
       const VerificationMeta('sf12SurveyHistoryId');
   @override
@@ -3667,14 +3667,14 @@ class $MetabolicDiseasesTable extends MetabolicDiseases
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _havMeta = const VerificationMeta('hav');
   @override
   late final GeneratedColumn<bool> hav = GeneratedColumn<bool>(
@@ -3859,31 +3859,31 @@ class ExaminationResultModel extends DataClass
   final DateTime date;
 
   /// 혈소판
-  final int? platelet;
+  final String? platelet;
 
   /// 간효소
-  final int? ast;
+  final String? ast;
 
   /// 간효소
-  final int? alt;
+  final String? alt;
 
   /// 간효소
-  final int? ggt;
+  final String? ggt;
 
   /// 빌리루빈
-  final int? bilirubin;
+  final String? bilirubin;
 
   /// 알부민
-  final int? albumin;
+  final String? albumin;
 
   /// 알파태아단백질
-  final int? afp;
+  final String? afp;
 
-  /// 알부민
-  final int? hbvDna;
+  /// hbvDna
+  final String? hbvDna;
 
-  /// 알부민
-  final int? hcvRna;
+  /// hcvRna
+  final String? hcvRna;
 
   /// 양성종양(혈관종, 낭종 등)
   final String? benignTumor;
@@ -3916,31 +3916,31 @@ class ExaminationResultModel extends DataClass
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['date'] = Variable<DateTime>(date);
     if (!nullToAbsent || platelet != null) {
-      map['platelet'] = Variable<int>(platelet);
+      map['platelet'] = Variable<String>(platelet);
     }
     if (!nullToAbsent || ast != null) {
-      map['ast'] = Variable<int>(ast);
+      map['ast'] = Variable<String>(ast);
     }
     if (!nullToAbsent || alt != null) {
-      map['alt'] = Variable<int>(alt);
+      map['alt'] = Variable<String>(alt);
     }
     if (!nullToAbsent || ggt != null) {
-      map['ggt'] = Variable<int>(ggt);
+      map['ggt'] = Variable<String>(ggt);
     }
     if (!nullToAbsent || bilirubin != null) {
-      map['bilirubin'] = Variable<int>(bilirubin);
+      map['bilirubin'] = Variable<String>(bilirubin);
     }
     if (!nullToAbsent || albumin != null) {
-      map['albumin'] = Variable<int>(albumin);
+      map['albumin'] = Variable<String>(albumin);
     }
     if (!nullToAbsent || afp != null) {
-      map['afp'] = Variable<int>(afp);
+      map['afp'] = Variable<String>(afp);
     }
     if (!nullToAbsent || hbvDna != null) {
-      map['hbv_dna'] = Variable<int>(hbvDna);
+      map['hbv_dna'] = Variable<String>(hbvDna);
     }
     if (!nullToAbsent || hcvRna != null) {
-      map['hcv_rna'] = Variable<int>(hcvRna);
+      map['hcv_rna'] = Variable<String>(hcvRna);
     }
     if (!nullToAbsent || benignTumor != null) {
       map['benign_tumor'] = Variable<String>(benignTumor);
@@ -3993,15 +3993,15 @@ class ExaminationResultModel extends DataClass
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       date: serializer.fromJson<DateTime>(json['date']),
-      platelet: serializer.fromJson<int?>(json['platelet']),
-      ast: serializer.fromJson<int?>(json['ast']),
-      alt: serializer.fromJson<int?>(json['alt']),
-      ggt: serializer.fromJson<int?>(json['ggt']),
-      bilirubin: serializer.fromJson<int?>(json['bilirubin']),
-      albumin: serializer.fromJson<int?>(json['albumin']),
-      afp: serializer.fromJson<int?>(json['afp']),
-      hbvDna: serializer.fromJson<int?>(json['hbvDna']),
-      hcvRna: serializer.fromJson<int?>(json['hcvRna']),
+      platelet: serializer.fromJson<String?>(json['platelet']),
+      ast: serializer.fromJson<String?>(json['ast']),
+      alt: serializer.fromJson<String?>(json['alt']),
+      ggt: serializer.fromJson<String?>(json['ggt']),
+      bilirubin: serializer.fromJson<String?>(json['bilirubin']),
+      albumin: serializer.fromJson<String?>(json['albumin']),
+      afp: serializer.fromJson<String?>(json['afp']),
+      hbvDna: serializer.fromJson<String?>(json['hbvDna']),
+      hcvRna: serializer.fromJson<String?>(json['hcvRna']),
       benignTumor: serializer.fromJson<String?>(json['benignTumor']),
       dangerousNodule: serializer.fromJson<String?>(json['dangerousNodule']),
     );
@@ -4015,15 +4015,15 @@ class ExaminationResultModel extends DataClass
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'date': serializer.toJson<DateTime>(date),
-      'platelet': serializer.toJson<int?>(platelet),
-      'ast': serializer.toJson<int?>(ast),
-      'alt': serializer.toJson<int?>(alt),
-      'ggt': serializer.toJson<int?>(ggt),
-      'bilirubin': serializer.toJson<int?>(bilirubin),
-      'albumin': serializer.toJson<int?>(albumin),
-      'afp': serializer.toJson<int?>(afp),
-      'hbvDna': serializer.toJson<int?>(hbvDna),
-      'hcvRna': serializer.toJson<int?>(hcvRna),
+      'platelet': serializer.toJson<String?>(platelet),
+      'ast': serializer.toJson<String?>(ast),
+      'alt': serializer.toJson<String?>(alt),
+      'ggt': serializer.toJson<String?>(ggt),
+      'bilirubin': serializer.toJson<String?>(bilirubin),
+      'albumin': serializer.toJson<String?>(albumin),
+      'afp': serializer.toJson<String?>(afp),
+      'hbvDna': serializer.toJson<String?>(hbvDna),
+      'hcvRna': serializer.toJson<String?>(hcvRna),
       'benignTumor': serializer.toJson<String?>(benignTumor),
       'dangerousNodule': serializer.toJson<String?>(dangerousNodule),
     };
@@ -4035,15 +4035,15 @@ class ExaminationResultModel extends DataClass
           DateTime? createdAt,
           DateTime? updatedAt,
           DateTime? date,
-          Value<int?> platelet = const Value.absent(),
-          Value<int?> ast = const Value.absent(),
-          Value<int?> alt = const Value.absent(),
-          Value<int?> ggt = const Value.absent(),
-          Value<int?> bilirubin = const Value.absent(),
-          Value<int?> albumin = const Value.absent(),
-          Value<int?> afp = const Value.absent(),
-          Value<int?> hbvDna = const Value.absent(),
-          Value<int?> hcvRna = const Value.absent(),
+          Value<String?> platelet = const Value.absent(),
+          Value<String?> ast = const Value.absent(),
+          Value<String?> alt = const Value.absent(),
+          Value<String?> ggt = const Value.absent(),
+          Value<String?> bilirubin = const Value.absent(),
+          Value<String?> albumin = const Value.absent(),
+          Value<String?> afp = const Value.absent(),
+          Value<String?> hbvDna = const Value.absent(),
+          Value<String?> hcvRna = const Value.absent(),
           Value<String?> benignTumor = const Value.absent(),
           Value<String?> dangerousNodule = const Value.absent()}) =>
       ExaminationResultModel(
@@ -4136,15 +4136,15 @@ class ExaminationResultsCompanion
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime> date;
-  final Value<int?> platelet;
-  final Value<int?> ast;
-  final Value<int?> alt;
-  final Value<int?> ggt;
-  final Value<int?> bilirubin;
-  final Value<int?> albumin;
-  final Value<int?> afp;
-  final Value<int?> hbvDna;
-  final Value<int?> hcvRna;
+  final Value<String?> platelet;
+  final Value<String?> ast;
+  final Value<String?> alt;
+  final Value<String?> ggt;
+  final Value<String?> bilirubin;
+  final Value<String?> albumin;
+  final Value<String?> afp;
+  final Value<String?> hbvDna;
+  final Value<String?> hcvRna;
   final Value<String?> benignTumor;
   final Value<String?> dangerousNodule;
   const ExaminationResultsCompanion({
@@ -4190,15 +4190,15 @@ class ExaminationResultsCompanion
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? date,
-    Expression<int>? platelet,
-    Expression<int>? ast,
-    Expression<int>? alt,
-    Expression<int>? ggt,
-    Expression<int>? bilirubin,
-    Expression<int>? albumin,
-    Expression<int>? afp,
-    Expression<int>? hbvDna,
-    Expression<int>? hcvRna,
+    Expression<String>? platelet,
+    Expression<String>? ast,
+    Expression<String>? alt,
+    Expression<String>? ggt,
+    Expression<String>? bilirubin,
+    Expression<String>? albumin,
+    Expression<String>? afp,
+    Expression<String>? hbvDna,
+    Expression<String>? hcvRna,
     Expression<String>? benignTumor,
     Expression<String>? dangerousNodule,
   }) {
@@ -4228,15 +4228,15 @@ class ExaminationResultsCompanion
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt,
       Value<DateTime>? date,
-      Value<int?>? platelet,
-      Value<int?>? ast,
-      Value<int?>? alt,
-      Value<int?>? ggt,
-      Value<int?>? bilirubin,
-      Value<int?>? albumin,
-      Value<int?>? afp,
-      Value<int?>? hbvDna,
-      Value<int?>? hcvRna,
+      Value<String?>? platelet,
+      Value<String?>? ast,
+      Value<String?>? alt,
+      Value<String?>? ggt,
+      Value<String?>? bilirubin,
+      Value<String?>? albumin,
+      Value<String?>? afp,
+      Value<String?>? hbvDna,
+      Value<String?>? hcvRna,
       Value<String?>? benignTumor,
       Value<String?>? dangerousNodule}) {
     return ExaminationResultsCompanion(
@@ -4278,31 +4278,31 @@ class ExaminationResultsCompanion
       map['date'] = Variable<DateTime>(date.value);
     }
     if (platelet.present) {
-      map['platelet'] = Variable<int>(platelet.value);
+      map['platelet'] = Variable<String>(platelet.value);
     }
     if (ast.present) {
-      map['ast'] = Variable<int>(ast.value);
+      map['ast'] = Variable<String>(ast.value);
     }
     if (alt.present) {
-      map['alt'] = Variable<int>(alt.value);
+      map['alt'] = Variable<String>(alt.value);
     }
     if (ggt.present) {
-      map['ggt'] = Variable<int>(ggt.value);
+      map['ggt'] = Variable<String>(ggt.value);
     }
     if (bilirubin.present) {
-      map['bilirubin'] = Variable<int>(bilirubin.value);
+      map['bilirubin'] = Variable<String>(bilirubin.value);
     }
     if (albumin.present) {
-      map['albumin'] = Variable<int>(albumin.value);
+      map['albumin'] = Variable<String>(albumin.value);
     }
     if (afp.present) {
-      map['afp'] = Variable<int>(afp.value);
+      map['afp'] = Variable<String>(afp.value);
     }
     if (hbvDna.present) {
-      map['hbv_dna'] = Variable<int>(hbvDna.value);
+      map['hbv_dna'] = Variable<String>(hbvDna.value);
     }
     if (hcvRna.present) {
-      map['hcv_rna'] = Variable<int>(hcvRna.value);
+      map['hcv_rna'] = Variable<String>(hcvRna.value);
     }
     if (benignTumor.present) {
       map['benign_tumor'] = Variable<String>(benignTumor.value);
@@ -4363,14 +4363,14 @@ class $ExaminationResultsTable extends ExaminationResults
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -4378,49 +4378,49 @@ class $ExaminationResultsTable extends ExaminationResults
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
   final VerificationMeta _plateletMeta = const VerificationMeta('platelet');
   @override
-  late final GeneratedColumn<int> platelet = GeneratedColumn<int>(
+  late final GeneratedColumn<String> platelet = GeneratedColumn<String>(
       'platelet', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _astMeta = const VerificationMeta('ast');
   @override
-  late final GeneratedColumn<int> ast = GeneratedColumn<int>(
+  late final GeneratedColumn<String> ast = GeneratedColumn<String>(
       'ast', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _altMeta = const VerificationMeta('alt');
   @override
-  late final GeneratedColumn<int> alt = GeneratedColumn<int>(
+  late final GeneratedColumn<String> alt = GeneratedColumn<String>(
       'alt', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _ggtMeta = const VerificationMeta('ggt');
   @override
-  late final GeneratedColumn<int> ggt = GeneratedColumn<int>(
+  late final GeneratedColumn<String> ggt = GeneratedColumn<String>(
       'ggt', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _bilirubinMeta = const VerificationMeta('bilirubin');
   @override
-  late final GeneratedColumn<int> bilirubin = GeneratedColumn<int>(
+  late final GeneratedColumn<String> bilirubin = GeneratedColumn<String>(
       'bilirubin', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _albuminMeta = const VerificationMeta('albumin');
   @override
-  late final GeneratedColumn<int> albumin = GeneratedColumn<int>(
+  late final GeneratedColumn<String> albumin = GeneratedColumn<String>(
       'albumin', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _afpMeta = const VerificationMeta('afp');
   @override
-  late final GeneratedColumn<int> afp = GeneratedColumn<int>(
+  late final GeneratedColumn<String> afp = GeneratedColumn<String>(
       'afp', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _hbvDnaMeta = const VerificationMeta('hbvDna');
   @override
-  late final GeneratedColumn<int> hbvDna = GeneratedColumn<int>(
+  late final GeneratedColumn<String> hbvDna = GeneratedColumn<String>(
       'hbv_dna', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _hcvRnaMeta = const VerificationMeta('hcvRna');
   @override
-  late final GeneratedColumn<int> hcvRna = GeneratedColumn<int>(
+  late final GeneratedColumn<String> hcvRna = GeneratedColumn<String>(
       'hcv_rna', aliasedName, true,
-      type: DriftSqlType.int, requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _benignTumorMeta =
       const VerificationMeta('benignTumor');
   @override
@@ -4557,23 +4557,23 @@ class $ExaminationResultsTable extends ExaminationResults
       date: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
       platelet: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}platelet']),
+          .read(DriftSqlType.string, data['${effectivePrefix}platelet']),
       ast: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}ast']),
+          .read(DriftSqlType.string, data['${effectivePrefix}ast']),
       alt: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}alt']),
+          .read(DriftSqlType.string, data['${effectivePrefix}alt']),
       ggt: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}ggt']),
+          .read(DriftSqlType.string, data['${effectivePrefix}ggt']),
       bilirubin: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}bilirubin']),
+          .read(DriftSqlType.string, data['${effectivePrefix}bilirubin']),
       albumin: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}albumin']),
+          .read(DriftSqlType.string, data['${effectivePrefix}albumin']),
       afp: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}afp']),
+          .read(DriftSqlType.string, data['${effectivePrefix}afp']),
       hbvDna: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}hbv_dna']),
+          .read(DriftSqlType.string, data['${effectivePrefix}hbv_dna']),
       hcvRna: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}hcv_rna']),
+          .read(DriftSqlType.string, data['${effectivePrefix}hcv_rna']),
       benignTumor: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}benign_tumor']),
       dangerousNodule: attachedDatabase.options.types.read(
@@ -4851,14 +4851,14 @@ class $HealthQuestionsTable extends HealthQuestions
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _qusetionMeta = const VerificationMeta('qusetion');
   @override
   late final GeneratedColumn<String> qusetion = GeneratedColumn<String>(
@@ -5189,14 +5189,14 @@ class $DrinkingHistoriesTable extends DrinkingHistories
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
@@ -5520,14 +5520,14 @@ class $SmokingHistoriesTable extends SmokingHistories
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<int> amount = GeneratedColumn<int>(
@@ -5878,14 +5878,14 @@ class $ExcerciseHistoriesTable extends ExcerciseHistories
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -6189,14 +6189,14 @@ class $HospitalsTable extends Hospitals
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -6521,14 +6521,14 @@ class $MedicationAdherenceSurveyAnswersTable
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _medicationAdherenceSurveyHistoryIdMeta =
       const VerificationMeta('medicationAdherenceSurveyHistoryId');
   @override
@@ -6884,14 +6884,14 @@ class $UserPointsTable extends UserPoints
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _pointMeta = const VerificationMeta('point');
   @override
   late final GeneratedColumn<int> point = GeneratedColumn<int>(
@@ -7004,10 +7004,13 @@ class PrescriptionModel extends DataClass
   final DateTime prescriptedAt;
 
   /// 복약 시작일
-  final DateTime medicatedAt;
+  final DateTime medicationStartAt;
 
   /// 복약 기간
   final int duration;
+
+  /// 삭제일
+  final DateTime? deletedAt;
   const PrescriptionModel(
       {required this.userId,
       required this.id,
@@ -7015,8 +7018,9 @@ class PrescriptionModel extends DataClass
       required this.updatedAt,
       required this.doctorName,
       required this.prescriptedAt,
-      required this.medicatedAt,
-      required this.duration});
+      required this.medicationStartAt,
+      required this.duration,
+      this.deletedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -7026,8 +7030,11 @@ class PrescriptionModel extends DataClass
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['doctor_name'] = Variable<String>(doctorName);
     map['prescripted_at'] = Variable<DateTime>(prescriptedAt);
-    map['medicated_at'] = Variable<DateTime>(medicatedAt);
+    map['medication_start_at'] = Variable<DateTime>(medicationStartAt);
     map['duration'] = Variable<int>(duration);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     return map;
   }
 
@@ -7039,8 +7046,11 @@ class PrescriptionModel extends DataClass
       updatedAt: Value(updatedAt),
       doctorName: Value(doctorName),
       prescriptedAt: Value(prescriptedAt),
-      medicatedAt: Value(medicatedAt),
+      medicationStartAt: Value(medicationStartAt),
       duration: Value(duration),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
     );
   }
 
@@ -7054,8 +7064,10 @@ class PrescriptionModel extends DataClass
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       doctorName: serializer.fromJson<String>(json['doctorName']),
       prescriptedAt: serializer.fromJson<DateTime>(json['prescriptedAt']),
-      medicatedAt: serializer.fromJson<DateTime>(json['medicatedAt']),
+      medicationStartAt:
+          serializer.fromJson<DateTime>(json['medicationStartAt']),
       duration: serializer.fromJson<int>(json['duration']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
     );
   }
   @override
@@ -7068,8 +7080,9 @@ class PrescriptionModel extends DataClass
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'doctorName': serializer.toJson<String>(doctorName),
       'prescriptedAt': serializer.toJson<DateTime>(prescriptedAt),
-      'medicatedAt': serializer.toJson<DateTime>(medicatedAt),
+      'medicationStartAt': serializer.toJson<DateTime>(medicationStartAt),
       'duration': serializer.toJson<int>(duration),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
     };
   }
 
@@ -7080,8 +7093,9 @@ class PrescriptionModel extends DataClass
           DateTime? updatedAt,
           String? doctorName,
           DateTime? prescriptedAt,
-          DateTime? medicatedAt,
-          int? duration}) =>
+          DateTime? medicationStartAt,
+          int? duration,
+          Value<DateTime?> deletedAt = const Value.absent()}) =>
       PrescriptionModel(
         userId: userId ?? this.userId,
         id: id ?? this.id,
@@ -7089,8 +7103,9 @@ class PrescriptionModel extends DataClass
         updatedAt: updatedAt ?? this.updatedAt,
         doctorName: doctorName ?? this.doctorName,
         prescriptedAt: prescriptedAt ?? this.prescriptedAt,
-        medicatedAt: medicatedAt ?? this.medicatedAt,
+        medicationStartAt: medicationStartAt ?? this.medicationStartAt,
         duration: duration ?? this.duration,
+        deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
       );
   @override
   String toString() {
@@ -7101,15 +7116,16 @@ class PrescriptionModel extends DataClass
           ..write('updatedAt: $updatedAt, ')
           ..write('doctorName: $doctorName, ')
           ..write('prescriptedAt: $prescriptedAt, ')
-          ..write('medicatedAt: $medicatedAt, ')
-          ..write('duration: $duration')
+          ..write('medicationStartAt: $medicationStartAt, ')
+          ..write('duration: $duration, ')
+          ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(userId, id, createdAt, updatedAt, doctorName,
-      prescriptedAt, medicatedAt, duration);
+      prescriptedAt, medicationStartAt, duration, deletedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7120,8 +7136,9 @@ class PrescriptionModel extends DataClass
           other.updatedAt == this.updatedAt &&
           other.doctorName == this.doctorName &&
           other.prescriptedAt == this.prescriptedAt &&
-          other.medicatedAt == this.medicatedAt &&
-          other.duration == this.duration);
+          other.medicationStartAt == this.medicationStartAt &&
+          other.duration == this.duration &&
+          other.deletedAt == this.deletedAt);
 }
 
 class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
@@ -7131,8 +7148,9 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
   final Value<DateTime> updatedAt;
   final Value<String> doctorName;
   final Value<DateTime> prescriptedAt;
-  final Value<DateTime> medicatedAt;
+  final Value<DateTime> medicationStartAt;
   final Value<int> duration;
+  final Value<DateTime?> deletedAt;
   const PrescriptionsCompanion({
     this.userId = const Value.absent(),
     this.id = const Value.absent(),
@@ -7140,8 +7158,9 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
     this.updatedAt = const Value.absent(),
     this.doctorName = const Value.absent(),
     this.prescriptedAt = const Value.absent(),
-    this.medicatedAt = const Value.absent(),
+    this.medicationStartAt = const Value.absent(),
     this.duration = const Value.absent(),
+    this.deletedAt = const Value.absent(),
   });
   PrescriptionsCompanion.insert({
     required String userId,
@@ -7150,12 +7169,13 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
     this.updatedAt = const Value.absent(),
     required String doctorName,
     required DateTime prescriptedAt,
-    required DateTime medicatedAt,
+    required DateTime medicationStartAt,
     required int duration,
+    this.deletedAt = const Value.absent(),
   })  : userId = Value(userId),
         doctorName = Value(doctorName),
         prescriptedAt = Value(prescriptedAt),
-        medicatedAt = Value(medicatedAt),
+        medicationStartAt = Value(medicationStartAt),
         duration = Value(duration);
   static Insertable<PrescriptionModel> custom({
     Expression<String>? userId,
@@ -7164,8 +7184,9 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
     Expression<DateTime>? updatedAt,
     Expression<String>? doctorName,
     Expression<DateTime>? prescriptedAt,
-    Expression<DateTime>? medicatedAt,
+    Expression<DateTime>? medicationStartAt,
     Expression<int>? duration,
+    Expression<DateTime>? deletedAt,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
@@ -7174,8 +7195,9 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (doctorName != null) 'doctor_name': doctorName,
       if (prescriptedAt != null) 'prescripted_at': prescriptedAt,
-      if (medicatedAt != null) 'medicated_at': medicatedAt,
+      if (medicationStartAt != null) 'medication_start_at': medicationStartAt,
       if (duration != null) 'duration': duration,
+      if (deletedAt != null) 'deleted_at': deletedAt,
     });
   }
 
@@ -7186,8 +7208,9 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
       Value<DateTime>? updatedAt,
       Value<String>? doctorName,
       Value<DateTime>? prescriptedAt,
-      Value<DateTime>? medicatedAt,
-      Value<int>? duration}) {
+      Value<DateTime>? medicationStartAt,
+      Value<int>? duration,
+      Value<DateTime?>? deletedAt}) {
     return PrescriptionsCompanion(
       userId: userId ?? this.userId,
       id: id ?? this.id,
@@ -7195,8 +7218,9 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
       updatedAt: updatedAt ?? this.updatedAt,
       doctorName: doctorName ?? this.doctorName,
       prescriptedAt: prescriptedAt ?? this.prescriptedAt,
-      medicatedAt: medicatedAt ?? this.medicatedAt,
+      medicationStartAt: medicationStartAt ?? this.medicationStartAt,
       duration: duration ?? this.duration,
+      deletedAt: deletedAt ?? this.deletedAt,
     );
   }
 
@@ -7221,11 +7245,14 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
     if (prescriptedAt.present) {
       map['prescripted_at'] = Variable<DateTime>(prescriptedAt.value);
     }
-    if (medicatedAt.present) {
-      map['medicated_at'] = Variable<DateTime>(medicatedAt.value);
+    if (medicationStartAt.present) {
+      map['medication_start_at'] = Variable<DateTime>(medicationStartAt.value);
     }
     if (duration.present) {
       map['duration'] = Variable<int>(duration.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
     return map;
   }
@@ -7239,8 +7266,9 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
           ..write('updatedAt: $updatedAt, ')
           ..write('doctorName: $doctorName, ')
           ..write('prescriptedAt: $prescriptedAt, ')
-          ..write('medicatedAt: $medicatedAt, ')
-          ..write('duration: $duration')
+          ..write('medicationStartAt: $medicationStartAt, ')
+          ..write('duration: $duration, ')
+          ..write('deletedAt: $deletedAt')
           ..write(')'))
         .toString();
   }
@@ -7272,14 +7300,14 @@ class $PrescriptionsTable extends Prescriptions
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _doctorNameMeta = const VerificationMeta('doctorName');
   @override
   late final GeneratedColumn<String> doctorName = GeneratedColumn<String>(
@@ -7291,12 +7319,12 @@ class $PrescriptionsTable extends Prescriptions
   late final GeneratedColumn<DateTime> prescriptedAt =
       GeneratedColumn<DateTime>('prescripted_at', aliasedName, false,
           type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  final VerificationMeta _medicatedAtMeta =
-      const VerificationMeta('medicatedAt');
+  final VerificationMeta _medicationStartAtMeta =
+      const VerificationMeta('medicationStartAt');
   @override
-  late final GeneratedColumn<DateTime> medicatedAt = GeneratedColumn<DateTime>(
-      'medicated_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  late final GeneratedColumn<DateTime> medicationStartAt =
+      GeneratedColumn<DateTime>('medication_start_at', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
   final VerificationMeta _durationMeta = const VerificationMeta('duration');
   @override
   late final GeneratedColumn<int> duration = GeneratedColumn<int>(
@@ -7304,6 +7332,11 @@ class $PrescriptionsTable extends Prescriptions
       check: () => duration.isBiggerOrEqual(const Constant(0)),
       type: DriftSqlType.int,
       requiredDuringInsert: true);
+  final VerificationMeta _deletedAtMeta = const VerificationMeta('deletedAt');
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+      'deleted_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         userId,
@@ -7312,8 +7345,9 @@ class $PrescriptionsTable extends Prescriptions
         updatedAt,
         doctorName,
         prescriptedAt,
-        medicatedAt,
-        duration
+        medicationStartAt,
+        duration,
+        deletedAt
       ];
   @override
   String get aliasedName => _alias ?? 'prescriptions';
@@ -7357,19 +7391,23 @@ class $PrescriptionsTable extends Prescriptions
     } else if (isInserting) {
       context.missing(_prescriptedAtMeta);
     }
-    if (data.containsKey('medicated_at')) {
+    if (data.containsKey('medication_start_at')) {
       context.handle(
-          _medicatedAtMeta,
-          medicatedAt.isAcceptableOrUnknown(
-              data['medicated_at']!, _medicatedAtMeta));
+          _medicationStartAtMeta,
+          medicationStartAt.isAcceptableOrUnknown(
+              data['medication_start_at']!, _medicationStartAtMeta));
     } else if (isInserting) {
-      context.missing(_medicatedAtMeta);
+      context.missing(_medicationStartAtMeta);
     }
     if (data.containsKey('duration')) {
       context.handle(_durationMeta,
           duration.isAcceptableOrUnknown(data['duration']!, _durationMeta));
     } else if (isInserting) {
       context.missing(_durationMeta);
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(_deletedAtMeta,
+          deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta));
     }
     return context;
   }
@@ -7392,10 +7430,13 @@ class $PrescriptionsTable extends Prescriptions
           .read(DriftSqlType.string, data['${effectivePrefix}doctor_name'])!,
       prescriptedAt: attachedDatabase.options.types.read(
           DriftSqlType.dateTime, data['${effectivePrefix}prescripted_at'])!,
-      medicatedAt: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}medicated_at'])!,
+      medicationStartAt: attachedDatabase.options.types.read(
+          DriftSqlType.dateTime,
+          data['${effectivePrefix}medication_start_at'])!,
       duration: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}duration'])!,
+      deletedAt: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}deleted_at']),
     );
   }
 
@@ -7416,6 +7457,8 @@ class MedicationInformationModel extends DataClass
   /// 수정일
   final DateTime updatedAt;
   final String prescriptionId;
+
+  /// 약 ID
   final String pillId;
 
   /// 첫번째 복용 시간
@@ -7428,13 +7471,10 @@ class MedicationInformationModel extends DataClass
   final int? timeThree;
 
   /// 복용량
-  final int takeCount;
+  final String takeCount;
 
   /// 복용주기
   final int takeCycle;
-
-  /// 알림 사용
-  final bool push;
 
   /// 30분 전 알림
   final bool beforePush;
@@ -7452,7 +7492,6 @@ class MedicationInformationModel extends DataClass
       this.timeThree,
       required this.takeCount,
       required this.takeCycle,
-      required this.push,
       required this.beforePush,
       required this.afterPush});
   @override
@@ -7472,9 +7511,8 @@ class MedicationInformationModel extends DataClass
     if (!nullToAbsent || timeThree != null) {
       map['time_three'] = Variable<int>(timeThree);
     }
-    map['take_count'] = Variable<int>(takeCount);
+    map['take_count'] = Variable<String>(takeCount);
     map['take_cycle'] = Variable<int>(takeCycle);
-    map['push'] = Variable<bool>(push);
     map['before_push'] = Variable<bool>(beforePush);
     map['after_push'] = Variable<bool>(afterPush);
     return map;
@@ -7498,7 +7536,6 @@ class MedicationInformationModel extends DataClass
           : Value(timeThree),
       takeCount: Value(takeCount),
       takeCycle: Value(takeCycle),
-      push: Value(push),
       beforePush: Value(beforePush),
       afterPush: Value(afterPush),
     );
@@ -7516,9 +7553,8 @@ class MedicationInformationModel extends DataClass
       timeOne: serializer.fromJson<int?>(json['timeOne']),
       timeTwo: serializer.fromJson<int?>(json['timeTwo']),
       timeThree: serializer.fromJson<int?>(json['timeThree']),
-      takeCount: serializer.fromJson<int>(json['takeCount']),
+      takeCount: serializer.fromJson<String>(json['takeCount']),
       takeCycle: serializer.fromJson<int>(json['takeCycle']),
-      push: serializer.fromJson<bool>(json['push']),
       beforePush: serializer.fromJson<bool>(json['beforePush']),
       afterPush: serializer.fromJson<bool>(json['afterPush']),
     );
@@ -7535,9 +7571,8 @@ class MedicationInformationModel extends DataClass
       'timeOne': serializer.toJson<int?>(timeOne),
       'timeTwo': serializer.toJson<int?>(timeTwo),
       'timeThree': serializer.toJson<int?>(timeThree),
-      'takeCount': serializer.toJson<int>(takeCount),
+      'takeCount': serializer.toJson<String>(takeCount),
       'takeCycle': serializer.toJson<int>(takeCycle),
-      'push': serializer.toJson<bool>(push),
       'beforePush': serializer.toJson<bool>(beforePush),
       'afterPush': serializer.toJson<bool>(afterPush),
     };
@@ -7552,9 +7587,8 @@ class MedicationInformationModel extends DataClass
           Value<int?> timeOne = const Value.absent(),
           Value<int?> timeTwo = const Value.absent(),
           Value<int?> timeThree = const Value.absent(),
-          int? takeCount,
+          String? takeCount,
           int? takeCycle,
-          bool? push,
           bool? beforePush,
           bool? afterPush}) =>
       MedicationInformationModel(
@@ -7568,7 +7602,6 @@ class MedicationInformationModel extends DataClass
         timeThree: timeThree.present ? timeThree.value : this.timeThree,
         takeCount: takeCount ?? this.takeCount,
         takeCycle: takeCycle ?? this.takeCycle,
-        push: push ?? this.push,
         beforePush: beforePush ?? this.beforePush,
         afterPush: afterPush ?? this.afterPush,
       );
@@ -7585,7 +7618,6 @@ class MedicationInformationModel extends DataClass
           ..write('timeThree: $timeThree, ')
           ..write('takeCount: $takeCount, ')
           ..write('takeCycle: $takeCycle, ')
-          ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
           ..write('afterPush: $afterPush')
           ..write(')'))
@@ -7604,7 +7636,6 @@ class MedicationInformationModel extends DataClass
       timeThree,
       takeCount,
       takeCycle,
-      push,
       beforePush,
       afterPush);
   @override
@@ -7621,7 +7652,6 @@ class MedicationInformationModel extends DataClass
           other.timeThree == this.timeThree &&
           other.takeCount == this.takeCount &&
           other.takeCycle == this.takeCycle &&
-          other.push == this.push &&
           other.beforePush == this.beforePush &&
           other.afterPush == this.afterPush);
 }
@@ -7636,9 +7666,8 @@ class MedicationInformationsCompanion
   final Value<int?> timeOne;
   final Value<int?> timeTwo;
   final Value<int?> timeThree;
-  final Value<int> takeCount;
+  final Value<String> takeCount;
   final Value<int> takeCycle;
-  final Value<bool> push;
   final Value<bool> beforePush;
   final Value<bool> afterPush;
   const MedicationInformationsCompanion({
@@ -7652,7 +7681,6 @@ class MedicationInformationsCompanion
     this.timeThree = const Value.absent(),
     this.takeCount = const Value.absent(),
     this.takeCycle = const Value.absent(),
-    this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
   });
@@ -7665,9 +7693,8 @@ class MedicationInformationsCompanion
     this.timeOne = const Value.absent(),
     this.timeTwo = const Value.absent(),
     this.timeThree = const Value.absent(),
-    required int takeCount,
+    required String takeCount,
     required int takeCycle,
-    this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
   })  : prescriptionId = Value(prescriptionId),
@@ -7683,9 +7710,8 @@ class MedicationInformationsCompanion
     Expression<int>? timeOne,
     Expression<int>? timeTwo,
     Expression<int>? timeThree,
-    Expression<int>? takeCount,
+    Expression<String>? takeCount,
     Expression<int>? takeCycle,
-    Expression<bool>? push,
     Expression<bool>? beforePush,
     Expression<bool>? afterPush,
   }) {
@@ -7700,7 +7726,6 @@ class MedicationInformationsCompanion
       if (timeThree != null) 'time_three': timeThree,
       if (takeCount != null) 'take_count': takeCount,
       if (takeCycle != null) 'take_cycle': takeCycle,
-      if (push != null) 'push': push,
       if (beforePush != null) 'before_push': beforePush,
       if (afterPush != null) 'after_push': afterPush,
     });
@@ -7715,9 +7740,8 @@ class MedicationInformationsCompanion
       Value<int?>? timeOne,
       Value<int?>? timeTwo,
       Value<int?>? timeThree,
-      Value<int>? takeCount,
+      Value<String>? takeCount,
       Value<int>? takeCycle,
-      Value<bool>? push,
       Value<bool>? beforePush,
       Value<bool>? afterPush}) {
     return MedicationInformationsCompanion(
@@ -7731,7 +7755,6 @@ class MedicationInformationsCompanion
       timeThree: timeThree ?? this.timeThree,
       takeCount: takeCount ?? this.takeCount,
       takeCycle: takeCycle ?? this.takeCycle,
-      push: push ?? this.push,
       beforePush: beforePush ?? this.beforePush,
       afterPush: afterPush ?? this.afterPush,
     );
@@ -7765,13 +7788,10 @@ class MedicationInformationsCompanion
       map['time_three'] = Variable<int>(timeThree.value);
     }
     if (takeCount.present) {
-      map['take_count'] = Variable<int>(takeCount.value);
+      map['take_count'] = Variable<String>(takeCount.value);
     }
     if (takeCycle.present) {
       map['take_cycle'] = Variable<int>(takeCycle.value);
-    }
-    if (push.present) {
-      map['push'] = Variable<bool>(push.value);
     }
     if (beforePush.present) {
       map['before_push'] = Variable<bool>(beforePush.value);
@@ -7795,7 +7815,6 @@ class MedicationInformationsCompanion
           ..write('timeThree: $timeThree, ')
           ..write('takeCount: $takeCount, ')
           ..write('takeCycle: $takeCycle, ')
-          ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
           ..write('afterPush: $afterPush')
           ..write(')'))
@@ -7822,14 +7841,14 @@ class $MedicationInformationsTable extends MedicationInformations
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _prescriptionIdMeta =
       const VerificationMeta('prescriptionId');
   @override
@@ -7862,22 +7881,14 @@ class $MedicationInformationsTable extends MedicationInformations
       type: DriftSqlType.int, requiredDuringInsert: false);
   final VerificationMeta _takeCountMeta = const VerificationMeta('takeCount');
   @override
-  late final GeneratedColumn<int> takeCount = GeneratedColumn<int>(
+  late final GeneratedColumn<String> takeCount = GeneratedColumn<String>(
       'take_count', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _takeCycleMeta = const VerificationMeta('takeCycle');
   @override
   late final GeneratedColumn<int> takeCycle = GeneratedColumn<int>(
       'take_cycle', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _pushMeta = const VerificationMeta('push');
-  @override
-  late final GeneratedColumn<bool> push = GeneratedColumn<bool>(
-      'push', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (push IN (0, 1))',
-      defaultValue: const Constant(false));
   final VerificationMeta _beforePushMeta = const VerificationMeta('beforePush');
   @override
   late final GeneratedColumn<bool> beforePush = GeneratedColumn<bool>(
@@ -7906,7 +7917,6 @@ class $MedicationInformationsTable extends MedicationInformations
         timeThree,
         takeCount,
         takeCycle,
-        push,
         beforePush,
         afterPush
       ];
@@ -7969,10 +7979,6 @@ class $MedicationInformationsTable extends MedicationInformations
     } else if (isInserting) {
       context.missing(_takeCycleMeta);
     }
-    if (data.containsKey('push')) {
-      context.handle(
-          _pushMeta, push.isAcceptableOrUnknown(data['push']!, _pushMeta));
-    }
     if (data.containsKey('before_push')) {
       context.handle(
           _beforePushMeta,
@@ -8014,11 +8020,9 @@ class $MedicationInformationsTable extends MedicationInformations
       timeThree: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}time_three']),
       takeCount: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}take_count'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}take_count'])!,
       takeCycle: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}take_cycle'])!,
-      push: attachedDatabase.options.types
-          .read(DriftSqlType.bool, data['${effectivePrefix}push'])!,
       beforePush: attachedDatabase.options.types
           .read(DriftSqlType.bool, data['${effectivePrefix}before_push'])!,
       afterPush: attachedDatabase.options.types
@@ -8050,9 +8054,6 @@ class MedicationScheduleModel extends DataClass
   /// 실제 복용일
   final DateTime? medicatedAt;
 
-  /// 알림 사용
-  final bool push;
-
   /// 30분 전 알림
   final bool beforePush;
 
@@ -8065,7 +8066,6 @@ class MedicationScheduleModel extends DataClass
       required this.medicationInformationId,
       required this.reservedAt,
       this.medicatedAt,
-      required this.push,
       required this.beforePush,
       required this.afterPush});
   @override
@@ -8080,7 +8080,6 @@ class MedicationScheduleModel extends DataClass
     if (!nullToAbsent || medicatedAt != null) {
       map['medicated_at'] = Variable<DateTime>(medicatedAt);
     }
-    map['push'] = Variable<bool>(push);
     map['before_push'] = Variable<bool>(beforePush);
     map['after_push'] = Variable<bool>(afterPush);
     return map;
@@ -8096,7 +8095,6 @@ class MedicationScheduleModel extends DataClass
       medicatedAt: medicatedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(medicatedAt),
-      push: Value(push),
       beforePush: Value(beforePush),
       afterPush: Value(afterPush),
     );
@@ -8113,7 +8111,6 @@ class MedicationScheduleModel extends DataClass
           serializer.fromJson<String>(json['medicationInformationId']),
       reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
       medicatedAt: serializer.fromJson<DateTime?>(json['medicatedAt']),
-      push: serializer.fromJson<bool>(json['push']),
       beforePush: serializer.fromJson<bool>(json['beforePush']),
       afterPush: serializer.fromJson<bool>(json['afterPush']),
     );
@@ -8129,7 +8126,6 @@ class MedicationScheduleModel extends DataClass
           serializer.toJson<String>(medicationInformationId),
       'reservedAt': serializer.toJson<DateTime>(reservedAt),
       'medicatedAt': serializer.toJson<DateTime?>(medicatedAt),
-      'push': serializer.toJson<bool>(push),
       'beforePush': serializer.toJson<bool>(beforePush),
       'afterPush': serializer.toJson<bool>(afterPush),
     };
@@ -8142,7 +8138,6 @@ class MedicationScheduleModel extends DataClass
           String? medicationInformationId,
           DateTime? reservedAt,
           Value<DateTime?> medicatedAt = const Value.absent(),
-          bool? push,
           bool? beforePush,
           bool? afterPush}) =>
       MedicationScheduleModel(
@@ -8153,7 +8148,6 @@ class MedicationScheduleModel extends DataClass
             medicationInformationId ?? this.medicationInformationId,
         reservedAt: reservedAt ?? this.reservedAt,
         medicatedAt: medicatedAt.present ? medicatedAt.value : this.medicatedAt,
-        push: push ?? this.push,
         beforePush: beforePush ?? this.beforePush,
         afterPush: afterPush ?? this.afterPush,
       );
@@ -8166,7 +8160,6 @@ class MedicationScheduleModel extends DataClass
           ..write('medicationInformationId: $medicationInformationId, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('medicatedAt: $medicatedAt, ')
-          ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
           ..write('afterPush: $afterPush')
           ..write(')'))
@@ -8174,16 +8167,8 @@ class MedicationScheduleModel extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      createdAt,
-      updatedAt,
-      medicationInformationId,
-      reservedAt,
-      medicatedAt,
-      push,
-      beforePush,
-      afterPush);
+  int get hashCode => Object.hash(id, createdAt, updatedAt,
+      medicationInformationId, reservedAt, medicatedAt, beforePush, afterPush);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8194,7 +8179,6 @@ class MedicationScheduleModel extends DataClass
           other.medicationInformationId == this.medicationInformationId &&
           other.reservedAt == this.reservedAt &&
           other.medicatedAt == this.medicatedAt &&
-          other.push == this.push &&
           other.beforePush == this.beforePush &&
           other.afterPush == this.afterPush);
 }
@@ -8207,7 +8191,6 @@ class MedicationSchedulesCompanion
   final Value<String> medicationInformationId;
   final Value<DateTime> reservedAt;
   final Value<DateTime?> medicatedAt;
-  final Value<bool> push;
   final Value<bool> beforePush;
   final Value<bool> afterPush;
   const MedicationSchedulesCompanion({
@@ -8217,7 +8200,6 @@ class MedicationSchedulesCompanion
     this.medicationInformationId = const Value.absent(),
     this.reservedAt = const Value.absent(),
     this.medicatedAt = const Value.absent(),
-    this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
   });
@@ -8228,7 +8210,6 @@ class MedicationSchedulesCompanion
     required String medicationInformationId,
     required DateTime reservedAt,
     this.medicatedAt = const Value.absent(),
-    this.push = const Value.absent(),
     this.beforePush = const Value.absent(),
     this.afterPush = const Value.absent(),
   })  : medicationInformationId = Value(medicationInformationId),
@@ -8240,7 +8221,6 @@ class MedicationSchedulesCompanion
     Expression<String>? medicationInformationId,
     Expression<DateTime>? reservedAt,
     Expression<DateTime>? medicatedAt,
-    Expression<bool>? push,
     Expression<bool>? beforePush,
     Expression<bool>? afterPush,
   }) {
@@ -8252,7 +8232,6 @@ class MedicationSchedulesCompanion
         'medication_information_id': medicationInformationId,
       if (reservedAt != null) 'reserved_at': reservedAt,
       if (medicatedAt != null) 'medicated_at': medicatedAt,
-      if (push != null) 'push': push,
       if (beforePush != null) 'before_push': beforePush,
       if (afterPush != null) 'after_push': afterPush,
     });
@@ -8265,7 +8244,6 @@ class MedicationSchedulesCompanion
       Value<String>? medicationInformationId,
       Value<DateTime>? reservedAt,
       Value<DateTime?>? medicatedAt,
-      Value<bool>? push,
       Value<bool>? beforePush,
       Value<bool>? afterPush}) {
     return MedicationSchedulesCompanion(
@@ -8276,7 +8254,6 @@ class MedicationSchedulesCompanion
           medicationInformationId ?? this.medicationInformationId,
       reservedAt: reservedAt ?? this.reservedAt,
       medicatedAt: medicatedAt ?? this.medicatedAt,
-      push: push ?? this.push,
       beforePush: beforePush ?? this.beforePush,
       afterPush: afterPush ?? this.afterPush,
     );
@@ -8304,9 +8281,6 @@ class MedicationSchedulesCompanion
     if (medicatedAt.present) {
       map['medicated_at'] = Variable<DateTime>(medicatedAt.value);
     }
-    if (push.present) {
-      map['push'] = Variable<bool>(push.value);
-    }
     if (beforePush.present) {
       map['before_push'] = Variable<bool>(beforePush.value);
     }
@@ -8325,7 +8299,6 @@ class MedicationSchedulesCompanion
           ..write('medicationInformationId: $medicationInformationId, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('medicatedAt: $medicatedAt, ')
-          ..write('push: $push, ')
           ..write('beforePush: $beforePush, ')
           ..write('afterPush: $afterPush')
           ..write(')'))
@@ -8352,14 +8325,14 @@ class $MedicationSchedulesTable extends MedicationSchedules
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _medicationInformationIdMeta =
       const VerificationMeta('medicationInformationId');
   @override
@@ -8379,14 +8352,6 @@ class $MedicationSchedulesTable extends MedicationSchedules
   late final GeneratedColumn<DateTime> medicatedAt = GeneratedColumn<DateTime>(
       'medicated_at', aliasedName, true,
       type: DriftSqlType.dateTime, requiredDuringInsert: false);
-  final VerificationMeta _pushMeta = const VerificationMeta('push');
-  @override
-  late final GeneratedColumn<bool> push = GeneratedColumn<bool>(
-      'push', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (push IN (0, 1))',
-      defaultValue: const Constant(false));
   final VerificationMeta _beforePushMeta = const VerificationMeta('beforePush');
   @override
   late final GeneratedColumn<bool> beforePush = GeneratedColumn<bool>(
@@ -8411,7 +8376,6 @@ class $MedicationSchedulesTable extends MedicationSchedules
         medicationInformationId,
         reservedAt,
         medicatedAt,
-        push,
         beforePush,
         afterPush
       ];
@@ -8459,10 +8423,6 @@ class $MedicationSchedulesTable extends MedicationSchedules
           medicatedAt.isAcceptableOrUnknown(
               data['medicated_at']!, _medicatedAtMeta));
     }
-    if (data.containsKey('push')) {
-      context.handle(
-          _pushMeta, push.isAcceptableOrUnknown(data['push']!, _pushMeta));
-    }
     if (data.containsKey('before_push')) {
       context.handle(
           _beforePushMeta,
@@ -8500,8 +8460,6 @@ class $MedicationSchedulesTable extends MedicationSchedules
           .read(DriftSqlType.dateTime, data['${effectivePrefix}reserved_at'])!,
       medicatedAt: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}medicated_at']),
-      push: attachedDatabase.options.types
-          .read(DriftSqlType.bool, data['${effectivePrefix}push'])!,
       beforePush: attachedDatabase.options.types
           .read(DriftSqlType.bool, data['${effectivePrefix}before_push'])!,
       afterPush: attachedDatabase.options.types
@@ -8527,7 +8485,7 @@ class NotificationScheduleModel extends DataClass
   final int type;
 
   /// 이전 알림인지
-  final bool isBeforePush;
+  final PushType pushType;
 
   /// 알림 예정일
   final DateTime reservedAt;
@@ -8541,7 +8499,7 @@ class NotificationScheduleModel extends DataClass
       {required this.id,
       required this.userId,
       required this.type,
-      required this.isBeforePush,
+      required this.pushType,
       required this.reservedAt,
       required this.createdAt,
       required this.updatedAt});
@@ -8551,7 +8509,10 @@ class NotificationScheduleModel extends DataClass
     map['id'] = Variable<int>(id);
     map['user_id'] = Variable<String>(userId);
     map['type'] = Variable<int>(type);
-    map['is_before_push'] = Variable<bool>(isBeforePush);
+    {
+      final converter = $NotificationSchedulesTable.$converter0;
+      map['push_type'] = Variable<int>(converter.toSql(pushType));
+    }
     map['reserved_at'] = Variable<DateTime>(reservedAt);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -8563,7 +8524,7 @@ class NotificationScheduleModel extends DataClass
       id: Value(id),
       userId: Value(userId),
       type: Value(type),
-      isBeforePush: Value(isBeforePush),
+      pushType: Value(pushType),
       reservedAt: Value(reservedAt),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
@@ -8577,7 +8538,7 @@ class NotificationScheduleModel extends DataClass
       id: serializer.fromJson<int>(json['id']),
       userId: serializer.fromJson<String>(json['userId']),
       type: serializer.fromJson<int>(json['type']),
-      isBeforePush: serializer.fromJson<bool>(json['isBeforePush']),
+      pushType: serializer.fromJson<PushType>(json['pushType']),
       reservedAt: serializer.fromJson<DateTime>(json['reservedAt']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -8590,7 +8551,7 @@ class NotificationScheduleModel extends DataClass
       'id': serializer.toJson<int>(id),
       'userId': serializer.toJson<String>(userId),
       'type': serializer.toJson<int>(type),
-      'isBeforePush': serializer.toJson<bool>(isBeforePush),
+      'pushType': serializer.toJson<PushType>(pushType),
       'reservedAt': serializer.toJson<DateTime>(reservedAt),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -8601,7 +8562,7 @@ class NotificationScheduleModel extends DataClass
           {int? id,
           String? userId,
           int? type,
-          bool? isBeforePush,
+          PushType? pushType,
           DateTime? reservedAt,
           DateTime? createdAt,
           DateTime? updatedAt}) =>
@@ -8609,7 +8570,7 @@ class NotificationScheduleModel extends DataClass
         id: id ?? this.id,
         userId: userId ?? this.userId,
         type: type ?? this.type,
-        isBeforePush: isBeforePush ?? this.isBeforePush,
+        pushType: pushType ?? this.pushType,
         reservedAt: reservedAt ?? this.reservedAt,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -8620,7 +8581,7 @@ class NotificationScheduleModel extends DataClass
           ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('type: $type, ')
-          ..write('isBeforePush: $isBeforePush, ')
+          ..write('pushType: $pushType, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -8629,8 +8590,8 @@ class NotificationScheduleModel extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, userId, type, isBeforePush, reservedAt, createdAt, updatedAt);
+  int get hashCode =>
+      Object.hash(id, userId, type, pushType, reservedAt, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8638,7 +8599,7 @@ class NotificationScheduleModel extends DataClass
           other.id == this.id &&
           other.userId == this.userId &&
           other.type == this.type &&
-          other.isBeforePush == this.isBeforePush &&
+          other.pushType == this.pushType &&
           other.reservedAt == this.reservedAt &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -8649,7 +8610,7 @@ class NotificationSchedulesCompanion
   final Value<int> id;
   final Value<String> userId;
   final Value<int> type;
-  final Value<bool> isBeforePush;
+  final Value<PushType> pushType;
   final Value<DateTime> reservedAt;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -8657,7 +8618,7 @@ class NotificationSchedulesCompanion
     this.id = const Value.absent(),
     this.userId = const Value.absent(),
     this.type = const Value.absent(),
-    this.isBeforePush = const Value.absent(),
+    this.pushType = const Value.absent(),
     this.reservedAt = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -8666,19 +8627,19 @@ class NotificationSchedulesCompanion
     this.id = const Value.absent(),
     required String userId,
     required int type,
-    required bool isBeforePush,
+    required PushType pushType,
     required DateTime reservedAt,
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   })  : userId = Value(userId),
         type = Value(type),
-        isBeforePush = Value(isBeforePush),
+        pushType = Value(pushType),
         reservedAt = Value(reservedAt);
   static Insertable<NotificationScheduleModel> custom({
     Expression<int>? id,
     Expression<String>? userId,
     Expression<int>? type,
-    Expression<bool>? isBeforePush,
+    Expression<int>? pushType,
     Expression<DateTime>? reservedAt,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -8687,7 +8648,7 @@ class NotificationSchedulesCompanion
       if (id != null) 'id': id,
       if (userId != null) 'user_id': userId,
       if (type != null) 'type': type,
-      if (isBeforePush != null) 'is_before_push': isBeforePush,
+      if (pushType != null) 'push_type': pushType,
       if (reservedAt != null) 'reserved_at': reservedAt,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -8698,7 +8659,7 @@ class NotificationSchedulesCompanion
       {Value<int>? id,
       Value<String>? userId,
       Value<int>? type,
-      Value<bool>? isBeforePush,
+      Value<PushType>? pushType,
       Value<DateTime>? reservedAt,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt}) {
@@ -8706,7 +8667,7 @@ class NotificationSchedulesCompanion
       id: id ?? this.id,
       userId: userId ?? this.userId,
       type: type ?? this.type,
-      isBeforePush: isBeforePush ?? this.isBeforePush,
+      pushType: pushType ?? this.pushType,
       reservedAt: reservedAt ?? this.reservedAt,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -8725,8 +8686,9 @@ class NotificationSchedulesCompanion
     if (type.present) {
       map['type'] = Variable<int>(type.value);
     }
-    if (isBeforePush.present) {
-      map['is_before_push'] = Variable<bool>(isBeforePush.value);
+    if (pushType.present) {
+      final converter = $NotificationSchedulesTable.$converter0;
+      map['push_type'] = Variable<int>(converter.toSql(pushType.value));
     }
     if (reservedAt.present) {
       map['reserved_at'] = Variable<DateTime>(reservedAt.value);
@@ -8746,7 +8708,7 @@ class NotificationSchedulesCompanion
           ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('type: $type, ')
-          ..write('isBeforePush: $isBeforePush, ')
+          ..write('pushType: $pushType, ')
           ..write('reservedAt: $reservedAt, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -8780,14 +8742,12 @@ class $NotificationSchedulesTable extends NotificationSchedules
   late final GeneratedColumn<int> type = GeneratedColumn<int>(
       'type', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _isBeforePushMeta =
-      const VerificationMeta('isBeforePush');
+  final VerificationMeta _pushTypeMeta = const VerificationMeta('pushType');
   @override
-  late final GeneratedColumn<bool> isBeforePush = GeneratedColumn<bool>(
-      'is_before_push', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (is_before_push IN (0, 1))');
+  late final GeneratedColumnWithTypeConverter<PushType, int> pushType =
+      GeneratedColumn<int>('push_type', aliasedName, false,
+              type: DriftSqlType.int, requiredDuringInsert: true)
+          .withConverter<PushType>($NotificationSchedulesTable.$converter0);
   final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
   @override
   late final GeneratedColumn<DateTime> reservedAt = GeneratedColumn<DateTime>(
@@ -8809,7 +8769,7 @@ class $NotificationSchedulesTable extends NotificationSchedules
       defaultValue: Constant(DateTime.now()));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, userId, type, isBeforePush, reservedAt, createdAt, updatedAt];
+      [id, userId, type, pushType, reservedAt, createdAt, updatedAt];
   @override
   String get aliasedName => _alias ?? 'notification_schedules';
   @override
@@ -8835,14 +8795,7 @@ class $NotificationSchedulesTable extends NotificationSchedules
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
-    if (data.containsKey('is_before_push')) {
-      context.handle(
-          _isBeforePushMeta,
-          isBeforePush.isAcceptableOrUnknown(
-              data['is_before_push']!, _isBeforePushMeta));
-    } else if (isInserting) {
-      context.missing(_isBeforePushMeta);
-    }
+    context.handle(_pushTypeMeta, const VerificationResult.success());
     if (data.containsKey('reserved_at')) {
       context.handle(
           _reservedAtMeta,
@@ -8866,7 +8819,7 @@ class $NotificationSchedulesTable extends NotificationSchedules
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   List<Set<GeneratedColumn>> get uniqueKeys => [
-        {userId, type, isBeforePush, reservedAt},
+        {userId, type, pushType, reservedAt},
       ];
   @override
   NotificationScheduleModel map(Map<String, dynamic> data,
@@ -8879,8 +8832,9 @@ class $NotificationSchedulesTable extends NotificationSchedules
           .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
       type: attachedDatabase.options.types
           .read(DriftSqlType.int, data['${effectivePrefix}type'])!,
-      isBeforePush: attachedDatabase.options.types
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_before_push'])!,
+      pushType: $NotificationSchedulesTable.$converter0.fromSql(attachedDatabase
+          .options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}push_type'])!),
       reservedAt: attachedDatabase.options.types
           .read(DriftSqlType.dateTime, data['${effectivePrefix}reserved_at'])!,
       createdAt: attachedDatabase.options.types
@@ -8894,6 +8848,9 @@ class $NotificationSchedulesTable extends NotificationSchedules
   $NotificationSchedulesTable createAlias(String alias) {
     return $NotificationSchedulesTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<PushType, int> $converter0 =
+      const EnumIndexConverter<PushType>(PushType.values);
 }
 
 class LastLoginUserModel extends DataClass
@@ -9088,14 +9045,14 @@ class $LastLoginUsersTable extends LastLoginUsers
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
       'updated_at', aliasedName, false,
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      defaultValue: currentDateAndTime);
   @override
   List<GeneratedColumn> get $columns => [userId, id, createdAt, updatedAt];
   @override
@@ -9152,6 +9109,7 @@ class $LastLoginUsersTable extends LastLoginUsers
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
+  _$AppDatabase.connect(DatabaseConnection c) : super.connect(c);
   late final $UsersTable users = $UsersTable(this);
   late final $PillsTable pills = $PillsTable(this);
   late final $HospitalVisitSchedulesTable hospitalVisitSchedules =

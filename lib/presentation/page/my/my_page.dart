@@ -255,7 +255,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                                         updateUserCubit.updateSex(0),
                                     style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      primary: state.sex.value == 0
+                                      backgroundColor: state.sex.value == 0
                                           ? Theme.of(context).primaryColor
                                           : Colors.white,
                                       elevation: 0,
@@ -278,7 +278,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                                         updateUserCubit.updateSex(1),
                                     style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      primary: state.sex.value == 1
+                                      backgroundColor: state.sex.value == 1
                                           ? Theme.of(context).primaryColor
                                           : Colors.white,
                                       elevation: 0,

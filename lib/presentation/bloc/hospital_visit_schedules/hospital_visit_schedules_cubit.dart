@@ -47,7 +47,22 @@ class HospitalVisitSchedulesCubit extends Cubit<HospitalVisitSchedulesState>
         hospitalVisitSchedulesSubscription = r.listen(
           (hospitalVisitSchedules) => emit(
             HospitalVisitSchedulesLoadSuccess(
-              hospitalVisitSchedules: hospitalVisitSchedules,
+              hospitalVisitSchedules: List<HospitalVisitSchedule>.from(
+                <HospitalVisitSchedule>[
+                  ...hospitalVisitSchedules.where(
+                    (element) => element.visitedAt == null,
+                  )..sorted(
+                      (prev, curr) =>
+                          curr.reservedAt.compareTo(prev.reservedAt),
+                    ),
+                  ...hospitalVisitSchedules.where(
+                    (element) => element.visitedAt != null,
+                  )..sorted(
+                      (prev, curr) =>
+                          curr.reservedAt.compareTo(prev.reservedAt),
+                    ),
+                ],
+              ),
             ),
           ),
         );

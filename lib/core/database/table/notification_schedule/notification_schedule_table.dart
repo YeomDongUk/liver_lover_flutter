@@ -4,6 +4,8 @@ import 'package:drift/drift.dart';
 // Project imports:
 import 'package:yak/core/database/table/user/user_table.dart';
 
+enum PushType { onTime, before, after }
+
 @DataClassName('NotificationScheduleModel')
 class NotificationSchedules extends Table {
   /// 아이디
@@ -16,7 +18,7 @@ class NotificationSchedules extends Table {
   IntColumn get type => integer()();
 
   /// 이전 알림인지
-  BoolColumn get isBeforePush => boolean()();
+  IntColumn get pushType => intEnum<PushType>()();
 
   /// 알림 예정일
   DateTimeColumn get reservedAt => dateTime()();
@@ -34,7 +36,7 @@ class NotificationSchedules extends Table {
         {
           userId,
           type,
-          isBeforePush,
+          pushType,
           reservedAt,
         }
       ];

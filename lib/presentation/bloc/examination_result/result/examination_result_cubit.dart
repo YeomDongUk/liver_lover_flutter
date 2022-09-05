@@ -16,6 +16,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
 
   final UpsertExaminationResult upsertExaminationResult;
   late DateTime _selectedDate;
+
   void updateExaminationResult({
     required DateTime date,
     required ExaminationResult? examinationResult,
@@ -40,7 +41,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
 
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
-        platelet: Value((platelet * 1000).toInt()),
+        platelet: Value((platelet).toString()),
       ),
     );
 
@@ -66,7 +67,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     );
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
-        ast: Value((ast * 1000).toInt()),
+        ast: Value((ast).toString()),
       ),
     );
 
@@ -92,7 +93,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     );
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
-        alt: Value((alt * 1000).toInt()),
+        alt: Value((alt).toString()),
       ),
     );
 
@@ -118,7 +119,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     );
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
-        ggt: Value((ggt * 1000).toInt()),
+        ggt: Value((ggt).toString()),
       ),
     );
 
@@ -144,7 +145,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     );
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
-        bilirubin: Value((bilirubin * 1000).toInt()),
+        bilirubin: Value((bilirubin).toString()),
       ),
     );
 
@@ -170,7 +171,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     );
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
-        albumin: Value((albumin * 1000).toInt()),
+        albumin: Value((albumin).toString()),
       ),
     );
 
@@ -189,7 +190,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
         afp: Value(
-          afp == null ? null : (afp * 1000).toInt(),
+          afp == null ? null : (afp).toString(),
         ),
       ),
     );
@@ -209,7 +210,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
         hbvDna: Value(
-          hbvDna == null ? null : (hbvDna * 1000).toInt(),
+          hbvDna == null ? null : (hbvDna).toString(),
         ),
       ),
     );
@@ -229,7 +230,7 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
     final either = await upsertExaminationResult.call(
       _companion.copyWith(
         hcvRna: Value(
-          hcvRna == null ? null : (hcvRna * 1000).toInt(),
+          hcvRna == null ? null : (hcvRna).toString(),
         ),
       ),
     );
@@ -289,63 +290,63 @@ class ExaminationResultCubit extends Cubit<ExaminationResultState> {
             : Value(
                 state.examinationResult!.platelet == null
                     ? null
-                    : (state.examinationResult!.platelet! * 1000).toInt(),
+                    : (state.examinationResult!.platelet!).toString(),
               ),
         ast: state.examinationResult?.ast == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.ast == null
                     ? null
-                    : (state.examinationResult!.ast! * 1000).toInt(),
+                    : (state.examinationResult!.ast!).toString(),
               ),
         alt: state.examinationResult?.alt == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.alt == null
                     ? null
-                    : (state.examinationResult!.alt! * 1000).toInt(),
+                    : (state.examinationResult!.alt!).toString(),
               ),
         ggt: state.examinationResult?.ggt == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.ggt == null
                     ? null
-                    : (state.examinationResult!.ggt! * 1000).toInt(),
+                    : (state.examinationResult!.ggt!).toString(),
               ),
         bilirubin: state.examinationResult?.bilirubin == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.bilirubin == null
                     ? null
-                    : (state.examinationResult!.bilirubin! * 1000).toInt(),
+                    : (state.examinationResult!.bilirubin!).toString(),
               ),
         albumin: state.examinationResult?.albumin == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.albumin == null
                     ? null
-                    : (state.examinationResult!.albumin! * 1000).toInt(),
+                    : (state.examinationResult!.albumin!).toString(),
               ),
         afp: state.examinationResult?.afp == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.afp == null
                     ? null
-                    : (state.examinationResult!.afp! * 1000).toInt(),
+                    : (state.examinationResult!.afp!).toString(),
               ),
         hbvDna: state.examinationResult?.hbvDna == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.hbvDna == null
                     ? null
-                    : (state.examinationResult!.hbvDna! * 1000).toInt(),
+                    : (state.examinationResult!.hbvDna!).toString(),
               ),
         hcvRna: state.examinationResult?.hcvRna == null
             ? const Value.absent()
             : Value(
                 state.examinationResult!.hcvRna == null
                     ? null
-                    : (state.examinationResult!.hcvRna! * 1000).toInt(),
+                    : (state.examinationResult!.hcvRna!).toString(),
               ),
         benignTumor: state.examinationResult?.benignTumor == null
             ? const Value.absent()

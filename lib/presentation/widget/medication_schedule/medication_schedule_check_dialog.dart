@@ -11,21 +11,22 @@ import 'package:kiwi/kiwi.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
+import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_all_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_medication.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_group_stream.dart';
 import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/medication_schedules/groups/update/medication_schedule_group_update_cubit.dart';
-import 'package:yak/presentation/page/medication_schedule/medication_schedule_group/medication_schedule_group_detail_page.dart';
 import 'package:yak/presentation/widget/common/common_dialog.dart';
+import 'package:yak/presentation/widget/medication_schedule/detail/medication_schedule_information_list_view.dart';
 
 class MedicationScheduleCheckDialog extends StatefulWidget {
   const MedicationScheduleCheckDialog({
     super.key,
-    required this.medicationSchedulesGroup,
+    required this.reservedAt,
   });
-  final MedicationSchedulesGroup medicationSchedulesGroup;
+  final DateTime reservedAt;
 
   @override
   State<MedicationScheduleCheckDialog> createState() =>
@@ -41,12 +42,14 @@ class _MedicationScheduleCheckDialogState
   @override
   void initState() {
     medicationScheduleGroupUpdateCubit = MedicationScheduleGroupUpdateCubit(
-      medicationSchedulesGroup: widget.medicationSchedulesGroup,
+      reservedAt: widget.reservedAt,
       doMedication: KiwiContainer().resolve<DoMedication>(),
       doAllMedication: KiwiContainer().resolve<DoAllMedication>(),
+      getMedicationScheduleGroupStream:
+          KiwiContainer().resolve<GetMedicationScheduleGroupStream>(),
       updateMedicationScheduleGroupPush:
           KiwiContainer().resolve<UpdateMedicationScheduleGroupPush>(),
-    );
+    )..loadScheduleGroup();
     super.initState();
   }
 
@@ -64,7 +67,11 @@ class _MedicationScheduleCheckDialogState
       bloc: medicationScheduleGroupUpdateCubit,
       builder: (context, state) => BlocBuilder<CurrentTimeCubit, DateTime>(
         builder: (context, now) {
-          final group = state.medicationSchedulesGroup;
+          final group = state.medicationScheduleGroup;
+
+          if (group == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
           final isOver = group.reservedAt.isBefore(now);
 
@@ -114,7 +121,7 @@ class _MedicationScheduleCheckDialogState
                       const SizedBox(width: 5),
                       Text(
                         hhmmFormat
-                            .format(widget.medicationSchedulesGroup.reservedAt),
+                            .format(state.medicationScheduleGroup!.reservedAt),
                         style: GoogleFonts.lato(
                           fontSize: 20,
                           color: Theme.of(context).primaryColor,
@@ -140,18 +147,16 @@ class _MedicationScheduleCheckDialogState
                     children: [
                       Container(
                         padding: const EdgeInsets.only(left: 8, right: 8),
-                        height: 281,
+                        height: 285,
                         child: MedicationScheduleInformationListView(
                           now: now,
                           state: state,
                           scrollController: scrollController,
-                          group: group,
                           isOver: isOver,
-                          medicationScheduleGroupUpdateCubit:
-                              medicationScheduleGroupUpdateCubit,
+                          medicate: medicationScheduleGroupUpdateCubit.medicate,
                         ),
                       ),
-                      if (!state.medicationSchedulesGroup.isAllMedicated) ...[
+                      if (!state.medicationScheduleGroup!.isAllMedicated) ...[
                         const SizedBox(height: 24),
                         BlocBuilder<CurrentTimeCubit, DateTime>(
                           builder: (context, now) => Padding(
@@ -159,12 +164,10 @@ class _MedicationScheduleCheckDialogState
                               horizontal: 24,
                             ),
                             child: ElevatedButton(
-                              onPressed: !canAllMedicate
+                              onPressed: group.isAllMedicated
                                   ? null
-                                  : group.isAllMedicated
-                                      ? null
-                                      : medicationScheduleGroupUpdateCubit
-                                          .medicateAll,
+                                  : medicationScheduleGroupUpdateCubit
+                                      .medicateAll,
                               style: ElevatedButton.styleFrom(
                                 fixedSize: const Size.fromHeight(60),
                                 shape: RoundedRectangleBorder(

@@ -1,13 +1,14 @@
 // Package imports:
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 // Project imports:
-import 'package:yak/domain/entities/medication_information/medication_information.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
+import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_all_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_medication.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_group_stream.dart';
 import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 
 part 'medication_schedule_group_update_state.dart';
@@ -15,103 +16,123 @@ part 'medication_schedule_group_update_state.dart';
 class MedicationScheduleGroupUpdateCubit
     extends Cubit<MedicationScheduleGroupUpdateState> {
   MedicationScheduleGroupUpdateCubit({
+    required this.reservedAt,
     required this.doMedication,
     required this.doAllMedication,
     required this.updateMedicationScheduleGroupPush,
-    required MedicationSchedulesGroup medicationSchedulesGroup,
-  }) : super(
-          MedicationScheduleGroupUpdateState(
-            medicationSchedulesGroup: medicationSchedulesGroup,
-          ),
-        );
-
+    required this.getMedicationScheduleGroupStream,
+  }) : super(const MedicationScheduleGroupUpdateState());
+  final DateTime reservedAt;
   final DoMedication doMedication;
   final DoAllMedication doAllMedication;
   final UpdateMedicationScheduleGroupPush updateMedicationScheduleGroupPush;
+  final GetMedicationScheduleGroupStream getMedicationScheduleGroupStream;
+
+  StreamSubscription<MedicationScheduleGroup>? _subscription;
+  Future<void> loadScheduleGroup() async {
+    emit(
+      state.copyWith(
+        status: MedicationScheduleGroupUpdateStatus.loadInProgress,
+      ),
+    );
+    final either = await getMedicationScheduleGroupStream.call(reservedAt);
+
+    either.fold(
+      (l) => emit(
+        state.copyWith(status: MedicationScheduleGroupUpdateStatus.loadFailure),
+      ),
+      (r) {
+        _subscription?.cancel();
+
+        _subscription = r.listen(
+          (event) => emit(
+            state.copyWith(
+              status: MedicationScheduleGroupUpdateStatus.loadSuccess,
+              medicationScheduleGroup: event,
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Future<void> medicateAll() async {
-    final medicationInformations = List<MedicationInformation>.from(
-      state.medicationSchedulesGroup.medicationInformations,
-    );
-
-    await doAllMedication.call(
-      medicationInformations.first.medicationSchedules.first.reservedAt,
-    );
-
     emit(
       state.copyWith(
-        status: MedicationScheduleGroupUpdateStatus.submitSuccess,
-        medicationSchedulesGroup: state.medicationSchedulesGroup.copyWith(
-          medicationInformations: medicationInformations
-              .map(
-                (medicationInformation) => medicationInformation.copyWith(
-                  medicationSchedules: List<MedicationSchedule>.from(
-                    medicationInformation.medicationSchedules,
-                  )
-                      .map(
-                        (medicationSchedule) => medicationSchedule.copyWith(
-                          medicatedAt: DateTime.now(),
-                          updatedAt: DateTime.now(),
-                        ),
-                      )
-                      .toList(),
-                ),
-              )
-              .toList(),
+        status: MedicationScheduleGroupUpdateStatus.submitInProgress,
+      ),
+    );
+
+    final either = await doAllMedication.call(reservedAt);
+
+    either.fold(
+      (l) => emit(
+        state.copyWith(
+          status: MedicationScheduleGroupUpdateStatus.submitFailure,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          status: MedicationScheduleGroupUpdateStatus.submitSuccess,
         ),
       ),
     );
   }
 
-  Future<void> medicate({
-    required MedicationInformation medicationInformation,
-    required MedicationSchedule medicationSchedule,
-  }) async {
-    final medicationInformations = List<MedicationInformation>.from(
-      state.medicationSchedulesGroup.medicationInformations,
-    );
-
-    final index = medicationInformations.indexOf(medicationInformation);
-
-    if (index == -1) return;
-
-    await doMedication.call(medicationSchedule.id);
-
-    medicationInformations[index] = medicationInformations[index].copyWith(
-      medicationSchedules: [
-        medicationSchedule.copyWith(
-          medicatedAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        )
-      ],
-    );
-
+  Future<void> medicate(String medicationScheduleId) async {
     emit(
       state.copyWith(
-        medicationSchedulesGroup: state.medicationSchedulesGroup.copyWith(
-          medicationInformations: medicationInformations,
+        status: MedicationScheduleGroupUpdateStatus.submitInProgress,
+      ),
+    );
+
+    final either = await doMedication.call(medicationScheduleId);
+
+    either.fold(
+      (l) => emit(
+        state.copyWith(
+          status: MedicationScheduleGroupUpdateStatus.submitFailure,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          status: MedicationScheduleGroupUpdateStatus.submitSuccess,
         ),
       ),
     );
   }
 
-  Future<void> togglePush() async {
-    await updateMedicationScheduleGroupPush.call(
+  Future<void> togglePush(bool push) async {
+    emit(
+      state.copyWith(
+        status: MedicationScheduleGroupUpdateStatus.submitInProgress,
+      ),
+    );
+
+    final either = await updateMedicationScheduleGroupPush.call(
       UpdateMedicationScheduleGroupPushParam(
-        ids: state.medicationSchedulesGroup.medicationInformations
-            .map((e) => e.medicationSchedules.map((e) => e.id))
-            .expand((element) => element)
-            .toList(),
-        push: !state.medicationSchedulesGroup.push,
+        reservedAt: reservedAt,
+        push: push,
       ),
     );
 
-    emit(
-      state.copyWith(
-        medicationSchedulesGroup: state.medicationSchedulesGroup.copyWith(
-          push: !state.medicationSchedulesGroup.push,
+    either.fold(
+      (l) => emit(
+        state.copyWith(
+          status: MedicationScheduleGroupUpdateStatus.submitFailure,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(
+          status: MedicationScheduleGroupUpdateStatus.submitSuccess,
         ),
       ),
     );
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
   }
 }

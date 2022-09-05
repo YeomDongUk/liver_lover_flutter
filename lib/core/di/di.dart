@@ -4,6 +4,7 @@ import 'dart:io';
 // Package imports:
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
+import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:path/path.dart' as p;
@@ -39,7 +40,6 @@ import 'package:yak/data/repositories/health_question/health_question_repository
 import 'package:yak/data/repositories/hospital_visit_schedule/hospital_visit_schedule_repository_impl.dart';
 import 'package:yak/data/repositories/medication_schedule/medication_schedule_repository_impl.dart';
 import 'package:yak/data/repositories/metabolic_disease/metabolic_disease_repository_impl.dart';
-import 'package:yak/data/repositories/notification/notification_repository_impl.dart';
 import 'package:yak/data/repositories/pill/pill_repository_impl.dart';
 import 'package:yak/data/repositories/point_history/point_history_repository_impl.dart';
 import 'package:yak/data/repositories/prescription/prescription_repository_impl.dart';
@@ -56,7 +56,6 @@ import 'package:yak/domain/repositories/health_question/health_question_reposito
 import 'package:yak/domain/repositories/hospital_visit_schedule/hospital_visit_schedule_repository.dart';
 import 'package:yak/domain/repositories/medication_schedule/medication_schedule_repository.dart';
 import 'package:yak/domain/repositories/metabolic_disease/metabolic_disease_repository.dart';
-import 'package:yak/domain/repositories/notification/notification_repository.dart';
 import 'package:yak/domain/repositories/pill/pill_repository.dart';
 import 'package:yak/domain/repositories/point_history/point_history_repository.dart';
 import 'package:yak/domain/repositories/prescription/prescription_repository.dart';
@@ -86,18 +85,19 @@ import 'package:yak/domain/usecases/hospital_visit_schedule/toggle_hospital_visi
 import 'package:yak/domain/usecases/hospital_visit_schedule/update_hospital_visit_schedule.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_all_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_medication.dart';
-import 'package:yak/domain/usecases/medication_schedule/get_medication_schedules.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_daily_groups_stream.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_group_stream.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_groups_stream.dart';
 import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 import 'package:yak/domain/usecases/metabolic_disease/get_metabolic_disease.dart';
 import 'package:yak/domain/usecases/metabolic_disease/upsert_metabolic_disease.dart';
-import 'package:yak/domain/usecases/notification/init_notifications.dart';
 import 'package:yak/domain/usecases/pill/create_pill.dart';
 import 'package:yak/domain/usecases/pill/search_pills.dart';
 import 'package:yak/domain/usecases/point_history/get_point_histories.dart';
 import 'package:yak/domain/usecases/point_history/init_point_history_subscription.dart';
 import 'package:yak/domain/usecases/prescription/create_prescriotion.dart';
 import 'package:yak/domain/usecases/prescription/get_prescriptions.dart';
-import 'package:yak/domain/usecases/prescription/toggle_prescription_notification.dart';
+import 'package:yak/domain/usecases/prescription/update_prescription.dart';
 import 'package:yak/domain/usecases/smoking_history/get_last_smoking_history_stream.dart';
 import 'package:yak/domain/usecases/smoking_history/get_smoking_histories.dart';
 import 'package:yak/domain/usecases/smoking_history/get_smoking_history_average.dart';
@@ -115,26 +115,22 @@ import 'package:yak/domain/usecases/user/update_user.dart';
 import 'package:yak/domain/usecases/user_point/get_user_point.dart';
 
 // ignore: unused_element
-LazyDatabase _openConnection() => LazyDatabase(() async {
-      final dbFolder = await getApplicationDocumentsDirectory();
-      final file = File(p.join(dbFolder.path, 'db.sqlite'));
-
-      return NativeDatabase(
-        file,
-      );
-    });
 
 class Di {
   static Future<void> setup(bool isProduction) async {
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'liverlover.sqlite'));
+
+    final database = NativeDatabase(file);
+
+    final isolate =
+        await DriftIsolate.spawn(() => DatabaseConnection(database));
+
+    final connection = await isolate.connect();
+
     KiwiContainer()
-      ..registerInstance<LazyDatabase>(
-        _openConnection(),
-        // LazyDatabase(() => NativeDatabase.memory(logStatements: true)),
-      )
       ..registerSingleton<AppDatabase>(
-        (c) => AppDatabase(
-          c<LazyDatabase>(),
-        ),
+        (c) => AppDatabase.connect(connection),
       )
 
       /// User
@@ -152,18 +148,6 @@ class Di {
         (c) => NotificationScheduleLocalDataSourceImpl(
           attachedDatabase: c<AppDatabase>(),
           localNotification: c<LocalNotification>(),
-        ),
-      )
-      ..registerSingleton<ScheduleNotificationRepository>(
-        (c) => ScheduleNotificationRepositoryImpl(
-          userId: c<UserId>(),
-          notificationLocalDataSource: c<NotificationScheduleLocalDataSource>(),
-        ),
-      )
-      ..registerSingleton<InitNotificaions>(
-        (c) => InitNotificaions(
-          localNotification: c<LocalNotification>(),
-          notificationRepository: c<ScheduleNotificationRepository>(),
         ),
       )
       ..registerSingleton<UserLocalDataSource>(
@@ -255,8 +239,18 @@ class Di {
           medicationScheduleRepository: c<MedicationScheduleRepository>(),
         ),
       )
-      ..registerSingleton<GetMedicationSchedules>(
-        (c) => GetMedicationSchedules(
+      ..registerSingleton<GetMedicationScheduleGroupsStream>(
+        (c) => GetMedicationScheduleGroupsStream(
+          medicationScheduleRepository: c<MedicationScheduleRepository>(),
+        ),
+      )
+      ..registerSingleton<GetMedicationScheduleGroupStream>(
+        (c) => GetMedicationScheduleGroupStream(
+          medicationScheduleRepository: c<MedicationScheduleRepository>(),
+        ),
+      )
+      ..registerSingleton<GetMedicationScheduleDailyGroupsStream>(
+        (c) => GetMedicationScheduleDailyGroupsStream(
           medicationScheduleRepository: c<MedicationScheduleRepository>(),
         ),
       )
@@ -302,13 +296,13 @@ class Di {
           prescriptionRepository: c<PrescriptionRepository>(),
         ),
       )
-      ..registerSingleton<GetPrescriptions>(
-        (c) => GetPrescriptions(
+      ..registerSingleton<UpdatePrescription>(
+        (c) => UpdatePrescription(
           prescriptionRepository: c<PrescriptionRepository>(),
         ),
       )
-      ..registerSingleton<TogglePrescriptionNotification>(
-        (c) => TogglePrescriptionNotification(
+      ..registerSingleton<GetPrescriptions>(
+        (c) => GetPrescriptions(
           prescriptionRepository: c<PrescriptionRepository>(),
         ),
       )

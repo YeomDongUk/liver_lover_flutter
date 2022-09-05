@@ -1,64 +1,81 @@
-// // Package imports:
-// import 'package:bloc/bloc.dart';
-// import 'package:equatable/equatable.dart';
+// Package imports:
+import 'dart:async';
 
-// // Project imports:
-// import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
-// import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
-// part 'medication_schedules_groups_state.dart';
+// Project imports:
+import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_groups_stream.dart';
+import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 
-// class MedicationSchedulesGroupsCubit
-//     extends Cubit<MedicationSchedulesGroupsState> {
-//   MedicationSchedulesGroupsCubit({
-//     required this.date,
-//     required this.getMedicationSchedulesGroups,
-//     required this.updateMedicationScheduleGroupPush,
-//   }) : super(const MedicationSchedulesGroupsState());
+part 'medication_schedules_groups_state.dart';
 
-//   final DateTime date;
-//   final GetMedicationSchedulesGroups getMedicationSchedulesGroups;
-//   final UpdateMedicationScheduleGroupPush updateMedicationScheduleGroupPush;
+class MedicationScheduleGroupsCubit
+    extends Cubit<MedicationScheduleGroupsState> {
+  MedicationScheduleGroupsCubit({
+    required this.getMedicationScheduleGroupsStream,
+    required this.updateMedicationScheduleGroupPush,
+  }) : super(const MedicationScheduleGroupsState());
 
-//   Future<void> load() async {
-//     final either = await getMedicationSchedulesGroups.call(date);
-//     return either.fold(
-//       (l) => emit(
-//         const MedicationSchedulesGroupsState(
-//           status: MedicationSchedulesGroupsStatus.loadFailure,
-//         ),
-//       ),
-//       (r) => r.listen(
-//         (event) async => isClosed
-//             ? null
-//             : emit(
-//                 MedicationSchedulesGroupsState(
-//                   status: MedicationSchedulesGroupsStatus.loadSuccess,
-//                   medicationSchedulesGroups: await event,
-//                 ),
-//               ),
-//       ),
-//     );
-//   }
+  final GetMedicationScheduleGroupsStream getMedicationScheduleGroupsStream;
+  final UpdateMedicationScheduleGroupPush updateMedicationScheduleGroupPush;
+  StreamSubscription<List<MedicationScheduleGroup>>? _subscription;
+  Future<void> load(DateTime date) async {
+    emit(
+      const MedicationScheduleGroupsState(
+        status: MedicationScheduleGroupsStatus.loadInProgress,
+      ),
+    );
 
-//   Future<void> togglePush({
-//     required MedicationSchedulesGroup group,
-//   }) async {
-//     final medicationSchedulesGroups = List<MedicationSchedulesGroup>.from(
-//       state.medicationSchedulesGroups,
-//     );
+    final either = await getMedicationScheduleGroupsStream.call(date);
 
-//     final index = medicationSchedulesGroups.indexOf(group);
-//     if (index == -1) return;
+    return either.fold(
+      (l) => emit(
+        const MedicationScheduleGroupsState(
+          status: MedicationScheduleGroupsStatus.loadFailure,
+        ),
+      ),
+      (r) {
+        _subscription?.cancel();
+        _subscription = r.listen(
+          (event) async => isClosed
+              ? null
+              : emit(
+                  MedicationScheduleGroupsState(
+                    status: MedicationScheduleGroupsStatus.loadSuccess,
+                    medicationScheduleGroups: event
+                      ..sort((prev, curr) =>
+                          prev.reservedAt.compareTo(curr.reservedAt)),
+                  ),
+                ),
+        );
+      },
+    );
+  }
 
-//     await updateMedicationScheduleGroupPush.call(
-//       UpdateMedicationScheduleGroupPushParam(
-//         ids: state.medicationSchedulesGroups[index].medicationInformations
-//             .map((e) => e.medicationSchedules.map((e) => e.id))
-//             .expand((element) => element)
-//             .toList(),
-//         push: !state.medicationSchedulesGroups[index].push,
-//       ),
-//     );
-//   }
-// }
+  Future<void> togglePush({
+    required bool push,
+    required DateTime reservedAt,
+  }) async {
+    // final medicationSchedulesGroups = List<MedicationSchedulesGroup>.from(
+    //   state.medicationSchedulesGroups,
+    // );
+
+    // final index = medicationSchedulesGroups.indexOf(group);
+    // if (index == -1) return;
+
+    await updateMedicationScheduleGroupPush.call(
+      UpdateMedicationScheduleGroupPushParam(
+        reservedAt: reservedAt,
+        push: push,
+      ),
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
+  }
+}

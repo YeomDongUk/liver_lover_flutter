@@ -15,24 +15,24 @@ class HospitalVisitScheduleCalendar extends StatelessWidget {
   const HospitalVisitScheduleCalendar({
     super.key,
     required this.onTap,
-    required this.fisrtDateOfMonth,
+    required this.firstDateOfMonth,
     required this.hospitalVisitSchedule,
     required this.hospitalVisitSchedules,
   });
   final void Function(HospitalVisitSchedule hospitalVisitSchedule) onTap;
-  final DateTime fisrtDateOfMonth;
+  final DateTime firstDateOfMonth;
   final HospitalVisitSchedule? hospitalVisitSchedule;
   final List<HospitalVisitSchedule> hospitalVisitSchedules;
 
   @override
   Widget build(BuildContext context) {
-    final firstDayOfWeekDay = fisrtDateOfMonth.weekday - 1;
+    final firstDayOfWeekDay = firstDateOfMonth.weekday - 1;
     final lastDateOfMonth =
-        DateTime(fisrtDateOfMonth.year, fisrtDateOfMonth.month + 1, 0);
+        DateTime(firstDateOfMonth.year, firstDateOfMonth.month + 1, 0);
 
     final dayList = List.generate(
-      lastDateOfMonth.day - fisrtDateOfMonth.day + firstDayOfWeekDay + 1,
-      (index) => index < firstDayOfWeekDay + fisrtDateOfMonth.day - 1
+      lastDateOfMonth.day - firstDateOfMonth.day + firstDayOfWeekDay + 1,
+      (index) => index < firstDayOfWeekDay + firstDateOfMonth.day - 1
           ? null
           : index - firstDayOfWeekDay + 1,
     );
@@ -52,8 +52,8 @@ class HospitalVisitScheduleCalendar extends StatelessWidget {
 
           final subSchedules = hospitalVisitSchedules.where(
             (element) =>
-                element.reservedAt.year == fisrtDateOfMonth.year &&
-                element.reservedAt.month == fisrtDateOfMonth.month &&
+                element.reservedAt.year == firstDateOfMonth.year &&
+                element.reservedAt.month == firstDateOfMonth.month &&
                 subDayList.contains(element.reservedAt.day),
           );
 
@@ -74,9 +74,9 @@ class HospitalVisitScheduleCalendar extends StatelessWidget {
                           .where(
                             (element) =>
                                 element.reservedAt.year ==
-                                    fisrtDateOfMonth.year &&
+                                    firstDateOfMonth.year &&
                                 element.reservedAt.month ==
-                                    fisrtDateOfMonth.month &&
+                                    firstDateOfMonth.month &&
                                 element.reservedAt.day ==
                                     (isNotShown ? null : dayList[index]),
                           )

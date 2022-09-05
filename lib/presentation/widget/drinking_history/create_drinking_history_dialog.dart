@@ -11,6 +11,7 @@ import 'package:kiwi/kiwi.dart';
 
 // Project imports:
 import 'package:yak/core/static/color.dart';
+import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/drinking_history/drinking_history.dart';
 import 'package:yak/domain/usecases/drinking_history/upsert_drinking_history.dart';
@@ -200,9 +201,7 @@ class _CreateDrinkingHistoryDialogState
                                     signed: true,
                                   ),
                                   inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp(r'^(\d+)?\.?\d{0,1}'),
-                                    ),
+                                    doubleTextInputFormatter,
                                   ],
                                 ),
                               ),

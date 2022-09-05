@@ -75,12 +75,14 @@ class MedicationAdherenceSurveyAnswerLocalDataSourceImpl
                 updatedAt: Value(DateTime.now()),
               ),
             );
-            await into(attachedDatabase.pointHistories).insert(
+            await into(pointHistories).insert(
               PointHistoriesCompanion.insert(
                 userId: userId,
                 forginId: forignId,
                 event: PointHistoryEvent.surveyComplete,
                 point: 30,
+                createdAt: Value(DateTime.now()),
+                updatedAt: Value(DateTime.now()),
               ),
             );
           }

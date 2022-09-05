@@ -378,7 +378,7 @@ class _DrinkingHistoryGraphPageState extends State<DrinkingHistoryGraphPage> {
           sideTitles: SideTitles(
             showTitles: true,
             interval: 1,
-            reservedSize: 42,
+            reservedSize: 60,
             getTitlesWidget: (value, meta) {
               final list =
                   List.generate(6, (index) => (maxY / 6 * (index + 1)).floor());
@@ -408,7 +408,7 @@ class _DrinkingHistoryGraphPageState extends State<DrinkingHistoryGraphPage> {
       minX: 0,
       maxX: 8,
       minY: 0,
-      maxY: maxY,
+      maxY: maxY == 0 ? 0 : maxY + 1,
       extraLinesData: ExtraLinesData(
         horizontalLines: [
           HorizontalLine(

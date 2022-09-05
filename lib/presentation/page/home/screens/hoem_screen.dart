@@ -17,11 +17,16 @@ import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
+import 'package:yak/core/user/user_id.dart';
+import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
+import 'package:yak/domain/entities/medication_schedule/medication_adherenece_percent.dart';
 import 'package:yak/domain/usecases/drinking_history/get_last_drinking_history_stream.dart';
+import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_groups_stream.dart';
+import 'package:yak/domain/usecases/medication_schedule/update_medication_schedule_push.dart';
 import 'package:yak/domain/usecases/smoking_history/get_last_smoking_history_stream.dart';
 import 'package:yak/presentation/bloc/auth/auth_cubit.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
-import 'package:yak/presentation/bloc/medication_schedules/medication_schdules_cubit.dart';
+import 'package:yak/presentation/bloc/medication_schedules/groups/medication_schedules_groups_cubit.dart';
 import 'package:yak/presentation/bloc/today_diary/today_diary_cubit.dart';
 import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
@@ -45,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen>
   late final TodayDiaryCubit todayDiaryCubit;
   late final simpleCommonSense =
       simpleCommonSenses[Random().nextInt(simpleCommonSenses.length - 1)];
-
+  late final MedicationScheduleGroupsCubit medicationScheduleGroupsCubit;
   @override
   void initState() {
     todayDiaryCubit = TodayDiaryCubit(
@@ -54,12 +59,19 @@ class _HomeScreenState extends State<HomeScreen>
       getLastSmokingHistoryStream:
           KiwiContainer().resolve<GetLastSmokingHistoryStream>(),
     )..startListening();
+    medicationScheduleGroupsCubit = MedicationScheduleGroupsCubit(
+      getMedicationScheduleGroupsStream:
+          KiwiContainer().resolve<GetMedicationScheduleGroupsStream>(),
+      updateMedicationScheduleGroupPush:
+          KiwiContainer().resolve<UpdateMedicationScheduleGroupPush>(),
+    )..load(DateTime.now());
     super.initState();
   }
 
   @override
   void dispose() {
     todayDiaryCubit.close();
+    medicationScheduleGroupsCubit.close();
     super.dispose();
   }
 
@@ -257,84 +269,86 @@ class MedicationAdherenecePercentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MedicationSchedulesCubit, MedicationSchedulesState>(
-      builder: (context, state) {
-        final takeCount = state.medicationSchedules
-            .where(
-              (medicationSchedule) => medicationSchedule.medicatedAt != null,
-            )
-            .length;
-        final allCount = state.medicationSchedules.length;
-        final percent =
-            state.medicationSchedules.isEmpty ? 0.0 : takeCount / allCount;
-
-        return CommonShadowBox(
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 16,
-          ).copyWith(
-            top: 8,
+    return StreamBuilder<MedicationAdherencePercent>(
+      initialData: const MedicationAdherencePercent(
+        allCount: 0,
+        medicatedCount: 0,
+        percent: 0,
+      ),
+      stream: KiwiContainer()
+          .resolve<MedicationScheduleLocalDataSource>()
+          .getMedicationAdherenecePercent(
+            userId: KiwiContainer().resolve<UserId>().value,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Text(
-                      '복약순응도',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: AppColors.primary,
-                      ).rixMGoEB,
-                    ),
+      builder: (context, asyncSnapshot) => CommonShadowBox(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ).copyWith(
+          top: 8,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Text(
+                    '복약순응도',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: AppColors.primary,
+                    ).rixMGoEB,
                   ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '$takeCount',
-                          style: GoogleFonts.lato(
-                            fontSize: 20,
-                            color: AppColors.skyBlue,
-                            fontWeight: FontWeight.w700,
-                          ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${asyncSnapshot.data!.medicatedCount}',
+                        style: GoogleFonts.lato(
+                          fontSize: 20,
+                          color: AppColors.skyBlue,
+                          fontWeight: FontWeight.w700,
                         ),
-                        TextSpan(
-                          text: '/$allCount',
-                          style: GoogleFonts.lato(
-                            fontSize: 20,
-                            color: AppColors.gray,
-                            fontWeight: FontWeight.w700,
-                          ),
+                      ),
+                      TextSpan(
+                        text: '/${asyncSnapshot.data!.allCount}',
+                        style: GoogleFonts.lato(
+                          fontSize: 20,
+                          color: AppColors.gray,
+                          fontWeight: FontWeight.w700,
                         ),
-                        const WidgetSpan(
-                          child: SizedBox(width: 8),
+                      ),
+                      const WidgetSpan(
+                        child: SizedBox(width: 8),
+                      ),
+                      TextSpan(
+                        text:
+                            '${(asyncSnapshot.data!.percent * 1000).floorToDouble() / 10}%',
+                        style: GoogleFonts.lato(
+                          fontSize: 28,
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w900,
                         ),
-                        TextSpan(
-                          text: '${(percent * 1000).floorToDouble() / 10}%',
-                          style: GoogleFonts.lato(
-                            fontSize: 28,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            CustomPaint(
+              painter: CustomProgressBarPainter(
+                percent: asyncSnapshot.data!.percent,
               ),
-              const SizedBox(height: 10),
-              CustomPaint(
-                painter: CustomProgressBarPainter(percent: percent),
-                child: const SizedBox(height: 20),
-              ),
-            ],
-          ),
-        );
-      },
+              child: const SizedBox(height: 20),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

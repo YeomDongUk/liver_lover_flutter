@@ -103,6 +103,7 @@ class SmokingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   }) =>
       (select(table)
             ..where((tbl) => tbl.userId.equals(userId))
-            ..orderBy([(u) => OrderingTerm.desc(u.createdAt)]))
+            ..orderBy([(u) => OrderingTerm.desc(u.createdAt)])
+            ..limit(1))
           .watchSingleOrNull();
 }

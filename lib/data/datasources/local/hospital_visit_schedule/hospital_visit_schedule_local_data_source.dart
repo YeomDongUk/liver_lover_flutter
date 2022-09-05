@@ -1,10 +1,10 @@
 // Package imports:
 import 'package:drift/drift.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
+import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
 import 'package:yak/core/database/table/point_history/point_history_table.dart';
 import 'package:yak/data/datasources/local/dao_mixin.dart';
 import 'package:yak/data/datasources/local/notification_schedule/notification_schedule_local_data_source.dart';
@@ -130,6 +130,8 @@ class HospitalVisitScheduleLocalDataSourceImpl
             forginId: hospitalVisitScheduleModel.id,
             event: PointHistoryEvent.hospitalVisitScheduleCreate,
             point: 30,
+            createdAt: Value(DateTime.now()),
+            updatedAt: Value(DateTime.now()),
           ),
         );
 
@@ -185,6 +187,12 @@ class HospitalVisitScheduleLocalDataSourceImpl
               ..where((h) => h.id.equals(id) & h.userId.equals(userId)))
             .go();
 
+        await notificationScheduleLocalDataSource
+            .deleteHospitalVisitScheduleNotification(
+          pushType: PushType.onTime,
+          hospitalVisitScheduleModel: schedule,
+        );
+
         if (schedule.beforePush) {
           final sameReservedAtSchedules = await (select(hospitalVisitSchedules)
                 ..where(
@@ -198,7 +206,7 @@ class HospitalVisitScheduleLocalDataSourceImpl
           if (sameReservedAtSchedules.isEmpty) {
             await notificationScheduleLocalDataSource
                 .deleteHospitalVisitScheduleNotification(
-              isBeforePush: true,
+              pushType: PushType.before,
               hospitalVisitScheduleModel: schedule,
             );
           }
@@ -217,7 +225,7 @@ class HospitalVisitScheduleLocalDataSourceImpl
           if (sameReservedAtSchedules.isEmpty) {
             await notificationScheduleLocalDataSource
                 .deleteHospitalVisitScheduleNotification(
-              isBeforePush: false,
+              pushType: PushType.after,
               hospitalVisitScheduleModel: schedule,
             );
           }
@@ -245,13 +253,19 @@ class HospitalVisitScheduleLocalDataSourceImpl
             hospitalVisitScheduleModels.isNotEmpty) {
           await notificationScheduleLocalDataSource
               .deleteHospitalVisitScheduleNotification(
-            isBeforePush: true,
+            pushType: PushType.onTime,
             hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
           );
 
           await notificationScheduleLocalDataSource
               .deleteHospitalVisitScheduleNotification(
-            isBeforePush: false,
+            pushType: PushType.before,
+            hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
+          );
+
+          await notificationScheduleLocalDataSource
+              .deleteHospitalVisitScheduleNotification(
+            pushType: PushType.after,
             hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
           );
         }

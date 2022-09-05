@@ -55,7 +55,8 @@ class UserLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
             ))
           .get();
 
-      await localNotification.createNotifications(
+      await localNotification.onLoginCallback(
+        userId: userModel.id,
         notificationScheduleModels: notificationScheduleModels,
       );
     }
@@ -93,10 +94,10 @@ class UserLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
             ))
           .get();
 
-      print(localNotification);
       await localNotification.cancelAll();
 
-      await localNotification.createNotifications(
+      await localNotification.onLoginCallback(
+        userId: userModel.id,
         notificationScheduleModels: notificationScheduleModels,
       );
 

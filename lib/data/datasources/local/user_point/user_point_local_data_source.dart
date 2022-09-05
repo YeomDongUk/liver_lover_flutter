@@ -66,6 +66,8 @@ class UserPointLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
         event: event,
         point: point,
         forginId: eventId,
+        createdAt: Value(DateTime.now()),
+        updatedAt: Value(DateTime.now()),
       ),
     );
     return;

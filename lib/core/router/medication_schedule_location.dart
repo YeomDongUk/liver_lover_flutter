@@ -7,7 +7,7 @@ import 'package:beamer/beamer.dart';
 // Project imports:
 import 'package:yak/core/router/home_location.dart';
 import 'package:yak/core/router/routes.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedules_group.dart';
+import 'package:yak/presentation/page/medication_schedule/calendar/medication_schedule_calendar_page.dart';
 import 'package:yak/presentation/page/medication_schedule/medication_schedule_group/medication_schedule_group_detail_page.dart';
 import 'package:yak/presentation/page/medication_schedule/medication_schedules_create_page.dart';
 
@@ -16,8 +16,7 @@ class MedicationScheduleLocation extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     final mapData = data as Map<String, dynamic>?;
-    final medicationSchedulesGroup =
-        mapData?['medicationSchedulesGroup'] as MedicationSchedulesGroup?;
+    final reservedAt = mapData?['reservedAt'] as DateTime?;
     return [
       ...HomeLocation().buildPages(context, state),
       if (state.uri.path == Routes.medicationSchedulesCreate)
@@ -35,8 +34,16 @@ class MedicationScheduleLocation extends BeamLocation<BeamState> {
           name: 'MedicationScheduleGroupDetailPage',
           title: '복약 정보',
           child: MedicationScheduleGroupDetailPage(
-            medicationSchedulesGroup: medicationSchedulesGroup!,
+            reservedAt: reservedAt!,
           ),
+        ),
+      if (state.uri.path == Routes.medicationSchedulesCalendar)
+        const BeamPage(
+          type: BeamPageType.cupertino,
+          key: ValueKey('medication-schedule-calendar'),
+          name: 'MedicationScheduleCalendarPage',
+          title: '복약 정보',
+          child: MedicationScheduleCalendarPage(),
         ),
     ];
   }
@@ -45,5 +52,6 @@ class MedicationScheduleLocation extends BeamLocation<BeamState> {
   List<Pattern> get pathPatterns => [
         Routes.medicationSchedulesCreate,
         '${Routes.medicationSchedules}/groups/detail',
+        Routes.medicationSchedulesCalendar,
       ];
 }

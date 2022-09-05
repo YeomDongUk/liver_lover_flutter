@@ -119,43 +119,31 @@ class _ExcerciseHistoryGraphPageState extends State<ExcerciseHistoryGraphPage>
           children: [
             SizedBox(
               height: 50,
-              child: Row(
-                children: List.generate(
-                  2,
-                  (index) => Expanded(
-                    child: Material(
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
                       color: Colors.white,
-                      child: InkWell(
-                        onTap: () => tabController.index = index,
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Text(
-                                ['운동량', '체중'][index],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: tabIndex == index
-                                      ? AppColors.primary
-                                      : AppColors.gray,
-                                  fontWeight: FontWeight.w400,
-                                ).rixMGoB,
-                              ),
-                            ),
-                            Positioned.fill(
-                              top: null,
-                              child: Container(
-                                height: 4,
-                                color: tabIndex == index
-                                    ? AppColors.primary
-                                    : AppColors.blueGrayLight,
-                              ),
-                            ),
-                          ],
+                      child: const Divider(
+                        height: 4,
+                        thickness: 4,
+                        color: AppColors.blueGrayLight,
+                      ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: TabBar(
+                      controller: tabController,
+                      tabs: List.generate(
+                        2,
+                        (index) => Tab(
+                          text: ['운동량', '체중'][index],
                         ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
             Expanded(

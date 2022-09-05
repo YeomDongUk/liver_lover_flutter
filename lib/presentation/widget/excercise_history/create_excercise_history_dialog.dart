@@ -9,6 +9,7 @@ import 'package:kiwi/kiwi.dart';
 
 // Project imports:
 import 'package:yak/core/static/color.dart';
+import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/excercise_history/excercise_history.dart';
 import 'package:yak/domain/usecases/excercise_history/upsert_excercise_history.dart';
@@ -174,9 +175,7 @@ class _CreateExcerciseHistoryDialogState
                               signed: true,
                             ),
                             inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'^(\d+)?\.?\d{0,1}'),
-                              ),
+                              doubleTextInputFormatter,
                             ],
                           ),
                         ),

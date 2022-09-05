@@ -1,42 +1,33 @@
 // Package imports:
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:drift/drift.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
+import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
 import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/data/datasources/local/dao_mixin.dart';
 
 abstract class NotificationScheduleLocalDataSource {
-  List<NotificationScheduleModel> getValidNotifications({
-    required String userId,
-  });
-
-  List<NotificationScheduleModel> getNotifications({
-    required DateTime reservedAt,
-  });
-
-  Future<NotificationScheduleModel> createNotification({
-    required NotificationScheduleModel notificationScheduleModel,
-  });
-
   Future<void> createHospitalVisitScheduleNotification({
     required HospitalVisitScheduleModel hospitalVisitScheduleModel,
   });
 
+  Future<void> createMedicationScheduleNotifications({
+    required String userId,
+    required PushType pushType,
+    required Set<DateTime> reservedAts,
+  });
+
   Future<void> deleteHospitalVisitScheduleNotification({
-    required bool isBeforePush,
+    required PushType pushType,
     required HospitalVisitScheduleModel hospitalVisitScheduleModel,
   });
 
-  NotificationScheduleModel updateNotification({
-    required NotificationScheduleModel notificationScheduleModel,
-  });
-
-  Future<void> deleteNotification({
+  Future<void> deleteNotificationScheduleByReservedAt({
     required String userId,
     required int type,
+    required PushType pushType,
     required DateTime reservedAt,
   });
 
@@ -59,21 +50,31 @@ class NotificationScheduleLocalDataSourceImpl
   final LocalNotification localNotification;
 
   @override
-  Future<NotificationScheduleModel> createNotification({
-    required NotificationScheduleModel notificationScheduleModel,
-  }) {
-    // TODO: implement createNotification
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deleteNotification({
+  Future<void> deleteNotificationScheduleByReservedAt({
     required String userId,
     required int type,
+    required PushType pushType,
     required DateTime reservedAt,
-  }) {
-    // TODO: implement deleteNotification
-    throw UnimplementedError();
+  }) async {
+    final notificationScheduleModel = await (select(notificationSchedules)
+          ..where(
+            (tbl) =>
+                tbl.userId.equals(userId) &
+                tbl.type.equals(type) &
+                tbl.pushType.equals(pushType.index) &
+                tbl.reservedAt.equals(reservedAt),
+          ))
+        .getSingleOrNull();
+
+    if (notificationScheduleModel != null) {
+      await (delete(notificationSchedules)
+            ..where((tbl) => tbl.id.equals(notificationScheduleModel.id)))
+          .go();
+
+      await localNotification.cancel(
+        notificationScheduleId: notificationScheduleModel.id,
+      );
+    }
   }
 
   @override
@@ -82,31 +83,6 @@ class NotificationScheduleLocalDataSourceImpl
     required int type,
     required String userId,
   }) {
-    // TODO: implement deleteNotificationById
-    throw UnimplementedError();
-  }
-
-  @override
-  List<NotificationScheduleModel> getNotifications({
-    required DateTime reservedAt,
-  }) {
-    // TODO: implement getNotifications
-    throw UnimplementedError();
-  }
-
-  @override
-  List<NotificationScheduleModel> getValidNotifications({
-    required String userId,
-  }) {
-    // TODO: implement getValidNotifications
-    throw UnimplementedError();
-  }
-
-  @override
-  NotificationScheduleModel updateNotification({
-    required NotificationScheduleModel notificationScheduleModel,
-  }) {
-    // TODO: implement updateNotification
     throw UnimplementedError();
   }
 
@@ -114,30 +90,39 @@ class NotificationScheduleLocalDataSourceImpl
   Future<void> createHospitalVisitScheduleNotification({
     required HospitalVisitScheduleModel hospitalVisitScheduleModel,
   }) async {
+    await _createHospitalVisitScheduleNotification(
+      pushType: PushType.onTime,
+      hospitalVisitScheduleModel: hospitalVisitScheduleModel,
+    );
+
     if (hospitalVisitScheduleModel.beforePush) {
       await _createHospitalVisitScheduleNotification(
-        isBeforePush: true,
+        pushType: PushType.before,
         hospitalVisitScheduleModel: hospitalVisitScheduleModel,
       );
     }
 
     if (hospitalVisitScheduleModel.afterPush) {
       await _createHospitalVisitScheduleNotification(
-        isBeforePush: false,
+        pushType: PushType.after,
         hospitalVisitScheduleModel: hospitalVisitScheduleModel,
       );
     }
   }
 
   Future<void> _createHospitalVisitScheduleNotification({
-    required bool isBeforePush,
+    required PushType pushType,
     required HospitalVisitScheduleModel hospitalVisitScheduleModel,
   }) async {
-    final duration =
-        isBeforePush ? const Duration(days: -1) : const Duration(hours: -2);
+    final duration = pushType == PushType.onTime
+        ? Duration.zero
+        : pushType == PushType.before
+            ? const Duration(days: -1)
+            : const Duration(hours: -2);
 
     final reservedAt = hospitalVisitScheduleModel.reservedAt.add(duration);
 
+    Logger().d(reservedAt);
     final notificaitonSchedule = await (select(notificationSchedules)
           ..where(
             (tbl) =>
@@ -152,7 +137,7 @@ class NotificationScheduleLocalDataSourceImpl
           await into(notificationSchedules).insertReturning(
         NotificationSchedulesCompanion.insert(
           userId: hospitalVisitScheduleModel.userId,
-          isBeforePush: isBeforePush,
+          pushType: pushType,
           type: 1,
           reservedAt: reservedAt,
         ),
@@ -166,11 +151,14 @@ class NotificationScheduleLocalDataSourceImpl
 
   @override
   Future<void> deleteHospitalVisitScheduleNotification({
-    required bool isBeforePush,
+    required PushType pushType,
     required HospitalVisitScheduleModel hospitalVisitScheduleModel,
   }) async {
-    final duration =
-        isBeforePush ? const Duration(days: -1) : const Duration(hours: -2);
+    final duration = pushType == PushType.onTime
+        ? Duration.zero
+        : pushType == PushType.before
+            ? const Duration(days: -1)
+            : const Duration(hours: -2);
 
     final reservedAt = hospitalVisitScheduleModel.reservedAt.add(duration);
 
@@ -179,7 +167,7 @@ class NotificationScheduleLocalDataSourceImpl
             (tbl) =>
                 tbl.userId.equals(hospitalVisitScheduleModel.userId) &
                 tbl.type.equals(1) &
-                tbl.isBeforePush.equals(isBeforePush) &
+                tbl.pushType.equals(pushType.index) &
                 tbl.reservedAt.equals(reservedAt),
           ))
         .getSingleOrNull();
@@ -190,8 +178,54 @@ class NotificationScheduleLocalDataSourceImpl
           .go();
 
       await localNotification.cancel(
-        scheduleNotificationId: notificaitonSchedule.id,
+        notificationScheduleId: notificaitonSchedule.id,
       );
+    }
+  }
+
+  @override
+  Future<void> createMedicationScheduleNotifications({
+    required String userId,
+    required PushType pushType,
+    required Set<DateTime> reservedAts,
+  }) async {
+    final notificationScheduleModels = await (select(notificationSchedules)
+          ..where(
+            (tbl) =>
+                tbl.userId.equals(userId) &
+                tbl.pushType.equals(pushType.index) &
+                tbl.reservedAt.isIn(reservedAts),
+          ))
+        .get();
+
+    final notInReservedAts = reservedAts.where(
+      (reservedAt) => notificationScheduleModels
+          .where(
+            (notificationScheduleModel) =>
+                notificationScheduleModel.reservedAt == reservedAt,
+          )
+          .isEmpty,
+    );
+
+    final newNotificationScheduleModels = await Future.wait(
+      notInReservedAts.map(
+        (reservedAt) => into(notificationSchedules).insertReturning(
+          NotificationSchedulesCompanion.insert(
+            userId: userId,
+            type: 0,
+            pushType: pushType,
+            reservedAt: reservedAt,
+          ),
+        ),
+      ),
+    );
+
+    if (newNotificationScheduleModels.isNotEmpty) {
+      for (final notificationScheduleModel in newNotificationScheduleModels) {
+        await localNotification.createNotification(
+          notificationScheduleModel: notificationScheduleModel,
+        );
+      }
     }
   }
 }

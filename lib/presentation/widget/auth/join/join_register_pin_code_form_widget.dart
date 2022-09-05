@@ -98,7 +98,7 @@ class JoinRegisterPinCodeFormWidget extends StatelessWidget {
         BlocBuilder<JoinCubit, JoinState>(
           builder: (context, state) => ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
               fixedSize: const Size.fromHeight(70),
               textStyle: const TextStyle(
                 fontSize: 20,

@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                 buildWhen: (prev, curr) => prev.status != curr.status,
                 builder: (context, state) => ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
                     fixedSize: const Size.fromHeight(70),
                     textStyle: const TextStyle(
                       fontSize: 20,

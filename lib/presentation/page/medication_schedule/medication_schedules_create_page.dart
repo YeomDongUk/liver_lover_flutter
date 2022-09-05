@@ -32,6 +32,7 @@ import 'package:yak/presentation/widget/common/icon_back_button.dart';
 import 'package:yak/presentation/widget/common/opacity_check_button.dart';
 import 'package:yak/presentation/widget/common/page_index_indicator.dart';
 import 'package:yak/presentation/widget/common/pill_detail_dialog.dart';
+import 'package:yak/presentation/widget/medication_schedule/medication_schedule_time_button.dart';
 import 'package:yak/presentation/widget/pill/pill_search_dialog.dart';
 
 class MedicationSchedulesCreatePage extends StatefulWidget {
@@ -216,7 +217,7 @@ class _MedicationSchedulesCreatePageState
                                     prescriptionCrateCubit.updateMedicatedAt,
                                   ),
                                   dateFormat: yyyyMMddFormat,
-                                  dateTime: state.medicatedAt.value,
+                                  dateTime: state.medicationStartAt.value,
                                 ),
                               ),
                               const SizedBox(width: 5),
@@ -372,12 +373,12 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
     super.key,
     required this.formInput,
     required this.onChanged,
-    required this.onDelete,
+    this.onDelete,
   });
 
   final MedicationInformationCreateForm formInput;
   final void Function(MedicationInformationCreateForm) onChanged;
-  final void Function(String pillId) onDelete;
+  final void Function(String pillId)? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -436,27 +437,28 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () => onDelete(formInput.pill.id),
-                    icon: Container(
-                      alignment: Alignment.center,
-                      width: 18,
-                      height: 18,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.magenta,
-                          width: 2,
+                  if (onDelete != null)
+                    IconButton(
+                      onPressed: () => onDelete?.call(formInput.pill.id),
+                      icon: Container(
+                        alignment: Alignment.center,
+                        width: 18,
+                        height: 18,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.magenta,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(3),
                         ),
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                      child: SvgPicture.asset(
-                        'assets/svg/close.svg',
-                        width: 12,
-                        height: 12,
-                        color: AppColors.magenta,
+                        child: SvgPicture.asset(
+                          'assets/svg/close.svg',
+                          width: 12,
+                          height: 12,
+                          color: AppColors.magenta,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -474,37 +476,38 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                   ).rixMGoB,
                 ),
                 const Spacer(),
-                SizedBox(
-                  width: 66,
-                  child: JoinContainer(
-                    child: CommonInputFormField(
-                      onChanged: (str) {
-                        final takeCount = double.tryParse(str);
+                IgnorePointer(
+                  ignoring: onDelete == null,
+                  child: SizedBox(
+                    width: 66,
+                    child: JoinContainer(
+                      child: CommonInputFormField(
+                        onChanged: (str) {
+                          final takeCount = double.tryParse(str);
 
-                        if (takeCount == null) return;
+                          if (takeCount == null) return;
 
-                        onChanged(
-                          formInput.copyWith(
-                            takeCount: Optional.value(takeCount),
-                          ),
-                        );
-                      },
-                      initialValue: '${formInput.takeCount ?? ''}',
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                        signed: true,
+                          onChanged(
+                            formInput.copyWith(
+                              takeCount: Optional.value(takeCount),
+                            ),
+                          );
+                        },
+                        initialValue: '${formInput.takeCount ?? ''}',
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                          signed: true,
+                        ),
+                        inputFormatters: [
+                          doubleTextInputFormatter,
+                        ],
+                        textStyle: GoogleFonts.lato(
+                          fontSize: 22,
+                          color: AppColors.blueGrayDark,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'(^\d\.?\d{0,2})'),
-                        )
-                      ],
-                      textStyle: GoogleFonts.lato(
-                        fontSize: 22,
-                        color: AppColors.blueGrayDark,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
@@ -517,40 +520,47 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                buildTakeTime(
-                  label: '아침',
-                  times: const [7, 8, 9],
-                  onSelectTime: (time) => onChanged(
-                    formInput.copyWith(timeOne: Optional<int>.value(time)),
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  runSpacing: 12,
+                  children: List.generate(
+                    24,
+                    (index) {
+                      final hour = index + 1;
+                      final isSelected =
+                          formInput.times?.contains(hour) ?? false;
+                      return MedicationScheduleTimeButton(
+                        onTap: () {
+                          final times = List<int>.from(
+                            formInput.times ?? <int>[],
+                          );
+
+                          final isSelected = times.contains(hour);
+
+                          if (isSelected) {
+                            times.remove(hour);
+                          } else {
+                            times.add(hour);
+                          }
+
+                          if (times.length > 3) return;
+
+                          onChanged(
+                            formInput.copyWith(
+                              times: Optional<List<int>>.value(
+                                times
+                                  ..sort(
+                                    (prev, curr) => prev.compareTo(curr),
+                                  ),
+                              ),
+                            ),
+                          );
+                        },
+                        hour: hour,
+                        isSelected: isSelected,
+                      );
+                    },
                   ),
-                  selectedTime: formInput.timeOne,
-                ),
-                const SizedBox(height: 12),
-                buildTakeTime(
-                  label: '점심',
-                  times: const [11, 12, 13],
-                  onSelectTime: (time) => onChanged(
-                    formInput.copyWith(timeTwo: Optional<int>.value(time)),
-                  ),
-                  selectedTime: formInput.timeTwo,
-                ),
-                const SizedBox(height: 12),
-                buildTakeTime(
-                  label: '저녁',
-                  times: const [18, 19, 20],
-                  onSelectTime: (time) => onChanged(
-                    formInput.copyWith(timeThree: Optional<int>.value(time)),
-                  ),
-                  selectedTime: formInput.timeThree,
-                ),
-                const SizedBox(height: 12),
-                buildTakeTime(
-                  label: '취침',
-                  times: const [22, 23, 24],
-                  onSelectTime: (time) => onChanged(
-                    formInput.copyWith(timeFour: Optional<int>.value(time)),
-                  ),
-                  selectedTime: formInput.timeFour,
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -562,64 +572,40 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Row(
-                  children: [
-                    OpacityCheckButton(
-                      onTap: () => onChanged(
-                        formInput.copyWith(
-                          takeCycle: Optional<int>.value(
-                            formInput.takeCycle == 1 ? null : 1,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    4,
+                    (index) {
+                      final takeCycle = [1, 2, 3, 7][index];
+                      return Row(
+                        children: [
+                          IgnorePointer(
+                            ignoring: onDelete == null,
+                            child: OpacityCheckButton(
+                              onTap: () => onChanged(
+                                formInput.copyWith(
+                                  takeCycle: Optional<int>.value(
+                                    formInput.takeCycle == takeCycle
+                                        ? null
+                                        : takeCycle,
+                                  ),
+                                ),
+                              ),
+                              opacity: formInput.takeCycle == takeCycle ? 1 : 0,
+                            ),
                           ),
-                        ),
-                      ),
-                      opacity: formInput.takeCycle == 1 ? 1 : 0,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      '매일',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ).rixMGoB,
-                    ),
-                    const Spacer(),
-                    OpacityCheckButton(
-                      onTap: () => onChanged(
-                        formInput.copyWith(
-                          takeCycle: Optional<int>.value(
-                            formInput.takeCycle == 2 ? null : 2,
+                          const SizedBox(width: 10),
+                          Text(
+                            ['매일', '2일', '3일', '7일'][index],
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                            ).rixMGoB,
                           ),
-                        ),
-                      ),
-                      opacity: formInput.takeCycle == 2 ? 1 : 0,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      '2일마다',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ).rixMGoB,
-                    ),
-                    const Spacer(),
-                    OpacityCheckButton(
-                      onTap: () => onChanged(
-                        formInput.copyWith(
-                          takeCycle: Optional<int>.value(
-                            formInput.takeCycle == 3 ? null : 3,
-                          ),
-                        ),
-                      ),
-                      opacity: formInput.takeCycle == 3 ? 1 : 0,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      '3일마다',
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                      ).rixMGoB,
-                    ),
-                  ],
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -651,9 +637,13 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 9),
                     CommonSwitch(
-                      value: formInput.push ?? false,
+                      value: formInput.beforePush == true ||
+                          formInput.afterPush == true,
                       onToggle: (value) => onChanged(
-                        formInput.copyWith(push: Optional.value(value)),
+                        formInput.copyWith(
+                          afterPush: Optional.value(value),
+                          beforePush: Optional.value(value),
+                        ),
                       ),
                     ),
                   ],
@@ -708,86 +698,4 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
       ),
     );
   }
-
-  Widget buildTakeTime({
-    required String label,
-    required List<int> times,
-    required void Function(int? time) onSelectTime,
-    int? selectedTime,
-  }) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              color: AppColors.gray,
-            ).rixMGoB,
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ...times.map(
-                (e) => GestureDetector(
-                  onTap: () => onSelectTime(e),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 9,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: selectedTime == e
-                            ? AppColors.primary
-                            : AppColors.blueGrayLight,
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(3)),
-                      color: selectedTime == e ? AppColors.primary : null,
-                    ),
-                    child: Text(
-                      '${'$e'.padLeft(2, '0')}:00',
-                      style: GoogleFonts.lato(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w700,
-                        color: selectedTime == e ? Colors.white : null,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () => onSelectTime(null),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 9,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: selectedTime == null
-                          ? AppColors.primary
-                          : AppColors.blueGrayLight,
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(3)),
-                    color: selectedTime == null ? AppColors.primary : null,
-                  ),
-                  child: Text(
-                    '선택안함',
-                    style: GoogleFonts.lato(
-                      fontSize: 15,
-                      color: selectedTime == null ? Colors.white : null,
-                    ).rixMGoB,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
 }

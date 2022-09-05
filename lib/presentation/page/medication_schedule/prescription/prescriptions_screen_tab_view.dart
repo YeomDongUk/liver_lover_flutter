@@ -15,7 +15,6 @@ import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/prescription/prescription.dart';
 import 'package:yak/domain/usecases/prescription/get_prescriptions.dart';
-import 'package:yak/domain/usecases/prescription/toggle_prescription_notification.dart';
 import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/prescription/prescriptions_cubit.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
@@ -35,8 +34,6 @@ class _PrescriptionsTabViewState extends State<PrescriptionsTabView>
   void initState() {
     prescriptionsCubit = PrescriptionsCubit(
       getPrescriptions: KiwiContainer().resolve<GetPrescriptions>(),
-      togglePrescriptionNotification:
-          KiwiContainer().resolve<TogglePrescriptionNotification>(),
     )..load();
     super.initState();
   }
@@ -60,16 +57,9 @@ class _PrescriptionsTabViewState extends State<PrescriptionsTabView>
           builder: (context, now) {
             final prescription = state.prescriptions[index];
 
-            final isOver = now.isAfter(
-              prescription.medicationEndAt.add(
-                const Duration(days: 1),
-              ),
-            );
-
             return PrescriptionOverviewWidget(
               prescriptionsCubit: prescriptionsCubit,
               prescription: prescription,
-              isOver: isOver,
             );
           },
         ),
@@ -87,12 +77,10 @@ class PrescriptionOverviewWidget extends StatelessWidget {
     super.key,
     required this.prescriptionsCubit,
     required this.prescription,
-    required this.isOver,
   });
   final PrescriptionsCubit prescriptionsCubit;
 
   final Prescription prescription;
-  final bool isOver;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +89,7 @@ class PrescriptionOverviewWidget extends StatelessWidget {
       child: InkWell(
         onTap: () => context.beamToNamed(
           '/prescriptions/${prescription.id}',
-          data: {'prescription': prescription},
+          data: {'prescriptionsCubit': prescriptionsCubit},
         ),
         child: Column(
           children: [
@@ -117,7 +105,9 @@ class PrescriptionOverviewWidget extends StatelessWidget {
                       yyyyMMddFormat.format(prescription.prescriptedAt),
                       style: GoogleFonts.lato(
                         fontSize: 28,
-                        color: isOver ? AppColors.gray : AppColors.primary,
+                        color: prescription.isOver
+                            ? AppColors.gray
+                            : AppColors.primary,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -138,7 +128,7 @@ class PrescriptionOverviewWidget extends StatelessWidget {
                           text: prescription.doctorName,
                           style: TextStyle(
                             fontSize: 15,
-                            color: isOver
+                            color: prescription.isOver
                                 ? AppColors.gray
                                 : AppColors.blueGrayDark,
                           ).rixMGoB,
@@ -165,8 +155,9 @@ class PrescriptionOverviewWidget extends StatelessWidget {
                             children: [
                               SvgPicture.asset(
                                 'assets/svg/icon_pill.svg',
-                                color:
-                                    isOver ? AppColors.gray : AppColors.primary,
+                                color: prescription.isOver
+                                    ? AppColors.gray
+                                    : AppColors.primary,
                               ),
                               const SizedBox(width: 10),
                               Expanded(
@@ -174,7 +165,7 @@ class PrescriptionOverviewWidget extends StatelessWidget {
                                   e.pill!.name,
                                   style: TextStyle(
                                     fontSize: 15,
-                                    color: isOver
+                                    color: prescription.isOver
                                         ? AppColors.gray
                                         : AppColors.blueGrayDark,
                                   ).rixMGoB,

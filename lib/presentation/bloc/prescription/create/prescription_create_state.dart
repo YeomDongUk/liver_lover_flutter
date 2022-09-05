@@ -5,7 +5,7 @@ class PrescriptionCrateState extends Equatable {
     this.status = FormzStatus.pure,
     this.prescriptedAt = const DateInput.pure(),
     this.doctorName = const Name.pure(),
-    this.medicatedAt = const DateInput.pure(),
+    this.medicationStartAt = const DateInput.pure(),
     this.duration = const PositiveIntInput.pure(),
     this.medicationInformationCreateFormInput =
         const MedicationInformationCreateFormInput.pure(),
@@ -14,7 +14,7 @@ class PrescriptionCrateState extends Equatable {
   final FormzStatus status;
   final DateInput prescriptedAt;
   final Name doctorName;
-  final DateInput medicatedAt;
+  final DateInput medicationStartAt;
   final PositiveIntInput duration;
 
   final MedicationInformationCreateFormInput
@@ -24,7 +24,7 @@ class PrescriptionCrateState extends Equatable {
     FormzStatus? status,
     DateInput? prescriptedAt,
     Name? doctorName,
-    DateInput? medicatedAt,
+    DateInput? medicationStartAt,
     PositiveIntInput? duration,
     MedicationInformationCreateFormInput? medicationInformationCreateFormInput,
     BeforePush? beforePush,
@@ -37,7 +37,7 @@ class PrescriptionCrateState extends Equatable {
               [
                 prescriptedAt ?? this.prescriptedAt,
                 doctorName ?? this.doctorName,
-                medicatedAt ?? this.medicatedAt,
+                medicationStartAt ?? this.medicationStartAt,
                 duration ?? this.duration,
                 medicationInformationCreateFormInput ??
                     this.medicationInformationCreateFormInput,
@@ -45,7 +45,7 @@ class PrescriptionCrateState extends Equatable {
             ),
         prescriptedAt: prescriptedAt ?? this.prescriptedAt,
         doctorName: doctorName ?? this.doctorName,
-        medicatedAt: medicatedAt ?? this.medicatedAt,
+        medicationStartAt: medicationStartAt ?? this.medicationStartAt,
         duration: duration ?? this.duration,
         medicationInformationCreateFormInput:
             medicationInformationCreateFormInput ??
@@ -57,7 +57,7 @@ class PrescriptionCrateState extends Equatable {
         status,
         prescriptedAt,
         doctorName,
-        medicatedAt,
+        medicationStartAt,
         duration,
         medicationInformationCreateFormInput,
       ];

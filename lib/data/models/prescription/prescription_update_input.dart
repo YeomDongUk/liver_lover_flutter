@@ -6,11 +6,17 @@ import 'package:yak/data/models/medication_information/medication_information_cr
 
 class PrescriptionUpdateInput extends Equatable {
   const PrescriptionUpdateInput({
-    required this.medicationInformationCreateInputs,
+    required this.prescriptionId,
+    required this.medicationInformationUpdateInputs,
   });
 
-  final List<MedicationInformationCreateInput>
-      medicationInformationCreateInputs;
+  final String prescriptionId;
+
+  final List<MedicationInformationUpdateInput>
+      medicationInformationUpdateInputs;
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [
+        prescriptionId,
+        medicationInformationUpdateInputs,
+      ];
 }

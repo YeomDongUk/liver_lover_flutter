@@ -14,9 +14,12 @@ class Prescriptions extends UserReferenceTable {
   DateTimeColumn get prescriptedAt => dateTime()();
 
   /// 복약 시작일
-  DateTimeColumn get medicatedAt => dateTime()();
+  DateTimeColumn get medicationStartAt => dateTime()();
 
   /// 복약 기간
   IntColumn get duration =>
       integer().check(duration.isBiggerOrEqual(const Constant(0)))();
+
+  /// 삭제일
+  DateTimeColumn get deletedAt => dateTime().nullable()();
 }

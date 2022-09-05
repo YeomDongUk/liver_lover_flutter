@@ -11,8 +11,8 @@ class Prescription extends Equatable {
     required this.prescriptedAt,
     required this.createdAt,
     required this.updatedAt,
+    required this.deletedAt,
     required this.medicationStartAt,
-    required this.medicationEndAt,
     required this.duration,
     this.medicationInformations,
   });
@@ -29,9 +29,10 @@ class Prescription extends Equatable {
             DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
         updatedAt:
             DateTime.fromMillisecondsSinceEpoch(json['updatedAt'] as int),
+        deletedAt: json['deletedAt'] == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(json['deletedAt'] as int),
         duration: json['duration'] as int,
-        medicationEndAt:
-            DateTime.fromMillisecondsSinceEpoch(json['medicationEndAt'] as int),
         medicationStartAt: DateTime.fromMillisecondsSinceEpoch(
           json['medicationStartAt'] as int,
         ),
@@ -41,11 +42,17 @@ class Prescription extends Equatable {
   final String doctorName;
   final List<MedicationInformation>? medicationInformations;
   final DateTime medicationStartAt;
-  final DateTime medicationEndAt;
   final int duration;
   final DateTime prescriptedAt;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final DateTime? deletedAt;
+
+  bool get isOver =>
+      deletedAt != null ||
+      DateTime.now().isAfter(
+        prescriptedAt.add(Duration(days: duration)),
+      );
 
   @override
   List<Object?> get props => [
@@ -55,8 +62,8 @@ class Prescription extends Equatable {
         medicationInformations,
         duration,
         medicationStartAt,
-        medicationEndAt,
         createdAt,
         updatedAt,
+        deletedAt,
       ];
 }

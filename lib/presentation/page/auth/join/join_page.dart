@@ -93,7 +93,7 @@ class _JoinPageState extends State<JoinPage> {
                   const Spacer(),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
                       fixedSize: const Size.fromHeight(70),
                     ),
                     onPressed: context.read<AuthCubit>().state.user.id != '-'
