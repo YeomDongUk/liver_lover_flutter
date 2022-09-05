@@ -9,12 +9,8 @@ import 'package:kiwi/kiwi.dart';
 
 // Project imports:
 import 'package:yak/core/static/color.dart';
-import 'package:yak/core/static/physics.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
-import 'package:yak/domain/entities/medication_information/medication_information.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_all_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_group_stream.dart';
@@ -104,7 +100,7 @@ class _MedicationScheduleGroupDetailPageState
                                     '''${'${group.reservedAt.hour}'.padLeft(2, '0')}:00''',
                                     style: GoogleFonts.lato(
                                       fontSize: 28,
-                                      color: isOver
+                                      color: group.medicatedAt != null || isOver
                                           ? AppColors.blueGrayLight
                                           : Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.w900,

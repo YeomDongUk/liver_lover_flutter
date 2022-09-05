@@ -75,11 +75,6 @@ class _MedicationScheduleCheckDialogState
 
           final isOver = group.reservedAt.isBefore(now);
 
-          final canAllMedicate = now.isAfter(
-                group.reservedAt.add(const Duration(hours: -1)),
-              ) &&
-              now.isBefore(group.reservedAt.add(const Duration(hours: 1)));
-
           return CommonDialog(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

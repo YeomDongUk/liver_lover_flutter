@@ -272,6 +272,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                                     ),
                                   ),
                                 ),
+                                const VerticalDivider(),
                                 Expanded(
                                   child: ElevatedButton(
                                     onPressed: () =>

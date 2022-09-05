@@ -35,6 +35,7 @@ class MedicationScheduleGroupUpdateCubit
         status: MedicationScheduleGroupUpdateStatus.loadInProgress,
       ),
     );
+
     final either = await getMedicationScheduleGroupStream.call(reservedAt);
 
     either.fold(

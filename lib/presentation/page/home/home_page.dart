@@ -12,6 +12,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
 
 // Project imports:
 import 'package:yak/core/local_notification/local_notification.dart';
@@ -27,7 +28,7 @@ import 'package:yak/presentation/bloc/user_point/user_point_cubit.dart';
 import 'package:yak/presentation/page/home/screens/examination_result/examination_result_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_diary/health_diary_screen.dart';
 import 'package:yak/presentation/page/home/screens/health_information/health_information_screen.dart';
-import 'package:yak/presentation/page/home/screens/hoem_screen.dart';
+import 'package:yak/presentation/page/home/screens/home_screen.dart';
 import 'package:yak/presentation/page/home/screens/hospital_visit_schedule/hospital_visit_schedules_screen.dart';
 import 'package:yak/presentation/page/home/screens/medication_management/medication_management_screen.dart';
 import 'package:yak/presentation/widget/home/global_navigation_bar.dart';
@@ -75,6 +76,10 @@ class _HomePageState extends State<HomePage> {
         final reservedAt = DateTime.fromMillisecondsSinceEpoch(
           int.parse(event.payload!['reservedAt']!),
         );
+
+        final pushType =
+            PushType.values[int.parse(event.payload!['pushType']!)];
+
         final userId = event.payload!['userId']!;
 
         if (event.channelKey == 'hospital_visit') {
@@ -83,7 +88,12 @@ class _HomePageState extends State<HomePage> {
           showDialog<void>(
             context: context,
             builder: (_) => HospitalVisitScheduleDetailDialog(
-              reservedAt: reservedAt,
+              reservedAt: reservedAt.add(
+                Duration(
+                  days: pushType == PushType.before ? 1 : 0,
+                  hours: pushType == PushType.after ? 2 : 0,
+                ),
+              ),
             ),
           );
         }
@@ -95,7 +105,15 @@ class _HomePageState extends State<HomePage> {
           showDialog<void>(
             context: context,
             builder: (_) => MedicationScheduleCheckDialog(
-              reservedAt: reservedAt,
+              reservedAt: reservedAt.add(
+                Duration(
+                  minutes: pushType == PushType.before
+                      ? 30
+                      : pushType == PushType.onTime
+                          ? 0
+                          : -30,
+                ),
+              ),
             ),
           );
         }

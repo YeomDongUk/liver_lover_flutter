@@ -10,6 +10,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 // Project imports:
 import 'package:yak/core/class/d_day_parser.dart';
+import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
@@ -172,9 +173,12 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                                 : DdayParser.parseDday(
                                     hospitalVisitSchedule.reservedAt,
                                   ),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
-                          color: AppColors.magenta,
+                          color: hospitalVisitSchedule.status ==
+                                  HospitalVisitScheduleStatus.done
+                              ? AppColors.green
+                              : AppColors.magenta,
                         ).airbnbB,
                       ),
                       Text(
@@ -202,10 +206,21 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                               .contains('노원을지대학교병원'))
                         SvgPicture.asset(
                           'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
+                        )
+                      else
+                        Text(
+                          hospitalVisitSchedule.hospitalName,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            color: AppColors.primary,
+                          ).rixMGoEB,
                         ),
                       const SizedBox(height: 15),
                       Text(
-                        hospitalVisitSchedule.hospitalName,
+                        hospitalVisitSchedule.type ==
+                                HospitalVisitScheduleType.outpatient
+                            ? '외래 진료'
+                            : '정기 검진',
                         style: const TextStyle(
                           fontSize: 13,
                           color: AppColors.gray,
@@ -247,9 +262,10 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   child: SvgPicture.asset(
                     'assets/svg/check.svg',
-                    color: hospitalVisitSchedule.visitedAt == null
+                    color: hospitalVisitSchedule.status !=
+                            HospitalVisitScheduleStatus.done
                         ? null
-                        : AppColors.primary,
+                        : AppColors.green,
                   ),
                 ),
               ],

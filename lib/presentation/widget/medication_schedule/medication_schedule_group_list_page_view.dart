@@ -119,9 +119,11 @@ class MedicationScheduleGroupListPageViewState
                                   '''${'${group.reservedAt.hour}'.padLeft(2, '0')}:00''',
                                   style: GoogleFonts.lato(
                                     fontSize: 28,
-                                    color: isOver
+                                    color: group.medicatedAt != null
                                         ? AppColors.blueGrayLight
-                                        : Theme.of(context).primaryColor,
+                                        : isOver
+                                            ? AppColors.blueGrayLight
+                                            : Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),

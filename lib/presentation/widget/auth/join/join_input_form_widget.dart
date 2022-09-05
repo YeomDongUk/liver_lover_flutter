@@ -170,6 +170,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                                 ),
                               ),
                             ),
+                            const VerticalDivider(),
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () => joinCubit.updateSex(1),

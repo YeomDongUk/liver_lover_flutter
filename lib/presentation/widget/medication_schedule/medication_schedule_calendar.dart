@@ -214,7 +214,13 @@ class _MedicationScheduleCalendarState
                                 child: Wrap(
                                   spacing: 10,
                                   children: List.generate(
-                                    medicationScheduleGroups?.length ?? 0,
+                                    (medicationScheduleGroups
+                                              ?..sort(
+                                                (prev, curr) => prev.reservedAt
+                                                    .compareTo(curr.reservedAt),
+                                              ))
+                                            ?.length ??
+                                        0,
                                     (index) {
                                       final medicationScheduleGroup =
                                           medicationScheduleGroups![index];

@@ -29,21 +29,6 @@ class HospitalVisitScheduleDetailDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HospitalVisitSchedulesCubit,
         HospitalVisitSchedulesState>(
-      buildWhen: (prev, curr) {
-        final prevSchedule = prev.hospitalVisitSchedules
-            .where(
-              (element) => element.reservedAt == reservedAt,
-            )
-            .firstOrNull;
-
-        final currSchedule = curr.hospitalVisitSchedules
-            .where(
-              (element) => element.reservedAt == reservedAt,
-            )
-            .firstOrNull;
-
-        return prevSchedule != currSchedule;
-      },
       builder: (context, state) {
         final hospitalVisitSchedule = state.hospitalVisitSchedules
             .where(

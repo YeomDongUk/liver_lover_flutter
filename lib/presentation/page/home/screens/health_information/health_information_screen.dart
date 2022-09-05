@@ -495,6 +495,7 @@ class _LiverDiseaseRiskCalculatorTabViewState
                                       ),
                                     ),
                                   ),
+                                  const VerticalDivider(),
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () =>
