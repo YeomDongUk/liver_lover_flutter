@@ -490,7 +490,7 @@ class _ExcerciseHistoryGraphPageState extends State<ExcerciseHistoryGraphPage>
       minX: 0,
       maxX: 8,
       minY: 0,
-      maxY: maxY,
+      maxY: maxY == 0 ? 0 : maxY + 1,
       extraLinesData: ExtraLinesData(
         horizontalLines: [
           HorizontalLine(
