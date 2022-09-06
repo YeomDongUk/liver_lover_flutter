@@ -35,19 +35,13 @@ class SurveyGroupsCubit extends Cubit<SurveyGroupsState>
             SurveyGroupsLoadSuccess(
               groups: [
                 ...surveyGroups
-                    .where(
-                      (surveyGroup) =>
-                          !surveyGroup.isOverdue && !surveyGroup.done,
-                    )
+                    .where((surveyGroup) => !surveyGroup.isOverdue)
                     .toList()
                   ..sort(
                     (prev, curr) => prev.reseverdAt.compareTo(curr.reseverdAt),
                   ),
                 ...surveyGroups
-                    .where(
-                      (surveyGroup) =>
-                          !(!surveyGroup.isOverdue && !surveyGroup.done),
-                    )
+                    .where((surveyGroup) => surveyGroup.isOverdue)
                     .toList()
                   ..sort(
                     (prev, curr) => prev.reseverdAt.compareTo(curr.reseverdAt),
