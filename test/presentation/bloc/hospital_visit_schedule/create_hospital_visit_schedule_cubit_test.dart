@@ -97,16 +97,7 @@ void main() {
         true,
       );
     });
-    test('알림 설정 변경', () {
-      /// When: 병원 이름 미입력
-      createHospitalVisitSchedulesCubit.updatePush(true);
 
-      /// Then: 상태 미유효
-      expect(
-        createHospitalVisitSchedulesCubit.state.push.value,
-        true,
-      );
-    });
     test('하루 전 알림 설정 변경', () {
       /// When: 병원 이름 미입력
       createHospitalVisitSchedulesCubit.updateBeforePush(true);

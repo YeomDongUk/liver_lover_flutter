@@ -32,7 +32,28 @@ class SurveyGroupsCubit extends Cubit<SurveyGroupsState>
         _surveyGroupsSubscription?.cancel();
         _surveyGroupsSubscription = r.listen(
           (surveyGroups) => emit(
-            SurveyGroupsLoadSuccess(groups: surveyGroups),
+            SurveyGroupsLoadSuccess(
+              groups: [
+                ...surveyGroups
+                    .where(
+                      (surveyGroup) =>
+                          !surveyGroup.isOverdue && !surveyGroup.done,
+                    )
+                    .toList()
+                  ..sort(
+                    (prev, curr) => prev.reseverdAt.compareTo(curr.reseverdAt),
+                  ),
+                ...surveyGroups
+                    .where(
+                      (surveyGroup) =>
+                          !(!surveyGroup.isOverdue && !surveyGroup.done),
+                    )
+                    .toList()
+                  ..sort(
+                    (prev, curr) => prev.reseverdAt.compareTo(curr.reseverdAt),
+                  ),
+              ],
+            ),
           ),
         );
       },

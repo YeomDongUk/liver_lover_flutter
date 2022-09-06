@@ -25,16 +25,16 @@ import 'package:yak/presentation/widget/common/icon_back_button.dart';
 import 'package:yak/presentation/widget/common/opacity_check_button.dart';
 import 'package:yak/presentation/widget/hospital_visit_schedule/create/hospital_visit_schedule_text_field.dart';
 
-class CreateHospitalVisitSchedulePage extends StatefulWidget {
-  const CreateHospitalVisitSchedulePage({super.key});
+class HospitalVisitScheduleCreatePage extends StatefulWidget {
+  const HospitalVisitScheduleCreatePage({super.key});
 
   @override
-  State<CreateHospitalVisitSchedulePage> createState() =>
-      _CreateHospitalVisitSchedulePageState();
+  State<HospitalVisitScheduleCreatePage> createState() =>
+      _HospitalVisitScheduleCreatePageState();
 }
 
-class _CreateHospitalVisitSchedulePageState
-    extends State<CreateHospitalVisitSchedulePage> {
+class _HospitalVisitScheduleCreatePageState
+    extends State<HospitalVisitScheduleCreatePage> {
   late final CreateHospitalVisitSchedulesCubit
       createHospitalVisitSchedulesCubit;
 
@@ -328,7 +328,8 @@ class _CreateHospitalVisitSchedulePageState
                           ),
                           const SizedBox(width: 9),
                           CommonSwitch(
-                            value: state.push.value,
+                            value:
+                                state.beforePush.value || state.afterPush.value,
                             onToggle:
                                 createHospitalVisitSchedulesCubit.updatePush,
                           ),
@@ -339,10 +340,8 @@ class _CreateHospitalVisitSchedulePageState
                         children: [
                           OpacityCheckButton(
                             opacity: state.beforePush.value ? 1 : 0,
-                            onTap: !state.push.value
-                                ? () => null
-                                : () => createHospitalVisitSchedulesCubit
-                                    .updateBeforePush(!state.beforePush.value),
+                            onTap: () => createHospitalVisitSchedulesCubit
+                                .updateBeforePush(!state.beforePush.value),
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -352,10 +351,8 @@ class _CreateHospitalVisitSchedulePageState
                           const Spacer(),
                           OpacityCheckButton(
                             opacity: state.afterPush.value ? 1 : 0,
-                            onTap: !state.push.value
-                                ? () => null
-                                : () => createHospitalVisitSchedulesCubit
-                                    .updateAfterPush(!state.afterPush.value),
+                            onTap: () => createHospitalVisitSchedulesCubit
+                                .updateAfterPush(!state.afterPush.value),
                           ),
                           const SizedBox(width: 10),
                           Text(

@@ -74,26 +74,19 @@ class CreateHospitalVisitSchedulesCubit
   void updatePush(bool push) {
     emit(
       state.copyWith(
-        push: Push.dirty(push),
-        beforePush: push ? null : const BeforePush.dirty(false),
-        afterPush: push ? null : const AfterPush.dirty(false),
+        beforePush: BeforePush.dirty(push),
+        afterPush: AfterPush.dirty(push),
       ),
     );
 
     emit(
       state.copyWith(
-        status: state.push.value &&
-                !state.beforePush.value &&
-                !state.afterPush.value
-            ? FormzStatus.invalid
-            : formStatus,
+        status: formStatus,
       ),
     );
   }
 
   void updateBeforePush(bool beforePush) {
-    if (!state.push.value) return;
-
     emit(
       state.copyWith(
         beforePush: BeforePush.dirty(beforePush),
@@ -102,18 +95,12 @@ class CreateHospitalVisitSchedulesCubit
 
     emit(
       state.copyWith(
-        status: state.push.value &&
-                !state.beforePush.value &&
-                !state.afterPush.value
-            ? FormzStatus.invalid
-            : formStatus,
+        status: formStatus,
       ),
     );
   }
 
   void updateAfterPush(bool afterPush) {
-    if (!state.push.value) return;
-
     emit(
       state.copyWith(
         afterPush: AfterPush.dirty(afterPush),
@@ -122,11 +109,7 @@ class CreateHospitalVisitSchedulesCubit
 
     emit(
       state.copyWith(
-        status: state.push.value &&
-                !state.beforePush.value &&
-                !state.afterPush.value
-            ? FormzStatus.invalid
-            : formStatus,
+        status: formStatus,
       ),
     );
   }
@@ -140,7 +123,6 @@ class CreateHospitalVisitSchedulesCubit
         medicalSubject: state.medicalSubject.value,
         doctorName: state.doctorName.value,
         reservedAt: state.reservedAt.value!,
-        push: Value(state.push.value),
         afterPush: Value(state.afterPush.value),
         beforePush: Value(state.beforePush.value),
       ),

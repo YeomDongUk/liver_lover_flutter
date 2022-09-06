@@ -909,9 +909,9 @@ class LiverHealthWhitePaperTabViewState
               ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
-                  const _InformationBox(
+                  _InformationBox(
                     label: '간염',
-                    strings: [
+                    strings: const [
                       '간염바이러스의 감염경로',
                       '바이러스 간염 중 A형 B형 C형은 무엇인가요?',
                       'A형 간염은 왜 후진국 병인가요?',
@@ -927,20 +927,11 @@ class LiverHealthWhitePaperTabViewState
                       'C형 간염 치료는 부작용이 많지 않나요?',
                       'C형 간염 환자가 주의해야할 생활수칙',
                     ],
-                    urls: [
-                      'http://terms.naver.com/entry.nhn?docId=2704272&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704273&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704274&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704275&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704276&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704277&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704278&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704279&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704280&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704281&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704282&amp;categoryId=55588&amp;cid=55588',
-                      'http://terms.naver.com/entry.nhn?docId=2704283&amp;categoryId=55588&amp;cid=55588',
-                    ],
+                    urls: List.generate(
+                      14,
+                      (index) =>
+                          'https://terms.naver.com/entry.naver?docId=27042${(86 + index).toString()}&cid=55588&categoryId=55588',
+                    ),
                   ),
                   const SizedBox(height: 16),
                   _InformationBox(
@@ -953,7 +944,7 @@ class LiverHealthWhitePaperTabViewState
                       '지방간 환자가 멀리해야 할 음식',
                     ],
                     urls: List<String>.generate(
-                      4,
+                      5,
                       (index) =>
                           'https://terms.naver.com/entry.naver?docId=270430${index + 1}&categoryId=55588&cid=55588',
                     ),

@@ -19,10 +19,14 @@ class MetabolicDiseaseCubit extends Cubit<MetabolicDiseaseState>
   Future<void> loadMetabolicDisease() async {
     emit(state.copyWith(status: MetabolicDiseaseStatus.loadInProgress));
     final either = await getMetabolicDisease.call(null);
+
     emit(
       either.fold(
         (l) => state.copyWith(status: MetabolicDiseaseStatus.loadFailure),
-        (r) => state.copyWith(status: MetabolicDiseaseStatus.loadSuccess),
+        (r) => state.copyWith(
+          status: MetabolicDiseaseStatus.loadSuccess,
+          metabolicDisease: r,
+        ),
       ),
     );
   }

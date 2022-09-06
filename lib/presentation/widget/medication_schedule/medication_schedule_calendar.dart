@@ -213,6 +213,7 @@ class _MedicationScheduleCalendarState
                                 ),
                                 child: Wrap(
                                   spacing: 10,
+                                  runSpacing: 18,
                                   children: List.generate(
                                     (medicationScheduleGroups
                                               ?..sort(

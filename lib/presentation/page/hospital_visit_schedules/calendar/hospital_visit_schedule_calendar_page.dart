@@ -33,7 +33,7 @@ class _HospitalVisitScheduleCalendarPageState
   late final PageController pageController;
   late final int lastPageIndex;
   late int pageIndex;
-  HospitalVisitSchedule? hospitalVisitSchedule;
+  DateTime? selectedDate;
   void Function(void Function())? _setState;
 
   @override
@@ -138,19 +138,18 @@ class _HospitalVisitScheduleCalendarPageState
               itemBuilder: (context, index) => BlocBuilder<
                   HospitalVisitSchedulesCubit, HospitalVisitSchedulesState>(
                 builder: (context, state) => HospitalVisitScheduleCalendar(
-                  onTap: (hospitalVisitSchedule) => setState(
-                    () => this.hospitalVisitSchedule =
-                        this.hospitalVisitSchedule == hospitalVisitSchedule
-                            ? null
-                            : hospitalVisitSchedule,
-                  ),
+                  onTap: (selectedDate) {
+                    setState(
+                      () => this.selectedDate =
+                          this.selectedDate == selectedDate
+                              ? null
+                              : selectedDate,
+                    );
+                  },
+                  selectedDate: selectedDate,
                   firstDateOfMonth: DateTime(
                     firstDay.year,
                     firstDay.month + index,
-                  ),
-                  hospitalVisitSchedule:
-                      state.hospitalVisitSchedules.firstWhereOrNull(
-                    (element) => element.id == hospitalVisitSchedule?.id,
                   ),
                   hospitalVisitSchedules: state.hospitalVisitSchedules,
                 ),

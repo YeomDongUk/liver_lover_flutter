@@ -8,7 +8,7 @@ import 'package:beamer/beamer.dart';
 import 'package:yak/core/router/home_location.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/presentation/page/hospital_visit_schedules/calendar/hospital_visit_schedule_calendar_page.dart';
-import 'package:yak/presentation/page/hospital_visit_schedules/create/create_hospital_visit_schedule_page.dart';
+import 'package:yak/presentation/page/hospital_visit_schedules/create/hospital_visit_schedule_create_page.dart';
 
 class HospitalVisitScheduleLocation extends BeamLocation<BeamState> {
   @override
@@ -19,9 +19,9 @@ class HospitalVisitScheduleLocation extends BeamLocation<BeamState> {
         const BeamPage(
           type: BeamPageType.cupertino,
           key: ValueKey('create-hospital-visit-schedule'),
-          name: 'createHospitalVisitSchedulePage',
+          name: 'HospitalVisitScheduleCreatePage',
           title: '외래/검진 일정 등록',
-          child: CreateHospitalVisitSchedulePage(),
+          child: HospitalVisitScheduleCreatePage(),
         ),
       if (state.uri.path == Routes.hospitalVisitSchedulesCalendar)
         const BeamPage(
