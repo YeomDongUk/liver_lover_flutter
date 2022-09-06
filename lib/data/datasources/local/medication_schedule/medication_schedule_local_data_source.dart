@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 // Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
+import 'package:yak/core/database/table/point_history/point_history_table.dart';
 import 'package:yak/data/datasources/local/dao_mixin.dart';
 import 'package:yak/data/datasources/local/notification_schedule/notification_schedule_local_data_source.dart';
 import 'package:yak/data/models/medication_schedule/medication_schedule_group_model.dart';
@@ -12,15 +13,6 @@ import 'package:yak/data/models/medication_schedule/medication_schedule_update_i
 import 'package:yak/domain/entities/medication_schedule/medication_adherenece_percent.dart';
 
 abstract class MedicationScheduleLocalDataSource {
-  MedicationScheduleModel? createMedicationSchdule({
-    required MedicationScheduleModel medicationScheduleModel,
-  });
-
-  MedicationScheduleModel? updateMedicationSchedule({
-    required String id,
-    required MedicationScheduleUpdateInput medicationScheduleUpdateInput,
-  });
-
   Future<void> updateMedicationSchedulesPush({
     required String userId,
     required DateTime reservedAt,
@@ -221,25 +213,115 @@ class MedicationScheduleLocalDataSourceImpl
   }
 
   @override
-  MedicationScheduleModel? createMedicationSchdule({
-    required MedicationScheduleModel medicationScheduleModel,
-  }) {
-    // TODO: implement createMedicationSchdule
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> medicate({
     required String userId,
     required String scheduleId,
   }) =>
-      (update(medicationSchedules)..where((tbl) => tbl.id.equals(scheduleId)))
-          .write(
-        MedicationSchedulesCompanion(
-          medicatedAt: Value(DateTime.now()),
-          updatedAt: Value(DateTime.now()),
-        ),
-      );
+      transaction(() async {
+        final medicationScheduleModels = await (update(medicationSchedules)
+              ..where((tbl) => tbl.id.equals(scheduleId)))
+            .writeReturning(
+          MedicationSchedulesCompanion(
+            medicatedAt: Value(DateTime.now()),
+            updatedAt: Value(DateTime.now()),
+          ),
+        );
+
+        final medicationScheduleModel = medicationScheduleModels.firstOrNull;
+
+        if (medicationScheduleModel == null) return;
+
+        await into(pointHistories).insert(
+          PointHistoriesCompanion.insert(
+            event: PointHistoryEvent.medicationComplete,
+            point: 1,
+            userId: userId,
+            forginId: medicationScheduleModel.id,
+          ),
+        );
+
+        final joinResult = await (select(medicationInformations).join(
+          [
+            leftOuterJoin(
+              medicationSchedules,
+              medicationSchedules.medicationInformationId
+                  .equalsExp(medicationInformations.id),
+              useColumns: false,
+            ),
+          ],
+        )..where(medicationSchedules.id.equals(scheduleId)))
+            .getSingleOrNull();
+
+        if (joinResult == null) return;
+
+        final takeCycle =
+            joinResult.readTable(medicationInformations).takeCycle;
+
+        /// 유저 포인트 조회
+        final userPoint = await (select(userPoints)
+              ..where((tbl) => tbl.userId.equals(userId)))
+            .getSingle();
+
+        await update(userPoints).write(
+          UserPointsCompanion(
+            point: Value(userPoint.point + takeCycle),
+            updatedAt: Value(DateTime.now()),
+          ),
+        );
+
+        final typedResults = await (select(medicationSchedules).join(
+          [
+            leftOuterJoin(
+              medicationInformations,
+              medicationInformations.id
+                  .equalsExp(medicationSchedules.medicationInformationId),
+              useColumns: false,
+            ),
+            leftOuterJoin(
+              prescriptions,
+              prescriptions.id.equalsExp(
+                medicationInformations.prescriptionId,
+              ),
+              useColumns: false,
+            ),
+          ],
+        )..where(
+                medicationSchedules.reservedAt
+                        .equals(medicationScheduleModel.reservedAt) &
+                    prescriptions.userId.equals(userId),
+              ))
+            .get();
+
+        final remainMedicationScheduleModels = typedResults
+            .map((typedResult) => typedResult.readTable(medicationSchedules))
+            .toList();
+
+        if (remainMedicationScheduleModels.isEmpty) {
+          await Future.wait([
+            notificationScheduleLocalDataSource
+                .deleteNotificationScheduleByReservedAt(
+              pushType: PushType.before,
+              reservedAt: medicationScheduleModel.reservedAt,
+              type: 0,
+              userId: userId,
+            ),
+            notificationScheduleLocalDataSource
+                .deleteNotificationScheduleByReservedAt(
+              pushType: PushType.onTime,
+              reservedAt: medicationScheduleModel.reservedAt,
+              type: 0,
+              userId: userId,
+            ),
+            notificationScheduleLocalDataSource
+                .deleteNotificationScheduleByReservedAt(
+              pushType: PushType.after,
+              reservedAt: medicationScheduleModel.reservedAt,
+              type: 0,
+              userId: userId,
+            ),
+          ]);
+        }
+      });
 
   @override
   Future<void> medicationAll({
@@ -252,7 +334,7 @@ class MedicationScheduleLocalDataSourceImpl
           medicationInformations,
           medicationInformations.id
               .equalsExp(medicationSchedules.medicationInformationId),
-          useColumns: false,
+          useColumns: true,
         ),
         leftOuterJoin(
           prescriptions,
@@ -283,15 +365,52 @@ class MedicationScheduleLocalDataSourceImpl
           updatedAt: Value(DateTime.now()),
         ),
       );
-    });
-  }
 
-  @override
-  MedicationScheduleModel? updateMedicationSchedule({
-    required String id,
-    required MedicationScheduleUpdateInput medicationScheduleUpdateInput,
-  }) {
-    throw UnimplementedError();
+      final medicationInformationModels = typedResults
+          .map((typedResult) => typedResult.readTable(medicationInformations))
+          .toList();
+
+      final addedPoint = medicationInformationModels.fold<int>(
+        0,
+        (previousValue, element) => previousValue + element.takeCycle,
+      );
+
+      /// 유저 포인트 조회
+      final userPoint = await (select(userPoints)
+            ..where((tbl) => tbl.userId.equals(userId)))
+          .getSingle();
+
+      await update(userPoints).write(
+        UserPointsCompanion(
+          point: Value(userPoint.point + addedPoint),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
+
+      await Future.wait([
+        notificationScheduleLocalDataSource
+            .deleteNotificationScheduleByReservedAt(
+          pushType: PushType.before,
+          reservedAt: reservedAt,
+          type: 0,
+          userId: userId,
+        ),
+        notificationScheduleLocalDataSource
+            .deleteNotificationScheduleByReservedAt(
+          pushType: PushType.onTime,
+          reservedAt: reservedAt,
+          type: 0,
+          userId: userId,
+        ),
+        notificationScheduleLocalDataSource
+            .deleteNotificationScheduleByReservedAt(
+          pushType: PushType.after,
+          reservedAt: reservedAt,
+          type: 0,
+          userId: userId,
+        ),
+      ]);
+    });
   }
 
   @override

@@ -6,7 +6,6 @@ import 'package:yak/core/error/failure.dart';
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/medication_schedule/medication_schedule_local_data_source.dart';
 import 'package:yak/data/models/medication_schedule/medication_schedule_create_input.dart';
-import 'package:yak/data/models/medication_schedule/medication_schedule_update_input.dart';
 import 'package:yak/domain/entities/medication_information/medication_information.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_adherenece_percent.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
@@ -34,24 +33,6 @@ class MedicationScheduleRepositoryImpl implements MedicationScheduleRepository {
   @override
   Future<Either<Failure, bool>> deleteMedicationSchedule(String id) {
     throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, MedicationSchedule>> updateMedicationSchedule({
-    required MedicationSchedule medicationSchedule,
-  }) async {
-    try {
-      final model = medicationScheduleLocalDataSource.updateMedicationSchedule(
-        id: medicationSchedule.id,
-        medicationScheduleUpdateInput: MedicationScheduleUpdateInput.fromJson(
-          medicationSchedule.toJson(),
-        ),
-      );
-
-      return Right(MedicationSchedule.fromJson(model!.toJson()));
-    } catch (e) {
-      return const Left(QueryFailure());
-    }
   }
 
   @override

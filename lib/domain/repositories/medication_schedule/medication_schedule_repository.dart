@@ -19,10 +19,6 @@ abstract class MedicationScheduleRepository {
     MedicationScheduleCreateInput createInput,
   );
 
-  Future<Either<Failure, MedicationSchedule>> updateMedicationSchedule({
-    required MedicationSchedule medicationSchedule,
-  });
-
   Future<Either<Failure, bool>> deleteMedicationSchedule(String id);
 
   Future<Either<Failure, void>> updateMedicationSchedulesPush({

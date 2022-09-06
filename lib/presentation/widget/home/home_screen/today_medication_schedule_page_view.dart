@@ -221,6 +221,7 @@ class MedicationScheduleOverviewContainer extends StatelessWidget {
                     const SizedBox(width: 24),
                     Expanded(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
