@@ -45,8 +45,10 @@ class MedicationScheduleGroupsCubit
                   MedicationScheduleGroupsState(
                     status: MedicationScheduleGroupsStatus.loadSuccess,
                     medicationScheduleGroups: event
-                      ..sort((prev, curr) =>
-                          prev.reservedAt.compareTo(curr.reservedAt)),
+                      ..sort(
+                        (prev, curr) =>
+                            prev.reservedAt.compareTo(curr.reservedAt),
+                      ),
                   ),
                 ),
         );

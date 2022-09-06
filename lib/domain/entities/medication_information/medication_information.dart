@@ -2,7 +2,6 @@
 import 'package:equatable/equatable.dart';
 
 // Project imports:
-import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
 import 'package:yak/domain/entities/pill/pill.dart';
 
 class MedicationInformation extends Equatable {

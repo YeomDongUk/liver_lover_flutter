@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Package imports:
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/static/color.dart';
@@ -443,7 +442,8 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
                           showDialog<void>(
                             context: context,
                             builder: (context) => const Center(
-                                child: CircularProgressIndicator()),
+                              child: CircularProgressIndicator(),
+                            ),
                             barrierDismissible: false,
                           );
                           KiwiContainer()

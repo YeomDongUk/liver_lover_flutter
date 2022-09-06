@@ -66,7 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '406387123118',
     projectId: 'yack-67030',
     storageBucket: 'yack-67030.appspot.com',
-    iosClientId: '406387123118-5sl2ovdqvnjj0rkifa8qgoopad1cvcsj.apps.googleusercontent.com',
+    iosClientId:
+        '406387123118-5sl2ovdqvnjj0rkifa8qgoopad1cvcsj.apps.googleusercontent.com',
     iosBundleId: 'com.eden.riverlover',
   );
 }

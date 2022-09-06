@@ -1,6 +1,5 @@
 // Package imports:
 import 'package:dartz/dartz.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';

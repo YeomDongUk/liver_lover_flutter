@@ -13,7 +13,6 @@ import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/usecases/survey/sf_12_survey_answer/create_sf_12_survey_answers.dart';
 import 'package:yak/presentation/bloc/sf_12_survey/answer/create/sf_12_survey_cubit.dart';
-import 'package:yak/presentation/bloc/survey_groups/survey_groups_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
 import 'package:yak/presentation/widget/sf_12_survey/survey_question_list_tile.dart';

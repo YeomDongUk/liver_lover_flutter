@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -153,10 +155,13 @@ class _PillSearchDialogState extends State<PillSearchDialog> {
                           : () async {
                               final pill = state.pills.elementAt(index!);
 
-                              showDialog<void>(
-                                context: context,
-                                builder: (_) => const Center(
-                                  child: CircularProgressIndicator(),
+                              unawaited(
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (_) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  barrierDismissible: false,
                                 ),
                               );
 

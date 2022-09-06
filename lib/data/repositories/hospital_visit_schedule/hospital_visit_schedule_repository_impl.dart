@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
@@ -102,7 +101,6 @@ class HospitalVisitScheduleRepositoryImpl
         HospitalVisitSchedule.fromJson(hospitalVisitScheduleModel.toJson()),
       );
     } catch (e) {
-      print(e);
       return const Left(QueryFailure());
     }
   }

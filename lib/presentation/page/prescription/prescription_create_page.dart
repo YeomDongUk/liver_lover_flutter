@@ -108,7 +108,6 @@ class _PrescriptionCreatePageState extends State<PrescriptionCreatePage> {
     );
 
     for (final block in recognizedText.blocks) {
-      print(block.text);
       await searchPill(block.text);
     }
   }

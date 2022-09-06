@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
 import 'package:collection/collection.dart';
 
@@ -9,7 +10,6 @@ import 'package:yak/core/database/table/point_history/point_history_table.dart';
 import 'package:yak/data/datasources/local/dao_mixin.dart';
 import 'package:yak/data/datasources/local/notification_schedule/notification_schedule_local_data_source.dart';
 import 'package:yak/data/models/medication_schedule/medication_schedule_group_model.dart';
-import 'package:yak/data/models/medication_schedule/medication_schedule_update_input.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_adherenece_percent.dart';
 
 abstract class MedicationScheduleLocalDataSource {
@@ -231,15 +231,6 @@ class MedicationScheduleLocalDataSourceImpl
 
         if (medicationScheduleModel == null) return;
 
-        await into(pointHistories).insert(
-          PointHistoriesCompanion.insert(
-            event: PointHistoryEvent.medicationComplete,
-            point: 1,
-            userId: userId,
-            forginId: medicationScheduleModel.id,
-          ),
-        );
-
         final joinResult = await (select(medicationInformations).join(
           [
             leftOuterJoin(
@@ -254,20 +245,8 @@ class MedicationScheduleLocalDataSourceImpl
 
         if (joinResult == null) return;
 
-        final takeCycle =
-            joinResult.readTable(medicationInformations).takeCycle;
-
-        /// 유저 포인트 조회
-        final userPoint = await (select(userPoints)
-              ..where((tbl) => tbl.userId.equals(userId)))
-            .getSingle();
-
-        await update(userPoints).write(
-          UserPointsCompanion(
-            point: Value(userPoint.point + takeCycle),
-            updatedAt: Value(DateTime.now()),
-          ),
-        );
+        // final takeCycle =
+        // joinResult.readTable(medicationInformations).takeCycle;
 
         final typedResults = await (select(medicationSchedules).join(
           [
@@ -297,6 +276,27 @@ class MedicationScheduleLocalDataSourceImpl
             .toList();
 
         if (remainMedicationScheduleModels.isEmpty) {
+          await into(pointHistories).insert(
+            PointHistoriesCompanion.insert(
+              event: PointHistoryEvent.medicationComplete,
+              point: 1,
+              userId: userId,
+              forginId: medicationScheduleModel.id,
+            ),
+          );
+
+          /// 유저 포인트 조회
+          final userPoint = await (select(userPoints)
+                ..where((tbl) => tbl.userId.equals(userId)))
+              .getSingle();
+
+          await update(userPoints).write(
+            UserPointsCompanion(
+              point: Value(userPoint.point + 1),
+              updatedAt: Value(DateTime.now()),
+            ),
+          );
+
           await Future.wait([
             notificationScheduleLocalDataSource
                 .deleteNotificationScheduleByReservedAt(
@@ -366,13 +366,22 @@ class MedicationScheduleLocalDataSourceImpl
         ),
       );
 
-      final medicationInformationModels = typedResults
-          .map((typedResult) => typedResult.readTable(medicationInformations))
-          .toList();
+      // final medicationInformationModels = typedResults
+      //     .map((typedResult) => typedResult.readTable(medicationInformations))
+      //     .toList();
 
-      final addedPoint = medicationInformationModels.fold<int>(
-        0,
-        (previousValue, element) => previousValue + element.takeCycle,
+      // final addedPoint = medicationInformationModels.fold<int>(
+      //   0,
+      //   (previousValue, element) => previousValue + element.takeCycle,
+      // );
+
+      await into(pointHistories).insert(
+        PointHistoriesCompanion.insert(
+          event: PointHistoryEvent.medicationComplete,
+          point: 1,
+          userId: userId,
+          forginId: newCuid(),
+        ),
       );
 
       /// 유저 포인트 조회
@@ -382,7 +391,7 @@ class MedicationScheduleLocalDataSourceImpl
 
       await update(userPoints).write(
         UserPointsCompanion(
-          point: Value(userPoint.point + addedPoint),
+          point: Value(userPoint.point + 1),
           updatedAt: Value(DateTime.now()),
         ),
       );

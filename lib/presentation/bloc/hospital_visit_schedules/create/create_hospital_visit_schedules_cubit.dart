@@ -36,7 +36,6 @@ class CreateHospitalVisitSchedulesCubit
   }
 
   void updateHospitalName(String hospitalName) {
-    print(hospitalName);
     emit(
       state.copyWith(
         hospitalName: HospitalName.dirty(hospitalName),

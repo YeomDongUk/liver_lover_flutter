@@ -11,7 +11,6 @@ import 'package:kiwi/kiwi.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_all_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/do_medication.dart';
 import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_group_stream.dart';
