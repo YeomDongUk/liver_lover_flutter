@@ -91,198 +91,209 @@ class _MedicationScheduleCalendarState
                 .firstWhereOrNull((element) => element.dateTime == selectedDate)
                 ?.medicationScheduleGroups;
 
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(
-                      7,
-                      (columnIndex) {
-                        final index = rowIndex * 7 + columnIndex;
-                        final isNotShown = index > dayList.length - 1 ||
-                            dayList[index] == null;
+            return Padding(
+              padding: EdgeInsets.only(
+                top: rowIndex == 0 ? 0 : 6,
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(
+                        7,
+                        (columnIndex) {
+                          final index = rowIndex * 7 + columnIndex;
+                          final isNotShown = index > dayList.length - 1 ||
+                              dayList[index] == null;
 
-                        final medicationScheduleDailyGroup =
-                            subMedicationScheduleDailyGroups.firstWhereOrNull(
-                          (element) =>
-                              element.dateTime.year ==
-                                  widget.firstDateOfMonth.year &&
-                              element.dateTime.month ==
-                                  widget.firstDateOfMonth.month &&
-                              element.dateTime.day ==
-                                  (isNotShown ? null : dayList[index]),
-                        );
+                          final medicationScheduleDailyGroup =
+                              subMedicationScheduleDailyGroups.firstWhereOrNull(
+                            (element) =>
+                                element.dateTime.year ==
+                                    widget.firstDateOfMonth.year &&
+                                element.dateTime.month ==
+                                    widget.firstDateOfMonth.month &&
+                                element.dateTime.day ==
+                                    (isNotShown ? null : dayList[index]),
+                          );
 
-                        return isNotShown
-                            ? const SizedBox(width: 43, height: 43)
-                            : GestureDetector(
-                                onTap: medicationScheduleDailyGroup == null
-                                    ? null
-                                    : () => context
-                                        .read<void Function(DateTime)>()
-                                        .call(
-                                          medicationScheduleDailyGroup.dateTime,
-                                        ),
-                                child: Semantics(
-                                  excludeSemantics: true,
-                                  child: AnimatedContainer(
-                                    width: 43,
-                                    height: 43,
-                                    alignment: Alignment.center,
-                                    duration: const Duration(milliseconds: 300),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: medicationScheduleDailyGroup
-                                              ?.medicationScheduleDailyGroupStatus
-                                              .color ??
-                                          Colors.transparent,
-                                    ),
-                                    child: Text(
-                                      '${dayList[index]}',
-                                      style: GoogleFonts.lato(
-                                        fontSize: 19,
+                          return isNotShown
+                              ? const SizedBox(width: 43, height: 43)
+                              : GestureDetector(
+                                  onTap: medicationScheduleDailyGroup == null
+                                      ? null
+                                      : () => context
+                                          .read<void Function(DateTime)>()
+                                          .call(
+                                            medicationScheduleDailyGroup
+                                                .dateTime,
+                                          ),
+                                  child: Semantics(
+                                    excludeSemantics: true,
+                                    child: AnimatedContainer(
+                                      width: 43,
+                                      height: 43,
+                                      alignment: Alignment.center,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
                                         color: medicationScheduleDailyGroup
-                                                    ?.medicationScheduleDailyGroupStatus !=
-                                                null
-                                            ? Colors.white
-                                            : AppColors.blueGrayDark,
-                                        fontWeight: FontWeight.w700,
+                                                ?.medicationScheduleDailyGroupStatus
+                                                .color ??
+                                            Colors.transparent,
+                                      ),
+                                      child: Text(
+                                        '${dayList[index]}',
+                                        style: GoogleFonts.lato(
+                                          fontSize: 19,
+                                          color: medicationScheduleDailyGroup
+                                                      ?.medicationScheduleDailyGroupStatus !=
+                                                  null
+                                              ? Colors.white
+                                              : AppColors.blueGrayDark,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                      },
-                    ).toList(),
+                                );
+                        },
+                      ).toList(),
+                    ),
                   ),
-                ),
-                ExpandedSectionWidget(
-                  expand: subMedicationScheduleDailyGroups
-                      .map((e) => e.dateTime)
-                      .contains(selectedDate),
-                  child: selectedDate == null
-                      ? const SizedBox()
-                      : Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16)
-                              .copyWith(
-                            top: 8,
-                            bottom: 16,
-                          ),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0x7ecdced2),
-                                blurRadius: 20,
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 21,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      mmDDFormat.format(selectedDate),
-                                      style: GoogleFonts.lato(
-                                        color: AppColors.primary,
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    SvgPicture.asset(
-                                      'assets/svg/right.svg',
-                                      color: AppColors.primary,
-                                    ),
-                                  ],
-                                ),
+                  ExpandedSectionWidget(
+                    expand: subMedicationScheduleDailyGroups
+                        .map((e) => e.dateTime)
+                        .contains(selectedDate),
+                    child: selectedDate == null
+                        ? const SizedBox()
+                        : Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16)
+                                .copyWith(
+                              top: 8,
+                              bottom: 10,
+                            ),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6),
                               ),
-                              const Divider(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 24,
-                                  vertical: 16,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0x7ecdced2),
+                                  blurRadius: 20,
                                 ),
-                                child: Wrap(
-                                  spacing: 10,
-                                  runSpacing: 18,
-                                  children: List.generate(
-                                    (medicationScheduleGroups
-                                              ?..sort(
-                                                (prev, curr) => prev.reservedAt
-                                                    .compareTo(curr.reservedAt),
-                                              ))
-                                            ?.length ??
-                                        0,
-                                    (index) {
-                                      final medicationScheduleGroup =
-                                          medicationScheduleGroups![index];
-                                      return Column(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(3),
-                                              ),
-                                              color: medicationScheduleGroup
-                                                      .isAllMedicated
-                                                  ? AppColors.green
-                                                  : medicationScheduleGroup
-                                                          .isAnyMedicated
-                                                      ? AppColors.orange
-                                                      : AppColors.magenta,
-                                            ),
-                                            child: Text(
-                                              hhmmFormat.format(
-                                                medicationScheduleGroup
-                                                    .reservedAt,
-                                              ),
-                                              style: GoogleFonts.lato(
-                                                fontSize: 19,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            medicationScheduleGroup
-                                                        .medicatedAt ==
-                                                    null
-                                                ? '-'
-                                                : hhmmFormat.format(
-                                                    medicationScheduleGroup
-                                                        .medicatedAt!,
-                                                  ),
-                                            style: GoogleFonts.lato(
-                                              color: AppColors.blueGrayDark,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 19,
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 21,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        mmDDFormat.format(selectedDate),
+                                        style: GoogleFonts.lato(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      SvgPicture.asset(
+                                        'assets/svg/right.svg',
+                                        color: AppColors.primary,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
+                                const Divider(),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 16,
+                                  ),
+                                  child: Wrap(
+                                    spacing: 10,
+                                    runSpacing: 18,
+                                    children: List.generate(
+                                      (medicationScheduleGroups
+                                                ?..sort(
+                                                  (prev, curr) =>
+                                                      prev.reservedAt.compareTo(
+                                                    curr.reservedAt,
+                                                  ),
+                                                ))
+                                              ?.length ??
+                                          0,
+                                      (index) {
+                                        final medicationScheduleGroup =
+                                            medicationScheduleGroups![index];
+                                        return Column(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(3),
+                                                ),
+                                                color: medicationScheduleGroup
+                                                        .isAllMedicated
+                                                    ? AppColors.green
+                                                    : medicationScheduleGroup
+                                                            .isAnyMedicated
+                                                        ? AppColors.orange
+                                                        : AppColors.magenta,
+                                              ),
+                                              child: Text(
+                                                hhmmFormat.format(
+                                                  medicationScheduleGroup
+                                                      .reservedAt,
+                                                ),
+                                                style: GoogleFonts.lato(
+                                                  fontSize: 19,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              medicationScheduleGroup
+                                                          .medicatedAt ==
+                                                      null
+                                                  ? '-'
+                                                  : hhmmFormat.format(
+                                                      medicationScheduleGroup
+                                                          .medicatedAt!,
+                                                    ),
+                                              style: GoogleFonts.lato(
+                                                color: AppColors.blueGrayDark,
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 19,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             );
           },
         ),

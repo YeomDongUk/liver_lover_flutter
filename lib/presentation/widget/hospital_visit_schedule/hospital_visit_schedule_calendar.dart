@@ -87,117 +87,129 @@ class _HospitalVisitScheduleCalendarState
                 element.reservedAt.month == widget.selectedDate?.month &&
                 element.reservedAt.day == widget.selectedDate?.day,
           );
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    7,
-                    (columnIndex) {
-                      final index = rowIndex * 7 + columnIndex;
-                      final isNotShown =
-                          index > dayList.length - 1 || dayList[index] == null;
 
-                      final subHospitalVisitSchedules = subSchedules.where(
-                        (element) =>
-                            element.reservedAt.year ==
-                                widget.firstDateOfMonth.year &&
-                            element.reservedAt.month ==
-                                widget.firstDateOfMonth.month &&
-                            element.reservedAt.day ==
-                                (isNotShown ? null : dayList[index]),
-                      );
+          return Padding(
+            padding: EdgeInsets.only(
+              top: rowIndex == 0 ? 0 : 6,
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(
+                      7,
+                      (columnIndex) {
+                        final index = rowIndex * 7 + columnIndex;
+                        final isNotShown = index > dayList.length - 1 ||
+                            dayList[index] == null;
 
-                      final isAllDone = subHospitalVisitSchedules.isNotEmpty &&
-                          subHospitalVisitSchedules.every(
-                            (hospitalVisitSchedule) =>
-                                hospitalVisitSchedule.status ==
-                                HospitalVisitScheduleStatus.done,
-                          );
+                        final subHospitalVisitSchedules = subSchedules.where(
+                          (element) =>
+                              element.reservedAt.year ==
+                                  widget.firstDateOfMonth.year &&
+                              element.reservedAt.month ==
+                                  widget.firstDateOfMonth.month &&
+                              element.reservedAt.day ==
+                                  (isNotShown ? null : dayList[index]),
+                        );
 
-                      final isAnyProgress =
-                          subHospitalVisitSchedules.isNotEmpty &&
-                              subHospitalVisitSchedules.any(
-                                (hospitalVisitSchedule) =>
-                                    hospitalVisitSchedule.status ==
-                                    HospitalVisitScheduleStatus.inProgress,
-                              );
+                        final isAllDone =
+                            subHospitalVisitSchedules.isNotEmpty &&
+                                subHospitalVisitSchedules.every(
+                                  (hospitalVisitSchedule) =>
+                                      hospitalVisitSchedule.status ==
+                                      HospitalVisitScheduleStatus.done,
+                                );
 
-                      return isNotShown
-                          ? const SizedBox(width: 43, height: 43)
-                          : GestureDetector(
-                              onTap: subHospitalVisitSchedules.isEmpty
-                                  ? null
-                                  : () => widget.onTap(
-                                        DateTime(
-                                          widget.firstDateOfMonth.year,
-                                          widget.firstDateOfMonth.month,
-                                          dayList[index]!,
+                        final isAnyProgress =
+                            subHospitalVisitSchedules.isNotEmpty &&
+                                subHospitalVisitSchedules.any(
+                                  (hospitalVisitSchedule) =>
+                                      hospitalVisitSchedule.status ==
+                                      HospitalVisitScheduleStatus.inProgress,
+                                );
+
+                        return isNotShown
+                            ? const SizedBox(width: 43, height: 43)
+                            : GestureDetector(
+                                onTap: subHospitalVisitSchedules.isEmpty
+                                    ? null
+                                    : () => widget.onTap(
+                                          DateTime(
+                                            widget.firstDateOfMonth.year,
+                                            widget.firstDateOfMonth.month,
+                                            dayList[index]!,
+                                          ),
                                         ),
+                                child: Semantics(
+                                  excludeSemantics: true,
+                                  child: AnimatedContainer(
+                                    width: 43,
+                                    height: 43,
+                                    alignment: Alignment.center,
+                                    duration: const Duration(milliseconds: 300),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: subHospitalVisitSchedules.isEmpty
+                                          ? Colors.transparent
+                                          : isAllDone
+                                              ? AppColors.green
+                                              : isAnyProgress
+                                                  ? AppColors.magenta
+                                                  : AppColors.orange,
+                                    ),
+                                    child: Text(
+                                      '${dayList[index]}',
+                                      style: GoogleFonts.lato(
+                                        fontSize: 19,
+                                        color:
+                                            subHospitalVisitSchedules.isNotEmpty
+                                                ? Colors.white
+                                                : AppColors.blueGrayDark,
+                                        fontWeight: FontWeight.w700,
                                       ),
-                              child: Semantics(
-                                excludeSemantics: true,
-                                child: AnimatedContainer(
-                                  width: 43,
-                                  height: 43,
-                                  alignment: Alignment.center,
-                                  duration: const Duration(milliseconds: 300),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: subHospitalVisitSchedules.isEmpty
-                                        ? Colors.transparent
-                                        : isAllDone
-                                            ? AppColors.green
-                                            : isAnyProgress
-                                                ? AppColors.magenta
-                                                : AppColors.orange,
-                                  ),
-                                  child: Text(
-                                    '${dayList[index]}',
-                                    style: GoogleFonts.lato(
-                                      fontSize: 19,
-                                      color:
-                                          subHospitalVisitSchedules.isNotEmpty
-                                              ? Colors.white
-                                              : AppColors.blueGrayDark,
-                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                    },
-                  ).toList(),
+                              );
+                      },
+                    ).toList(),
+                  ),
                 ),
-              ),
-              ExpandedSectionWidget(
-                expand: selectedDaySchedules.isNotEmpty,
-                child: selectedDaySchedules.isEmpty
-                    ? const SizedBox()
-                    : Column(
-                        children: [
-                          const SizedBox(height: 8),
-                          ExpandablePageView.builder(
-                            controller: pageControllers[rowIndex],
-                            itemCount: selectedDaySchedules.length,
-                            itemBuilder: (context, index) =>
-                                HospitalVisitScheduleDetailContainer(
-                              margin: const EdgeInsets.all(16).copyWith(top: 8),
-                              hospitalVisitSchedule:
-                                  selectedDaySchedules.elementAt(index),
-                            ),
+                ExpandedSectionWidget(
+                  expand: selectedDaySchedules.isNotEmpty,
+                  child: selectedDaySchedules.isEmpty
+                      ? const SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 10,
                           ),
-                          PageIndexIndicator(
-                            pageController: pageControllers[rowIndex],
-                            pageCount: selectedDaySchedules.length,
+                          child: Column(
+                            children: [
+                              ExpandablePageView.builder(
+                                controller: pageControllers[rowIndex],
+                                itemCount: selectedDaySchedules.length,
+                                itemBuilder: (context, index) =>
+                                    HospitalVisitScheduleDetailContainer(
+                                  margin:
+                                      const EdgeInsets.all(16).copyWith(top: 8),
+                                  hospitalVisitSchedule:
+                                      selectedDaySchedules.elementAt(index),
+                                ),
+                              ),
+                              PageIndexIndicator(
+                                pageController: pageControllers[rowIndex],
+                                pageCount: selectedDaySchedules.length,
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
-              ),
-            ],
+                        ),
+                ),
+              ],
+            ),
           );
         },
       ),
