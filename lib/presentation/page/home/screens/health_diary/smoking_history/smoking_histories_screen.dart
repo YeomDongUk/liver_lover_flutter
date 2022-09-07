@@ -333,7 +333,10 @@ class _SmokingHistoriesScreenState extends State<SmokingHistoriesScreen>
         ),
         const SizedBox(height: 16),
         GoGraphButton(
-          onPressed: () => context.beamToNamed(Routes.smokingHistoriesGraphs),
+          onPressed: () => context.beamToNamed(
+            Routes.smokingHistoriesGraphs,
+            popBeamLocationOnPop: true,
+          ),
         ),
         const SizedBox(height: 24),
       ],

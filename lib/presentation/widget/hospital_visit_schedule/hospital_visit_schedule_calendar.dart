@@ -185,7 +185,8 @@ class _HospitalVisitScheduleCalendarState
                             itemBuilder: (context, index) =>
                                 HospitalVisitScheduleDetailContainer(
                               margin: const EdgeInsets.all(16).copyWith(top: 8),
-                              hospitalVisitSchedule: selectedDaySchedules.first,
+                              hospitalVisitSchedule:
+                                  selectedDaySchedules.elementAt(index),
                             ),
                           ),
                           PageIndexIndicator(

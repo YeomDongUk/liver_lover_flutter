@@ -37,7 +37,8 @@ class PrescriptionsCubit extends Cubit<PrescriptionsState> {
         (event) => emit(
           state.copyWith(
             status: PrescriptionsStatus.loadSuccess,
-            prescriptions: [
+            // ignore: prefer_collection_literals
+            prescriptions: <Prescription>[
               ...event
                   .where(
                     (element) => !(!element.medicationStartAt

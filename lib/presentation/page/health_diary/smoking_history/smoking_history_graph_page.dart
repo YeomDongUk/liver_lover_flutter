@@ -376,19 +376,22 @@ class _SmokingHistoryGraphPageState extends State<SmokingHistoryGraphPage> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: 0.1,
             reservedSize: 42,
             getTitlesWidget: (value, meta) {
-              final list =
-                  List.generate(6, (index) => (maxY / 6 * (index + 1)).floor());
+              final list = List.generate(
+                6,
+                (index) => ((maxY / 6 * (index + 1) * 10).floor()) / 10,
+              );
 
-              if (value <= meta.min || !list.contains(value.floor())) {
+              if (value <= meta.min ||
+                  !list.contains((value * 10).floor() / 10)) {
                 return const SizedBox();
               }
 
               return Center(
                 child: Text(
-                  '$value',
+                  '${((value * 10).floor()) / 10}',
                   style: GoogleFonts.lato(
                     fontSize: 15,
                     color: Colors.white.withOpacity(0.5),

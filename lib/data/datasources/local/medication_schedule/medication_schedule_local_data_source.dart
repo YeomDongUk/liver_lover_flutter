@@ -231,23 +231,6 @@ class MedicationScheduleLocalDataSourceImpl
 
         if (medicationScheduleModel == null) return;
 
-        final joinResult = await (select(medicationInformations).join(
-          [
-            leftOuterJoin(
-              medicationSchedules,
-              medicationSchedules.medicationInformationId
-                  .equalsExp(medicationInformations.id),
-              useColumns: false,
-            ),
-          ],
-        )..where(medicationSchedules.id.equals(scheduleId)))
-            .getSingleOrNull();
-
-        if (joinResult == null) return;
-
-        // final takeCycle =
-        // joinResult.readTable(medicationInformations).takeCycle;
-
         final typedResults = await (select(medicationSchedules).join(
           [
             leftOuterJoin(
@@ -267,6 +250,7 @@ class MedicationScheduleLocalDataSourceImpl
         )..where(
                 medicationSchedules.reservedAt
                         .equals(medicationScheduleModel.reservedAt) &
+                    medicationSchedules.medicatedAt.isNull() &
                     prescriptions.userId.equals(userId),
               ))
             .get();
@@ -301,7 +285,8 @@ class MedicationScheduleLocalDataSourceImpl
             notificationScheduleLocalDataSource
                 .deleteNotificationScheduleByReservedAt(
               pushType: PushType.before,
-              reservedAt: medicationScheduleModel.reservedAt,
+              reservedAt: medicationScheduleModel.reservedAt
+                  .add(const Duration(minutes: -30)),
               type: 0,
               userId: userId,
             ),
@@ -315,7 +300,8 @@ class MedicationScheduleLocalDataSourceImpl
             notificationScheduleLocalDataSource
                 .deleteNotificationScheduleByReservedAt(
               pushType: PushType.after,
-              reservedAt: medicationScheduleModel.reservedAt,
+              reservedAt: medicationScheduleModel.reservedAt
+                  .add(const Duration(minutes: 30)),
               type: 0,
               userId: userId,
             ),
@@ -366,15 +352,6 @@ class MedicationScheduleLocalDataSourceImpl
         ),
       );
 
-      // final medicationInformationModels = typedResults
-      //     .map((typedResult) => typedResult.readTable(medicationInformations))
-      //     .toList();
-
-      // final addedPoint = medicationInformationModels.fold<int>(
-      //   0,
-      //   (previousValue, element) => previousValue + element.takeCycle,
-      // );
-
       await into(pointHistories).insert(
         PointHistoriesCompanion.insert(
           event: PointHistoryEvent.medicationComplete,
@@ -396,29 +373,31 @@ class MedicationScheduleLocalDataSourceImpl
         ),
       );
 
-      await Future.wait([
-        notificationScheduleLocalDataSource
-            .deleteNotificationScheduleByReservedAt(
-          pushType: PushType.before,
-          reservedAt: reservedAt,
-          type: 0,
-          userId: userId,
-        ),
-        notificationScheduleLocalDataSource
-            .deleteNotificationScheduleByReservedAt(
-          pushType: PushType.onTime,
-          reservedAt: reservedAt,
-          type: 0,
-          userId: userId,
-        ),
-        notificationScheduleLocalDataSource
-            .deleteNotificationScheduleByReservedAt(
-          pushType: PushType.after,
-          reservedAt: reservedAt,
-          type: 0,
-          userId: userId,
-        ),
-      ]);
+      await Future.wait(
+        [
+          notificationScheduleLocalDataSource
+              .deleteNotificationScheduleByReservedAt(
+            pushType: PushType.before,
+            reservedAt: reservedAt.add(const Duration(minutes: -30)),
+            type: 0,
+            userId: userId,
+          ),
+          notificationScheduleLocalDataSource
+              .deleteNotificationScheduleByReservedAt(
+            pushType: PushType.onTime,
+            reservedAt: reservedAt,
+            type: 0,
+            userId: userId,
+          ),
+          notificationScheduleLocalDataSource
+              .deleteNotificationScheduleByReservedAt(
+            pushType: PushType.after,
+            reservedAt: reservedAt.add(const Duration(minutes: 30)),
+            type: 0,
+            userId: userId,
+          ),
+        ],
+      );
     });
   }
 

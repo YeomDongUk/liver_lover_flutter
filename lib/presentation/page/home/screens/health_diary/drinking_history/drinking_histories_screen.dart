@@ -330,7 +330,10 @@ class _DrinkingHistoriesScreenState extends State<DrinkingHistoriesScreen>
         ),
         const SizedBox(height: 16),
         GoGraphButton(
-          onPressed: () => context.beamToNamed(Routes.dringkingHistoriesGraphs),
+          onPressed: () => context.beamToNamed(
+            Routes.dringkingHistoriesGraphs,
+            popBeamLocationOnPop: true,
+          ),
         ),
         const SizedBox(height: 24),
       ],

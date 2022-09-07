@@ -35,10 +35,7 @@ class UpsertMetabolicDiseaseCubit extends Cubit<UpsertMetabolicDiseaseState> {
 
     return emit(
       either.fold(
-        (l) {
-          print(l);
-          return state.copyWith(status: FormzStatus.submissionFailure);
-        },
+        (l) => state.copyWith(status: FormzStatus.submissionFailure),
         (r) => state.copyWith(status: FormzStatus.submissionSuccess),
       ),
     );

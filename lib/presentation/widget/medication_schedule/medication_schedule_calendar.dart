@@ -111,7 +111,8 @@ class _MedicationScheduleCalendarState
                                   widget.firstDateOfMonth.year &&
                               element.dateTime.month ==
                                   widget.firstDateOfMonth.month &&
-                              element.dateTime.day == dayList[index],
+                              element.dateTime.day ==
+                                  (isNotShown ? null : dayList[index]),
                         );
 
                         return isNotShown

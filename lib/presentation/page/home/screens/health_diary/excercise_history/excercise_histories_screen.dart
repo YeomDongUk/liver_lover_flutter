@@ -392,7 +392,10 @@ class _ExcerciseHistoriesScreenState extends State<ExcerciseHistoriesScreen>
         ),
         const SizedBox(height: 16),
         GoGraphButton(
-          onPressed: () => context.beamToNamed(Routes.excerciseHistoriesGraphs),
+          onPressed: () => context.beamToNamed(
+            Routes.excerciseHistoriesGraphs,
+            popBeamLocationOnPop: true,
+          ),
         ),
         const SizedBox(height: 24),
       ],
