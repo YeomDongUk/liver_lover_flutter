@@ -22,7 +22,7 @@ class WriteHealthQuestionAnswerCubit
 
   void updateDoctorName(String doctorName) => emit(
         state.copyWith(
-          status: state.answer.trim().length > 5 &&
+          status: state.answer.trim().length >= 2 &&
                   state.doctorName.trim().isNotEmpty
               ? FormzStatus.valid
               : FormzStatus.invalid,
@@ -31,9 +31,10 @@ class WriteHealthQuestionAnswerCubit
       );
   void updateAnswer(String answer) => emit(
         state.copyWith(
-          status: answer.trim().length > 5 && state.doctorName.trim().isNotEmpty
-              ? FormzStatus.valid
-              : FormzStatus.invalid,
+          status:
+              answer.trim().length >= 2 && state.doctorName.trim().isNotEmpty
+                  ? FormzStatus.valid
+                  : FormzStatus.invalid,
           answer: answer,
         ),
       );

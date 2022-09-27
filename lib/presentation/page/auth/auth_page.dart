@@ -83,6 +83,7 @@ class _AuthPageState extends State<AuthPage> {
                       final downloadLinkMap = FirebaseRemoteConfig.instance
                           .getString('downloadLink');
 
+                      // ignore: avoid_dynamic_calls
                       final downloadLink = jsonDecode(downloadLinkMap)[
                           Platform.isAndroid ? 'android' : 'ios'] as String?;
 

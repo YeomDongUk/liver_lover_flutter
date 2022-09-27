@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)"
+options: "39398be1a60b62a12c56a5adea7868da7f673718782c0fa832e60640ef95ff49"
+build_start_time: [1664278889, 704614162]
+build_end_time: [1664278891, 590726852]
+inputs:
+  "/Users/eden/miligram/yak/ios/Runner/AppDelegate.swift": [1631251166, 0]

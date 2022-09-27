@@ -4,6 +4,14 @@ import 'package:formz/formz.dart';
 // Project imports:
 import 'package:yak/core/form/error.dart';
 
+class DoctorName extends FormzInput<String, void> {
+  const DoctorName.pure() : super.pure('');
+  const DoctorName.dirty(super.value) : super.dirty();
+
+  @override
+  void validator(String value) => null;
+}
+
 class Name extends FormzInput<String, NameValidationError> {
   const Name.pure() : super.pure('');
   const Name.dirty(super.value) : super.dirty();

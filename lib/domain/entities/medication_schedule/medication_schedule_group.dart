@@ -36,6 +36,22 @@ class MedicationScheduleGroup extends Equatable {
         (element) => element.afterPush || element.beforePush,
       );
 
+  bool get hasBeforePush =>
+      medicationSchedules.any((element) => element.beforePush);
+
+  bool get hasAfterPush =>
+      medicationSchedules.any((element) => element.afterPush);
+
+  String get pushTime => !hasBeforePush && !hasAfterPush
+      ? '알림이 존재하지 않습니다'
+      : hasBeforePush && hasAfterPush
+          ? '30분 전 알림, 30분 후 알림'
+          : hasBeforePush && !hasAfterPush
+              ? '30분 전 알림'
+              : !hasBeforePush && hasAfterPush
+                  ? '30분 후 알림'
+                  : throw Exception('');
+
   @override
   List<Object?> get props => [
         reservedAt,

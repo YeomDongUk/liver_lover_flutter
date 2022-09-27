@@ -16,7 +16,8 @@ abstract class MedicationScheduleLocalDataSource {
   Future<void> updateMedicationSchedulesPush({
     required String userId,
     required DateTime reservedAt,
-    required bool push,
+    required bool? beforePush,
+    required bool? afterPush,
   });
 
   Stream<MedicationAdherencePercent> getMedicationAdherenecePercent({
@@ -405,7 +406,8 @@ class MedicationScheduleLocalDataSourceImpl
   Future<void> updateMedicationSchedulesPush({
     required String userId,
     required DateTime reservedAt,
-    required bool push,
+    required bool? beforePush,
+    required bool? afterPush,
   }) =>
       transaction(
         () async {
@@ -413,8 +415,10 @@ class MedicationScheduleLocalDataSourceImpl
                 ..where((tbl) => tbl.reservedAt.equals(reservedAt)))
               .write(
             MedicationSchedulesCompanion(
-              afterPush: Value(push),
-              beforePush: Value(push),
+              beforePush:
+                  beforePush == null ? const Value.absent() : Value(beforePush),
+              afterPush:
+                  afterPush == null ? const Value.absent() : Value(afterPush),
               updatedAt: Value(DateTime.now()),
             ),
           );
@@ -422,8 +426,8 @@ class MedicationScheduleLocalDataSourceImpl
           final beforeReservedAt = reservedAt.add(const Duration(minutes: -30));
           final afterReservedAt = reservedAt.add(const Duration(minutes: 30));
 
-          if (push) {
-            await Future.wait([
+          await Future.wait([
+            if (beforePush == true)
               notificationScheduleLocalDataSource
                   .createMedicationScheduleNotifications(
                 userId: userId,
@@ -432,6 +436,7 @@ class MedicationScheduleLocalDataSourceImpl
                   beforeReservedAt,
                 },
               ),
+            if (afterPush == true)
               notificationScheduleLocalDataSource
                   .createMedicationScheduleNotifications(
                 userId: userId,
@@ -440,10 +445,10 @@ class MedicationScheduleLocalDataSourceImpl
                   afterReservedAt,
                 },
               ),
-            ]);
-          } else {
-            await Future.wait(
-              [
+          ]);
+          await Future.wait(
+            [
+              if (beforePush == false)
                 notificationScheduleLocalDataSource
                     .deleteNotificationScheduleByReservedAt(
                   userId: userId,
@@ -451,6 +456,7 @@ class MedicationScheduleLocalDataSourceImpl
                   pushType: PushType.before,
                   reservedAt: beforeReservedAt,
                 ),
+              if (afterPush == false)
                 notificationScheduleLocalDataSource
                     .deleteNotificationScheduleByReservedAt(
                   userId: userId,
@@ -458,9 +464,8 @@ class MedicationScheduleLocalDataSourceImpl
                   pushType: PushType.after,
                   reservedAt: afterReservedAt,
                 ),
-              ],
-            );
-          }
+            ],
+          );
         },
       );
 

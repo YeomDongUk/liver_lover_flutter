@@ -104,6 +104,62 @@ class _MedicationAdherenceSurveyAnswerPageSDetailtate
                     ),
                   ],
                 ),
+                const SizedBox(height: 24),
+                Container(
+                  height: 60,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x7ecdced2),
+                        blurRadius: 20,
+                      )
+                    ],
+                    color: AppColors.primary,
+                  ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Text(
+                          '귀하의 복약순응도는',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 17,
+                          ).rixMGoB,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: Text(
+                          '${state.point}',
+                          style: GoogleFonts.lato(
+                            color: AppColors.skyBlue,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 35,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Text(
+                          '점입니다.(8점 만점)',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 17,
+                          ).rixMGoB,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 CommonShadowBox(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 24),

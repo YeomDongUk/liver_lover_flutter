@@ -1000,7 +1000,29 @@ class _ExaminationResultScreenState extends State<ExaminationResultScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ElevatedButton(
+                onPressed: () => context.beamToNamed(
+                  Routes.examinationResultHistories,
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  fixedSize: const Size.fromHeight(60),
+                  textStyle: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.white,
+                  ).rixMGoB,
+                ),
+                child: const Text(
+                  '검사 이력',
+                ),
+              ),
+            ),
+            const SizedBox(height: 62),
           ],
         ),
       ),

@@ -31,30 +31,12 @@ class HospitalName extends FormzInput<String, HospitalNameValidationError> {
       value.trim().isEmpty ? HospitalNameValidationError.empty : null;
 }
 
-enum MedicalSubjectValidationError {
-  empty,
-}
-
-class MedicalSubject extends FormzInput<String, MedicalSubjectValidationError> {
+class MedicalSubject extends FormzInput<String, void> {
   const MedicalSubject.pure() : super.pure('');
   const MedicalSubject.dirty(super.value) : super.dirty();
 
   @override
-  MedicalSubjectValidationError? validator(String value) =>
-      value.trim().isEmpty ? MedicalSubjectValidationError.empty : null;
-}
-
-enum DoctorNameValidationError {
-  empty,
-}
-
-class DoctorName extends FormzInput<String, DoctorNameValidationError> {
-  const DoctorName.pure() : super.pure('');
-  const DoctorName.dirty(super.value) : super.dirty();
-
-  @override
-  DoctorNameValidationError? validator(String value) =>
-      value.trim().isEmpty ? DoctorNameValidationError.empty : null;
+  void validator(String value) => null;
 }
 
 enum VisitedAtValidationError {

@@ -27,7 +27,7 @@ class PrescriptionCrateCubit extends Cubit<PrescriptionCrateState> {
       : emit(state.copyWith(prescriptedAt: DateInput.dirty(prescriptedAt)));
 
   void updateDoctorName(String doctorName) =>
-      emit(state.copyWith(doctorName: Name.dirty(doctorName)));
+      emit(state.copyWith(doctorName: DoctorName.dirty(doctorName)));
 
   void updateMedicatedAt(DateTime? medicationStartAt) =>
       medicationStartAt == null

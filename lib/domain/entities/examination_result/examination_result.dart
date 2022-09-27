@@ -74,7 +74,7 @@ class ExaminationResult extends Equatable {
   /// 양성종양(혈관종, 낭종 등)
   final String? benignTumor;
 
-  /// 양성종양(혈관종, 낭종 등)
+  /// 위험결절
   final String? dangerousNodule;
 
   /// 검사일

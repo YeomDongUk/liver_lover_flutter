@@ -60,17 +60,21 @@ class MedicationScheduleGroupsCubit
     required bool push,
     required DateTime reservedAt,
   }) async {
-    // final medicationSchedulesGroups = List<MedicationSchedulesGroup>.from(
-    //   state.medicationSchedulesGroups,
-    // );
+    final medicationScheduleGroups = List<MedicationScheduleGroup>.from(
+      state.medicationScheduleGroups,
+    );
 
-    // final index = medicationSchedulesGroups.indexOf(group);
-    // if (index == -1) return;
+    final index = medicationScheduleGroups.indexWhere(
+      (element) => element.reservedAt == reservedAt,
+    );
+
+    if (index == -1) return;
 
     await updateMedicationScheduleGroupPush.call(
       UpdateMedicationScheduleGroupPushParam(
         reservedAt: reservedAt,
-        push: push,
+        beforePush: push,
+        afterPush: push,
       ),
     );
   }

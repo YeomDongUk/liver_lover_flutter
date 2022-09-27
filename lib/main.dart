@@ -15,6 +15,7 @@ import 'package:yak/core/di/di.dart';
 import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/core/router/auth_location.dart';
 import 'package:yak/core/router/drinking_history_location.dart';
+import 'package:yak/core/router/examination_result_location.dart';
 import 'package:yak/core/router/excercise_history_location.dart';
 import 'package:yak/core/router/health_question_location.dart';
 import 'package:yak/core/router/home_location.dart';
@@ -98,6 +99,7 @@ class YackApp extends StatelessWidget {
         MedicationAdherenceSurveyLocation(),
         SmokingHistoryLocation(),
         ExcerciseHistoryLocation(),
+        ExaminationResultLocation(),
       ],
     ),
   );
@@ -226,9 +228,22 @@ class YackApp extends StatelessWidget {
             textScaleFactor: 1,
             boldText: false,
           ),
-          child: child!,
+          child: ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: child!,
+          ),
         ),
       ),
     );
   }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+    BuildContext context,
+    Widget child,
+    AxisDirection axisDirection,
+  ) =>
+      child;
 }

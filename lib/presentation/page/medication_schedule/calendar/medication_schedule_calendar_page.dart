@@ -202,6 +202,7 @@ class _MedicationScheduleCalendarPageState
 
 class _MedicationScheduleStatusWidget extends StatelessWidget {
   const _MedicationScheduleStatusWidget({
+    // ignore: unused_element
     super.key,
     required this.status,
   });

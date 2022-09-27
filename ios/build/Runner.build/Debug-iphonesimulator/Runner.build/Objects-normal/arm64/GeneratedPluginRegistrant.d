@@ -1,0 +1,21 @@
+dependencies: \
+  /Users/eden/miligram/yak/ios/Runner/GeneratedPluginRegistrant.m \
+  /Users/eden/miligram/yak/ios/Runner/GeneratedPluginRegistrant.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Modules/module.modulemap \
+  /Users/eden/miligram/yak/ios/Pods/Firebase/CoreOnly/Sources/module.modulemap \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterViewController.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterHeadlessDartRunner.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterEngineGroup.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterEngine.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterDartProject.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterCallbackCache.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterTexture.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterPlatformViews.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterCodecs.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterChannels.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterBinaryMessenger.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterPlugin.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterMacros.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/FlutterAppDelegate.h \
+  /Users/eden/miligram/yak/ios/build/Debug-iphonesimulator/Flutter.framework/Headers/Flutter.h

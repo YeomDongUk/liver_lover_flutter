@@ -55,7 +55,7 @@ class PrescriptionLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
         final prescriptionModel = await into(prescriptions).insertReturning(
           PrescriptionsCompanion.insert(
             userId: userId,
-            doctorName: createInput.doctorName,
+            doctorName: Value(createInput.doctorName),
             prescriptedAt: createInput.prescriptedAt,
             medicationStartAt: createInput.medicationStartAt,
             duration: createInput.duration,

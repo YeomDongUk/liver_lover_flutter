@@ -284,7 +284,25 @@ class _MedicationSchedulesCreatePageState
                       children: [
                         StatefulBuilder(
                           builder: (context, setState) => JoinContainer(
-                            label: '약제 검색',
+                            labelWidget: Row(
+                              children: [
+                                Text(
+                                  '약제 검색',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.gray,
+                                  ).rixMGoB,
+                                ),
+                                const Spacer(),
+                                Text(
+                                  '자주 사용하는 약제',
+                                  style: const TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 13,
+                                  ).rixMGoB,
+                                ),
+                              ],
+                            ),
                             color: Colors.white,
                             child: Row(
                               children: [

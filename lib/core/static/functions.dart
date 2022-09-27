@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 
 Future<void> openDateTimePicker({
   required BuildContext context,
@@ -50,12 +50,3 @@ String formatDuration(Duration d) {
   final minStr = '${d.inMinutes.abs().remainder(60)}'.padLeft(2, '0');
   return '$hourStr:$minStr';
 }
-
-void showInProgressToast() => Fluttertoast.showToast(
-      msg: '다음 업데이트에 추가 될 기능입니다.',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
-      backgroundColor: Colors.black.withOpacity(0.8),
-      textColor: Colors.white,
-      fontSize: 16,
-    );

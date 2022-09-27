@@ -9,11 +9,13 @@ import 'package:yak/domain/repositories/medication_schedule/medication_schedule_
 class UpdateMedicationScheduleGroupPushParam {
   const UpdateMedicationScheduleGroupPushParam({
     required this.reservedAt,
-    required this.push,
+    required this.afterPush,
+    required this.beforePush,
   });
 
   final DateTime reservedAt;
-  final bool push;
+  final bool afterPush;
+  final bool beforePush;
 }
 
 class UpdateMedicationScheduleGroupPush
@@ -29,7 +31,8 @@ class UpdateMedicationScheduleGroupPush
     UpdateMedicationScheduleGroupPushParam param,
   ) =>
       medicationScheduleRepository.updateMedicationSchedulesPush(
-        push: param.push,
+        beforePush: param.beforePush,
+        afterPush: param.afterPush,
         reservedAt: param.reservedAt,
       );
 }

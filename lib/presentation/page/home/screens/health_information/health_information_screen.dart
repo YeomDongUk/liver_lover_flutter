@@ -683,15 +683,16 @@ class _LiverDiseaseRiskCalculatorTabViewState
                             } else if (platelet <= 200) {
                               value += 3;
                             } else if (platelet <= 250) {
-                              value += 4;
+                              value += 2;
                             } else {
-                              value += 5;
+                              value += 0;
                             }
+
                             if (albumin < 3) {
                               value += 3;
                             } else if (albumin <= 3.5) {
                               value += 2;
-                            } else if (albumin <= 4.0) {
+                            } else if (albumin < 4.0) {
                               value += 1;
                             } else {
                               value += 0;

@@ -200,21 +200,21 @@ class HospitalVisitScheduleOverviewContainer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (hospitalVisitSchedule.hospitalName
-                              .contains('삼성서울병원') ||
-                          hospitalVisitSchedule.hospitalName
-                              .contains('노원을지대학교병원'))
-                        SvgPicture.asset(
-                          'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
-                        )
-                      else
-                        Text(
-                          hospitalVisitSchedule.hospitalName,
-                          style: const TextStyle(
-                            fontSize: 17,
-                            color: AppColors.primary,
-                          ).rixMGoEB,
-                        ),
+                      // if (hospitalVisitSchedule.hospitalName
+                      //         .contains('삼성서울병원') ||
+                      //     hospitalVisitSchedule.hospitalName
+                      //         .contains('노원을지대학교병원'))
+                      //   SvgPicture.asset(
+                      //     'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
+                      //   )
+                      // else
+                      Text(
+                        hospitalVisitSchedule.hospitalName,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: AppColors.primary,
+                        ).rixMGoEB,
+                      ),
                       const SizedBox(height: 15),
                       Text(
                         hospitalVisitSchedule.type ==

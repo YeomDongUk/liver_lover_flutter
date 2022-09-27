@@ -21,6 +21,11 @@ abstract class ExaminationResultLocalDataSource {
   Stream<ExaminationResultModel> getLastExaminationResult({
     required String userId,
   });
+
+  Future<List<ExaminationResultModel>> getExaminationResultHistories({
+    required String userId,
+    required bool isBloodTest,
+  });
 }
 
 class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
@@ -157,4 +162,30 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
           return examinationResultModel;
         },
       );
+
+  @override
+  Future<List<ExaminationResultModel>> getExaminationResultHistories({
+    required String userId,
+    required bool isBloodTest,
+  }) =>
+      (select(examinationResults)
+            ..where(
+              (t) =>
+                  (isBloodTest
+                      ? (t.platelet.isNotNull() |
+                          t.ast.isNotNull() |
+                          t.alt.isNotNull() |
+                          t.ggt.isNotNull() |
+                          t.bilirubin.isNotNull() |
+                          t.albumin.isNotNull() |
+                          t.afp.isNotNull() |
+                          t.hbvDna.isNotNull() |
+                          t.hcvRna.isNotNull())
+                      : (t.benignTumor.isNotNull() |
+                          t.dangerousNodule.isNotNull())) &
+                  t.userId.equals(userId),
+            )
+            ..orderBy([(t) => OrderingTerm.desc(t.date)])
+            ..limit(6))
+          .get();
 }

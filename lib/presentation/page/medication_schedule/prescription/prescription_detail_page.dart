@@ -15,6 +15,7 @@ import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/core/user/user_id.dart';
 import 'package:yak/data/datasources/local/prescription/prescription_local_data_source.dart';
+import 'package:yak/presentation/bloc/current_time/current_time_cubit.dart';
 import 'package:yak/presentation/bloc/prescription/prescriptions_cubit.dart';
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 import 'package:yak/presentation/widget/common/common_shadow_box.dart';
@@ -68,36 +69,45 @@ class _PrescriptionDetailPageState extends State<PrescriptionDetailPage> {
           leading: const IconBackButton(),
           title: const Text('처방전정보'),
           actions: [
-            BlocBuilder<PrescriptionsCubit, PrescriptionsState>(
-              bloc: widget.prescriptionsCubit,
-              builder: (context, state) {
-                final prescription = state.prescriptions.firstWhere(
-                  (element) => element.id == widget.id,
-                );
-                return prescription.deletedAt != null
-                    ? const SizedBox()
-                    : CompositedTransformTarget(
-                        link: _layerLink,
-                        child: IconButton(
-                          onPressed: _createOverlay,
-                          icon: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(
-                              5,
-                              (index) => index.isOdd
-                                  ? const SizedBox(width: 2)
-                                  : Container(
-                                      width: 4,
-                                      height: 4,
-                                      decoration: const BoxDecoration(
-                                        color: AppColors.blueGrayDark,
+            BlocBuilder<CurrentTimeCubit, DateTime>(
+              builder: (context, now) =>
+                  BlocBuilder<PrescriptionsCubit, PrescriptionsState>(
+                bloc: widget.prescriptionsCubit,
+                builder: (context, state) {
+                  final prescription = state.prescriptions.firstWhere(
+                    (element) => element.id == widget.id,
+                  );
+
+                  return prescription.deletedAt != null ||
+                          now.isAfter(
+                            prescription.medicationStartAt.add(
+                              Duration(days: prescription.duration),
+                            ),
+                          )
+                      ? const SizedBox()
+                      : CompositedTransformTarget(
+                          link: _layerLink,
+                          child: IconButton(
+                            onPressed: _createOverlay,
+                            icon: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                5,
+                                (index) => index.isOdd
+                                    ? const SizedBox(width: 2)
+                                    : Container(
+                                        width: 4,
+                                        height: 4,
+                                        decoration: const BoxDecoration(
+                                          color: AppColors.blueGrayDark,
+                                        ),
                                       ),
-                                    ),
+                              ),
                             ),
                           ),
-                        ),
-                      );
-              },
+                        );
+                },
+              ),
             ),
           ],
         ),

@@ -4,7 +4,7 @@ class PrescriptionCrateState extends Equatable {
   const PrescriptionCrateState({
     this.status = FormzStatus.pure,
     this.prescriptedAt = const DateInput.pure(),
-    this.doctorName = const Name.pure(),
+    this.doctorName = const DoctorName.pure(),
     this.medicationStartAt = const DateInput.pure(),
     this.duration = const PositiveIntInput.pure(),
     this.medicationInformationCreateFormInput =
@@ -13,7 +13,7 @@ class PrescriptionCrateState extends Equatable {
 
   final FormzStatus status;
   final DateInput prescriptedAt;
-  final Name doctorName;
+  final DoctorName doctorName;
   final DateInput medicationStartAt;
   final PositiveIntInput duration;
 
@@ -23,7 +23,7 @@ class PrescriptionCrateState extends Equatable {
   PrescriptionCrateState copyWith({
     FormzStatus? status,
     DateInput? prescriptedAt,
-    Name? doctorName,
+    DoctorName? doctorName,
     DateInput? medicationStartAt,
     PositiveIntInput? duration,
     MedicationInformationCreateFormInput? medicationInformationCreateFormInput,

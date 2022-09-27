@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -11,6 +12,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 // Project imports:
 import 'package:yak/core/class/d_day_parser.dart';
 import 'package:yak/core/database/table/hospital_visit_schedule/hospital_visit_schedule_table.dart';
+import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/text_style.dart';
 import 'package:yak/domain/entities/hospital_visit_schedule/hospital_visit_schedule.dart';
@@ -110,19 +112,19 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               child: Row(
                 children: [
-                  if (hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ||
-                      hospitalVisitSchedule.hospitalName.contains('노원을지대학교병원'))
-                    SvgPicture.asset(
-                      'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
-                    )
-                  else
-                    Text(
-                      hospitalVisitSchedule.hospitalName,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        color: AppColors.primary,
-                      ).rixMGoEB,
-                    ),
+                  // if (hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ||
+                  //     hospitalVisitSchedule.hospitalName.contains('노원을지대학교병원'))
+                  //   SvgPicture.asset(
+                  //     'assets/svg/logo_${hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ? 'smc' : 'emc'}.svg',
+                  //   )
+                  // else
+                  Text(
+                    hospitalVisitSchedule.hospitalName,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      color: AppColors.primary,
+                    ).rixMGoEB,
+                  ),
                   const Spacer(),
                   if (hospitalVisitSchedule.hospitalName.contains('삼성서울병원') ||
                       hospitalVisitSchedule.hospitalName.contains('노원을지대학교병원'))
@@ -236,7 +238,7 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                     SvgPicture.asset('assets/svg/alarm.svg'),
                     const SizedBox(width: 10),
                     Text(
-                      '1일 전 알림, 2시간 전 알림',
+                      '${hospitalVisitSchedule.beforePush ? '1일 전 알림' : ''}${hospitalVisitSchedule.afterPush && hospitalVisitSchedule.beforePush ? ', ' : ''}${hospitalVisitSchedule.afterPush ? '2시간 전 알림' : ''}',
                       style: const TextStyle(
                         fontSize: 13,
                         color: AppColors.gray,
@@ -244,7 +246,8 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
                     ),
                     const Spacer(),
                     CommonSwitch(
-                      value: hospitalVisitSchedule.push,
+                      value: hospitalVisitSchedule.afterPush ||
+                          hospitalVisitSchedule.beforePush,
                       onToggle: (value) => context
                           .read<HospitalVisitSchedulesCubit>()
                           .togglePush(hospitalVisitSchedule.id),
@@ -257,81 +260,104 @@ class HospitalVisitScheduleDetailContainer extends StatelessWidget {
             if (hospitalVisitSchedule.status !=
                 HospitalVisitScheduleStatus.done)
               BlocBuilder<CurrentTimeCubit, DateTime>(
-                builder: (context, now) {
-                  final inProgress = hospitalVisitSchedule.status ==
-                      HospitalVisitScheduleStatus.inProgress;
+                builder: (context, now) => Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Row(
+                    children: [
+                      ...[],
+                      if (hospitalVisitSchedule.status ==
+                          HospitalVisitScheduleStatus.inProgress) ...[
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              final now = DateTime.now();
+                              final canDoneSchedule = !now.isBefore(
+                                    hospitalVisitSchedule.reservedAt,
+                                  ) &&
+                                  hospitalVisitSchedule.visitedAt == null;
 
-                  return Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Row(
-                      children: [
-                        if (inProgress)
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                final now = DateTime.now();
-                                final canDoneSchedule = !now.isBefore(
-                                      hospitalVisitSchedule.reservedAt,
-                                    ) &&
-                                    hospitalVisitSchedule.visitedAt == null;
-
-                                if (canDoneSchedule) {
-                                  await showDialog<bool>(
-                                    context: context,
-                                    builder: (context) =>
-                                        HospitalVisitScheduleDoneCheckDialog(
-                                      hospitalVisitScheduleId:
-                                          hospitalVisitSchedule.id,
-                                    ),
-                                  );
-                                }
+                              if (canDoneSchedule) {
+                                await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) =>
+                                      HospitalVisitScheduleDoneCheckDialog(
+                                    hospitalVisitScheduleId:
+                                        hospitalVisitSchedule.id,
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromHeight(50),
+                              backgroundColor: AppColors.gray,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ).rixMGoEB,
+                            ),
+                            child: const Text('진료 완료'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                      ] else if (hospitalVisitSchedule.status ==
+                              HospitalVisitScheduleStatus.wating &&
+                          now.isBefore(hospitalVisitSchedule.reservedAt)) ...[
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => context.beamToNamed(
+                              Routes.hospitalVisitScheduleUpdate,
+                              data: {
+                                'hospitalVisitSchedule': hospitalVisitSchedule
                               },
-                              style: ElevatedButton.styleFrom(
-                                fixedSize: const Size.fromHeight(50),
-                                backgroundColor: AppColors.gray,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                textStyle: const TextStyle(
-                                  fontSize: 17,
-                                  color: Colors.white,
-                                ).rixMGoEB,
-                              ),
-                              child: const Text('진료 완료'),
                             ),
-                          ),
-                        if (hospitalVisitSchedule.visitedAt == null &&
-                            inProgress)
-                          const SizedBox(width: 8),
-                        if (hospitalVisitSchedule.visitedAt == null)
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => showDialog<void>(
-                                context: context,
-                                builder: (context) =>
-                                    HospitalVisitScheduleDeleteCheckDialog(
-                                  hospitalVisitScheduleId:
-                                      hospitalVisitSchedule.id,
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromHeight(50),
+                              backgroundColor: AppColors.gray,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                fixedSize: const Size.fromHeight(50),
-                                backgroundColor: AppColors.gray,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                textStyle: const TextStyle(
-                                  fontSize: 17,
-                                  color: Colors.white,
-                                ).rixMGoEB,
-                              ),
-                              child: const Text('일정 삭제'),
+                              textStyle: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ).rixMGoEB,
                             ),
+                            child: const Text('일정 수정'),
                           ),
+                        ),
+                        const SizedBox(width: 8),
                       ],
-                    ),
-                  );
-                },
+                      if (hospitalVisitSchedule.visitedAt == null) ...[
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => showDialog<void>(
+                              context: context,
+                              builder: (context) =>
+                                  HospitalVisitScheduleDeleteCheckDialog(
+                                hospitalVisitScheduleId:
+                                    hospitalVisitSchedule.id,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromHeight(50),
+                              backgroundColor: AppColors.gray,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ).rixMGoEB,
+                            ),
+                            child: const Text('일정 삭제'),
+                          ),
+                        ),
+                      ]
+                    ],
+                  ),
+                ),
               ),
           ],
         ),

@@ -15,4 +15,9 @@ abstract class ExaminationResultRepository {
   Future<Either<Failure, ExaminationResult>> upsertExaminationResult({
     required ExaminationResultsCompanion companion,
   });
+
+  Future<Either<Failure, List<ExaminationResult>>>
+      getExaminationResultHistories({
+    required bool isBloodTest,
+  });
 }

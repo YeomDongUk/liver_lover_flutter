@@ -22,7 +22,8 @@ abstract class MedicationScheduleRepository {
   Future<Either<Failure, bool>> deleteMedicationSchedule(String id);
 
   Future<Either<Failure, void>> updateMedicationSchedulesPush({
-    required bool push,
+    required bool beforePush,
+    required bool afterPush,
     required DateTime reservedAt,
   });
 

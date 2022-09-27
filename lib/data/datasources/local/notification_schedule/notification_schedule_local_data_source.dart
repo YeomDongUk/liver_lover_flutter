@@ -1,6 +1,5 @@
 // Package imports:
 import 'package:drift/drift.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
@@ -122,7 +121,6 @@ class NotificationScheduleLocalDataSourceImpl
 
     final reservedAt = hospitalVisitScheduleModel.reservedAt.add(duration);
 
-    Logger().d(reservedAt);
     final notificaitonSchedule = await (select(notificationSchedules)
           ..where(
             (tbl) =>

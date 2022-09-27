@@ -94,7 +94,7 @@ class HospitalVisitScheduleRepositoryImpl
               .updateHospitalVisitSchedule(
         id: id,
         userId: _userId,
-        companion: companion,
+        companion: companion.copyWith(userId: Value(_userId)),
       );
 
       return Right(

@@ -9,7 +9,6 @@ import 'package:yak/core/router/home_location.dart';
 import 'package:yak/domain/entities/prescription/prescription.dart';
 import 'package:yak/presentation/bloc/prescription/prescriptions_cubit.dart';
 import 'package:yak/presentation/page/medication_schedule/prescription/prescription_detail_page.dart';
-import 'package:yak/presentation/page/prescription/prescription_create_page.dart';
 import 'package:yak/presentation/page/prescription/prescription_update_page.dart';
 
 /// 복약 로케이션
@@ -52,7 +51,8 @@ class PrescriptionLocation extends BeamLocation<BeamState> {
           key: ValueKey('prescription_schedule_create'),
           name: 'prescription_schedule_create_page',
           title: '처방전 등록 페이지',
-          child: PrescriptionCreatePage(),
+          child: SizedBox(),
+          // PrescriptionCreatePage(),
         ),
     ];
   }

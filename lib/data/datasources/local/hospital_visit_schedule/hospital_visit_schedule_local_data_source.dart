@@ -241,34 +241,98 @@ class HospitalVisitScheduleLocalDataSourceImpl
     required HospitalVisitSchedulesCompanion companion,
   }) =>
       transaction(() async {
+        final schedule = await (select(hospitalVisitSchedules)
+              ..where(
+                (h) => h.id.equals(id) & h.userId.equals(userId),
+              ))
+            .getSingle();
+
         final hospitalVisitScheduleModels =
             await (update(hospitalVisitSchedules)
-                  ..where((h) => h.id.equals(id))
-                  ..where((h) => h.userId.equals(userId)))
+                  ..where(
+                    (h) => h.id.equals(id) & h.userId.equals(userId),
+                  ))
                 .writeReturning(
           companion.copyWith(updatedAt: Value(DateTime.now())),
         );
 
-        if (companion.visitedAt.value != null &&
-            hospitalVisitScheduleModels.isNotEmpty) {
-          await notificationScheduleLocalDataSource
-              .deleteHospitalVisitScheduleNotification(
-            pushType: PushType.onTime,
-            hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
-          );
+        final hospitalVisitScheduleModel = hospitalVisitScheduleModels.first;
 
-          await notificationScheduleLocalDataSource
-              .deleteHospitalVisitScheduleNotification(
-            pushType: PushType.before,
-            hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
-          );
+        /// 원본 삭제 필요
+        await notificationScheduleLocalDataSource
+            .deleteHospitalVisitScheduleNotification(
+          pushType: PushType.onTime,
+          hospitalVisitScheduleModel: hospitalVisitScheduleModel,
+        );
 
-          await notificationScheduleLocalDataSource
-              .deleteHospitalVisitScheduleNotification(
-            pushType: PushType.after,
-            hospitalVisitScheduleModel: hospitalVisitScheduleModels.first,
-          );
+        if (hospitalVisitScheduleModel.beforePush) {
+          final sameReservedAtSchedules = await (select(hospitalVisitSchedules)
+                ..where(
+                  (tbl) =>
+                      tbl.userId.equals(userId) &
+                      tbl.reservedAt.equals(schedule.reservedAt) &
+                      tbl.beforePush.equals(true),
+                ))
+              .get();
+
+          if (sameReservedAtSchedules.isEmpty) {
+            await notificationScheduleLocalDataSource
+                .deleteHospitalVisitScheduleNotification(
+              pushType: PushType.before,
+              hospitalVisitScheduleModel: schedule,
+            );
+          }
         }
+
+        if (schedule.afterPush) {
+          final sameReservedAtSchedules = await (select(hospitalVisitSchedules)
+                ..where(
+                  (tbl) =>
+                      tbl.userId.equals(userId) &
+                      tbl.reservedAt.equals(schedule.reservedAt) &
+                      tbl.afterPush.equals(true),
+                ))
+              .get();
+
+          if (sameReservedAtSchedules.isEmpty) {
+            await notificationScheduleLocalDataSource
+                .deleteHospitalVisitScheduleNotification(
+              pushType: PushType.after,
+              hospitalVisitScheduleModel: schedule,
+            );
+          }
+        }
+
+        await (update(userPoints)..where((tbl) => tbl.userId.equals(userId)))
+            .write(
+          UserPointsCompanion(
+            point: const Value(30),
+            hospitalVisitScheduleId: Value(hospitalVisitScheduleModel.id),
+            updatedAt: Value(DateTime.now()),
+          ),
+        );
+
+        await (delete(pointHistories)
+              ..where((tbl) => tbl.userId.equals(userId)))
+            .go();
+
+        /// 포인트 히스토리 생성
+        await into(pointHistories).insert(
+          PointHistoriesCompanion.insert(
+            userId: userId,
+            forginId: hospitalVisitScheduleModel.id,
+            event: PointHistoryEvent.hospitalVisitScheduleCreate,
+            point: 30,
+            createdAt: Value(DateTime.now()),
+            updatedAt: Value(DateTime.now()),
+          ),
+        );
+
+        /// 병원 방문 노티 스케쥴 생성
+        await notificationScheduleLocalDataSource
+            .createHospitalVisitScheduleNotification(
+          hospitalVisitScheduleModel: hospitalVisitScheduleModel,
+        );
 
         return (select(hospitalVisitSchedules)..where((h) => h.id.equals(id)))
             .getSingle();
@@ -281,22 +345,39 @@ class HospitalVisitScheduleLocalDataSourceImpl
     required HospitalVisitSchedulesCompanion companion,
   }) =>
       transaction(() async {
-        final push = companion.push.value;
-        await (update(hospitalVisitSchedules)
-              ..where((h) => h.id.equals(id) & h.userId.equals(userId)))
-            .write(
-          companion.copyWith(
-            afterPush: Value(push),
-            beforePush: Value(push),
-            updatedAt: Value(DateTime.now()),
-          ),
-        );
+        final hospitalVisitScheduleModels =
+            await (update(hospitalVisitSchedules)
+                  ..where((h) => h.id.equals(id) & h.userId.equals(userId)))
+                .writeReturning(companion);
 
-        final hospitalVisitSchedule = await (select(hospitalVisitSchedules)
-              ..where((h) => h.id.equals(id)))
-            .getSingle();
+        if (hospitalVisitScheduleModels.isEmpty) {
+          throw Exception();
+        }
 
-        return hospitalVisitSchedule;
+        final hospitalVisitScheduleModel = hospitalVisitScheduleModels.first;
+
+        if ((!companion.beforePush.value && !companion.afterPush.value) ||
+            hospitalVisitScheduleModel.visitedAt != null) {
+          await notificationScheduleLocalDataSource
+              .deleteHospitalVisitScheduleNotification(
+            pushType: PushType.before,
+            hospitalVisitScheduleModel: hospitalVisitScheduleModel,
+          );
+
+          await notificationScheduleLocalDataSource
+              .deleteHospitalVisitScheduleNotification(
+            pushType: PushType.after,
+            hospitalVisitScheduleModel: hospitalVisitScheduleModel,
+          );
+        } else {
+          /// 병원 방문 노티 스케쥴 생성
+          await notificationScheduleLocalDataSource
+              .createHospitalVisitScheduleNotification(
+            hospitalVisitScheduleModel: hospitalVisitScheduleModel,
+          );
+        }
+
+        return hospitalVisitScheduleModel;
       });
 
   @override

@@ -1183,8 +1183,8 @@ class HospitalVisitSchedulesCompanion
     this.updatedAt = const Value.absent(),
     required HospitalVisitScheduleType type,
     required String hospitalName,
-    required String medicalSubject,
-    required String doctorName,
+    this.medicalSubject = const Value.absent(),
+    this.doctorName = const Value.absent(),
     required DateTime reservedAt,
     this.visitedAt = const Value.absent(),
     this.push = const Value.absent(),
@@ -1193,8 +1193,6 @@ class HospitalVisitSchedulesCompanion
   })  : userId = Value(userId),
         type = Value(type),
         hospitalName = Value(hospitalName),
-        medicalSubject = Value(medicalSubject),
-        doctorName = Value(doctorName),
         reservedAt = Value(reservedAt);
   static Insertable<HospitalVisitScheduleModel> custom({
     Expression<String>? userId,
@@ -1378,12 +1376,16 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
   @override
   late final GeneratedColumn<String> medicalSubject = GeneratedColumn<String>(
       'medical_subject', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   final VerificationMeta _doctorNameMeta = const VerificationMeta('doctorName');
   @override
   late final GeneratedColumn<String> doctorName = GeneratedColumn<String>(
       'doctor_name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   final VerificationMeta _reservedAtMeta = const VerificationMeta('reservedAt');
   @override
   late final GeneratedColumn<DateTime> reservedAt = GeneratedColumn<DateTime>(
@@ -1479,16 +1481,12 @@ class $HospitalVisitSchedulesTable extends HospitalVisitSchedules
           _medicalSubjectMeta,
           medicalSubject.isAcceptableOrUnknown(
               data['medical_subject']!, _medicalSubjectMeta));
-    } else if (isInserting) {
-      context.missing(_medicalSubjectMeta);
     }
     if (data.containsKey('doctor_name')) {
       context.handle(
           _doctorNameMeta,
           doctorName.isAcceptableOrUnknown(
               data['doctor_name']!, _doctorNameMeta));
-    } else if (isInserting) {
-      context.missing(_doctorNameMeta);
     }
     if (data.containsKey('reserved_at')) {
       context.handle(
@@ -7167,13 +7165,12 @@ class PrescriptionsCompanion extends UpdateCompanion<PrescriptionModel> {
     this.id = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-    required String doctorName,
+    this.doctorName = const Value.absent(),
     required DateTime prescriptedAt,
     required DateTime medicationStartAt,
     required int duration,
     this.deletedAt = const Value.absent(),
   })  : userId = Value(userId),
-        doctorName = Value(doctorName),
         prescriptedAt = Value(prescriptedAt),
         medicationStartAt = Value(medicationStartAt),
         duration = Value(duration);
@@ -7312,7 +7309,9 @@ class $PrescriptionsTable extends Prescriptions
   @override
   late final GeneratedColumn<String> doctorName = GeneratedColumn<String>(
       'doctor_name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   final VerificationMeta _prescriptedAtMeta =
       const VerificationMeta('prescriptedAt');
   @override
@@ -7380,8 +7379,6 @@ class $PrescriptionsTable extends Prescriptions
           _doctorNameMeta,
           doctorName.isAcceptableOrUnknown(
               data['doctor_name']!, _doctorNameMeta));
-    } else if (isInserting) {
-      context.missing(_doctorNameMeta);
     }
     if (data.containsKey('prescripted_at')) {
       context.handle(

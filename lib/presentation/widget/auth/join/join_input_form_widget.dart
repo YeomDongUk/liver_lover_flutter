@@ -73,6 +73,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                 ),
                 const SizedBox(height: 50),
                 JoinContainer(
+                  fontSize: 15,
                   color: Colors.white,
                   label: '성명',
                   child: CommonInputFormField(
@@ -87,6 +88,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                 ),
                 const SizedBox(height: 20),
                 JoinContainer(
+                  fontSize: 15,
                   color: Colors.white,
                   label: '휴대폰 번호',
                   child: CommonInputFormField(
@@ -119,6 +121,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                   children: [
                     Expanded(
                       child: JoinContainer(
+                        fontSize: 15,
                         color: Colors.white,
                         label: '생년',
                         child: CommonInputFormField(
@@ -143,6 +146,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                     const SizedBox(width: 35),
                     Expanded(
                       child: JoinContainer(
+                        fontSize: 15,
                         color: Colors.white,
                         label: '성별',
                         child: Row(
@@ -204,6 +208,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                   children: [
                     Expanded(
                       child: JoinContainer(
+                        fontSize: 15,
                         color: Colors.white,
                         label: '신장(CM)',
                         child: CommonInputFormField(
@@ -234,6 +239,7 @@ class _JoinInputFormWidgetState extends State<JoinInputFormWidget> {
                     const SizedBox(width: 35),
                     Expanded(
                       child: JoinContainer(
+                        fontSize: 15,
                         color: Colors.white,
                         label: '체중(KG)',
                         child: CommonInputFormField(

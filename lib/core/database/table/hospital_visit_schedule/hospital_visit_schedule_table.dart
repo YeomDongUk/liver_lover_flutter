@@ -22,10 +22,10 @@ class HospitalVisitSchedules extends UserReferenceTable {
   TextColumn get hospitalName => text()();
 
   /// 진료 과목
-  TextColumn get medicalSubject => text()();
+  TextColumn get medicalSubject => text().withDefault(const Constant(''))();
 
   /// 의사 이름
-  TextColumn get doctorName => text()();
+  TextColumn get doctorName => text().withDefault(const Constant(''))();
 
   /// 방문 예약일
   DateTimeColumn get reservedAt =>

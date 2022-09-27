@@ -90,7 +90,7 @@ class HospitalVisitScheduleDetailDialog extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            '${hospitalVisitSchedule.beforePush ? '1일 전 알림, ' : ''}${hospitalVisitSchedule.afterPush ? '2시간 전 알림' : ''}',
+                            '${hospitalVisitSchedule.beforePush ? '1일 전 알림' : ''}${hospitalVisitSchedule.beforePush && hospitalVisitSchedule.afterPush ? ', ' : ''}${hospitalVisitSchedule.afterPush ? '2시간 전 알림' : ''}',
                             style: const TextStyle(
                               fontSize: 13,
                               color: AppColors.gray,

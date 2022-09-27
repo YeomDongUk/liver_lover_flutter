@@ -8,7 +8,7 @@ import 'package:yak/core/database/table/common_table.dart';
 @DataClassName('PrescriptionModel')
 class Prescriptions extends UserReferenceTable {
   /// 의사 이름
-  TextColumn get doctorName => text()();
+  TextColumn get doctorName => text().withDefault(const Constant(''))();
 
   /// 처방일
   DateTimeColumn get prescriptedAt => dateTime()();

@@ -202,77 +202,13 @@ class _HospitalVisitScheduleCreatePageState
               BlocBuilder<CreateHospitalVisitSchedulesCubit,
                   CreateHospitalVisitSchedulesState>(
                 bloc: createHospitalVisitSchedulesCubit,
-                builder: (context, state) => state.hospitalVisitType.value ==
-                        HospitalVisitScheduleType.outpatient
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            '병원',
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.gray,
-                            ).rixMGoB,
-                          ),
-                          const SizedBox(height: 12),
-                          SizedBox(
-                            height: 48,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
-                                value: state.hospitalName.value.isEmpty
-                                    ? null
-                                    : state.hospitalName.value,
-                                onChanged: (value) => value == null
-                                    ? null
-                                    : createHospitalVisitSchedulesCubit
-                                        .updateHospitalName(value),
-                                icon: SvgPicture.asset('assets/svg/down.svg'),
-                                buttonPadding: const EdgeInsets.only(
-                                  left: 10,
-                                  right: 12,
-                                ),
-                                buttonElevation: 0,
-                                dropdownElevation: 0,
-                                buttonDecoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.lightGray,
-                                  ),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
-                                dropdownDecoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.lightGray,
-                                  ),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value: '노원을지대학교병원',
-                                    child: SvgPicture.asset(
-                                      'assets/svg/logo_emc.svg',
-                                    ),
-                                  ),
-                                  DropdownMenuItem<String>(
-                                    value: '삼성서울병원',
-                                    child: SvgPicture.asset(
-                                      'assets/svg/logo_smc.svg',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : HospitalVisitScheduleTextField(
-                        label: '병원',
-                        onChanged: createHospitalVisitSchedulesCubit
-                            .updateHospitalName,
-                        focusNode: focusNodes[0],
-                        onFieldSubmitted: (str) => openDateTimePicker(),
-                      ),
+                builder: (context, state) => HospitalVisitScheduleTextField(
+                  label: '병원',
+                  onChanged:
+                      createHospitalVisitSchedulesCubit.updateHospitalName,
+                  focusNode: focusNodes[0],
+                  onFieldSubmitted: (str) => openDateTimePicker(),
+                ),
               ),
               const SizedBox(height: 16),
               BlocBuilder<CreateHospitalVisitSchedulesCubit,

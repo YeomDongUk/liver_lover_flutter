@@ -26,7 +26,7 @@ class WriteHealthQuestionCubit extends Cubit<WriteHealthQuestionState> {
 
   void updateQuestion(String question) => emit(
         state.copyWith(
-          status: question.trim().length > 5
+          status: question.trim().length >= 2
               ? FormzStatus.valid
               : FormzStatus.invalid,
           question: question,

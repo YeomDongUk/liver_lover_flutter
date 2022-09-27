@@ -40,6 +40,8 @@ class Routes {
 
   static const medicationSchedulesCalendar =
       Path.medicationSchedules + Path.calendar;
+
+  static const examinationResultHistories = Path.examinationResultHistories;
 }
 
 class Path {
@@ -63,6 +65,7 @@ class Path {
   static const dringkingHistories = '/drinking-histories';
   static const smokingHistories = '/smoking-histories';
   static const excerciseHistories = '/excercise-histories';
+  static const examinationResultHistories = '/examination-result-histories';
   static const graphs = '/graphs';
   static const calendar = '/calendar';
   static const medicationSchedules = '/medication-schedules';

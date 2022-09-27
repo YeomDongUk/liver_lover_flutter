@@ -174,6 +174,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                   padding: const EdgeInsets.all(24),
                   children: [
                     JoinContainer(
+                      fontSize: 15,
                       label: '성명',
                       color: Colors.white,
                       child: CommonInputFormField(
@@ -188,6 +189,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                     ),
                     const SizedBox(height: 20),
                     JoinContainer(
+                      fontSize: 15,
                       label: '휴대폰 번호',
                       color: Colors.white,
                       child: CommonInputFormField(
@@ -220,6 +222,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                       children: [
                         Expanded(
                           child: JoinContainer(
+                            fontSize: 15,
                             label: '생년',
                             color: Colors.white,
                             child: CommonInputFormField(
@@ -244,6 +247,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                         const SizedBox(width: 35),
                         Expanded(
                           child: JoinContainer(
+                            fontSize: 15,
                             label: '성별',
                             color: Colors.white,
                             child: Row(
@@ -307,6 +311,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                       children: [
                         Expanded(
                           child: JoinContainer(
+                            fontSize: 15,
                             label: '신장(CM)',
                             color: Colors.white,
                             child: CommonInputFormField(
@@ -337,6 +342,7 @@ class _UpdateUserTabViewState extends State<UpdateUserTabView>
                         const SizedBox(width: 35),
                         Expanded(
                           child: JoinContainer(
+                            fontSize: 15,
                             label: '체중(KG)',
                             color: Colors.white,
                             child: CommonInputFormField(

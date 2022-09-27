@@ -12,7 +12,9 @@ class JoinContainer extends StatelessWidget {
     this.label,
     this.labelWidget,
     this.color,
+    this.fontSize = 13,
   });
+  final double fontSize;
   final String? label;
   final Widget? labelWidget;
   final Color? color;
@@ -26,8 +28,8 @@ class JoinContainer extends StatelessWidget {
           if (label != null)
             Text(
               label!,
-              style: const TextStyle(
-                fontSize: 15,
+              style: TextStyle(
+                fontSize: fontSize,
                 color: AppColors.gray,
               ).rixMGoB,
             )

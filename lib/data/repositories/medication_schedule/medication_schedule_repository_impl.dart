@@ -46,10 +46,12 @@ class MedicationScheduleRepositoryImpl implements MedicationScheduleRepository {
   @override
   Future<Either<Failure, void>> updateMedicationSchedulesPush({
     required DateTime reservedAt,
-    required bool push,
+    required bool? beforePush,
+    required bool? afterPush,
   }) async {
     await medicationScheduleLocalDataSource.updateMedicationSchedulesPush(
-      push: push,
+      beforePush: beforePush,
+      afterPush: afterPush,
       userId: userId.value,
       reservedAt: reservedAt,
     );

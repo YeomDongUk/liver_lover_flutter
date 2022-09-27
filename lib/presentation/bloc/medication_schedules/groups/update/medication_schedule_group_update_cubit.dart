@@ -29,6 +29,7 @@ class MedicationScheduleGroupUpdateCubit
   final GetMedicationScheduleGroupStream getMedicationScheduleGroupStream;
 
   StreamSubscription<MedicationScheduleGroup>? _subscription;
+
   Future<void> loadScheduleGroup() async {
     emit(
       state.copyWith(
@@ -113,7 +114,8 @@ class MedicationScheduleGroupUpdateCubit
     final either = await updateMedicationScheduleGroupPush.call(
       UpdateMedicationScheduleGroupPushParam(
         reservedAt: reservedAt,
-        push: push,
+        afterPush: push,
+        beforePush: push,
       ),
     );
 

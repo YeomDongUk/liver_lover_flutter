@@ -3,7 +3,6 @@
 // Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'table/drinking_history/drinking_history_table.dart';
@@ -63,77 +62,42 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.connect(super.c) : super.connect();
 
   @override
-  int get schemaVersion => 2;
-
-  // this is the new constructor
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async {
-          Logger().d('onCreate');
-          await m.createAll();
-
-          // await transaction(() async {
-          //   final userModels = await select(users).get();
-
-          //   if (userModels.isNotEmpty) return null;
-
-          //   final userModel = await into(users).insertReturning(
-          //     UsersCompanion.insert(
-          //       id: const Value('test'),
-          //       name: '염동욱',
-          //       phone: '01023937318',
-          //       birthYear: 1995,
-          //       sex: 0,
-          //       height: 172,
-          //       weight: 64,
-          //       pinCode: '000000',
-          //     ),
-          //   );
-          //   await into(userPoints).insert(
-          //     UserPointsCompanion.insert(userId: userModel.id),
-          //   );
-          // });
-        },
         onUpgrade: (m, from, to) async {
-          try {
-            Logger().d('onUpgrade');
+          //   await m.deleteTable(userPoints.actualTableName);
 
-            await m.deleteTable(userPoints.actualTableName);
+          //   await m.deleteTable(sF12SurveyAnswers.actualTableName);
+          //   await m.deleteTable(sF12SurveyHistories.actualTableName);
+          //   await m.deleteTable(medicationAdherenceSurveyAnswers.actualTableName);
+          //   await m.deleteTable(
+          //     medicationAdherenceSurveyHistories.actualTableName,
+          //   );
 
-            await m.deleteTable(sF12SurveyAnswers.actualTableName);
-            await m.deleteTable(sF12SurveyHistories.actualTableName);
-            await m
-                .deleteTable(medicationAdherenceSurveyAnswers.actualTableName);
-            await m.deleteTable(
-              medicationAdherenceSurveyHistories.actualTableName,
-            );
+          //   await m.deleteTable(medicationSchedules.actualTableName);
+          //   await m.deleteTable(medicationInformations.actualTableName);
+          //   await m.deleteTable(prescriptions.actualTableName);
+          //   await m.deleteTable(pills.actualTableName);
 
-            await m.deleteTable(medicationSchedules.actualTableName);
-            await m.deleteTable(medicationInformations.actualTableName);
-            await m.deleteTable(prescriptions.actualTableName);
-            await m.deleteTable(pills.actualTableName);
+          //   await m.deleteTable(hospitalVisitSchedules.actualTableName);
+          //   await m.deleteTable(liverLevelHistories.actualTableName);
+          //   await m.deleteTable(metabolicDiseases.actualTableName);
+          //   await m.deleteTable(examinationResults.actualTableName);
+          //   await m.deleteTable(healthQuestions.actualTableName);
+          //   await m.deleteTable(drinkingHistories.actualTableName);
+          //   await m.deleteTable(smokingHistories.actualTableName);
+          //   await m.deleteTable(excerciseHistories.actualTableName);
+          //   await m.deleteTable(hospitals.actualTableName);
 
-            await m.deleteTable(hospitalVisitSchedules.actualTableName);
-            await m.deleteTable(liverLevelHistories.actualTableName);
-            await m.deleteTable(metabolicDiseases.actualTableName);
-            await m.deleteTable(examinationResults.actualTableName);
-            await m.deleteTable(healthQuestions.actualTableName);
-            await m.deleteTable(drinkingHistories.actualTableName);
-            await m.deleteTable(smokingHistories.actualTableName);
-            await m.deleteTable(excerciseHistories.actualTableName);
-            await m.deleteTable(hospitals.actualTableName);
+          //   await m.deleteTable(notificationSchedules.actualTableName);
 
-            await m.deleteTable(notificationSchedules.actualTableName);
+          //   await m.deleteTable(lastLoginUsers.actualTableName);
+          //   await m.deleteTable(pointHistories.actualTableName);
+          //   await m.deleteTable(users.actualTableName);
 
-            await m.deleteTable(lastLoginUsers.actualTableName);
-            await m.deleteTable(pointHistories.actualTableName);
-            await m.deleteTable(users.actualTableName);
-
-            await m.createAll();
-          } catch (e) {
-            Logger().e(e);
-          }
+          //   await m.createAll();
         },
       );
 }

@@ -68,4 +68,26 @@ class ExaminationResultRepositoryImpl implements ExaminationResultRepository {
       return const Left(QueryFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<ExaminationResult>>>
+      getExaminationResultHistories({
+    required bool isBloodTest,
+  }) async {
+    try {
+      final histories =
+          await examiationResultLocalDataSource.getExaminationResultHistories(
+        userId: userId.value,
+        isBloodTest: isBloodTest,
+      );
+
+      return Right(
+        histories.reversed
+            .map((history) => ExaminationResult.fromJson(history.toJson()))
+            .toList(),
+      );
+    } catch (e) {
+      return const Left(QueryFailure());
+    }
+  }
 }

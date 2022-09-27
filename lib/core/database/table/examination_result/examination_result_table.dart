@@ -39,7 +39,7 @@ class ExaminationResults extends UserReferenceTable {
   /// 양성종양(혈관종, 낭종 등)
   TextColumn get benignTumor => text().nullable()();
 
-  /// 양성종양(혈관종, 낭종 등)
+  /// 위험결절
   TextColumn get dangerousNodule => text().nullable()();
 
   @override

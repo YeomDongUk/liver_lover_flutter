@@ -89,10 +89,14 @@ class HospitalVisitSchedulesCubit extends Cubit<HospitalVisitSchedulesState>
 
     if (index == -1) return;
 
+    final push = !(schedules[index].afterPush || schedules[index].beforePush);
+
     await toggleHospitalVisitSchedulePush.call(
       HospitalVisitSchedulesCompanion(
         id: Value(id),
-        push: Value(!state.hospitalVisitSchedules[index].push),
+        beforePush: Value(push),
+        afterPush: Value(push),
+        updatedAt: Value(DateTime.now()),
       ),
     );
   }

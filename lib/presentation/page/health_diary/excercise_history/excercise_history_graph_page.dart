@@ -151,6 +151,7 @@ class _ExcerciseHistoryGraphPageState extends State<ExcerciseHistoryGraphPage>
                 controller: tabController,
                 children: List.generate(
                   2,
+                  // ignore: no_leading_underscores_for_local_identifiers
                   (_tabIndex) => LayoutBuilder(
                     builder: (context, constraints) => SingleChildScrollView(
                       physics: const BouncingScrollPhysics(
@@ -401,6 +402,7 @@ class _ExcerciseHistoryGraphPageState extends State<ExcerciseHistoryGraphPage>
     );
   }
 
+  // ignore: no_leading_underscores_for_local_identifiers
   LineChartData mainData(int _tabIndex) {
     final spots = histories
         .mapIndexed(

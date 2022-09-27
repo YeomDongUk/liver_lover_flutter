@@ -15,7 +15,7 @@ void main() {
   });
 
   test('Scraping Web', () async {
-    final pillModel = await pillRemoteDataSourceImpl.findPill(
+    await pillRemoteDataSourceImpl.findPill(
       const PillSearchResult(
         id: '200003092',
         name: '헤어그로정1밀리그램(피나스테리드)',
