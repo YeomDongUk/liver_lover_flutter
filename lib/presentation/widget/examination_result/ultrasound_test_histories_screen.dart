@@ -30,6 +30,7 @@ class _UltrasoundTestHistoriesScreenState
       examinationResultRepository:
           KiwiContainer().resolve<ExaminationResultRepository>(),
     )..loadHistories();
+
     super.initState();
   }
 
@@ -47,7 +48,7 @@ class _UltrasoundTestHistoriesScreenState
             .rixMGoM,
       ),
       textDirection: TextDirection.ltr,
-    )..layout(minWidth: 113, maxWidth: 113);
+    )..layout(minWidth: 114, maxWidth: 114);
     return textPainter.size.height;
   }
 
@@ -64,24 +65,43 @@ class _UltrasoundTestHistoriesScreenState
             : state.examinationResults
                 .map(
                   (result) => getTextHeight(
-                    result.benignTumor ?? '',
+                    (result.benignTumor ?? '').trim(),
                   ),
                 )
                 .reduce(max);
+
+        final beginTunorHeaderHeight = getTextHeight(
+          '양성종양\n(혈관종, 낭종 등)',
+        );
+
+        final benignTumorRowHeight = beginTunorHeaderHeight > benignTumorHeight
+            ? beginTunorHeaderHeight
+            : benignTumorHeight;
 
         final dangerousNoduleHeight = state.examinationResults.isEmpty
             ? 0.0
             : state.examinationResults
                 .map(
                   (result) => getTextHeight(
-                    result.dangerousNodule ?? '',
+                    (result.dangerousNodule ?? '').trim(),
                   ),
                 )
                 .reduce(max);
+
+        final dangerousNoduleHeaderHeight = getTextHeight(
+          '위험결절',
+        );
+
+        final dangerousNoduleRowHeight =
+            dangerousNoduleHeaderHeight > dangerousNoduleHeight
+                ? dangerousNoduleHeaderHeight
+                : dangerousNoduleHeight;
+
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Container(
-            height: benignTumorHeight + 32 + dangerousNoduleHeight + 32 + 71,
+            height:
+                benignTumorRowHeight + 32 + dangerousNoduleRowHeight + 32 + 71,
             margin: const EdgeInsets.only(
               top: 16,
               left: 16,
@@ -118,8 +138,8 @@ class _UltrasoundTestHistoriesScreenState
                       Builder(
                         builder: (context) => Container(
                           margin: const EdgeInsets.all(16),
-                          height: benignTumorHeight,
-                          alignment: Alignment.center,
+                          height: benignTumorRowHeight,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             '양성종양\n(혈관종, 낭종 등)',
                             style: const TextStyle(
@@ -133,8 +153,8 @@ class _UltrasoundTestHistoriesScreenState
                       Builder(
                         builder: (context) => Container(
                           margin: const EdgeInsets.all(16),
-                          height: dangerousNoduleHeight,
-                          alignment: Alignment.center,
+                          height: dangerousNoduleRowHeight,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             '위험결절',
                             style: const TextStyle(
@@ -158,7 +178,7 @@ class _UltrasoundTestHistoriesScreenState
                       return Row(
                         children: [
                           SizedBox(
-                            width: 83.5,
+                            width: 146,
                             child: Column(
                               children: [
                                 SizedBox(
@@ -191,10 +211,10 @@ class _UltrasoundTestHistoriesScreenState
                                 Builder(
                                   builder: (context) => Container(
                                     margin: const EdgeInsets.all(16),
-                                    height: benignTumorHeight,
+                                    height: benignTumorRowHeight,
                                     alignment: Alignment.center,
                                     child: Text(
-                                      '${resultHistory.benignTumor}',
+                                      (resultHistory.benignTumor ?? '').trim(),
                                       style: const TextStyle(
                                         color: AppColors.blueGrayDark,
                                         fontSize: 13,
@@ -206,10 +226,11 @@ class _UltrasoundTestHistoriesScreenState
                                 Builder(
                                   builder: (context) => Container(
                                     margin: const EdgeInsets.all(16),
-                                    height: dangerousNoduleHeight,
+                                    height: dangerousNoduleRowHeight,
                                     alignment: Alignment.center,
                                     child: Text(
-                                      resultHistory.dangerousNodule ?? '',
+                                      (resultHistory.dangerousNodule ?? '')
+                                          .trim(),
                                       style: const TextStyle(
                                         color: AppColors.blueGrayDark,
                                         fontSize: 13,

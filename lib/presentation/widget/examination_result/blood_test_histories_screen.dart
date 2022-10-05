@@ -184,25 +184,28 @@ class _BloodTestHistoriesScreenState extends State<BloodTestHistoriesScreen>
                                   );
                                 }
 
-                                return Text(
-                                  '${[
-                                        resultHistory.platelet,
-                                        resultHistory.ast,
-                                        resultHistory.alt,
-                                        resultHistory.ggt,
-                                        resultHistory.bilirubin,
-                                        resultHistory.albumin,
-                                        resultHistory.hbvDna,
-                                        resultHistory.hcvRna,
-                                        resultHistory.afp,
-                                      ][index ~/ 2] ?? ''}',
-                                  style: GoogleFonts.lato(
-                                    color: AppColors.blueGrayDark,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 25,
+                                return Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: Text(
+                                    '${[
+                                          resultHistory.platelet,
+                                          resultHistory.ast,
+                                          resultHistory.alt,
+                                          resultHistory.ggt,
+                                          resultHistory.bilirubin,
+                                          resultHistory.albumin,
+                                          resultHistory.hbvDna,
+                                          resultHistory.hcvRna,
+                                          resultHistory.afp,
+                                        ][index ~/ 2] ?? ''}',
+                                    style: GoogleFonts.lato(
+                                      color: AppColors.blueGrayDark,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 25,
+                                    ),
                                   ),
-                                  textAlign: TextAlign.right,
                                 );
                               }),
                             ],

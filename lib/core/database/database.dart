@@ -3,6 +3,8 @@
 // Package imports:
 import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:yak/domain/repositories/pill/pill_repository.dart';
 
 // Project imports:
 import 'table/drinking_history/drinking_history_table.dart';
@@ -66,7 +68,12 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) async {
+          await m.createAll();
+          await _initCommonPills();
+        },
         onUpgrade: (m, from, to) async {
+          await _initCommonPills();
           //   await m.deleteTable(userPoints.actualTableName);
 
           //   await m.deleteTable(sF12SurveyAnswers.actualTableName);
@@ -100,4 +107,31 @@ class AppDatabase extends _$AppDatabase {
           //   await m.createAll();
         },
       );
+
+  Future<void> _initCommonPills() async {
+    await Future.wait(
+      [
+        PillsCompanion.insert(
+          id: const Value('201004172'),
+          name: '비리어드',
+          entpName: '길리어드사이언스코리아(유)',
+        ),
+        PillsCompanion.insert(
+          id: const Value('200605263'),
+          name: '바라크루드',
+          entpName: '(유)한국비엠에스제약',
+        ),
+        PillsCompanion.insert(
+          id: const Value('201702418'),
+          name: '베믈리디',
+          entpName: '길리어드사이언스코리아(유)',
+        ),
+        PillsCompanion.insert(
+          id: const Value('201800200'),
+          name: '마비렛',
+          entpName: '한국애브비(주)',
+        ),
+      ].map(KiwiContainer().resolve<PillRepository>().createPill),
+    );
+  }
 }

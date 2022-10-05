@@ -64,13 +64,13 @@ Future<void> main() async {
     ),
   );
 
-  runApp(YackApp());
+  runApp(const YackApp());
 }
 
 class YackApp extends StatelessWidget {
-  YackApp({super.key});
+  const YackApp({super.key});
 
-  final routerDelegate = BeamerDelegate(
+  static final routerDelegate = BeamerDelegate(
     guards: [
       BeamGuard(
         guardNonMatching: true,

@@ -33,6 +33,7 @@ import 'package:yak/presentation/widget/common/opacity_check_button.dart';
 import 'package:yak/presentation/widget/common/page_index_indicator.dart';
 import 'package:yak/presentation/widget/common/pill_detail_dialog.dart';
 import 'package:yak/presentation/widget/medication_schedule/medication_schedule_time_button.dart';
+import 'package:yak/presentation/widget/pill/common_pill_search_dialog.dart';
 import 'package:yak/presentation/widget/pill/pill_search_dialog.dart';
 
 class MedicationSchedulesCreatePage extends StatefulWidget {
@@ -71,6 +72,17 @@ class _MedicationSchedulesCreatePageState
     final pill = await showDialog<Pill>(
       context: context,
       builder: (_) => PillSearchDialog(pillName: pillName),
+    );
+
+    if (pill == null) return;
+
+    prescriptionCrateCubit.addMedicationInformationCreateFormInput(pill);
+  }
+
+  Future<void> searchCommonPill() async {
+    final pill = await showDialog<Pill>(
+      context: context,
+      builder: (_) => const CommonPillSearchDialog(),
     );
 
     if (pill == null) return;
@@ -294,13 +306,24 @@ class _MedicationSchedulesCreatePageState
                                   ).rixMGoB,
                                 ),
                                 const Spacer(),
-                                Text(
-                                  '자주 사용하는 약제',
-                                  style: const TextStyle(
-                                    color: AppColors.primary,
-                                    fontSize: 13,
-                                  ).rixMGoB,
-                                ),
+                                GestureDetector(
+                                  onTap: searchCommonPill,
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/svg/icon_preset.svg',
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        '자주 사용하는 약제',
+                                        style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 13,
+                                        ).rixMGoB,
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                             color: Colors.white,

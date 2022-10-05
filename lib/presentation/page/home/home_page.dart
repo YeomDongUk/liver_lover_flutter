@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 // Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -10,6 +11,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
@@ -70,55 +72,67 @@ class _HomePageState extends State<HomePage> {
 
     _localNotification.requestPermission();
 
-    _hospitalVisitSchedulesCubit.loadSchedules().then((value) {
-      _notificationSubscription =
-          _localNotification.receiveStream().listen((event) {
-        final reservedAt = DateTime.fromMillisecondsSinceEpoch(
-          int.parse(event.payload!['reservedAt']!),
-        );
+    _hospitalVisitSchedulesCubit.loadSchedules();
 
-        final pushType =
-            PushType.values[int.parse(event.payload!['pushType']!)];
+    _localNotification.setListeners(
+      onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+      // onDismissActionReceivedMethod: (receivedAction) async =>
+      //     Logger().i(receivedAction),
+      // onNotificationCreatedMethod: (receivedAction) async =>
+      //     Logger().i(receivedAction),
+      // onNotificationDisplayedMethod: (receivedAction) async =>
+      //     Logger().i(receivedAction),
+    );
 
-        final userId = event.payload!['userId']!;
+    // .then((value) {
+    // _notificationSubscription =
+    //     _localNotification.receiveStream().listen((event) {
+    //   final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+    //     int.parse(event.payload!['reservedAt']!),
+    //   );
 
-        if (event.channelKey == 'hospital_visit') {
-          if (KiwiContainer().resolve<UserId>().value != userId) return;
+    //   final pushType =
+    //       PushType.values[int.parse(event.payload!['pushType']!)];
 
-          showDialog<void>(
-            context: context,
-            builder: (_) => HospitalVisitScheduleDetailDialog(
-              reservedAt: reservedAt.add(
-                Duration(
-                  days: pushType == PushType.before ? 1 : 0,
-                  hours: pushType == PushType.after ? 2 : 0,
-                ),
-              ),
-            ),
-          );
-        }
-        if (event.channelKey == 'medication') {
-          final reservedAt = DateTime.fromMillisecondsSinceEpoch(
-            int.parse(event.payload!['reservedAt']!),
-          );
+    //   final userId = event.payload!['userId']!;
 
-          showDialog<void>(
-            context: context,
-            builder: (_) => MedicationScheduleCheckDialog(
-              reservedAt: reservedAt.add(
-                Duration(
-                  minutes: pushType == PushType.before
-                      ? 30
-                      : pushType == PushType.onTime
-                          ? 0
-                          : -30,
-                ),
-              ),
-            ),
-          );
-        }
-      });
-    });
+    //   if (event.channelKey == 'hospital_visit') {
+    //     if (KiwiContainer().resolve<UserId>().value != userId) return;
+
+    //     showDialog<void>(
+    //       context: context,
+    //       builder: (_) => HospitalVisitScheduleDetailDialog(
+    //         reservedAt: reservedAt.add(
+    //           Duration(
+    //             days: pushType == PushType.before ? 1 : 0,
+    //             hours: pushType == PushType.after ? 2 : 0,
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   }
+    //   if (event.channelKey == 'medication') {
+    //     final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+    //       int.parse(event.payload!['reservedAt']!),
+    //     );
+
+    //     showDialog<void>(
+    //       context: context,
+    //       builder: (_) => MedicationScheduleCheckDialog(
+    //         reservedAt: reservedAt.add(
+    //           Duration(
+    //             minutes: pushType == PushType.before
+    //                 ? 30
+    //                 : pushType == PushType.onTime
+    //                     ? 0
+    //                     : -30,
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   }
+    // });
+    // });
 
     super.initState();
   }
@@ -138,10 +152,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // _localNotification.getScheduledNotifications().then(
-    //       (value) =>
-    //           debugPrint(value.map((e) => e.content?.body).join('\n---\n')),
-    //     );
+    if (kDebugMode) {
+      _localNotification.getScheduledNotifications().then(
+            (value) =>
+                debugPrint(value.map((e) => e.content?.body).join('\n---\n')),
+          );
+    }
     return Scaffold(
       body: MultiProvider(
         providers: [

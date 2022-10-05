@@ -121,10 +121,9 @@ class Di {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'liverlover.sqlite'));
 
-    final database = NativeDatabase(file);
-
-    final isolate =
-        await DriftIsolate.spawn(() => DatabaseConnection(database));
+    final isolate = await DriftIsolate.spawn(
+      () => DatabaseConnection(NativeDatabase(file)),
+    );
 
     final connection = await isolate.connect();
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 
 Future<void> openDateTimePicker({
   required BuildContext context,

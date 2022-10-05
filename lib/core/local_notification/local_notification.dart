@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
 import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/user/user_id.dart';
+import 'package:yak/main.dart';
+import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_detail_dialog.dart';
+import 'package:yak/presentation/widget/medication_schedule/medication_schedule_check_dialog.dart';
 
 abstract class LocalNotification {
   Future<void> initialize();
@@ -36,7 +41,12 @@ abstract class LocalNotification {
 
   Future<List<NotificationModel>> getScheduledNotifications();
 
-  Stream<ReceivedAction> receiveStream();
+  Future<bool> setListeners({
+    required ActionHandler onActionReceivedMethod,
+    NotificationHandler? onNotificationCreatedMethod,
+    NotificationHandler? onNotificationDisplayedMethod,
+    ActionHandler? onDismissActionReceivedMethod,
+  });
 }
 
 class LocalNotificationImpl implements LocalNotification {
@@ -47,6 +57,8 @@ class LocalNotificationImpl implements LocalNotification {
   final UserId userId;
   final hospitalVisitChannelKey = 'hospital_visit';
   final medicationChannelKey = 'medication';
+  final hospitalVisitChannelGroupKey = 'hospital_visits';
+  final medicationChannelGroupKey = 'medications';
   String? prevUserId;
   List<NotificationModel>? _scheduledNotificationModels;
 
@@ -55,7 +67,7 @@ class LocalNotificationImpl implements LocalNotification {
         null,
         [
           NotificationChannel(
-            channelGroupKey: '${hospitalVisitChannelKey}s',
+            channelGroupKey: hospitalVisitChannelGroupKey,
             channelKey: hospitalVisitChannelKey,
             channelName: 'Hospital Visit Notification Channel',
             channelDescription: 'Channel with alarm ringtone',
@@ -66,7 +78,7 @@ class LocalNotificationImpl implements LocalNotification {
             locked: true,
           ),
           NotificationChannel(
-            channelGroupKey: '${medicationChannelKey}s',
+            channelGroupKey: medicationChannelGroupKey,
             channelKey: medicationChannelKey,
             channelName: 'Medication Schedule Channel',
             channelDescription: 'Channel with alarm ringtone',
@@ -79,12 +91,12 @@ class LocalNotificationImpl implements LocalNotification {
         ],
         channelGroups: [
           NotificationChannelGroup(
-            channelGroupkey: 'medications',
-            channelGroupName: 'Medication Channel Group ',
+            channelGroupKey: medicationChannelGroupKey,
+            channelGroupName: '복약 일정 알림',
           ),
           NotificationChannelGroup(
-            channelGroupkey: 'hospital_visits',
-            channelGroupName: 'Hospital Visit Notification Channel Group',
+            channelGroupKey: hospitalVisitChannelGroupKey,
+            channelGroupName: '병원 방문 일정 알림',
           ),
         ],
         debug: kDebugMode,
@@ -140,9 +152,6 @@ class LocalNotificationImpl implements LocalNotification {
         );
     }
   }
-
-  @override
-  Stream<ReceivedAction> receiveStream() => AwesomeNotifications().actionStream;
 
   @override
   Future<void> cancel({
@@ -210,8 +219,6 @@ class LocalNotificationImpl implements LocalNotification {
       channelKey: channelKey,
       title: title,
       body: body,
-      displayOnForeground: true,
-      displayOnBackground: true,
       category: NotificationCategory.Reminder,
       payload: {
         'userId': notificationScheduleModel.userId,
@@ -278,5 +285,96 @@ class LocalNotificationImpl implements LocalNotification {
         (e) => createNotification(notificationScheduleModel: e),
       ),
     );
+  }
+
+  @override
+  Future<bool> setListeners({
+    required ActionHandler onActionReceivedMethod,
+    NotificationHandler? onNotificationCreatedMethod,
+    NotificationHandler? onNotificationDisplayedMethod,
+    ActionHandler? onDismissActionReceivedMethod,
+  }) =>
+      AwesomeNotifications().setListeners(
+        onActionReceivedMethod: onActionReceivedMethod,
+        onNotificationCreatedMethod: onNotificationCreatedMethod,
+        onNotificationDisplayedMethod: onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod: onDismissActionReceivedMethod,
+      );
+}
+
+class NotificationController {
+  /// Use this method to detect when a new notification or a schedule is created
+  @pragma('vm:entry-point')
+  static Future<void> onNotificationCreatedMethod(
+    ReceivedNotification receivedNotification,
+  ) async {
+    // Your code goes here
+  }
+
+  /// Use this method to detect every time that a new notification is displayed
+  @pragma('vm:entry-point')
+  static Future<void> onNotificationDisplayedMethod(
+    ReceivedNotification receivedNotification,
+  ) async {
+    // Your code goes here
+  }
+
+  /// Use this method to detect if the user dismissed a notification
+  @pragma('vm:entry-point')
+  static Future<void> onDismissActionReceivedMethod(
+    ReceivedAction receivedAction,
+  ) async {
+    // Your code goes here
+  }
+
+  /// Use this method to detect when the user taps on a notification or action button
+  @pragma('vm:entry-point')
+  static Future<void> onActionReceivedMethod(
+    ReceivedAction receivedAction,
+  ) async {
+    final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+      int.parse(receivedAction.payload!['reservedAt']!),
+    );
+
+    final pushType =
+        PushType.values[int.parse(receivedAction.payload!['pushType']!)];
+
+    final userId = receivedAction.payload!['userId']!;
+
+    if (receivedAction.channelKey == 'hospital_visit') {
+      if (KiwiContainer().resolve<UserId>().value != userId) return;
+
+      await showDialog<void>(
+        context: YackApp.routerDelegate.navigator.overlay!.context,
+        builder: (_) => HospitalVisitScheduleDetailDialog(
+          reservedAt: reservedAt.add(
+            Duration(
+              days: pushType == PushType.before ? 1 : 0,
+              hours: pushType == PushType.after ? 2 : 0,
+            ),
+          ),
+        ),
+      );
+    }
+    if (receivedAction.channelKey == 'medication') {
+      final reservedAt = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(receivedAction.payload!['reservedAt']!),
+      );
+
+      await showDialog<void>(
+        context: YackApp.routerDelegate.navigator.overlay!.context,
+        builder: (_) => MedicationScheduleCheckDialog(
+          reservedAt: reservedAt.add(
+            Duration(
+              minutes: pushType == PushType.before
+                  ? 30
+                  : pushType == PushType.onTime
+                      ? 0
+                      : -30,
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

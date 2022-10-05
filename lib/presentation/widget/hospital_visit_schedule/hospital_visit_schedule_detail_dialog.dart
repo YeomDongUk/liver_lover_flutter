@@ -114,10 +114,13 @@ class HospitalVisitScheduleDetailDialog extends StatelessWidget {
                         child: Column(
                           children: [
                             Container(
-                              alignment: Alignment.center,
                               padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: SvgPicture.asset(
-                                'assets/svg/logo_${hospitalVisitSchedule.hospitalName == '삼성서울병원' ? 'smc' : 'emc'}.svg',
+                              child: Text(
+                                hospitalVisitSchedule.hospitalName,
+                                style: const TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 17,
+                                ).rixMGoEB,
                               ),
                             ),
                             const Divider(),
