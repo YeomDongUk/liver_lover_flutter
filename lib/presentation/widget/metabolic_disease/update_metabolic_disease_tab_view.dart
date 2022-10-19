@@ -22,12 +22,10 @@ class UpdateMetabolicDiseaseTabView extends StatefulWidget {
   });
 
   @override
-  State<UpdateMetabolicDiseaseTabView> createState() =>
-      _UpdateMetabolicDiseaseTabViewState();
+  State<UpdateMetabolicDiseaseTabView> createState() => _UpdateMetabolicDiseaseTabViewState();
 }
 
-class _UpdateMetabolicDiseaseTabViewState
-    extends State<UpdateMetabolicDiseaseTabView>
+class _UpdateMetabolicDiseaseTabViewState extends State<UpdateMetabolicDiseaseTabView>
     with AutomaticKeepAliveClientMixin {
   late final List<FocusNode> focusNodes;
   late final UpsertMetabolicDiseaseCubit upsertMetabolicDiseaseCubit;
@@ -36,9 +34,7 @@ class _UpdateMetabolicDiseaseTabViewState
   void initState() {
     focusNodes = List.generate(6, (index) => FocusNode());
     upsertMetabolicDiseaseCubit = UpsertMetabolicDiseaseCubit(
-      metabolicDisease:
-          context.read<MetabolicDiseaseCubit>().state.metabolicDisease ??
-              MetabolicDisease.undefined(),
+      metabolicDisease: context.read<MetabolicDiseaseCubit>().state.metabolicDisease ?? MetabolicDisease.undefined(),
       upsertMetabolicDisease: KiwiContainer().resolve<UpsertMetabolicDisease>(),
     );
     super.initState();
@@ -61,8 +57,7 @@ class _UpdateMetabolicDiseaseTabViewState
       CirrhosisUpdateForm(),
       // FattyLiverUpdateForm(),
     ];
-    return BlocListener<UpsertMetabolicDiseaseCubit,
-        UpsertMetabolicDiseaseState>(
+    return BlocListener<UpsertMetabolicDiseaseCubit, UpsertMetabolicDiseaseState>(
       bloc: upsertMetabolicDiseaseCubit,
       listener: (context, state) {
         if (state.status == FormzStatus.submissionInProgress) {
@@ -83,7 +78,6 @@ class _UpdateMetabolicDiseaseTabViewState
 
         if (state.status == FormzStatus.submissionFailure) {
           /// TODO: 저장 실패 팝업 필요
-
           Navigator.of(context).pop();
         }
       },
@@ -96,23 +90,18 @@ class _UpdateMetabolicDiseaseTabViewState
               child: Align(
                 alignment: Alignment.topCenter,
                 child: ListView.separated(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                   shrinkWrap: true,
                   itemCount: children.length,
                   itemBuilder: (context, index) => children[index],
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 24),
+                  separatorBuilder: (context, index) => const SizedBox(height: 24),
                 ),
               ),
             ),
-            BlocBuilder<UpsertMetabolicDiseaseCubit,
-                UpsertMetabolicDiseaseState>(
+            BlocBuilder<UpsertMetabolicDiseaseCubit, UpsertMetabolicDiseaseState>(
               bloc: upsertMetabolicDiseaseCubit,
               builder: (context, state) => ElevatedButton(
-                onPressed: state.status == FormzStatus.valid
-                    ? upsertMetabolicDiseaseCubit.submit
-                    : null,
+                onPressed: state.status == FormzStatus.valid ? upsertMetabolicDiseaseCubit.submit : null,
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size.fromHeight(70),
                   textStyle: const TextStyle(

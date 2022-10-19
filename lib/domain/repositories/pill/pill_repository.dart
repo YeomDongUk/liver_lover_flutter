@@ -10,7 +10,7 @@ abstract class PillRepository {
   Future<Either<Failure, Pill>> getPill(String id);
   Future<Either<Failure, List<Pill>>> getPills(String name);
   Future<Either<Failure, Pill>> createPill(PillsCompanion companion);
-  Future<Either<Failure, List<Pill>>> createPills(
-    List<PillsCompanion> companion,
-  );
+  Future<Either<Failure, List<Pill>>> createPills(List<PillsCompanion> companion);
+
+  Future<void> initCommonPills();
 }

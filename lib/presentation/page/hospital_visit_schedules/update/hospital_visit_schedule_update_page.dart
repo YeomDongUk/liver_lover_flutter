@@ -34,12 +34,10 @@ class HospitalVisitScheduleUpdatePage extends StatefulWidget {
   });
   final HospitalVisitSchedule hospitalVisitSchedule;
   @override
-  State<HospitalVisitScheduleUpdatePage> createState() =>
-      _HospitalVisitScheduleUpdatePageState();
+  State<HospitalVisitScheduleUpdatePage> createState() => _HospitalVisitScheduleUpdatePageState();
 }
 
-class _HospitalVisitScheduleUpdatePageState
-    extends State<HospitalVisitScheduleUpdatePage> {
+class _HospitalVisitScheduleUpdatePageState extends State<HospitalVisitScheduleUpdatePage> {
   late final HospitalVisitScheduleUpdateCubit hospitalVisitScheduleUpdateCubit;
 
   late final List<FocusNode> focusNodes;
@@ -48,18 +46,12 @@ class _HospitalVisitScheduleUpdatePageState
   void initState() {
     hospitalVisitScheduleUpdateCubit = HospitalVisitScheduleUpdateCubit(
       hospitalVisitSchedule: widget.hospitalVisitSchedule,
-      updateHospitalVisitSchedule:
-          KiwiContainer().resolve<UpdateHospitalVisitSchedule>(),
+      updateHospitalVisitSchedule: KiwiContainer().resolve<UpdateHospitalVisitSchedule>(),
     );
     focusNodes = List.generate(
       4,
       (index) => FocusNode(
-        debugLabel: '${Routes.hospitalVisitScheduleCreate}/${[
-          '병원',
-          '예약일시',
-          '진료과목',
-          '담당의사'
-        ][index]}',
+        debugLabel: '${Routes.hospitalVisitScheduleCreate}/${['병원', '예약일시', '진료과목', '담당의사'][index]}',
       ),
     );
 
@@ -84,8 +76,7 @@ class _HospitalVisitScheduleUpdatePageState
     DatePicker.showDateTimePicker(
       context,
       locale: LocaleType.ko,
-      currentTime:
-          reservedAt == null || reservedAt.isBefore(now) ? now : reservedAt,
+      currentTime: reservedAt == null || reservedAt.isBefore(now) ? now : reservedAt,
       minTime: now,
       onConfirm: hospitalVisitScheduleUpdateCubit.updateReservedAt,
     );
@@ -145,12 +136,9 @@ class _HospitalVisitScheduleUpdatePageState
               ),
               const SizedBox(height: 12),
               IgnorePointer(
-                child: BlocBuilder<HospitalVisitScheduleUpdateCubit,
-                    HospitalVisitScheduleUpdateState>(
+                child: BlocBuilder<HospitalVisitScheduleUpdateCubit, HospitalVisitScheduleUpdateState>(
                   bloc: hospitalVisitScheduleUpdateCubit,
-                  buildWhen: (previous, current) =>
-                      previous.hospitalVisitType.value !=
-                      current.hospitalVisitType.value,
+                  buildWhen: (previous, current) => previous.hospitalVisitType.value != current.hospitalVisitType.value,
                   builder: (context, state) => SizedBox(
                     height: 48,
                     child: DropdownButtonHideUnderline(
@@ -158,8 +146,7 @@ class _HospitalVisitScheduleUpdatePageState
                         value: state.hospitalVisitType.value,
                         onChanged: (value) => value == null
                             ? null
-                            : hospitalVisitScheduleUpdateCubit
-                                .udpateHospitalVisitScheduleType(value),
+                            : hospitalVisitScheduleUpdateCubit.udpateHospitalVisitScheduleType(value),
                         icon: SvgPicture.asset('assets/svg/down.svg'),
                         buttonPadding: const EdgeInsets.only(
                           left: 10,
@@ -207,22 +194,18 @@ class _HospitalVisitScheduleUpdatePageState
                 ),
               ),
               const SizedBox(height: 16),
-              BlocBuilder<HospitalVisitScheduleUpdateCubit,
-                  HospitalVisitScheduleUpdateState>(
+              BlocBuilder<HospitalVisitScheduleUpdateCubit, HospitalVisitScheduleUpdateState>(
                 bloc: hospitalVisitScheduleUpdateCubit,
                 builder: (context, state) => HospitalVisitScheduleTextField(
                   label: '병원',
-                  onChanged:
-                      hospitalVisitScheduleUpdateCubit.updateHospitalName,
+                  onChanged: hospitalVisitScheduleUpdateCubit.updateHospitalName,
                   focusNode: focusNodes[0],
                   onFieldSubmitted: (str) => openDateTimePicker(),
                 ),
               ),
               const SizedBox(height: 16),
-              BlocBuilder<HospitalVisitScheduleUpdateCubit,
-                  HospitalVisitScheduleUpdateState>(
-                buildWhen: (previous, current) =>
-                    previous.reservedAt.value != current.reservedAt.value,
+              BlocBuilder<HospitalVisitScheduleUpdateCubit, HospitalVisitScheduleUpdateState>(
+                buildWhen: (previous, current) => previous.reservedAt.value != current.reservedAt.value,
                 bloc: hospitalVisitScheduleUpdateCubit,
                 builder: (context, state) => CommonInputDateField(
                   label: '예약일시',
@@ -233,8 +216,7 @@ class _HospitalVisitScheduleUpdatePageState
               const SizedBox(height: 16),
               HospitalVisitScheduleTextField(
                 label: '진료과목',
-                onChanged:
-                    hospitalVisitScheduleUpdateCubit.updateMedicalSubject,
+                onChanged: hospitalVisitScheduleUpdateCubit.updateMedicalSubject,
                 focusNode: focusNodes[2],
                 nextFocusNode: focusNodes[3],
               ),
@@ -245,8 +227,7 @@ class _HospitalVisitScheduleUpdatePageState
                 focusNode: focusNodes[3],
               ),
               const SizedBox(height: 24),
-              BlocBuilder<HospitalVisitScheduleUpdateCubit,
-                  HospitalVisitScheduleUpdateState>(
+              BlocBuilder<HospitalVisitScheduleUpdateCubit, HospitalVisitScheduleUpdateState>(
                 bloc: hospitalVisitScheduleUpdateCubit,
                 builder: (context, state) => CommonShadowBox(
                   padding: const EdgeInsets.all(24),
@@ -272,10 +253,8 @@ class _HospitalVisitScheduleUpdatePageState
                           ),
                           const SizedBox(width: 9),
                           CommonSwitch(
-                            value:
-                                state.beforePush.value || state.afterPush.value,
-                            onToggle:
-                                hospitalVisitScheduleUpdateCubit.updatePush,
+                            value: state.beforePush.value || state.afterPush.value,
+                            onToggle: hospitalVisitScheduleUpdateCubit.updatePush,
                           ),
                         ],
                       ),
@@ -284,8 +263,7 @@ class _HospitalVisitScheduleUpdatePageState
                         children: [
                           OpacityCheckButton(
                             opacity: state.beforePush.value ? 1 : 0,
-                            onTap: () => hospitalVisitScheduleUpdateCubit
-                                .updateBeforePush(!state.beforePush.value),
+                            onTap: () => hospitalVisitScheduleUpdateCubit.updateBeforePush(!state.beforePush.value),
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -295,8 +273,7 @@ class _HospitalVisitScheduleUpdatePageState
                           const Spacer(),
                           OpacityCheckButton(
                             opacity: state.afterPush.value ? 1 : 0,
-                            onTap: () => hospitalVisitScheduleUpdateCubit
-                                .updateAfterPush(!state.afterPush.value),
+                            onTap: () => hospitalVisitScheduleUpdateCubit.updateAfterPush(!state.afterPush.value),
                           ),
                           const SizedBox(width: 10),
                           Text(
@@ -312,9 +289,7 @@ class _HospitalVisitScheduleUpdatePageState
               const SizedBox(height: 24),
               BlocBuilder<CurrentTimeCubit, DateTime>(
                 builder: (context, now) => ElevatedButton(
-                  onPressed: hospitalVisitScheduleUpdateCubit
-                              .formStatus.index ==
-                          1
+                  onPressed: hospitalVisitScheduleUpdateCubit.formStatus.index == 1
                       ? () => hospitalVisitScheduleUpdateCubit.submit().then(
                             (hospitalVisitSchedule) {
                               if (hospitalVisitSchedule == null) return;

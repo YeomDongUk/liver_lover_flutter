@@ -30,8 +30,7 @@ class HealthInformationScreen extends StatefulWidget {
   const HealthInformationScreen({super.key});
 
   @override
-  State<HealthInformationScreen> createState() =>
-      HealthInformationStateScreen();
+  State<HealthInformationScreen> createState() => HealthInformationStateScreen();
 }
 
 class HealthInformationStateScreen extends State<HealthInformationScreen>
@@ -53,59 +52,62 @@ class HealthInformationStateScreen extends State<HealthInformationScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: CommonAppBar(
-        title: const Text('건강정보'),
-        leading: IconButton(
-          onPressed: () => context.read<PageController>().jumpToPage(5),
-          icon: SvgPicture.asset('assets/svg/home.svg'),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => context.beamToNamed(Routes.my),
-            icon: SvgPicture.asset('assets/svg/my_info.svg'),
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: Scaffold(
+        appBar: CommonAppBar(
+          title: const Text('건강정보'),
+          leading: IconButton(
+            onPressed: () => context.read<PageController>().jumpToPage(5),
+            icon: SvgPicture.asset('assets/svg/home.svg'),
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Positioned.fill(
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    color: Colors.white,
-                    child: const Divider(
-                      height: 4,
-                      thickness: 4,
-                      color: AppColors.blueGrayLight,
-                    ),
-                  ),
-                ),
-                TabBar(
-                  controller: tabController,
-                  tabs: const [
-                    Tab(
-                      text: '간 건강백서',
-                    ),
-                    Tab(
-                      text: 'B형 간염위험도 계산',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                children: const [
-                  LiverHealthWhitePaperTabView(),
-                  LiverDiseaseRiskCalculatorTabView(),
-                ],
-              ),
+          actions: [
+            IconButton(
+              onPressed: () => context.beamToNamed(Routes.my),
+              icon: SvgPicture.asset('assets/svg/my_info.svg'),
             ),
           ],
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      color: Colors.white,
+                      child: const Divider(
+                        height: 4,
+                        thickness: 4,
+                        color: AppColors.blueGrayLight,
+                      ),
+                    ),
+                  ),
+                  TabBar(
+                    controller: tabController,
+                    tabs: const [
+                      Tab(
+                        text: '간 건강백서',
+                      ),
+                      Tab(
+                        text: 'B형 간염위험도 계산',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: tabController,
+                  children: const [
+                    LiverHealthWhitePaperTabView(),
+                    LiverDiseaseRiskCalculatorTabView(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -122,17 +124,17 @@ class LiverDiseaseRiskCalculatorTabView extends StatefulWidget {
   });
 
   @override
-  State<LiverDiseaseRiskCalculatorTabView> createState() =>
-      _LiverDiseaseRiskCalculatorTabViewState();
+  State<LiverDiseaseRiskCalculatorTabView> createState() => _LiverDiseaseRiskCalculatorTabViewState();
 }
 
-class _LiverDiseaseRiskCalculatorTabViewState
-    extends State<LiverDiseaseRiskCalculatorTabView> {
+class _LiverDiseaseRiskCalculatorTabViewState extends State<LiverDiseaseRiskCalculatorTabView> {
   late final FibrosisCirculatorCubit fibrosisCirculatorCubit;
   late final PageBCirculatorCubit pageBCirculatorCubit;
 
   late final List<FocusNode> focusNodes;
+
   bool openSexDropDown = false;
+
   @override
   void initState() {
     fibrosisCirculatorCubit = FibrosisCirculatorCubit();
@@ -192,10 +194,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[0],
-                              onChanged: (str) => fibrosisCirculatorCubit
-                                  .updateAge(int.tryParse(str)),
-                              onFieldSubmitted: (str) => FocusScope.of(context)
-                                  .requestFocus(focusNodes[1]),
+                              onChanged: (str) => fibrosisCirculatorCubit.updateAge(int.tryParse(str)),
+                              onFieldSubmitted: (str) => FocusScope.of(context).requestFocus(focusNodes[1]),
                               textInputAction: TextInputAction.next,
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
@@ -225,10 +225,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[1],
-                              onChanged: (str) => fibrosisCirculatorCubit
-                                  .updateAst(int.tryParse(str)),
-                              onFieldSubmitted: (str) => FocusScope.of(context)
-                                  .requestFocus(focusNodes[2]),
+                              onChanged: (str) => fibrosisCirculatorCubit.updateAst(int.tryParse(str)),
+                              onFieldSubmitted: (str) => FocusScope.of(context).requestFocus(focusNodes[2]),
                               textInputAction: TextInputAction.next,
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
@@ -258,10 +256,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[2],
-                              onChanged: (str) => fibrosisCirculatorCubit
-                                  .updateAlt(int.tryParse(str)),
-                              onFieldSubmitted: (str) => FocusScope.of(context)
-                                  .requestFocus(focusNodes[3]),
+                              onChanged: (str) => fibrosisCirculatorCubit.updateAlt(int.tryParse(str)),
+                              onFieldSubmitted: (str) => FocusScope.of(context).requestFocus(focusNodes[3]),
                               textInputAction: TextInputAction.next,
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
@@ -333,10 +329,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[3],
-                              onChanged: (str) => fibrosisCirculatorCubit
-                                  .updatePlatelet(int.tryParse(str)),
-                              onFieldSubmitted: (str) => FocusScope.of(context)
-                                  .requestFocus(focusNodes[4]),
+                              onChanged: (str) => fibrosisCirculatorCubit.updatePlatelet(int.tryParse(str)),
+                              onFieldSubmitted: (str) => FocusScope.of(context).requestFocus(focusNodes[4]),
                               textInputAction: TextInputAction.next,
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
@@ -355,21 +349,18 @@ class _LiverDiseaseRiskCalculatorTabViewState
               const Divider(),
               Padding(
                 padding: const EdgeInsets.all(24),
-                child: BlocBuilder<FibrosisCirculatorCubit,
-                    FibrosisCirculatorState>(
+                child: BlocBuilder<FibrosisCirculatorCubit, FibrosisCirculatorState>(
                   bloc: fibrosisCirculatorCubit,
                   builder: (context, state) => ElevatedButton(
                     focusNode: focusNodes[4],
                     onPressed: !state.canCirculator
                         ? null
                         : () {
-                            final value = (state.age! * state.ast!) /
-                                (state.platelet! * pow(state.alt!, 0.5));
+                            final value = (state.age! * state.ast!) / (state.platelet! * pow(state.alt!, 0.5));
                             showDialog<void>(
                               context: context,
                               builder: (_) => HealthInformationDialog(
-                                circulatorResult:
-                                    Fib4CirculatorResult(value: value),
+                                circulatorResult: Fib4CirculatorResult(value: value),
                               ),
                             );
                           },
@@ -425,10 +416,8 @@ class _LiverDiseaseRiskCalculatorTabViewState
                           child: JoinContainer(
                             child: CommonInputFormField(
                               focusNode: focusNodes[5],
-                              onChanged: (str) => pageBCirculatorCubit
-                                  .updateAge(int.tryParse(str)),
-                              onFieldSubmitted: (str) => FocusScope.of(context)
-                                  .requestFocus(focusNodes[6]),
+                              onChanged: (str) => pageBCirculatorCubit.updateAge(int.tryParse(str)),
+                              onFieldSubmitted: (str) => FocusScope.of(context).requestFocus(focusNodes[6]),
                               textInputAction: TextInputAction.next,
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
@@ -459,35 +448,27 @@ class _LiverDiseaseRiskCalculatorTabViewState
                           width: 120,
                           child: JoinContainer(
                             color: Colors.white,
-                            child: BlocBuilder<PageBCirculatorCubit,
-                                PageBCirculatorState>(
-                              buildWhen: (previous, current) =>
-                                  previous.sex != current.sex,
+                            child: BlocBuilder<PageBCirculatorCubit, PageBCirculatorState>(
+                              buildWhen: (previous, current) => previous.sex != current.sex,
                               bloc: pageBCirculatorCubit,
                               builder: (context, state) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
-                                      onPressed: () =>
-                                          pageBCirculatorCubit.updateSex(0),
+                                      onPressed: () => pageBCirculatorCubit.updateSex(0),
                                       style: ElevatedButton.styleFrom(
                                         padding: EdgeInsets.zero,
-                                        backgroundColor: state.sex == 0
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.white,
+                                        backgroundColor: state.sex == 0 ? Theme.of(context).primaryColor : Colors.white,
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(3),
+                                          borderRadius: BorderRadius.circular(3),
                                         ),
                                       ),
                                       child: Text(
                                         '남',
                                         style: TextStyle(
-                                          color: state.sex == 0
-                                              ? Colors.white
-                                              : Colors.black,
+                                          color: state.sex == 0 ? Colors.white : Colors.black,
                                           fontSize: 20,
                                         ).rixMGoB,
                                       ),
@@ -496,25 +477,19 @@ class _LiverDiseaseRiskCalculatorTabViewState
                                   const VerticalDivider(),
                                   Expanded(
                                     child: ElevatedButton(
-                                      onPressed: () =>
-                                          pageBCirculatorCubit.updateSex(1),
+                                      onPressed: () => pageBCirculatorCubit.updateSex(1),
                                       style: ElevatedButton.styleFrom(
                                         padding: EdgeInsets.zero,
-                                        backgroundColor: state.sex == 1
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.white,
+                                        backgroundColor: state.sex == 1 ? Theme.of(context).primaryColor : Colors.white,
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(3),
+                                          borderRadius: BorderRadius.circular(3),
                                         ),
                                       ),
                                       child: Text(
                                         '여',
                                         style: TextStyle(
-                                          color: state.sex == 1
-                                              ? Colors.white
-                                              : Colors.black,
+                                          color: state.sex == 1 ? Colors.white : Colors.black,
                                           fontSize: 20,
                                         ).rixMGoB,
                                       ),
@@ -585,11 +560,9 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
-                              focusNode: focusNodes[7],
-                              onChanged: (str) => pageBCirculatorCubit
-                                  .updatePlatelet(int.tryParse(str)),
-                              onFieldSubmitted: (str) => FocusScope.of(context)
-                                  .requestFocus(focusNodes[8]),
+                              focusNode: focusNodes[6],
+                              onChanged: (str) => pageBCirculatorCubit.updatePlatelet(int.tryParse(str)),
+                              onFieldSubmitted: (str) => FocusScope.of(context).requestFocus(focusNodes[7]),
                               textInputAction: TextInputAction.next,
                               keyboardType: Platform.isIOS
                                   ? const TextInputType.numberWithOptions(
@@ -618,11 +591,9 @@ class _LiverDiseaseRiskCalculatorTabViewState
                         Expanded(
                           child: JoinContainer(
                             child: CommonInputFormField(
-                              focusNode: focusNodes[8],
-                              onChanged: (str) => pageBCirculatorCubit
-                                  .updateAlbumin(double.tryParse(str)),
-                              onFieldSubmitted: (str) => FocusScope.of(context)
-                                  .requestFocus(focusNodes[9]),
+                              focusNode: focusNodes[7],
+                              onChanged: (str) => pageBCirculatorCubit.updateAlbumin(double.tryParse(str)),
+                              onFieldSubmitted: (str) => FocusScope.of(context).requestFocus(focusNodes[8]),
                               textInputAction: TextInputAction.next,
                               inputFormatters: [
                                 doubleTextInputFormatter,
@@ -647,7 +618,7 @@ class _LiverDiseaseRiskCalculatorTabViewState
                 child: BlocBuilder<PageBCirculatorCubit, PageBCirculatorState>(
                   bloc: pageBCirculatorCubit,
                   builder: (context, state) => ElevatedButton(
-                    focusNode: focusNodes[4],
+                    focusNode: focusNodes[8],
                     onPressed: !state.canCirculator
                         ? null
                         : () {
@@ -701,8 +672,7 @@ class _LiverDiseaseRiskCalculatorTabViewState
                             showDialog<void>(
                               context: context,
                               builder: (_) => HealthInformationDialog(
-                                circulatorResult:
-                                    PageBCirculatorResult(value: value * 1),
+                                circulatorResult: PageBCirculatorResult(value: value * 1),
                               ),
                             );
                           },
@@ -729,15 +699,13 @@ class LiverHealthWhitePaperTabView extends StatefulWidget {
   const LiverHealthWhitePaperTabView({super.key});
 
   @override
-  State<LiverHealthWhitePaperTabView> createState() =>
-      LiverHealthWhitePaperTabViewState();
+  State<LiverHealthWhitePaperTabView> createState() => LiverHealthWhitePaperTabViewState();
 }
 
-class LiverHealthWhitePaperTabViewState
-    extends State<LiverHealthWhitePaperTabView>
-    with AutomaticKeepAliveClientMixin {
+class LiverHealthWhitePaperTabViewState extends State<LiverHealthWhitePaperTabView> with AutomaticKeepAliveClientMixin {
   late final PageController pageController;
   final pageIndicatorTexts = const ['간 건강 이해하기', '간 질환 바로알기', '생활 관리', '자가체크'];
+
   final footer = Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -806,9 +774,7 @@ class LiverHealthWhitePaperTabViewState
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 2,
-                      color: pageIndex == index
-                          ? AppColors.primary
-                          : AppColors.blueGrayLight,
+                      color: pageIndex == index ? AppColors.primary : AppColors.blueGrayLight,
                     ),
                     borderRadius: BorderRadius.circular(24.5),
                   ),
@@ -826,9 +792,7 @@ class LiverHealthWhitePaperTabViewState
                         pageIndicatorTexts[index],
                         style: TextStyle(
                           fontSize: 16,
-                          color: pageIndex == index
-                              ? Colors.white
-                              : AppColors.blueGrayLight,
+                          color: pageIndex == index ? Colors.white : AppColors.blueGrayLight,
                         ).rixMGoEB,
                       ),
                     ),
@@ -1015,9 +979,7 @@ class LiverHealthWhitePaperTabViewState
                     strings: [
                       '간질환과 운동의 관계?',
                     ],
-                    urls: [
-                      'https://terms.naver.com/entry.naver?docId=2704346&categoryId=55588&cid=55588'
-                    ],
+                    urls: ['https://terms.naver.com/entry.naver?docId=2704346&categoryId=55588&cid=55588'],
                   ),
                   const SizedBox(height: 16),
                   _InformationBox(
@@ -1078,9 +1040,7 @@ class LiverHealthWhitePaperTabViewState
                     strings: [
                       '간건강을 체크할 수 있는 자가진단표',
                     ],
-                    urls: [
-                      'https://terms.naver.com/entry.naver?docId=2704366&categoryId=55588&cid=55588'
-                    ],
+                    urls: ['https://terms.naver.com/entry.naver?docId=2704366&categoryId=55588&cid=55588'],
                   ),
                   const SizedBox(height: 16),
                   footer,

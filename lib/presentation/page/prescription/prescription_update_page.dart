@@ -83,8 +83,7 @@ class _PrescriptionUpdatePageState extends State<PrescriptionUpdatePage> {
             if (state.status == FormzStatus.submissionInProgress) {
               showDialog<void>(
                 context: context,
-                builder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
+                builder: (_) => const Center(child: CircularProgressIndicator()),
               );
             }
 
@@ -201,11 +200,8 @@ class _PrescriptionUpdatePageState extends State<PrescriptionUpdatePage> {
                                   child: IgnorePointer(
                                     child: CommonInputFormField(
                                       onChanged: (str) => null,
-                                      initialValue: state.duration.value == null
-                                          ? ''
-                                          : '${state.duration.value}',
-                                      keyboardType:
-                                          const TextInputType.numberWithOptions(
+                                      initialValue: state.duration.value == null ? '' : '${state.duration.value}',
+                                      keyboardType: const TextInputType.numberWithOptions(
                                         decimal: true,
                                         signed: true,
                                       ),
@@ -242,36 +238,27 @@ class _PrescriptionUpdatePageState extends State<PrescriptionUpdatePage> {
                     height: 49,
                     thickness: 1,
                   ),
-                  if (state.medicationInformationCreateFormInput.value
-                      .isNotEmpty) ...[
+                  if (state.medicationInformationCreateFormInput.value.isNotEmpty) ...[
                     ExpandablePageView.builder(
                       controller: pageController,
-                      itemCount: state
-                          .medicationInformationCreateFormInput.value.length,
+                      itemCount: state.medicationInformationCreateFormInput.value.length,
                       itemBuilder: (context, index) {
-                        final formInput = state
-                            .medicationInformationCreateFormInput.value
-                            .elementAt(index);
+                        final formInput = state.medicationInformationCreateFormInput.value.elementAt(index);
                         return MedicationInformationCreateFormWidget(
                           formInput: formInput,
-                          onChanged: prescriptionUpdateCubit
-                              .updateMedicationInformationCreateForm,
-                          onDelete: null,
+                          onChanged: prescriptionUpdateCubit.updateMedicationInformationCreateForm,
                         );
                       },
                     ),
                     PageIndexIndicator(
                       pageController: pageController,
-                      pageCount: state
-                          .medicationInformationCreateFormInput.value.length,
+                      pageCount: state.medicationInformationCreateFormInput.value.length,
                     ),
                     const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ElevatedButton(
-                        onPressed: state.status != FormzStatus.valid
-                            ? null
-                            : prescriptionUpdateCubit.submit,
+                        onPressed: state.status != FormzStatus.valid ? null : prescriptionUpdateCubit.submit,
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size.fromHeight(60),
                           shape: RoundedRectangleBorder(

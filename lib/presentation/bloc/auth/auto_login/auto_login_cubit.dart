@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/domain/entities/user/user.dart';
@@ -13,6 +14,7 @@ class AutoLoginCubit extends Cubit<AutoLoginState> {
   final AutoLogin autoLogin;
 
   Future<void> login() async {
+    Logger().i('Login');
     emit(AutoLoginInProgress());
 
     final either = await autoLogin.call(null);

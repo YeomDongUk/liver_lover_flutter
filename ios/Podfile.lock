@@ -1,6 +1,7 @@
 PODS:
-  - awesome_notifications (0.0.3):
+  - awesome_notifications (0.0.5):
     - Flutter
+    - IosAwnCore (= 0.7.1)
   - Firebase/CoreOnly (9.4.0):
     - FirebaseCore (= 9.4.0)
   - Firebase/RemoteConfig (9.4.0):
@@ -108,6 +109,7 @@ PODS:
     - TOCropViewController (~> 2.6.1)
   - image_picker_ios (0.0.1):
     - Flutter
+  - IosAwnCore (0.7.1)
   - MLImage (1.0.0-beta3)
   - MLKitCommon (7.0.0):
     - GoogleDataTransport (~> 9.0)
@@ -214,6 +216,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GoogleUtilitiesComponents
     - GTMSessionFetcher
+    - IosAwnCore
     - MLImage
     - MLKitCommon
     - MLKitTextRecognition
@@ -262,7 +265,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  awesome_notifications: 04530aafec8dac4635244ed4b4072f4aea6cc938
+  awesome_notifications: 5e8d47907a4b29c182e5732b5ee224ca838f6802
   Firebase: 7703fc4022824b6d6db1bf7bea58d13b8e17ec46
   firebase_core: c1cdfa024dc7f3d1ba8055a2ae323dba3dce4fa1
   firebase_remote_config: 6a952fa6279d2d849dce525cb5ffe1cbb444c1e5
@@ -285,6 +288,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   image_cropper: 60c2789d1f1a78c873235d4319ca0c34a69f2d98
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
+  IosAwnCore: fd348a51573643e26a194fe20fc78e4190dcadf6
   MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
   MLKitCommon: 20f4aca0ec2bb37cef2b9c211b50586817bac5d3
   MLKitTextRecognition: 46c6574e7db6452f5a426312c04a794c82d6fcf0
@@ -306,6 +310,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
-PODFILE CHECKSUM: 4e8410f49c4e93ba0bf43426cfabfff553e80094
+PODFILE CHECKSUM: d01b821ebd94429f113d3433ec7e34d43e3ef351
 
 COCOAPODS: 1.11.3

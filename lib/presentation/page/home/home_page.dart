@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:math';
 
 // Flutter imports:
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -11,17 +10,14 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:yak/core/database/table/notification_schedule/notification_schedule_table.dart';
 
 // Project imports:
 import 'package:yak/core/local_notification/local_notification.dart';
 import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/icon.dart';
 import 'package:yak/core/static/text_style.dart';
-import 'package:yak/core/user/user_id.dart';
 import 'package:yak/presentation/bloc/health_questions/health_questions_cubit.dart';
 import 'package:yak/presentation/bloc/hospital_visit_schedules/hospital_visit_schedules_cubit.dart';
 import 'package:yak/presentation/bloc/metabolic_disease/metabolic_disease_cubit.dart';
@@ -34,8 +30,6 @@ import 'package:yak/presentation/page/home/screens/home_screen.dart';
 import 'package:yak/presentation/page/home/screens/hospital_visit_schedule/hospital_visit_schedules_screen.dart';
 import 'package:yak/presentation/page/home/screens/medication_management/medication_management_screen.dart';
 import 'package:yak/presentation/widget/home/global_navigation_bar.dart';
-import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_detail_dialog.dart';
-import 'package:yak/presentation/widget/medication_schedule/medication_schedule_check_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -63,8 +57,7 @@ class _HomePageState extends State<HomePage> {
     // _medicationSchedulesCubit = context.read<MedicationSchedulesCubit>();
 
     _surveyGroupsCubit = context.read<SurveyGroupsCubit>()..loadSurveyGroups();
-    _metabolicDiseaseCubit = context.read<MetabolicDiseaseCubit>()
-      ..loadMetabolicDisease();
+    _metabolicDiseaseCubit = context.read<MetabolicDiseaseCubit>()..loadMetabolicDisease();
     _userPointCubit = context.read<UserPointCubit>()..loadUserPoint();
 
     _itemcrollController = ItemScrollController();
@@ -74,65 +67,7 @@ class _HomePageState extends State<HomePage> {
 
     _hospitalVisitSchedulesCubit.loadSchedules();
 
-    _localNotification.setListeners(
-      onActionReceivedMethod: NotificationController.onActionReceivedMethod,
-      // onDismissActionReceivedMethod: (receivedAction) async =>
-      //     Logger().i(receivedAction),
-      // onNotificationCreatedMethod: (receivedAction) async =>
-      //     Logger().i(receivedAction),
-      // onNotificationDisplayedMethod: (receivedAction) async =>
-      //     Logger().i(receivedAction),
-    );
-
-    // .then((value) {
-    // _notificationSubscription =
-    //     _localNotification.receiveStream().listen((event) {
-    //   final reservedAt = DateTime.fromMillisecondsSinceEpoch(
-    //     int.parse(event.payload!['reservedAt']!),
-    //   );
-
-    //   final pushType =
-    //       PushType.values[int.parse(event.payload!['pushType']!)];
-
-    //   final userId = event.payload!['userId']!;
-
-    //   if (event.channelKey == 'hospital_visit') {
-    //     if (KiwiContainer().resolve<UserId>().value != userId) return;
-
-    //     showDialog<void>(
-    //       context: context,
-    //       builder: (_) => HospitalVisitScheduleDetailDialog(
-    //         reservedAt: reservedAt.add(
-    //           Duration(
-    //             days: pushType == PushType.before ? 1 : 0,
-    //             hours: pushType == PushType.after ? 2 : 0,
-    //           ),
-    //         ),
-    //       ),
-    //     );
-    //   }
-    //   if (event.channelKey == 'medication') {
-    //     final reservedAt = DateTime.fromMillisecondsSinceEpoch(
-    //       int.parse(event.payload!['reservedAt']!),
-    //     );
-
-    //     showDialog<void>(
-    //       context: context,
-    //       builder: (_) => MedicationScheduleCheckDialog(
-    //         reservedAt: reservedAt.add(
-    //           Duration(
-    //             minutes: pushType == PushType.before
-    //                 ? 30
-    //                 : pushType == PushType.onTime
-    //                     ? 0
-    //                     : -30,
-    //           ),
-    //         ),
-    //       ),
-    //     );
-    //   }
-    // });
-    // });
+    _localNotification.setListeners(onActionReceivedMethod: NotificationController.onActionReceivedMethod);
 
     super.initState();
   }
@@ -152,12 +87,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      _localNotification.getScheduledNotifications().then(
-            (value) =>
-                debugPrint(value.map((e) => e.content?.body).join('\n---\n')),
-          );
-    }
     return Scaffold(
       body: MultiProvider(
         providers: [
@@ -230,8 +159,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SpeedDialChild(
-            onTap: () =>
-                context.beamToNamed(Routes.hospitalVisitScheduleCreate),
+            onTap: () => context.beamToNamed(Routes.hospitalVisitScheduleCreate),
             backgroundColor: Colors.white,
             child: Icon(
               IconDatas.hospitalVisit,
@@ -281,9 +209,7 @@ class _HomePageState extends State<HomePage> {
           height: 28,
         ),
       ),
-      bottomNavigationBar: GlobalNavigationBar(
-        pageController: _pageController,
-      ),
+      bottomNavigationBar: GlobalNavigationBar(pageController: _pageController),
     );
   }
 }

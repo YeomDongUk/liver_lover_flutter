@@ -34,9 +34,7 @@ class PillRepositoryImpl implements PillRepository {
     try {
       final pillSearchResults = await pillRemoteDataSource.findPills(name);
       return Right(
-        pillSearchResults
-            .map((apiModel) => Pill.fromJson(apiModel.toMap()))
-            .toList(),
+        pillSearchResults.map((apiModel) => Pill.fromJson(apiModel.toMap())).toList(),
       );
     } catch (error) {
       try {
@@ -82,4 +80,7 @@ class PillRepositoryImpl implements PillRepository {
       return const Left(CreateFailure());
     }
   }
+
+  @override
+  Future<void> initCommonPills() => pillLocalDataSource.initCommonPills();
 }

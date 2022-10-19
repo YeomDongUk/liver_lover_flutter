@@ -15,10 +15,8 @@ import 'package:yak/presentation/page/hospital_visit_schedules/update/hospital_v
 class HospitalVisitScheduleLocation extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    final id = state.pathParameters['id'];
     final mapData = data as Map<String, dynamic>?;
-    final hospitalVisitSchedule =
-        mapData?['hospitalVisitSchedule'] as HospitalVisitSchedule?;
+    final hospitalVisitSchedule = mapData?['hospitalVisitSchedule'] as HospitalVisitSchedule?;
 
     return [
       ...HomeLocation().buildPages(context, state),

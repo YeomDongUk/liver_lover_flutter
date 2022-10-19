@@ -11,6 +11,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:version/version.dart';
@@ -31,14 +32,16 @@ class AuthPage extends StatefulWidget {
   State<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin {
   late final AutoLoginCubit autoLoginCubit;
-
+  late final animationController = AnimationController(
+    vsync: this,
+    upperBound: 3,
+  );
   @override
   void initState() {
-    autoLoginCubit = AutoLoginCubit(
-      autoLogin: KiwiContainer().resolve<AutoLogin>(),
-    );
+    autoLoginCubit = AutoLoginCubit(autoLogin: KiwiContainer().resolve<AutoLogin>());
+
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
         final packageInfo = await PackageInfo.fromPlatform();
@@ -53,6 +56,8 @@ class _AuthPageState extends State<AuthPage> {
         final remoteVersion = Version.parse(
           FirebaseRemoteConfig.instance.getValue('appVersion').asString(),
         );
+
+        Logger().i(remoteVersion);
 
         if (remoteVersion > Version.parse(version)) {
           await showDialog<void>(
@@ -80,12 +85,11 @@ class _AuthPageState extends State<AuthPage> {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () {
-                      final downloadLinkMap = FirebaseRemoteConfig.instance
-                          .getString('downloadLink');
+                      final downloadLinkMap = FirebaseRemoteConfig.instance.getString('downloadLink');
 
                       // ignore: avoid_dynamic_calls
-                      final downloadLink = jsonDecode(downloadLinkMap)[
-                          Platform.isAndroid ? 'android' : 'ios'] as String?;
+                      final downloadLink = (jsonDecode(downloadLinkMap)
+                          as Map<String, dynamic>)[Platform.isAndroid ? 'android' : 'ios'] as String?;
 
                       if (downloadLink == null) return;
 
@@ -121,12 +125,16 @@ class _AuthPageState extends State<AuthPage> {
         }
       },
     );
+
+    animationController.repeat(min: 0, max: 3, period: const Duration(milliseconds: 2000));
+
     super.initState();
   }
 
   @override
   void dispose() {
     autoLoginCubit.close();
+    animationController.dispose();
     super.dispose();
   }
 
@@ -164,7 +172,52 @@ class _AuthPageState extends State<AuthPage> {
                   bloc: autoLoginCubit,
                   builder: (context, state) {
                     if (state is! AutoLoginFailure) {
-                      return const SizedBox();
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 140),
+                        child: AnimatedBuilder(
+                          animation: animationController,
+                          builder: (context, child) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ...List.generate(
+                                  3,
+                                  (index) => Opacity(
+                                    opacity: 0,
+                                    child: Text(
+                                      '.',
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: AppColors.primary,
+                                      ).rixMGoB,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'DB 초기화 중입니다',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: AppColors.primary,
+                                  ).rixMGoB,
+                                ),
+                                ...List.generate(
+                                  3,
+                                  (index) => Opacity(
+                                    opacity: animationController.value.round() > index ? 1 : 0,
+                                    child: Text(
+                                      '.',
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        color: AppColors.primary,
+                                      ).rixMGoB,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      );
                     }
 
                     return Column(

@@ -1,12 +1,12 @@
 // Flutter imports:
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:awesome_notifications/awesome_notifications.dart';
+// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
@@ -67,23 +67,21 @@ class LocalNotificationImpl implements LocalNotification {
         null,
         [
           NotificationChannel(
-            channelGroupKey: hospitalVisitChannelGroupKey,
-            channelKey: hospitalVisitChannelKey,
-            channelName: 'Hospital Visit Notification Channel',
-            channelDescription: 'Channel with alarm ringtone',
-            defaultColor: const Color(0xFF9D50DD),
-            importance: NotificationImportance.Default,
+            channelGroupKey: medicationChannelGroupKey,
+            channelKey: medicationChannelKey,
+            channelName: '복약 일정 알림',
+            channelDescription: '복약할 시간에 알림이 옵니다',
+            importance: NotificationImportance.High,
             channelShowBadge: false,
             ledColor: Colors.white,
             locked: true,
           ),
           NotificationChannel(
-            channelGroupKey: medicationChannelGroupKey,
-            channelKey: medicationChannelKey,
-            channelName: 'Medication Schedule Channel',
+            channelGroupKey: hospitalVisitChannelGroupKey,
+            channelKey: hospitalVisitChannelKey,
+            channelName: '병원 방문할 시간에 알림이 옵니다',
             channelDescription: 'Channel with alarm ringtone',
-            defaultColor: const Color(0xFF9D50DD),
-            importance: NotificationImportance.Default,
+            importance: NotificationImportance.High,
             channelShowBadge: false,
             ledColor: Colors.white,
             locked: true,
@@ -92,27 +90,24 @@ class LocalNotificationImpl implements LocalNotification {
         channelGroups: [
           NotificationChannelGroup(
             channelGroupKey: medicationChannelGroupKey,
-            channelGroupName: '복약 일정 알림',
+            channelGroupName: '복약 일정 알림 그룹',
           ),
           NotificationChannelGroup(
             channelGroupKey: hospitalVisitChannelGroupKey,
-            channelGroupName: '병원 방문 일정 알림',
+            channelGroupName: '병원 방문 일정 알림 그룹',
           ),
         ],
         debug: kDebugMode,
       );
 
   @override
-  Future<bool> getPermissionAllowed() =>
-      AwesomeNotifications().isNotificationAllowed();
+  Future<bool> getPermissionAllowed() => AwesomeNotifications().isNotificationAllowed();
 
   @override
   Future<bool> requestPermission() async {
     final isAllowed = await getPermissionAllowed();
 
-    return isAllowed
-        ? Future(() => true)
-        : AwesomeNotifications().requestPermissionToSendNotifications();
+    return isAllowed ? Future(() => true) : AwesomeNotifications().requestPermissionToSendNotifications();
   }
 
   @override
@@ -120,21 +115,17 @@ class LocalNotificationImpl implements LocalNotification {
     if (prevUserId == null || prevUserId != userId.value) {
       prevUserId = userId.value;
 
-      _scheduledNotificationModels =
-          await AwesomeNotifications().listScheduledNotifications();
+      _scheduledNotificationModels = await AwesomeNotifications().listScheduledNotifications();
 
       return _scheduledNotificationModels!
         ..sort(
-          (prev, curr) =>
-              _scheduleToDateTime(prev.schedule! as NotificationCalendar)
-                  .compareTo(
+          (prev, curr) => _scheduleToDateTime(prev.schedule! as NotificationCalendar).compareTo(
             _scheduleToDateTime(curr.schedule! as NotificationCalendar),
           ),
         );
     } else {
       if (_scheduledNotificationModels!.isEmpty) {
-        _scheduledNotificationModels =
-            await AwesomeNotifications().listScheduledNotifications();
+        _scheduledNotificationModels = await AwesomeNotifications().listScheduledNotifications();
       }
 
       return _scheduledNotificationModels!
@@ -144,9 +135,7 @@ class LocalNotificationImpl implements LocalNotification {
           ).isBefore(DateTime.now()),
         )
         ..sort(
-          (prev, curr) =>
-              _scheduleToDateTime(prev.schedule! as NotificationCalendar)
-                  .compareTo(
+          (prev, curr) => _scheduleToDateTime(prev.schedule! as NotificationCalendar).compareTo(
             _scheduleToDateTime(curr.schedule! as NotificationCalendar),
           ),
         );
@@ -229,6 +218,7 @@ class LocalNotificationImpl implements LocalNotification {
 
     final schedule = NotificationCalendar.fromDate(
       date: date,
+      preciseAlarm: true,
     );
 
     final createResult = await AwesomeNotifications().createNotification(
@@ -245,9 +235,7 @@ class LocalNotificationImpl implements LocalNotification {
           ),
         )
         ..sort(
-          (prev, curr) =>
-              _scheduleToDateTime(prev.schedule! as NotificationCalendar)
-                  .compareTo(
+          (prev, curr) => _scheduleToDateTime(prev.schedule! as NotificationCalendar).compareTo(
             _scheduleToDateTime(curr.schedule! as NotificationCalendar),
           ),
         );
@@ -256,8 +244,7 @@ class LocalNotificationImpl implements LocalNotification {
     return createResult;
   }
 
-  DateTime _scheduleToDateTime(NotificationCalendar notificationSchedule) =>
-      DateTime(
+  DateTime _scheduleToDateTime(NotificationCalendar notificationSchedule) => DateTime(
         notificationSchedule.year!,
         notificationSchedule.month!,
         notificationSchedule.day!,
@@ -336,8 +323,7 @@ class NotificationController {
       int.parse(receivedAction.payload!['reservedAt']!),
     );
 
-    final pushType =
-        PushType.values[int.parse(receivedAction.payload!['pushType']!)];
+    final pushType = PushType.values[int.parse(receivedAction.payload!['pushType']!)];
 
     final userId = receivedAction.payload!['userId']!;
 
