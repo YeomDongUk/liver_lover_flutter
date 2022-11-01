@@ -14,6 +14,7 @@ import 'package:yak/data/models/pill/pill_api_model.dart';
 abstract class PillRemoteDataSource {
   Future<List<PillSearchResult>> findPills(String pillName);
   Future<PillsCompanion> findPill(PillSearchResult pillSearchResult);
+  Future<PillSearchResult?> findPillById(String pillId);
 }
 
 class PillRemoteDataSourceImpl implements PillRemoteDataSource {
@@ -47,9 +48,7 @@ class PillRemoteDataSourceImpl implements PillRemoteDataSource {
         ? effectNode.text
         : effectNode.children
             .map(
-              (e) => e.children.isEmpty
-                  ? e.text
-                  : e.children.map((e) => e.text).join('\n'),
+              (e) => e.children.isEmpty ? e.text : e.children.map((e) => e.text).join('\n'),
             )
             .join('\n');
 
@@ -58,9 +57,7 @@ class PillRemoteDataSourceImpl implements PillRemoteDataSource {
         ? useageNode.text
         : useageNode.children
             .map(
-              (e) => e.children.isEmpty
-                  ? e.text
-                  : e.children.map((e) => e.text).join('\n'),
+              (e) => e.children.isEmpty ? e.text : e.children.map((e) => e.text).join('\n'),
             )
             .join('\n');
 
@@ -70,19 +67,13 @@ class PillRemoteDataSourceImpl implements PillRemoteDataSource {
         .map((e) => e.text)
         .join('\n');
 
-    final imageNode = document
-        .getElementsByClassName('pc-img')
-        .firstOrNull
-        ?.children
-        .firstOrNull;
+    final imageNode = document.getElementsByClassName('pc-img').firstOrNull?.children.firstOrNull;
 
     if (imageNode != null) {
       final match = RegExp('"(.*?)"').firstMatch(imageNode.outerHtml);
       if ((match?.groupCount ?? 0) > 0) {
         final based64Image = match!.group(1)?.split(',').last;
-        imageBlob = based64Image == null
-            ? null
-            : const Base64Decoder().convert(based64Image);
+        imageBlob = based64Image == null ? null : const Base64Decoder().convert(based64Image);
       }
     }
 
@@ -95,5 +86,17 @@ class PillRemoteDataSourceImpl implements PillRemoteDataSource {
       effect: Value(effect),
       useage: Value(useage),
     );
+  }
+
+  @override
+  Future<PillSearchResult?> findPillById(String pillId) async {
+    final response = await dio.get<Map<String, dynamic>>(
+      'http://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01?serviceKey=vFsA8BSDXJ%2FFR79%2By6MfZU9ejxyLYtruz9Ms%2F7dbjKXMuYbOFvi1Du0HsUWutw1VRgtEaSAD%2F8h9TFWANic3aw%3D%3D&item_seq=$pillId&type=json',
+    );
+
+    final body = response.data!['body'] as Map<String, dynamic>;
+    final items = List<Map<String, dynamic>>.from(body['items'] as List);
+
+    return items.map(PillSearchResult.fromJson).toList().firstOrNull;
   }
 }

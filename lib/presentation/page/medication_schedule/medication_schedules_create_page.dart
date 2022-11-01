@@ -40,12 +40,10 @@ class MedicationSchedulesCreatePage extends StatefulWidget {
   const MedicationSchedulesCreatePage({super.key});
 
   @override
-  State<MedicationSchedulesCreatePage> createState() =>
-      _MedicationSchedulesCreatePageState();
+  State<MedicationSchedulesCreatePage> createState() => _MedicationSchedulesCreatePageState();
 }
 
-class _MedicationSchedulesCreatePageState
-    extends State<MedicationSchedulesCreatePage> {
+class _MedicationSchedulesCreatePageState extends State<MedicationSchedulesCreatePage> {
   final today = DateTime.now();
   late final PrescriptionCrateCubit prescriptionCrateCubit;
   late final PageController pageController;
@@ -115,8 +113,7 @@ class _MedicationSchedulesCreatePageState
             if (state.status == FormzStatus.submissionInProgress) {
               showDialog<void>(
                 context: context,
-                builder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
+                builder: (_) => const Center(child: CircularProgressIndicator()),
               );
             }
 
@@ -219,8 +216,7 @@ class _MedicationSchedulesCreatePageState
                                 child: CommonInputDateField(
                                   onTap: () => openDatePicker(
                                     context: context,
-                                    maxTime: DateTime.now()
-                                        .add(const Duration(days: 365)),
+                                    maxTime: DateTime.now().add(const Duration(days: 365)),
                                     minTime: state.prescriptedAt.value ??
                                         DateTime.now().add(
                                           const Duration(days: -365),
@@ -246,15 +242,11 @@ class _MedicationSchedulesCreatePageState
                                 child: JoinContainer(
                                   color: Colors.white,
                                   child: CommonInputFormField(
-                                    onChanged: (str) =>
-                                        prescriptionCrateCubit.updateDuration(
+                                    onChanged: (str) => prescriptionCrateCubit.updateDuration(
                                       int.tryParse(str),
                                     ),
-                                    initialValue: state.duration.value == null
-                                        ? ''
-                                        : '${state.duration.value}',
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(
+                                    initialValue: state.duration.value == null ? '' : '${state.duration.value}',
+                                    keyboardType: const TextInputType.numberWithOptions(
                                       decimal: true,
                                       signed: true,
                                     ),
@@ -331,8 +323,7 @@ class _MedicationSchedulesCreatePageState
                               children: [
                                 Expanded(
                                   child: CommonInputFormField(
-                                    onChanged: (p0) =>
-                                        setState(() => searchText = p0),
+                                    onChanged: (p0) => setState(() => searchText = p0),
                                     onFieldSubmitted: searchPill,
                                     initialValue: searchText,
                                   ),
@@ -352,37 +343,28 @@ class _MedicationSchedulesCreatePageState
                       ],
                     ),
                   ),
-                  if (state.medicationInformationCreateFormInput.value
-                      .isNotEmpty) ...[
+                  if (state.medicationInformationCreateFormInput.value.isNotEmpty) ...[
                     ExpandablePageView.builder(
                       controller: pageController,
-                      itemCount: state
-                          .medicationInformationCreateFormInput.value.length,
+                      itemCount: state.medicationInformationCreateFormInput.value.length,
                       itemBuilder: (context, index) {
-                        final formInput = state
-                            .medicationInformationCreateFormInput.value
-                            .elementAt(index);
+                        final formInput = state.medicationInformationCreateFormInput.value.elementAt(index);
                         return MedicationInformationCreateFormWidget(
                           formInput: formInput,
-                          onChanged: prescriptionCrateCubit
-                              .updateMedicationInformationCreateForm,
-                          onDelete: prescriptionCrateCubit
-                              .deleteMedicationInformationCreateForm,
+                          onChanged: prescriptionCrateCubit.updateMedicationInformationCreateForm,
+                          onDelete: prescriptionCrateCubit.deleteMedicationInformationCreateForm,
                         );
                       },
                     ),
                     PageIndexIndicator(
                       pageController: pageController,
-                      pageCount: state
-                          .medicationInformationCreateFormInput.value.length,
+                      pageCount: state.medicationInformationCreateFormInput.value.length,
                     ),
                     const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: ElevatedButton(
-                        onPressed: state.status != FormzStatus.valid
-                            ? null
-                            : prescriptionCrateCubit.submit,
+                        onPressed: state.status != FormzStatus.valid ? null : prescriptionCrateCubit.submit,
                         style: ElevatedButton.styleFrom(
                           fixedSize: const Size.fromHeight(60),
                           shape: RoundedRectangleBorder(
@@ -457,9 +439,8 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 GestureDetector(
                                   onTap: () async {
-                                    final pill = await KiwiContainer()
-                                        .resolve<PillLocalDataSource>()
-                                        .getPill(formInput.pill.id);
+                                    final pill =
+                                        await KiwiContainer().resolve<PillLocalDataSource>().getPill(formInput.pill.id);
                                     await showDialog<void>(
                                       context: context,
                                       builder: (_) => PillDetailDialog(
@@ -568,8 +549,7 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                     24,
                     (index) {
                       final hour = index + 1;
-                      final isSelected =
-                          formInput.times?.contains(hour) ?? false;
+                      final isSelected = formInput.times?.contains(hour) ?? false;
                       return MedicationScheduleTimeButton(
                         onTap: () {
                           final times = List<int>.from(
@@ -626,9 +606,7 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                               onTap: () => onChanged(
                                 formInput.copyWith(
                                   takeCycle: Optional<int>.value(
-                                    formInput.takeCycle == takeCycle
-                                        ? null
-                                        : takeCycle,
+                                    formInput.takeCycle == takeCycle ? null : takeCycle,
                                   ),
                                 ),
                               ),
@@ -678,8 +656,7 @@ class MedicationInformationCreateFormWidget extends StatelessWidget {
                     ),
                     const SizedBox(width: 9),
                     CommonSwitch(
-                      value: formInput.beforePush == true ||
-                          formInput.afterPush == true,
+                      value: formInput.beforePush == true || formInput.afterPush == true,
                       onToggle: (value) => onChanged(
                         formInput.copyWith(
                           afterPush: Optional.value(value),

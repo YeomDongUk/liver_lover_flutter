@@ -1,8 +1,11 @@
 // Package imports:
 import 'package:drift/drift.dart';
+import 'package:kiwi/kiwi.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';
+import 'package:yak/data/datasources/remote/pill/pill_remote_data_source.dart';
+import 'package:yak/data/models/pill/pill_api_model.dart';
 
 abstract class PillLocalDataSource {
   Future<PillModel> getPill(String id);
@@ -47,9 +50,10 @@ class PillLocalDataSourceImpl extends DatabaseAccessor<AppDatabase> implements P
   Future<List<PillModel>> getPillsInIds(List<String> ids) => (select(table)..where((p) => p.id.isIn(ids))).get();
 
   @override
-  Future<void> initCommonPills() => attachedDatabase.batch(
-        (batch) async => batch.insertAllOnConflictUpdate(
-          table,
+  Future<void> initCommonPills() {
+    return attachedDatabase.batch(
+      (batch) async {
+        final pillSearchResults = await Future.wait(
           [
             PillsCompanion.insert(
               id: const Value('201004172'),
@@ -71,7 +75,17 @@ class PillLocalDataSourceImpl extends DatabaseAccessor<AppDatabase> implements P
               name: '마비렛',
               entpName: '한국애브비(주)',
             ),
-          ],
-        ),
-      );
+          ].map((companion) => KiwiContainer().resolve<PillRemoteDataSource>().findPillById(companion.id.value)),
+        );
+
+        final companions = await Future.wait(
+          List<PillSearchResult>.from(pillSearchResults.where((pillSearchResult) => pillSearchResult != null))
+              .map(KiwiContainer().resolve<PillRemoteDataSource>().findPill)
+              .toList(),
+        );
+
+        batch.insertAllOnConflictUpdate(table, companions);
+      },
+    );
+  }
 }
