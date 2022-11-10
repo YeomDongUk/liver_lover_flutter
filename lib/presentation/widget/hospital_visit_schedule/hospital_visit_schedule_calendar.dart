@@ -1,8 +1,8 @@
 // Flutter imports:
-import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Project imports:

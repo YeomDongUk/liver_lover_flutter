@@ -1,9 +1,14 @@
-import 'package:expandable_page_view/expandable_page_view.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+// Package imports:
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:provider/provider.dart';
+
+// Project imports:
 import 'package:yak/core/static/color.dart';
 import 'package:yak/core/static/static.dart';
 import 'package:yak/core/static/text_style.dart';

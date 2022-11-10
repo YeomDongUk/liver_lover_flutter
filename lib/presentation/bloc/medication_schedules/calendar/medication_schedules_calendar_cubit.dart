@@ -1,9 +1,12 @@
+// Dart imports:
 import 'dart:async';
 
+// Package imports:
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:yak/core/class/optional.dart';
 
+// Project imports:
+import 'package:yak/core/class/optional.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedules_daily_group.dart';
 import 'package:yak/domain/usecases/medication_schedule/get_medication_schedule_daily_groups_stream.dart';
 

@@ -1,10 +1,9 @@
 // Flutter imports:
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-// import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:collection/collection.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -16,6 +15,10 @@ import 'package:yak/core/user/user_id.dart';
 import 'package:yak/main.dart';
 import 'package:yak/presentation/widget/hospital_visit_schedule/hospital_visit_schedule_detail_dialog.dart';
 import 'package:yak/presentation/widget/medication_schedule/medication_schedule_check_dialog.dart';
+
+// Package imports:
+// import 'package:awesome_notifications/awesome_notifications.dart';
+
 
 abstract class LocalNotification {
   Future<void> initialize();

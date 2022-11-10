@@ -1,6 +1,10 @@
+// Dart imports:
 import 'dart:math';
 
+// Package imports:
 import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:yak/domain/entities/medication_information/medication_information.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
 

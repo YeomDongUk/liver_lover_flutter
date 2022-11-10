@@ -1,5 +1,10 @@
-import 'package:equatable/equatable.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:yak/core/static/color.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
 

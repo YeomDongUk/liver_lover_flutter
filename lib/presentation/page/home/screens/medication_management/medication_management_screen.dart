@@ -11,7 +11,6 @@ import 'package:yak/core/router/routes.dart';
 import 'package:yak/core/static/color.dart';
 import 'package:yak/presentation/page/medication_schedule/medication_schedule_group/medication_schedule_groups_tab_view.dart';
 import 'package:yak/presentation/page/medication_schedule/prescription/prescriptions_screen_tab_view.dart';
-
 import 'package:yak/presentation/widget/common/common_app_bar.dart';
 
 class MedicationManagementScreen extends StatefulWidget {

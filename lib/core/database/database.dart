@@ -5,9 +5,9 @@ import 'package:cuid/cuid.dart';
 import 'package:drift/drift.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:logger/logger.dart';
-import 'package:yak/domain/repositories/pill/pill_repository.dart';
 
 // Project imports:
+import 'package:yak/domain/repositories/pill/pill_repository.dart';
 import 'table/drinking_history/drinking_history_table.dart';
 import 'table/examination_result/examination_result_table.dart';
 import 'table/exercise_history/exercise_history_table.dart';

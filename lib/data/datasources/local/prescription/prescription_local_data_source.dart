@@ -1,7 +1,7 @@
 // Package imports:
+import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:collection/collection.dart';
 
 // Project imports:
 import 'package:yak/core/database/database.dart';

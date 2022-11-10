@@ -9,8 +9,8 @@ import 'package:yak/data/models/medication_schedule/medication_schedule_create_i
 import 'package:yak/domain/entities/medication_information/medication_information.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_adherenece_percent.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedule.dart';
-import 'package:yak/domain/entities/medication_schedule/medication_schedules_daily_group.dart';
 import 'package:yak/domain/entities/medication_schedule/medication_schedule_group.dart';
+import 'package:yak/domain/entities/medication_schedule/medication_schedules_daily_group.dart';
 import 'package:yak/domain/entities/pill/pill.dart';
 import 'package:yak/domain/repositories/medication_schedule/medication_schedule_repository.dart';
 

@@ -13,6 +13,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:logger/logger.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:version/version.dart';
 
@@ -38,12 +40,23 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
     vsync: this,
     upperBound: 3,
   );
+
+  bool showDatabseInitialText = false;
   @override
   void initState() {
     autoLoginCubit = AutoLoginCubit(autoLogin: KiwiContainer().resolve<AutoLogin>());
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
+        final dbFolder = await getApplicationDocumentsDirectory();
+        final file = File(p.join(dbFolder.path, 'liverlover.sqlite'));
+        final dbExist = file.existsSync();
+
+        if (!dbExist) {
+          setState(() => showDatabseInitialText = true);
+          animationController.repeat(min: 0, max: 3, period: const Duration(milliseconds: 2000));
+        }
+
         final packageInfo = await PackageInfo.fromPlatform();
         final version = packageInfo.version;
 
@@ -126,8 +139,6 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
       },
     );
 
-    animationController.repeat(min: 0, max: 3, period: const Duration(milliseconds: 2000));
-
     super.initState();
   }
 
@@ -172,50 +183,53 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
                   bloc: autoLoginCubit,
                   builder: (context, state) {
                     if (state is! AutoLoginFailure) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 140),
-                        child: AnimatedBuilder(
-                          animation: animationController,
-                          builder: (context, child) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ...List.generate(
-                                  3,
-                                  (index) => Opacity(
-                                    opacity: 0,
-                                    child: Text(
-                                      '.',
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.primary,
-                                      ).rixMGoB,
+                      return Offstage(
+                        offstage: !showDatabseInitialText,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 140),
+                          child: AnimatedBuilder(
+                            animation: animationController,
+                            builder: (context, child) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ...List.generate(
+                                    3,
+                                    (index) => Opacity(
+                                      opacity: 0,
+                                      child: Text(
+                                        '.',
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: AppColors.primary,
+                                        ).rixMGoB,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  'DB 초기화 중입니다',
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    color: AppColors.primary,
-                                  ).rixMGoB,
-                                ),
-                                ...List.generate(
-                                  3,
-                                  (index) => Opacity(
-                                    opacity: animationController.value.round() > index ? 1 : 0,
-                                    child: Text(
-                                      '.',
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.primary,
-                                      ).rixMGoB,
+                                  Text(
+                                    'DB 초기화 중입니다',
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: AppColors.primary,
+                                    ).rixMGoB,
+                                  ),
+                                  ...List.generate(
+                                    3,
+                                    (index) => Opacity(
+                                      opacity: animationController.value.round() > index ? 1 : 0,
+                                      child: Text(
+                                        '.',
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: AppColors.primary,
+                                        ).rixMGoB,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       );
                     }

@@ -1,11 +1,10 @@
 // Flutter imports:
-import 'package:beamer/beamer.dart';
-import 'package:expandable_page_view/expandable_page_view.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Package imports:
+import 'package:beamer/beamer.dart';
+import 'package:expandable_page_view/expandable_page_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kiwi/kiwi.dart';
 

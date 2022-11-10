@@ -35,6 +35,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>처방전 정보를 스캔하기 위해 사용됩니다</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>처방전 정보를 편집하기 위함</string>
 	<key>UILaunchStoryboardName</key>
@@ -45,17 +47,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>처방전 정보를 스캔하기 위해 사용됩니다</string>
-
 </dict>
 </plist>

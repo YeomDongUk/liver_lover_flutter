@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:equatable/equatable.dart';
+
+// Project imports:
 import 'package:yak/core/database/database.dart';
 
 class MedicationScheduleGroupModel extends Equatable {
