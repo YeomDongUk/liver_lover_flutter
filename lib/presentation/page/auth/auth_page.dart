@@ -70,72 +70,7 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
           FirebaseRemoteConfig.instance.getValue('appVersion').asString(),
         );
 
-        Logger().i(remoteVersion);
-
-        if (remoteVersion > Version.parse(version)) {
-          await showDialog<void>(
-            context: context,
-            builder: (_) => CommonDialog(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    '업데이트 알림',
-                    style: const TextStyle(
-                      fontSize: 17,
-                      color: AppColors.primary,
-                    ).rixMGoEB,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '새로운 업데이트가 있어요. 원활한 이용을 위해 앱을 업데이트 해주세요',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.blueGrayLight,
-                    ).rixMGoB,
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      final downloadLinkMap = FirebaseRemoteConfig.instance.getString('downloadLink');
-
-                      // ignore: avoid_dynamic_calls
-                      final downloadLink = (jsonDecode(downloadLinkMap)
-                          as Map<String, dynamic>)[Platform.isAndroid ? 'android' : 'ios'] as String?;
-
-                      if (downloadLink == null) return;
-
-                      canLaunchUrlString(downloadLink).then(
-                        (value) {
-                          if (value) launchUrlString(downloadLink);
-                        },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    child: Text(
-                      '업데이트 하기',
-                      style: const TextStyle(
-                        fontSize: 17,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                      ).rixMGoEB,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          await Future.delayed(
-            const Duration(milliseconds: 1500),
-            autoLoginCubit.login,
-          );
-        }
+        await (remoteVersion > Version.parse(version) ? showUpdateDialog() : autoLoginCubit.login());
       },
     );
 
@@ -147,6 +82,66 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
     autoLoginCubit.close();
     animationController.dispose();
     super.dispose();
+  }
+
+  Future<void> showUpdateDialog() {
+    return showDialog<void>(
+      context: context,
+      builder: (_) => CommonDialog(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              '업데이트 알림',
+              style: const TextStyle(
+                fontSize: 17,
+                color: AppColors.primary,
+              ).rixMGoEB,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '새로운 업데이트가 있어요. 원활한 이용을 위해 앱을 업데이트 해주세요',
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.blueGrayLight,
+              ).rixMGoB,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                final downloadLinkMap = FirebaseRemoteConfig.instance.getString('downloadLink');
+
+                // ignore: avoid_dynamic_calls
+                final downloadLink = (jsonDecode(downloadLinkMap)
+                    as Map<String, dynamic>)[Platform.isAndroid ? 'android' : 'ios'] as String?;
+
+                if (downloadLink == null) return;
+
+                canLaunchUrlString(downloadLink).then(
+                  (value) {
+                    if (value) launchUrlString(downloadLink);
+                  },
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              child: Text(
+                '업데이트 하기',
+                style: const TextStyle(
+                  fontSize: 17,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                ).rixMGoEB,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
