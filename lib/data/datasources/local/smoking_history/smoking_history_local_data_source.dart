@@ -27,8 +27,7 @@ abstract class SmokingHistoryLocalDataSource {
   });
 }
 
-class SmokingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
-    implements SmokingHistoryLocalDataSource {
+class SmokingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase> implements SmokingHistoryLocalDataSource {
   SmokingHistoryLocalDataSourceImpl(super.attachedDatabase);
 
   late final table = attachedDatabase.smokingHistories;
@@ -103,7 +102,7 @@ class SmokingHistoryLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   }) =>
       (select(table)
             ..where((tbl) => tbl.userId.equals(userId))
-            ..orderBy([(u) => OrderingTerm.desc(u.createdAt)])
+            ..orderBy([(u) => OrderingTerm.desc(u.date)])
             ..limit(1))
           .watchSingleOrNull();
 }

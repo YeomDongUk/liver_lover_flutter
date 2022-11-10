@@ -53,13 +53,10 @@ class _RecentTestResultViewState extends State<RecentTestResultView> {
         StreamBuilder<ExaminationResultModel>(
           stream: KiwiContainer()
               .resolve<ExaminationResultLocalDataSource>()
-              .getLastExaminationResult(
-                userId: KiwiContainer().resolve<UserId>().value,
-              ),
+              .getLastExaminationResult(userId: KiwiContainer().resolve<UserId>().value),
           builder: (context, snapshot) {
-            final examinationResult = snapshot.data == null
-                ? null
-                : ExaminationResult.fromJson(snapshot.data!.toJson());
+            final examinationResult =
+                snapshot.data == null ? null : ExaminationResult.fromJson(snapshot.data!.toJson());
 
             return SizedBox(
               height: 192,

@@ -121,16 +121,12 @@ class Di {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(p.join(dbFolder.path, 'liverlover.sqlite'));
 
-    final isolate = await DriftIsolate.spawn(
-      () => DatabaseConnection(NativeDatabase(file)),
-    );
+    final isolate = await DriftIsolate.spawn(() => DatabaseConnection(NativeDatabase(file)));
 
     final connection = await isolate.connect();
 
     KiwiContainer()
-      ..registerSingleton<AppDatabase>(
-        (c) => AppDatabase.connect(connection),
-      )
+      ..registerSingleton<AppDatabase>((c) => AppDatabase.connect(connection))
 
       /// User
       ..registerInstance<UserId>(
@@ -213,8 +209,7 @@ class Di {
       ..registerSingleton<MedicationScheduleLocalDataSource>(
         (c) => MedicationScheduleLocalDataSourceImpl(
           attachedDatabase: c<AppDatabase>(),
-          notificationScheduleLocalDataSource:
-              c<NotificationScheduleLocalDataSource>(),
+          notificationScheduleLocalDataSource: c<NotificationScheduleLocalDataSource>(),
         ),
       )
       ..registerSingleton<MedicationScheduleRepository>(
@@ -310,8 +305,7 @@ class Di {
       ..registerSingleton<HospitalVisitScheduleLocalDataSource>(
         (c) => HospitalVisitScheduleLocalDataSourceImpl(
           attachedDatabase: c<AppDatabase>(),
-          notificationScheduleLocalDataSource:
-              c<NotificationScheduleLocalDataSource>(),
+          notificationScheduleLocalDataSource: c<NotificationScheduleLocalDataSource>(),
         ),
       )
       ..registerSingleton<HospitalVisitScheduleRepository>(
@@ -396,20 +390,17 @@ class Di {
       ..registerSingleton<MedicationAdherenceSurveyAnswerRepository>(
         (c) => MedicationAdherenceSurveyAnswerRepositoryImpl(
           userId: c<UserId>(),
-          medicationAdherenceSurveyAnswerLocalDataSource:
-              c<MedicationAdherenceSurveyAnswerLocalDataSource>(),
+          medicationAdherenceSurveyAnswerLocalDataSource: c<MedicationAdherenceSurveyAnswerLocalDataSource>(),
         ),
       )
       ..registerSingleton<CreateMedicationAdherenceSurveyAnswers>(
         (c) => CreateMedicationAdherenceSurveyAnswers(
-          medicationAdherenceSurveyAnswerRepository:
-              c<MedicationAdherenceSurveyAnswerRepository>(),
+          medicationAdherenceSurveyAnswerRepository: c<MedicationAdherenceSurveyAnswerRepository>(),
         ),
       )
       ..registerSingleton<GetMedicationAdherenceSurveyAnswers>(
         (c) => GetMedicationAdherenceSurveyAnswers(
-          medicationAdherenceSurveyAnswerRepository:
-              c<MedicationAdherenceSurveyAnswerRepository>(),
+          medicationAdherenceSurveyAnswerRepository: c<MedicationAdherenceSurveyAnswerRepository>(),
         ),
       )
 
@@ -568,8 +559,7 @@ class Di {
       ..registerSingleton<ExaminationResultRepository>(
         (c) => ExaminationResultRepositoryImpl(
           userId: c<UserId>(),
-          examiationResultLocalDataSource:
-              c<ExaminationResultLocalDataSource>(),
+          examiationResultLocalDataSource: c<ExaminationResultLocalDataSource>(),
         ),
       )
       ..registerSingleton<UpsertExaminationResult>(

@@ -69,6 +69,9 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        beforeOpen: (details) => KiwiContainer().resolve<PillRepository>().initCommonPills(),
+        onCreate: (m) async {
+          await m.createAll();
+          await KiwiContainer().resolve<PillRepository>().initCommonPills();
+        },
       );
 }

@@ -54,7 +54,7 @@ class TodayDiaryCubit extends Cubit<TodayDiaryState> {
   }
 
   Future<Stream<DrinkingHistory?>> get _lastDrinkingHistoryStream async {
-    final either = await getLastDrinkingHistoryStream.call(null);
+    final either = await getLastDrinkingHistoryStream(null);
     return either.foldRight(
       Stream<DrinkingHistory?>.fromIterable([]),
       (r, previous) => r,
@@ -62,7 +62,7 @@ class TodayDiaryCubit extends Cubit<TodayDiaryState> {
   }
 
   Future<Stream<SmokingHistory?>> get _lastSmokingHistoryStream async {
-    final either = await getLastSmokingHistoryStream.call(null);
+    final either = await getLastSmokingHistoryStream(null);
     return either.foldRight(
       Stream<SmokingHistory?>.fromIterable([]),
       (r, previous) => r,
@@ -72,10 +72,8 @@ class TodayDiaryCubit extends Cubit<TodayDiaryState> {
   @override
   Future<void> close() async {
     await Future.wait([
-      if (_lastDrinkingHistoryStreamSubscription != null)
-        _lastDrinkingHistoryStreamSubscription!.cancel(),
-      if (_lastSmokingHistoryStreamSubscription != null)
-        _lastSmokingHistoryStreamSubscription!.cancel(),
+      if (_lastDrinkingHistoryStreamSubscription != null) _lastDrinkingHistoryStreamSubscription!.cancel(),
+      if (_lastSmokingHistoryStreamSubscription != null) _lastSmokingHistoryStreamSubscription!.cancel(),
     ]);
 
     return super.close();

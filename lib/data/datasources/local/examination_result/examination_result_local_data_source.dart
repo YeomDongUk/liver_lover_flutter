@@ -56,20 +56,14 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   }) =>
       transaction(
         () async {
-          final result = await (select(table)
-                ..where((tbl) => tbl.date.equals(companion.date.value)))
-              .getSingleOrNull();
+          final result = await (select(table)..where((tbl) => tbl.date.equals(companion.date.value))).getSingleOrNull();
 
           if (result == null) {
             final resultModel = await into(table).insertReturning(companion);
 
-            final userPoint = await (select(userPoints)
-                  ..where((tbl) => tbl.userId.equals(userId)))
-                .getSingle();
+            final userPoint = await (select(userPoints)..where((tbl) => tbl.userId.equals(userId))).getSingle();
 
-            await (update(userPoints)
-                  ..where((tbl) => tbl.userId.equals(userId)))
-                .write(
+            await (update(userPoints)..where((tbl) => tbl.userId.equals(userId))).write(
               UserPointsCompanion(
                 point: Value(userPoint.point + 30),
                 updatedAt: Value(DateTime.now()),
@@ -89,16 +83,13 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
 
             return resultModel;
           } else {
-            await (update(table)..where((tbl) => tbl.id.equals(result.id)))
-                .writeReturning(
+            await (update(table)..where((tbl) => tbl.id.equals(result.id))).writeReturning(
               companion.copyWith(
                 updatedAt: Value(DateTime.now()),
               ),
             );
 
-            return (select(table)
-                  ..where((tbl) => tbl.date.equals(companion.date.value)))
-                .getSingle();
+            return (select(table)..where((tbl) => tbl.date.equals(companion.date.value))).getSingle();
           }
         },
       );
@@ -109,9 +100,7 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
   }) =>
       (select(table)
             ..where((tbl) => tbl.userId.equals(userId))
-            ..orderBy([
-              (u) => OrderingTerm.desc(u.date),
-            ]))
+            ..orderBy([(u) => OrderingTerm.desc(u.date)]))
           .watch()
           .map(
         (examinationResultModels) {
@@ -125,13 +114,11 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
 
           for (final model in examinationResultModels) {
             examinationResultModel = examinationResultModel.copyWith(
-              platelet:
-                  Value(examinationResultModel.platelet ?? model.platelet),
+              platelet: Value(examinationResultModel.platelet ?? model.platelet),
               ast: Value(examinationResultModel.ast ?? model.ast),
               alt: Value(examinationResultModel.alt ?? model.alt),
               ggt: Value(examinationResultModel.ggt ?? model.ggt),
-              bilirubin:
-                  Value(examinationResultModel.bilirubin ?? model.bilirubin),
+              bilirubin: Value(examinationResultModel.bilirubin ?? model.bilirubin),
               albumin: Value(examinationResultModel.albumin ?? model.albumin),
               afp: Value(examinationResultModel.afp ?? model.afp),
               hbvDna: Value(examinationResultModel.hbvDna ?? model.hbvDna),
@@ -181,8 +168,7 @@ class ExaminationResultLocalDataSourceImpl extends DatabaseAccessor<AppDatabase>
                           t.afp.isNotNull() |
                           t.hbvDna.isNotNull() |
                           t.hcvRna.isNotNull())
-                      : (t.benignTumor.isNotNull() |
-                          t.dangerousNodule.isNotNull())) &
+                      : (t.benignTumor.isNotNull() | t.dangerousNodule.isNotNull())) &
                   t.userId.equals(userId),
             )
             ..orderBy([(t) => OrderingTerm.desc(t.date)])
